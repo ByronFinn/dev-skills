@@ -66,8 +66,8 @@ Write findings to PRD:
 
 | Complexity | Criteria | Behavior |
 |---|---|---|
-| **Trivial** | Single-line fix, typo, obvious change | Skip brainstorming, implement directly |
-| **Simple** | Clear goal, 1-2 files, clear scope | Ask 1 confirmation question, then implement |
+| **Trivial** | Single-line fix, typo, obvious change | Skip brainstorming; state that `/think` is unnecessary and recommend direct implementation outside this skill |
+| **Simple** | Clear goal, 1-2 files, clear scope | Ask 1 confirmation question, then finalize a lightweight PRD or recommend `/tdd` if user wants test-first implementation |
 | **Moderate** | Multiple files, some ambiguity | Light brainstorming (2-3 high-value questions) |
 | **Complex** | Unclear goal, architecture choices, multiple approaches | Full brainstorming |
 
@@ -269,7 +269,7 @@ Here is my understanding of complete requirements:
 * PR2: <core behavior>
 * PR3: <edge cases + docs + cleanup>
 
-Does this look correct? If so, I'll proceed with implementation.
+Does this look correct? If so, I'll finalize the PRD and recommend the next workflow step (`/grill` for plan challenge, or `/story` if already validated).
 ```
 
 ## Step 9: Create GitHub Issue (Optional)
@@ -298,7 +298,8 @@ Record Issue number in PRD:
 
 **Behavior:**
 - Skip brainstorming entirely
-- Implement directly
+- State that `/think` is unnecessary for this request
+- Recommend direct implementation outside this skill, or `/tdd` if the user wants test-first work
 
 **Example:** "Fix typo in error message"
 
@@ -310,8 +311,9 @@ Record Issue number in PRD:
 - Clear scope, no ambiguity
 
 **Behavior:**
-- Ask 1 confirmation question
-- Then implement
+- Ask 1 confirmation question if needed
+- Finalize a lightweight PRD or recommend `/tdd` for test-first implementation
+- Do not write code inside `/think`
 
 **Example:** "Add retry to this API call"
 

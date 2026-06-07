@@ -79,7 +79,9 @@ Check and update related local files:
 - [ ] New architecture decisions recorded
 - [ ] Outdated decisions marked deprecated
 
-## Step 7: Sync GitHub Issues
+## Step 7: Sync GitHub Issues (only with current-turn authorization)
+
+Do not close, comment on, or update GitHub Issues unless the user explicitly requests that remote sync in the current turn.
 
 **Update Issue Status:**
 - [ ] Close completed sub-issues
@@ -103,14 +105,16 @@ Check and update related local files:
 - <file2>
 ```
 
-## Step 8: Handle Release Follow-Through (if approved)
+## Step 8: Handle Release Follow-Through (only with current-turn authorization)
 
-If user explicitly requests release/publish/push:
+If user explicitly requests release/publish/push in the current turn:
 - Create tag (if applicable)
 - Push to remote
 - Publish to registry (if applicable)
 - Add GitHub release reactions (+1, heart, hooray, rocket, eyes)
 - Create/update GitHub Release (if applicable)
+
+If the user only approves the review report, list these as recommended next steps instead of executing them.
 
 ## Step 9: Generate Review Report
 
@@ -150,7 +154,7 @@ Run these on every review:
 - [ ] Output encoding/escaping correct
 - [ ] SQL queries parameterized
 - [ ] File operations validate paths
-- [ ] Dependencies updated (no known vulnerabilities)
+- [ ] Dependencies checked with the project-supported audit command, or marked not checked with reason
 - [ ] Error messages don't leak sensitive info
 
 ## Performance Checklist

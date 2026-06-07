@@ -1,6 +1,6 @@
 ---
 name: review
-description: "Code review, doc sync, and release check. Review code diffs, update local PRD/docs, sync GitHub Issues, handle release/publish follow-through, verify with evidence. Use after task completion, before merge, or before release."
+description: "Code review, doc sync, and release check. Review code diffs, verify with evidence, update local PRD/docs when needed, and handle GitHub/release follow-through only when explicitly authorized in the current user turn. Use after task completion, before merge, or before release."
 when_to_use: "review,check,把关,publish前,完成,验收"
 dispatch_intent: "Code review, doc sync, release check, completion workflow"
 ---
@@ -9,12 +9,12 @@ dispatch_intent: "Code review, doc sync, release check, completion workflow"
 
 🥷 Complete all finish work before merge or release.
 
-Review code diffs, update local files (PRD, docs), sync remote info (Issues, releases), handle release follow-through, verify with evidence.
+Review code diffs, verify evidence, update local files (PRD, docs) when needed, and handle remote finish work only when the user explicitly authorizes it in the current turn.
 
 ## Outcome Contract
 
-- **Outcome**: Comprehensive review report with verification status, updated local files, synced GitHub state
-- **Done when**: All checks run, findings documented, local files updated, GitHub synced, recommendation clear
+- **Outcome**: Comprehensive review report with verification status, findings, local file updates when needed, and remote sync status when explicitly authorized
+- **Done when**: All checks run, findings documented, local file updates completed or listed as follow-up, remote actions completed only if explicitly authorized, recommendation clear
 - **Evidence**: Test/lint/typecheck/build output, code diff analysis, updated files
 - **Output**: Structured review report with approve/request changes/comments
 
@@ -37,13 +37,22 @@ Review code diffs, update local files (PRD, docs), sync remote info (Issues, rel
 
 **Step 6**: Update local files — PRD, docs, CONTEXT.md, ADRs
 
-**Step 7**: Sync GitHub Issues — close completed, update parent
+**Step 7**: Sync GitHub Issues only if explicitly authorized in the current user turn — close completed, update parent
 
-**Step 8**: Handle release follow-through (if approved) — tag, push, publish, reactions
+**Step 8**: Handle release follow-through only if explicitly authorized in the current user turn — tag, push, publish, reactions
 
 **Step 9**: Generate review report
 
 See [REFERENCE.md](REFERENCE.md) for detailed checklist and report template.
+
+Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
+
+## Authorization Boundaries
+
+- Default review is local inspection and verification only.
+- Local docs/PRD/CONTEXT/ADR updates are allowed when they are necessary to make completed work accurate; otherwise list them as follow-up.
+- GitHub issue close/comment/update, tag, push, publish, registry upload, and GitHub Release creation/update require explicit user authorization in the current turn.
+- Approval of a draft report or recommendation does not authorize remote or destructive actions.
 
 ## Hard Rules
 

@@ -37,6 +37,8 @@ Name specific file, function, line, or condition. "State management issue" is no
 
 See [REFERENCE.md](REFERENCE.md) for detailed phases, optional modes (bisect, scope scan), and quality gates.
 
+Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
+
 ## Optional Modes
 
 **Bisect mode**: Triggered by "used to work", "broke after update", or user recalls specific good commit/version

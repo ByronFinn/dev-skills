@@ -52,6 +52,8 @@ Create files lazily — only when you have something to write.
 
 See [REFERENCE.md](REFERENCE.md) for CONTEXT-FORMAT.md and ADR-FORMAT.md.
 
+Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
+
 ## Gotchas
 
 | What happened | Rule |

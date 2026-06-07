@@ -9,7 +9,7 @@ dispatch_intent: "New feature, architecture decision, requirements discovery, ex
 
 🥷 Think before you code.
 
-Transform rough ideas into decision-complete plans. Do not write code, generate scaffolds, or write pseudocode until user approval.
+Transform rough ideas into decision-complete plans. Do not write code, generate scaffolds, or write pseudocode until user explicitly starts an implementation workflow.
 
 ## Outcome Contract
 
@@ -46,11 +46,13 @@ Transform rough ideas into decision-complete plans. Do not write code, generate 
 
 **Step 7**: Propose approaches + record decision as ADR-lite
 
-**Step 8**: Final confirmation with implementation plan
+**Step 8**: Final confirmation with implementation plan; stop after PRD approval
 
 **Step 9**: Create GitHub Issue (optional)
 
 See [REFERENCE.md](REFERENCE.md) for detailed templates and examples.
+
+Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
 
 ## Gotchas
 

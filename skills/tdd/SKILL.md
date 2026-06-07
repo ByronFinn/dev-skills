@@ -57,6 +57,8 @@ RIGHT (vertical):
 
 See [REFERENCE.md](REFERENCE.md) for detailed checklist and examples.
 
+Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
+
 ## Gotchas
 
 | What happened | Rule |
