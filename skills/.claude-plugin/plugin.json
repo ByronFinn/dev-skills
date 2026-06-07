@@ -1,0 +1,12 @@
+{
+  "name": "my-skills",
+  "skills": [
+    "./skills/think",
+    "./skills/grill",
+    "./skills/story",
+    "./skills/tdd",
+    "./skills/review",
+    "./skills/debug",
+    "./skills/improve-architecture"
+  ]
+}
