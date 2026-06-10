@@ -57,6 +57,16 @@ RIGHT (vertical):
 
 See [REFERENCE.md](REFERENCE.md) for detailed checklist and examples.
 
+## Per-Cycle Checklist
+
+```
+[ ] Test describes behavior, not implementation
+[ ] Test uses only public interface
+[ ] Test survives internal refactoring
+[ ] Code minimal for this test
+[ ] No speculative features added
+```
+
 Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
 
 ## Gotchas
@@ -84,14 +94,4 @@ Test statistics:
 - <count> failures (if any)
 
 Next: Run /review for code review.
-```
-
-## Per-Cycle Checklist
-
-```
-[ ] Test describes behavior, not implementation
-[ ] Test uses only public interface
-[ ] Test survives internal refactoring
-[ ] Code minimal for this test
-[ ] No speculative features added
 ```

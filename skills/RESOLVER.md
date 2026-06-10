@@ -101,15 +101,15 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 
 ## Skill Inventory
 
-| Skill | Format Files | Triggers (EN/CN) | Core Role | Updates |
-|-------|-------------|------------------|-----------|---------|
-| `think` | PRD-FORMAT.md | brainstorm/构思/方案 | Diverge → converge to initial PRD | PRD + GitHub Issue if explicitly confirmed |
-| `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | 挑战方案/grill/细化方案/术语审查 | Challenge plan + update domain knowledge | PRD + CONTEXT.md + ADRs + GitHub Issue if confirmed |
-| `story` | STORY-FORMAT.md | 分解/story/拆分/Issues | Vertical slices to Issues | PRD Child Issues + GitHub Issues if confirmed |
-| `tdd` | - | TDD/测试优先/实现 | Red-green-refactor loop | Code + tests |
-| `review` | - | 代码审查/review/check/把关 | Code review + evidence + authorized finish work | Report + local docs + remote updates only when explicitly authorized |
-| `debug` | - | 调试/debug/排查/修复/测试失败 | Root cause → 6-phase fix | Root cause report + code fix |
-| `improve-architecture` | - | 架构/improve-architecture/重构候选 | Periodic architecture review | Architecture report |
+| Skill | Format Files | Core Role | Updates |
+|-------|-------------|-----------|---------|
+| `think` | PRD-FORMAT.md | Diverge → converge to initial PRD | PRD + GitHub Issue if explicitly confirmed |
+| `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | Challenge plan + update domain knowledge | PRD + CONTEXT.md + ADRs + GitHub Issue if confirmed |
+| `story` | STORY-FORMAT.md | Vertical slices to Issues | PRD Child Issues + GitHub Issues if confirmed |
+| `tdd` | — | Red-green-refactor loop | Code + tests |
+| `review` | — | Code review + evidence + authorized finish work | Report + local docs + remote updates only when explicitly authorized |
+| `debug` | — | Root cause → 6-phase fix | Root cause report + code fix |
+| `improve-architecture` | — | Periodic architecture review | Architecture report |
 
 ## Shared Rules
 

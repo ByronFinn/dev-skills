@@ -9,13 +9,6 @@ dispatch_intent: "Bug fix, root cause analysis, performance regression"
 
 🥷 Find root cause before fixing.
 
-## Core Principle
-
-**Before applying any fix, must be able to state root cause in one sentence:**
-> "I believe root cause is [X] because [evidence]."
-
-Name specific file, function, line, or condition. "State management issue" is not testable. "Stale cache in useUser hook due to missing userId in dependency array at src/hooks/user.ts:42" is testable. If you can't be that specific, you don't have a hypothesis yet.
-
 ## Outcome Contract
 
 - **Outcome**: Bug fixed with regression test, root cause documented, debug artifacts cleaned
@@ -69,6 +62,8 @@ Regression:    [test file:line] or [none, reason]
 Status: **resolved**, **resolved with caveats**, or **blocked**.
 
 **Regression guard:** For recurrence, fix not complete until regression test exists (fails on old, passes on new), lives in project suite, and commit message explains why bug recurred and why this fix prevents it.
+
+Next: Run `/review` for code review of the fix.
 
 ## Output (Handoff Format after 3 failed hypotheses)
 

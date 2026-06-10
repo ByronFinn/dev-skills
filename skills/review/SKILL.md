@@ -1,7 +1,7 @@
 ---
 name: review
 description: "Code review, doc sync, and release check. Review code diffs, verify with evidence, update local PRD/docs when needed, and handle GitHub/release follow-through only when explicitly authorized in the current user turn. Use after task completion, before merge, or before release."
-when_to_use: "review,check,把关,publish前,完成,验收"
+when_to_use: "review,check,把关,发布前,完成开发,验收"
 dispatch_intent: "Code review, doc sync, release check, completion workflow"
 ---
 

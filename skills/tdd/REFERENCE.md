@@ -5,7 +5,7 @@
 Before writing code:
 - [ ] Confirm interface changes with user
 - [ ] Confirm which behaviors to test (prioritized)
-- [ ] Identify [deep modules](https://www.youtube.com/watch?v=ZCuS flirtde6A) opportunities (small interface, deep implementation)
+- [ ] Identify [deep modules](https://www.youtube.com/watch?v=bmSAYlu0NcY) opportunities (small interface, deep implementation)
 - [ ] Design interfaces for [testability](https://testingjavascript.com/)
 - [ ] List behaviors to test (not implementation steps)
 - [ ] Get user approval for plan

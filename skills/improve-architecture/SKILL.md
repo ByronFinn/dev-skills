@@ -9,14 +9,6 @@ dispatch_intent: "Architecture improvement, design debt cleanup, module deepenin
 
 🥷 Periodically clean design debt, keep code healthy.
 
-## Core Principle
-
-Based on domain language, ADRs, and current PRDs, review codebase for improvement opportunities.
-
-**Deep Modules**: Best modules are deep — small interface, deep implementation. Avoid large interface + shallow implementation (complexity leak).
-
-**PRD Alignment**: Architecture improvements should align with current development direction. Check if: new features fit existing architecture, need improvements in advance, or current debt blocks planned features.
-
 ## Outcome Contract
 
 - **Outcome**: Architecture improvement report with findings, priorities, and PRD alignment analysis

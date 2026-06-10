@@ -46,7 +46,6 @@ Routing conflicts are documented in `skills/RESOLVER.md`. Route by the user's wo
 
 ```
 skills/
-├── .claude-plugin/plugin.json  # Plugin manifest
 ├── think/                       # Brainstorming skill
 ├── grill/                       # Plan validation skill
 ├── story/                       # PRD-to-issues skill
