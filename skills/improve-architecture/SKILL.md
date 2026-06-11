@@ -18,13 +18,15 @@ dispatch_intent: "Architecture improvement, design debt cleanup, module deepenin
 
 ## Prerequisites
 
-- `CONTEXT.md` exists (domain glossary)
-- `docs/adr/` exists (architecture decisions)
-- `docs/prd/*.md` exists (product requirements)
+Read available domain context before starting. If any are missing, proceed without them and note the limitation in the report:
+
+- `CONTEXT.md` — domain glossary (if missing: scan code naming conventions instead)
+- `docs/adr/` — architecture decisions (if missing: no historical decisions to check against)
+- `docs/prd/*.md` — product requirements (if missing: report focuses on code patterns only, no PRD alignment analysis)
 
 ## Process Summary
 
-**Step 1**: Read domain context — CONTEXT.md, ADRs, PRDs
+**Step 1**: Read domain context — CONTEXT.md, ADRs, PRDs. If any file is missing, note it and proceed. The scan will be less precise but still useful — code-level design debt signals (duplication, coupling, long functions) don't require domain context to detect.
 
 **Step 2**: Analyze current development direction — extract planned features, check compatibility with existing architecture
 

@@ -215,6 +215,10 @@ How the engineering skills should consume this repo's domain documentation when 
 
 If any of these files don't exist, **proceed silently**. Don't flag their absence; don't suggest creating them upfront. The producer skill (`/grill`) creates them lazily when terms or decisions actually get resolved.
 
+## What to do if files are missing
+
+If `CONTEXT.md` doesn't exist yet, consumer skills should proceed without it. The first run of `/grill` will create it lazily. Do not create an empty `CONTEXT.md` during setup — an empty file is noise.
+
 ## File structure
 
 Single-context repo (most repos):

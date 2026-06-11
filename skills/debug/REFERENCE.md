@@ -1,6 +1,6 @@
 # Debug: Detailed Reference
 
-## Phase 1: Root Cause Analysis (Quick Location)
+## Stage 1: Root Cause Analysis (Quick Location)
 
 **Goal:** Quickly locate root cause, output one-sentence root cause statement.
 
@@ -17,9 +17,9 @@
 
 **Quality gate:** Before acting on hypothesis, list all observable symptoms (not just first user-reported). Hypothesis must explain each symptom; if only covers some, it's symptom-level guess, not root cause.
 
-**Escalation condition:** If 3 hypotheses fail, escalate to Phase 2 full 6-phase loop.
+**Escalation condition:** If 3 hypotheses fail, escalate to Stage 2 full 6-phase loop.
 
-## Phase 2: 6-Phase Loop (Systematic Fix)
+## Stage 2: 6-Phase Loop (Systematic Fix)
 
 ### Phase 1 — Build Feedback Loop
 
@@ -104,7 +104,7 @@ If correct seam exists:
 4. See it pass
 5. Run Phase 1 feedback loop on original (non-minimal) scenario
 
-### Phase 6: Cleanup + Retrospective
+### Phase 6 — Cleanup + Retrospective
 
 Required before done:
 - [ ] Original repro no longer reproduces (re-run Phase 1 loop)

@@ -1,51 +1,55 @@
 ---
 name: story
-description: "Break PRD into executable Issues. Use vertical slices (tracer bullets) to decompose plan into end-to-end tasks. Use when user wants to convert PRD to Issues, create implementation tickets, or breakdown work."
+description: "Break a plan into executable Issues using vertical slices. Accepts an existing PRD or a direct feature description. Use when user wants to convert a plan to Issues, create implementation tickets, or breakdown work."
 when_to_use: "breakdown,story,拆分,Issues,tasks,subtasks,decompose"
-dispatch_intent: "Convert PRD to Issues, create implementation tickets"
+dispatch_intent: "Convert plan to Issues, create implementation tickets"
 ---
 
-# Story: Break PRD Into Issues
+# Story: Break Plan Into Issues
 
 🥷 Vertical slices, each issue is end-to-end.
 
-Break plan into independently actionable issues using vertical slices (tracer bullets).
+Break plan into independently actionable issues using vertical slices (tracer bullets). Accepts an existing PRD or a direct feature description.
 
 ## Outcome Contract
 
-- **Outcome**: Set of Issues, each executable independently, covering full PRD
-- **Done when**: All issues created with dependencies mapped, PRD updated with child issues
-- **Evidence**: Created Issues with proper acceptance criteria, updated PRD with child issue links
-- **Output**: Issue count list, updated PRD, next step to `/tdd`
+- **Outcome**: Set of Issues, each executable independently, covering the full plan
+- **Done when**: All issues created with dependencies mapped; PRD created or updated with child issues
+- **Evidence**: Created Issues with proper acceptance criteria, PRD (created or updated) with child issue links
+- **Output**: Issue count list, PRD created/updated, next step to `/tdd`
 
 ## Prerequisites
 
-- PRD file must exist (completed by `think` and `grill`)
+- **Input**: an existing PRD at `docs/prd/<feature-name>.md`, or a direct feature description from the user
 - `docs/agents/issue-tracker.md` — read for issue creation convention
 - `docs/agents/triage-labels.md` — read for label mapping
-- If these files are not found, ask the user which issue tracker they use (GitHub / GitLab / Local / Other), then create the files with matching convention. Or suggest running `/setup-project` for full interactive setup.
+- If tracker files are not found, ask the user which issue tracker they use (GitHub / GitLab / Local / Other), then create the files with matching convention. Or suggest running `/setup-project` for full interactive setup.
 
 ## Process Summary
 
-**Step 1**: Read PRD at `docs/prd/<feature-name>.md`
+**Step 0**: Determine input source — locate existing PRD, or capture feature description from user
 
-**Step 2**: Explore codebase (optional) — understand current state, use domain glossary, respect ADRs
+**Step 1**: Extract requirements — from PRD or from user description + codebase exploration
 
-**Step 3**: Draft vertical slices — each is a thin vertical slice through all layers (schema, API, UI, tests)
+**Step 2**: Ensure PRD exists — if not, create a minimal PRD capturing the requirements
 
-**Step 4**: Present to user — show title, type (HITL/AFK), blocked-by, user stories
+**Step 3**: Explore codebase (optional) — understand current state, use domain glossary, respect ADRs
 
-**Step 5**: Publish issues in dependency order (blockers first)
+**Step 4**: Draft vertical slices — each is a thin vertical slice through all layers (schema, API, UI, tests)
 
-**Step 6**: Update PRD with child issues
+**Step 5**: Present to user — show title, type (HITL/AFK), blocked-by, user stories
 
-**Step 7**: Sync Issue (if parent exists)
+**Step 6**: Publish issues in dependency order (blockers first)
+
+**Step 7**: Update PRD with child issues
+
+**Step 8**: Sync Issue (if parent exists)
 
 **Slice Types:**
-- **HITL**: Human-in-the-loop (architecture decisions, design reviews)
-- **AFK**: Away-from-keyboard (implementable without human interaction)
+- **HITL**: Human-in-the-loop — this issue requires human judgment at some point (architecture decisions, design reviews, UX choices). Marked for the human's project planning; the implementing agent treats it like any other issue but may pause at decision points to request human input.
+- **AFK**: Away-from-keyboard — implementable end-to-end without human interaction. These issues are suitable for autonomous agent execution.
 
-See [REFERENCE.md](REFERENCE.md) for issue template and example.
+See [REFERENCE.md](REFERENCE.md) for issue template, input handling, and example.
 
 Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
 
@@ -56,7 +60,8 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 | Horizontal slicing (all schema, then all API) | Use vertical slices through all layers |
 | Slices too thick | Prefer many thin slices over few thick ones |
 | Dependencies wrong | Publish in dependency order (blockers first) |
-| PRD/parent issue not updated | Step 6/7: Update PRD and sync Issue |
+| PRD/parent issue not updated | Step 7/8: Update PRD and sync Issue |
+| Input too vague for slicing | Suggest `/think` — do not run a full brainstorming session yourself |
 
 ## Vertical Slice Rules
 

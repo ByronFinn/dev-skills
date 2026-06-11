@@ -2,11 +2,13 @@
 
 ## 用途
 
-这是 `think` skill 生成的 PRD 文件格式模板。
+PRD 文件格式模板。由 `think` 或 `story`（无 PRD 时）生成和维护。
 
 ## 文件位置
 
 `docs/prd/<feature-name>.md`
+
+**命名规则**: `<feature-name>` 使用 kebab-case（小写字母 + 连字符）。例如：`user-subscription.md`、`payment-integration.md`、`batch-export.md`。避免使用 camelCase、PascalCase 或中文作为文件名。
 
 ## 模板
 
@@ -98,6 +100,11 @@
 ## Child Issues
 
 * (待 story 填充)
+
+<!-- 格式示例（由 /story skill 自动填写）:
+* #<issue-1> — <title> (AFK)
+* #<issue-2> — <title> (HITL, blocked by #<issue-1>)
+-->
 ```
 
 ## 字段说明
@@ -119,4 +126,4 @@
 | Implementation Plan | 实施计划（拆分成小PR）|
 | Technical Notes | 技术笔记 |
 | Issue | 对应的 Issue 编号 |
-| Child Issues | 子 Issues 列表（由 story 填充）|
+| Child Issues | 子 Issues 列表（由 /story 自动填写，格式：`#<number> — <title> (type)`）|

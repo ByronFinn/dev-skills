@@ -11,7 +11,7 @@ dispatch_intent: "Plan validation, domain model consistency, terminology sharpen
 
 Interview me relentlessly about every aspect of this plan until we reach shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one. For each question, provide your recommended answer.
 
-Ask the questions one at a time.
+Ask decision-tree questions one at a time — each question's answer may change how you frame the next one (this is not serial interrogation; see anti-pattern #3 exception for dependency-chain questions).
 
 If a question can be answered by exploring the codebase, explore the codebase instead.
 
@@ -103,5 +103,7 @@ Updated files:
 Issue synced:
 - #<issue-number> — updated
 
-Next: Run /story to break PRD into Issues.
+Next step:
+- If scope changed significantly (new major requirements, fundamental approach change): Run /think to re-evaluate the full design.
+- If plan validated with refinements only: Run /story to break PRD into Issues.
 ```

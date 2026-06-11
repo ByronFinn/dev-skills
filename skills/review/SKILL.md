@@ -37,7 +37,7 @@ Review code diffs, verify evidence, update local files (PRD, docs) when needed, 
 
 **Step 6**: Update local files — PRD, docs, CONTEXT.md, ADRs
 
-**Step 7**: Sync Issues only if explicitly authorized in the current user turn — read `docs/agents/issue-tracker.md` for convention, close completed, update parent
+**Step 7**: Sync Issues — update issue body and add completion comment to reflect verified work; close issues and change labels only if explicitly authorized in the current user turn
 
 **Step 8**: Handle release follow-through only if explicitly authorized in the current user turn — tag, push, publish, reactions
 
@@ -51,7 +51,9 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 
 - Default review is local inspection and verification only.
 - Local docs/PRD/CONTEXT/ADR updates are allowed when they are necessary to make completed work accurate; otherwise list them as follow-up.
-- Issue close/comment/update, tag, push, publish, registry upload, and release creation/update require explicit user authorization in the current turn.
+- **Issue body update / add comment** — allowed when necessary to reflect completed work (the review verified the code). Equivalent to local doc sync.
+- **Issue close / status change / label change** — requires explicit user authorization in the current turn. These are public, irreversible signals.
+- Tag, push, publish, registry upload, and release creation/update — require explicit user authorization in the current turn.
 - Approval of a draft report or recommendation does not authorize remote or destructive actions.
 
 ## Hard Rules
@@ -59,7 +61,7 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 - **Don't assume**: Derive from code/config, don't guess
 - **Verify everything**: Run actual commands, don't say "should work"
 - **Evidence first**: Every conclusion needs evidence
-- **Security first**: Block immediately on any security issue
+- **Security first**: Block immediately on any security issue. Run the full Security Checklist in REFERENCE.md before approving any diff.
 - **Test coverage**: New code must have tests
 
 ## Gotchas
@@ -103,5 +105,6 @@ Recommendation: Approve / Request changes / Comments
 
 Next steps:
 - If Approve: Can merge or release
-- If Request changes: Fix then re-review
+- If Request changes (minor): Fix issues → /review again
+- If Request changes (scope change): Re-evaluate with /think or /grill if requirements changed, then /tdd → /review
 ```

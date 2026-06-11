@@ -20,7 +20,7 @@ Priority when multiple skills could match:
 | New project, configure skills, issue tracker setup, initialize workflow | `setup-project` | Scaffold `docs/agents/` configuration and AGENTS.md before skills can run. |
 | Rough idea, unclear requirements, feasibility, design approach, “how should we build this?” | `think` | Convert ambiguity into a decision-complete PRD. |
 | Existing PRD/plan/terminology/domain model/ADR questions, “challenge this plan”, “is this design sound?” | `grill` | Stress-test plan against domain language and decision records. |
-| Completed PRD that needs tickets, issue breakdown, implementation tasks, vertical slices | `story` | Convert PRD requirements into executable Issues. |
+| Completed PRD or clear feature description needing tickets, issue breakdown, implementation tasks, vertical slices | `story` | Convert plan into executable Issues. Accepts PRD or direct description. |
 | Accepted issue, known behavior to implement, explicit TDD/red-green-refactor request | `tdd` | Implement one vertical slice at a time through tests. |
 | Error, crash, failing test, regression, anomalous behavior, “used to work” | `debug` | Unknown root cause must be diagnosed before fixing. |
 | Diff, staged/unstaged changes, completed work, merge readiness, release readiness | `review` | Verify implementation, docs, artifacts, and release state with evidence. |
@@ -40,7 +40,7 @@ Priority when multiple skills could match:
 |---------|-------|-------------|
 | brainstorm / 构思 / 方案 / 出方案 / 深入分析 / 怎么设计 | `think` | Diverge on possibilities, converge to concrete plan, generate initial PRD and issue |
 | 挑战方案 / grill / 细化方案 / 深挖计划 / 术语审查 | `grill` | Challenge plan against domain model, sharpen terminology, update CONTEXT.md, ADRs, issue |
-| 分解 / story / 拆分 / Issues / 任务 / 子任务 | `story` | Break PRD into executable Issues (vertical slices), update PRD child issues, sync issue tracker |
+| 分解 / story / 拆分 / Issues / 任务 / 子任务 | `story` | Break plan into executable Issues (accepts PRD or direct description), update PRD child issues, sync issue tracker |
 | TDD / 测试优先 / 实现已确认行为 / red-green-refactor | `tdd` | Test-driven development, red-green-refactor loop, one vertical slice at a time |
 
 ### Completion & Finish (Post-build)
@@ -85,6 +85,11 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 /tdd → /review
 ```
 
+**Direct breakdown (user has a clear plan):**
+```
+/story → /tdd → /review → merge/release
+```
+
 **Periodic maintenance:**
 ```
 /improve-architecture → review report → /grill (if terminology/ADR decisions) → /story (if approved improvements) → /tdd (optional)
@@ -100,6 +105,12 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 **“审查” conflict (`grill` vs `review`):**
 - PRD, plan, approach, terminology, domain model, ADR, “方案是否合理” → `/grill`.
 - Diff, changed files, staged work, completed task, verification, merge/release readiness → `/review`.
+
+**"拆分任务" conflict (`story` vs `think`):**
+- User has a clear, specific plan in mind and wants it broken into issues → `/story`
+- User has a rough idea, needs help figuring out what to build → `/think`
+- User asks to "break this down" but description is vague or ambiguous → suggest `/think` first, then `/story`
+- User provides a detailed spec document (not PRD format) → `/story` can parse it directly
 
 **“判断一下” special cases:**
 - + error/anomaly/test failure → `/debug`.
@@ -118,11 +129,22 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 | `setup-project` | — | Scaffold per-repo skill configuration | `docs/agents/*.md` + AGENTS.md block |
 | `think` | PRD-FORMAT.md | Diverge → converge to initial PRD | PRD + issue if explicitly confirmed |
 | `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | Challenge plan + update domain knowledge | PRD + CONTEXT.md + ADRs + issue if confirmed |
-| `story` | STORY-FORMAT.md | Vertical slices to Issues | PRD Child Issues + issues if confirmed |
+| `story` | STORY-FORMAT.md | Vertical slices to Issues (accepts PRD or direct description) | PRD (created or updated) + Child Issues + issues if confirmed |
 | `tdd` | — | Red-green-refactor loop | Code + tests |
 | `review` | — | Code review + evidence + authorized finish work | Report + local docs + remote updates only when explicitly authorized |
 | `debug` | — | Root cause → 6-phase fix | Root cause report + code fix |
 | `improve-architecture` | — | Periodic architecture review | Architecture report |
+
+> **Format Files column**: "—" means the skill's output format is embedded in REFERENCE.md rather than in a separate *-FORMAT.md file. Skills with named format files (PRD-FORMAT.md, STORY-FORMAT.md, etc.) use them as bilingual templates shared with the user.
+
+## Mid-Skill Switching
+
+Users may switch skills at any time. Rules:
+
+1. **Current skill stops immediately** — do not complete remaining steps of the previous skill.
+2. **Intermediate artifacts are preserved** — partial PRDs, CONTEXT.md updates, and created issues remain on disk. The new skill reads the current state and decides what to use.
+3. **Do not clean up** — the new skill may produce different files that supersede the old ones, or the user may return to the previous skill later.
+4. **State what changed** — when entering a new skill after switching, briefly acknowledge the switch and state which prior artifacts you're building on.
 
 ## Shared Rules
 

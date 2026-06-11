@@ -30,11 +30,11 @@ Transform rough ideas into decision-complete plans. Do not write code, generate 
 
 ## Process Summary
 
-**Step 0**: Ensure PRD exists at `docs/prd/<feature-name>.md` (create if missing)
+**Step 0**: Quick assessment — if Trivial (typo, single-line fix), recommend `/tdd` or direct implementation and stop. Otherwise create PRD at `docs/prd/<feature-name>.md`
 
 **Step 1**: Auto-collect context from codebase and docs before asking
 
-**Step 2**: Classify complexity (Trivial/Simple/Moderate/Complex)
+**Step 2**: Classify complexity (Simple/Moderate/Complex)
 
 **Step 3**: Gate questions — only ask blocking or preference questions
 

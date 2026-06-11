@@ -1,8 +1,13 @@
 # Think: Detailed Reference
 
-## Step 0: Ensure Task Exists (Always First)
+## Step 0: Quick Assessment (Before PRD Creation)
 
-Before any Q&A, ensure PRD file exists.
+Before creating any file, assess complexity from the user's request:
+
+- If the request is obviously **Trivial** (single-line fix, typo, obvious change with one clear approach): tell the user `/think` is unnecessary, recommend direct implementation or `/tdd`, and **stop here**. No PRD file is created.
+- For all other complexity levels: proceed to create PRD at `docs/prd/<feature-name>.md` using the template below.
+
+This avoids leaving empty PRD files for requests that don't need them.
 
 **PRD Location:** `docs/prd/<feature-name>.md`
 
@@ -62,16 +67,15 @@ Write findings to PRD:
 - Add to `What I already know`
 - Add constraints/links to `Technical Notes`
 
-## Step 2: Classify Complexity (Still Useful, Doesn't Block Task Creation)
+## Step 2: Classify Complexity
+
+Determine depth of brainstorming for Simple/Moderate/Complex tasks:
 
 | Complexity | Criteria | Behavior |
 |---|---|---|
-| **Trivial** | Single-line fix, typo, obvious change | Skip brainstorming; state that `/think` is unnecessary and recommend direct implementation outside this skill |
 | **Simple** | Clear goal, 1-2 files, clear scope | Ask 1 confirmation question, then finalize a lightweight PRD or recommend `/tdd` if user wants test-first implementation |
 | **Moderate** | Multiple files, some ambiguity | Light brainstorming (2-3 high-value questions) |
 | **Complex** | Unclear goal, architecture choices, multiple approaches | Full brainstorming |
-
-> Note: Task is already created from Step 0. Classification only affects brainstorming depth.
 
 ## Step 3: Question Gates (Only Ask High-Value Questions)
 

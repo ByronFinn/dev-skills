@@ -18,15 +18,15 @@ dispatch_intent: "Bug fix, root cause analysis, performance regression"
 
 ## Process Summary
 
-**Phase 1 (Quick)**: Root cause analysis — form 1-2 hypotheses, validate, output one-sentence root cause
+**Stage 1 (Quick Locate)**: Root cause analysis — form 1-2 hypotheses, validate, output one-sentence root cause
 
-**Phase 2 (6-phase loop)**: Systematic fix
-1. Build feedback loop — construct deterministic repro (the critical skill)
-2. Reproduce — run loop, confirm bug appears
-3. Hypothesize — generate 3-5 ranked falsifiable predictions
-4. Instrument — add targeted logging for each prediction
-5. Fix + regression test — write test first if correct seam exists
-6. Cleanup + retrospective — remove debug logs, document proof
+**Stage 2 (Systematic Fix)**: 6-phase loop
+- Phase 1: Build feedback loop — construct deterministic repro (the critical skill)
+- Phase 2: Reproduce — run loop, confirm bug appears
+- Phase 3: Hypothesize — generate 3-5 ranked falsifiable predictions
+- Phase 4: Instrument — add targeted logging for each prediction
+- Phase 5: Fix + regression test — write test first if correct seam exists
+- Phase 6: Cleanup + retrospective — remove debug logs, document proof
 
 See [REFERENCE.md](REFERENCE.md) for detailed phases, optional modes (bisect, scope scan), and quality gates.
 
@@ -63,7 +63,7 @@ Status: **resolved**, **resolved with caveats**, or **blocked**.
 
 **Regression guard:** For recurrence, fix not complete until regression test exists (fails on old, passes on new), lives in project suite, and commit message explains why bug recurred and why this fix prevents it.
 
-Next: Run `/review` for code review of the fix.
+Next: Run `/review` for code review (recommended for non-trivial fixes). For simple, well-tested fixes with clear regression tests, review is optional.
 
 ## Output (Handoff Format after 3 failed hypotheses)
 
@@ -94,3 +94,5 @@ Suggested next steps:
 ```
 
 Status: **blocked**
+
+Next: Share this handoff document with a fresh agent session to continue investigation with clean context, or provide additional information (access to environment, captured artifacts, etc.) and re-run /debug.

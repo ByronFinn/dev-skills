@@ -12,7 +12,7 @@ dispatch_intent: "Test-driven development, feature implementation, bug fix"
 ## Outcome Contract
 
 - **Outcome**: Feature implemented with passing tests, code behavior verified
-- **Done when**: All acceptance criteria pass, tests cover public interface behavior
+- **Done when**: All acceptance criteria (from input Issue, PRD, or confirmed in Step 1) pass, tests cover public interface behavior
 - **Evidence**: Failing tests turn green, implementation passes all tests
 - **Output**: Behavior list with test locations, test statistics, next step to `/review`
 
@@ -23,6 +23,13 @@ dispatch_intent: "Test-driven development, feature implementation, bug fix"
 **Good tests** are integration-style: exercise real code paths through public API. Describe **what** system does, not **how**. Survive refactoring because they don't care about internal structure.
 
 **Bad tests** couple to implementation: mock internal collaborators, test private methods, verify externally. Warning sign: tests fail during refactoring when behavior unchanged.
+
+## Input
+
+Accept any of these, in priority order:
+1. **Issue reference** (e.g., `#42` or a URL) — read the issue body; use its Acceptance Criteria as the test target list
+2. **PRD file** — read `docs/prd/<feature-name>.md`; extract Requirements and Acceptance Criteria
+3. **Direct description** — user describes the behavior to implement; confirm acceptance criteria in Step 1 before proceeding
 
 ## Anti-Pattern: Horizontal Slicing
 
@@ -47,7 +54,7 @@ RIGHT (vertical):
 
 ## Process Summary
 
-**Step 1**: Plan — confirm interface changes, prioritize behaviors, identify deep module opportunities
+**Step 1**: Plan — read input (Issue, PRD, or description), extract acceptance criteria, confirm interface changes with user, prioritize behaviors, identify deep module opportunities
 
 **Step 2**: Tracer bullet — write ONE test confirming ONE thing → test fails → write minimal code → test passes
 

@@ -8,6 +8,17 @@
 
 If during grill the user raises entirely new requirements not in the PRD, consider whether this should go back to `/think` first. Small clarifications can be resolved inline. Major scope changes deserve a proper think session.
 
+**When to send back to /think:**
+- Grill uncovered entirely new requirements that change the goal statement
+- Fundamental technical approach needs to be re-evaluated (not just refined)
+- More than 30% of the original requirements changed
+
+**When to proceed to /story:**
+- Only terminology was sharpened
+- Scope boundaries were confirmed or slightly adjusted
+- Technical approach was validated with minor refinements
+- ADRs were created but the approach direction is the same
+
 ## What to Challenge
 
 When reading the PRD at `docs/prd/<feature-name>.md`, look for these categories of open decisions:
@@ -20,6 +31,7 @@ When reading the PRD at `docs/prd/<feature-name>.md`, look for these categories 
 - **Edge cases** — what happens when things go wrong
 - **Conflicts with CONTEXT.md** — terms that clash with existing domain glossary
 - **Code contradictions** — stated behavior that doesn't match what the code does
+- **ADR-lite decisions in PRD** — decisions recorded in the PRD's "Decision (ADR-lite)" section during /think. Evaluate each against the 3 ADR conditions. Upgrade qualifying ones to formal ADRs; leave the rest as PRD-internal notes.
 
 ## Challenge Types
 

@@ -6,7 +6,7 @@ Behavioral constraints that always apply. Regardless of active skill. Per-skill 
 |---|--------------|-----------|-----------|
 | 1 | Act before reading | Start editing after first sentence of request | Read full message, then act |
 | 2 | Hallucinate paths | Reference `src/components/Auth.tsx` from memory | `grep -r` to confirm file exists before referencing |
-| 3 | Serial interrogation | Ask 5 different questions across 5 messages | Combine batch questions into one message |
+| 3 | Serial interrogation | Ask 5 different questions across 5 messages | Combine independent questions into one message. Exception: dependency-chain questions where each answer shapes the next question — ask these one at a time (e.g., /grill decision trees) |
 | 4 | Do more than asked | "Fix X" becomes fix X + refactor Y + add Z | Make minimal change that satisfies request |
 | 5 | Claim without evidence | Say "this should work", "I ran tests" | Run command and paste output, or note `(verified: <command>)` |
 | 6 | Trust stale memory | "We discussed this before" | Re-verify current state before acting |
@@ -40,6 +40,7 @@ Behavioral constraints that always apply. Regardless of active skill. Per-skill 
 | 34 | Fix without instrumentation | Read code, form hypothesis, write fix, ship. Repeat when doesn't work | Add runtime probe (log, assertion, minimal test) before writing fix to confirm or refute hypothesis. "Looks reasonable" is not evidence |
 | 35 | Release status collapse | Say "ready to release" after checking source, but CI, artifacts, appcast/registry, remote deploy, or runtime smoke not verified | Report source, CI, artifact, remote distribution, and runtime/user smoke status separately. Missing layer is explicit gap, not passing evidence |
 | 36 | Stale request after compression | After context compression or session resume, continue processing pending request from earlier in thread | After any compression or resume, re-read latest user turn and confirm response targets current request, not already-processed history, before sending |
+| 37 | Skill-to-skill state drift | /think writes a PRD, /grill updates it, but /tdd implements something different because it didn't re-read the latest PRD | When entering a skill that consumes another skill's output, always re-read the latest version of shared files (PRD, CONTEXT.md, Issues) before acting on them. Never cache a file read from a previous skill invocation. |
 
 ## Usage
 

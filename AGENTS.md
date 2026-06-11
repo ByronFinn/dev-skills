@@ -15,7 +15,7 @@ npx skills@latest add ByronFinn/dev-skills
 skills/
 ├── RESOLVER.md                  # Skill routing table and disambiguation rules
 ├── rules/
-│   └── anti-patterns.md         # 36 cross-skill behavioral constraints (always apply)
+│   └── anti-patterns.md         # 37 cross-skill behavioral constraints (always apply)
 ├── setup-project/               # Project initialization skill → AGENTS.md + docs/agents/
 │   ├── SKILL.md
 │   └── REFERENCE.md
@@ -28,7 +28,7 @@ skills/
 │   ├── REFERENCE.md
 │   ├── CONTEXT-FORMAT.md
 │   └── ADR-FORMAT.md
-├── story/                       # PRD-to-issues skill → vertical slices
+├── story/                       # Plan-to-issues skill → vertical slices (accepts PRD or direct description)
 │   ├── SKILL.md
 │   ├── REFERENCE.md
 │   └── STORY-FORMAT.md
@@ -63,6 +63,7 @@ Skills compose into standard software engineering workflows:
 ```
 First time:           setup-project → (skills configured)
 New feature:          think → grill → story → tdd → review → (release)
+Direct breakdown:     story → tdd → review → (release)
 Bug/regression:       debug → review (optional)
 Architecture health:  improve-architecture → grill/story/tdd (if approved)
 ```
@@ -78,7 +79,7 @@ Route by the user's **work object** first, then by workflow phase:
 | New project, configure skills, issue tracker setup | `setup-project` |
 | Rough idea, unclear requirements, design approach | `think` |
 | Existing PRD/plan, "challenge this plan", terminology questions | `grill` |
-| Completed PRD needing tickets, issue breakdown | `story` |
+| Completed PRD or clear feature description needing tickets, issue breakdown | `story` |
 | Accepted issue, TDD / red-green-refactor request | `tdd` |
 | Error, crash, failing test, regression | `debug` |
 | Diff, staged changes, completed work, release readiness | `review` |
@@ -87,10 +88,11 @@ Route by the user's **work object** first, then by workflow phase:
 Key disambiguation rules:
 - **Bug vs TDD**: Root cause unknown → `debug`. Root cause known + accepted behavior to implement → `tdd`.
 - **Grill vs Review**: PRD/plan/terminology → `grill`. Diff/completed work → `review`.
+- **Story vs Think**: Clear plan → `story`. Rough idea → `think`. Vague "break this down" → suggest `think` first.
 
 ## Cross-Skill Rules (anti-patterns.md)
 
-36 behavioral constraints apply to **all** skills at all times. Key ones:
+37 behavioral constraints apply to **all** skills at all times. Key ones:
 
 - **Read before acting** — never edit based on first sentence of a request.
 - **Evidence over claims** — run commands, paste output. Never say "should work".
@@ -102,9 +104,15 @@ Key disambiguation rules:
 
 When adding new rules to `anti-patterns.md`: check for existing similar rules first, update rather than duplicate, keep format consistent, ensure rule is general across skills.
 
-## Language
+## Language Convention
 
-Documentation and skill instructions are written primarily in **English**. Format template files (`PRD-FORMAT.md`, `CONTEXT-FORMAT.md`, `ADR-FORMAT.md`, `STORY-FORMAT.md`) include Chinese (中文) field descriptions and examples. The `RESOLVER.md` routing table includes both English and Chinese trigger words.
+| Layer | Language | Rationale |
+|---|---|---|
+| SKILL.md, REFERENCE.md | English | Agent instruction layer — English for consistency and broad compatibility |
+| FORMAT files (*-FORMAT.md) | English templates + Chinese (中文) field descriptions & examples | User-facing templates — bilingual for Chinese-reading users |
+| RESOLVER.md trigger words | English + Chinese | Route matching needs both languages |
+| Gotchas tables, anti-patterns.md | English | Behavioral rules — precision matters, avoid translation ambiguity |
+| PRD/CONTEXT/ADR files produced in target repos | User's choice | These belong to the user's project, not to dev-skills |
 
 ## Documents Produced by Skills
 
@@ -112,7 +120,7 @@ When skills are used in target projects, they create and maintain these files:
 
 | File | Created by | Purpose |
 |---|---|---|
-| `docs/prd/<feature>.md` | `think` | Product Requirements Document |
+| `docs/prd/<feature>.md` | `think` or `story` | Product Requirements Document |
 | `CONTEXT.md` | `grill` | Domain glossary (no implementation details) |
 | `docs/adr/<NNNN>-<title>.md` | `grill` | Architecture Decision Records |
 | Issues | `story` | Vertical-slice implementation tickets |

@@ -14,6 +14,24 @@ Ask: "What should the public interface look like? Which behaviors matter most?"
 
 **You cannot test everything.** Confirm with user exactly which behaviors are most important. Focus test work on critical paths and complex logic, not every possible edge case.
 
+**Reading input by source:**
+
+**If input is an Issue:**
+- Fetch issue body via the tracker convention in `docs/agents/issue-tracker.md`
+- Extract `Acceptance Criteria` as the test target list
+- Extract `What to build` as the scope description
+- Confirm understanding with user before proceeding
+
+**If input is a PRD:**
+- Read `docs/prd/<feature-name>.md`
+- Focus on `Requirements`, `Acceptance Criteria`, and `Technical Approach` sections
+
+**If input is a direct description:**
+- Confirm scope and derive acceptance criteria with user in this step
+
+**Define done before coding.** If acceptance criteria came from an Issue or PRD, list them as the test target. If input is a direct description with no explicit criteria, confirm with the user:
+> "What would prove this works correctly?" — convert the answer into testable acceptance criteria before writing any test.
+
 ## Step 2: Tracer Bullet
 
 Write **one** test that confirms system does **one thing**:

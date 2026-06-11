@@ -145,6 +145,12 @@ Output structured report:
 Approve / Request changes / Comments
 ```
 
+## Request Changes Guidance
+
+**How to decide "minor" vs "scope change":**
+- **Minor**: bugs in existing code, missing test cases, naming issues, small logic errors. The original plan is still valid.
+- **Scope change**: the fix requires new features, changes acceptance criteria, or adds requirements not in the original PRD. The plan needs to be updated first.
+
 ## Security Checklist
 
 Run these on every review:
