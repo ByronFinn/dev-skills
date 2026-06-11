@@ -272,10 +272,11 @@ Here is my understanding of complete requirements:
 Does this look correct? If so, I'll finalize the PRD and recommend the next workflow step (`/grill` for plan challenge, or `/story` if already validated).
 ```
 
-## Step 9: Create GitHub Issue (Optional)
+## Step 9: Create Issue (Optional)
 
-If user confirms, create GitHub Issue as parent task:
+If user confirms, create issue as parent task. Read `docs/agents/issue-tracker.md` for the issue creation convention.
 
+For GitHub:
 ```bash
 gh issue create --title "<Feature Name>" --body "<PRD content>" --label "prd"
 ```
@@ -283,7 +284,7 @@ gh issue create --title "<Feature Name>" --body "<PRD content>" --label "prd"
 Record Issue number in PRD:
 
 ```markdown
-## GitHub Issue
+## Issue
 #<issue-number>
 ```
 

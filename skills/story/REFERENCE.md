@@ -70,6 +70,8 @@ Iterate until user approves breakdown.
 
 ### Step 5: Publish Issues
 
+Read `docs/agents/issue-tracker.md` for the issue creation convention (e.g., `gh issue create`, `glab issue create`, or writing markdown files). Read `docs/agents/triage-labels.md` for the label mapping.
+
 For each approved slice, publish new issue to tracker. Use issue body template above. If not otherwise indicated, these issues are considered ready for AFK agents, so publish with correct triage labels.
 
 Publish issues in dependency order (blockers first) so you can reference real issue identifiers in "Blocked by" fields.
@@ -85,9 +87,9 @@ Add created issues to PRD's `Child Issues` section:
 * #<issue-3> — <title>
 ```
 
-### Step 7: Sync GitHub Issue (if exists)
+### Step 7: Sync Issue (if exists)
 
-If parent GitHub Issue exists, update its body to include child issues list.
+If parent Issue exists, update its body to include child issues list.
 
 ## Horizontal vs Vertical Slices
 

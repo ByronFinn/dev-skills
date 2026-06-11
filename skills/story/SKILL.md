@@ -13,15 +13,17 @@ Break plan into independently actionable issues using vertical slices (tracer bu
 
 ## Outcome Contract
 
-- **Outcome**: Set of GitHub Issues, each executable independently, covering full PRD
+- **Outcome**: Set of Issues, each executable independently, covering full PRD
 - **Done when**: All issues created with dependencies mapped, PRD updated with child issues
-- **Evidence**: Created GitHub Issues with proper acceptance criteria, updated PRD with child issue links
+- **Evidence**: Created Issues with proper acceptance criteria, updated PRD with child issue links
 - **Output**: Issue count list, updated PRD, next step to `/tdd`
 
 ## Prerequisites
 
 - PRD file must exist (completed by `think` and `grill`)
-- Issue tracker and triage label vocabulary should be configured
+- `docs/agents/issue-tracker.md` — read for issue creation convention
+- `docs/agents/triage-labels.md` — read for label mapping
+- If these files are not found, ask the user which issue tracker they use (GitHub / GitLab / Local / Other), then create the files with matching convention. Or suggest running `/setup-project` for full interactive setup.
 
 ## Process Summary
 
@@ -37,7 +39,7 @@ Break plan into independently actionable issues using vertical slices (tracer bu
 
 **Step 6**: Update PRD with child issues
 
-**Step 7**: Sync GitHub Issue (if parent exists)
+**Step 7**: Sync Issue (if parent exists)
 
 **Slice Types:**
 - **HITL**: Human-in-the-loop (architecture decisions, design reviews)
@@ -54,7 +56,7 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 | Horizontal slicing (all schema, then all API) | Use vertical slices through all layers |
 | Slices too thick | Prefer many thin slices over few thick ones |
 | Dependencies wrong | Publish in dependency order (blockers first) |
-| PRD/parent issue not updated | Step 6/7: Update PRD and sync GitHub Issue |
+| PRD/parent issue not updated | Step 6/7: Update PRD and sync Issue |
 
 ## Vertical Slice Rules
 

@@ -6,6 +6,7 @@ Agent skills for software engineering workflows.
 
 ## Skills
 
+- **setup-project** — Scaffold per-repo configuration: issue tracker convention, triage labels, domain docs layout. Run once before first use of other skills.
 - **think** — Brainstorm and converge on solutions. Diverge on possibilities, converge on concrete plan, generate initial PRD.
 - **grill** — Challenge plans against domain model. Interview relentlessly about plan aspects, resolve dependencies, sharpen terminology, update CONTEXT.md and ADRs.
 - **story** — Break PRD into executable Issues using vertical slices (tracer bullets).
@@ -23,11 +24,13 @@ npx skills@latest add ByronFinn/dev-skills
 ## Workflow
 
 ```
+First time:           setup-project → (skills configured)
 New feature:          think → grill → story → tdd → review → (release)
 Bug/regression:       debug → review (optional)
 Architecture health:  improve-architecture → grill/story/tdd (if approved)
 ```
 
+0. **setup-project** — One-time repo configuration: issue tracker, triage labels, domain docs.
 1. **think** — Transform rough ideas into decision-complete PRDs; stops before implementation.
 2. **grill** — Validate plans against existing domain model and decision records.
 3. **story** — Break PRDs into executable vertical-slice Issues.
@@ -46,6 +49,7 @@ Routing conflicts are documented in `skills/RESOLVER.md`. Route by the user's wo
 
 ```
 skills/
+├── setup-project/               # Project initialization skill
 ├── think/                       # Brainstorming skill
 ├── grill/                       # Plan validation skill
 ├── story/                       # PRD-to-issues skill

@@ -22,7 +22,7 @@ Before starting, read the PRD at `docs/prd/<feature-name>.md`. If no PRD exists 
 - **Outcome**: Validated PRD aligned with domain model, updated CONTEXT.md, relevant ADRs created
 - **Done when**: User confirms plan, all terminology resolved, ADRs created for significant decisions
 - **Evidence**: Updated `docs/prd/<feature-name>.md`, CONTEXT.md with new/sharpened terms, ADRs for hard-to-reverse decisions
-- **Output**: Synced GitHub Issue (if exists), updated local files, next step to `/story`
+- **Output**: Synced Issue (if exists), updated local files, next step to `/story`
 
 ## File Structure
 
@@ -74,9 +74,9 @@ Only offer to create an ADR when all three are true:
 
 If any of the three is missing, skip the ADR. Use the format in [ADR-FORMAT.md](ADR-FORMAT.md).
 
-### PRD & GitHub Issue
+### PRD & Issue
 
-Update PRD at `docs/prd/<feature-name>.md` with interview results — corrected technical approach, updated requirements, adjusted acceptance criteria, updated in/out scope. Sync GitHub Issue if one exists.
+Update PRD at `docs/prd/<feature-name>.md` with interview results — corrected technical approach, updated requirements, adjusted acceptance criteria, updated in/out scope. Sync Issue if one exists.
 
 ## Gotchas
 
@@ -100,7 +100,7 @@ Updated files:
 - CONTEXT.md — updated (new/sharpened terms)
 - docs/adr/xxx.md — created (if any)
 
-GitHub Issue synced:
+Issue synced:
 - #<issue-number> — updated
 
 Next: Run /story to break PRD into Issues.

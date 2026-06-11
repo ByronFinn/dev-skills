@@ -91,7 +91,7 @@
 * <files inspected, constraints, links, references>
 * <research notes summary if applicable>
 
-## GitHub Issue
+## Issue
 
 #<issue-number>
 
@@ -118,5 +118,5 @@
 | Decision (ADR-lite) | 决策记录（轻量级ADR）|
 | Implementation Plan | 实施计划（拆分成小PR）|
 | Technical Notes | 技术笔记 |
-| GitHub Issue | 对应的 GitHub Issue 编号 |
+| Issue | 对应的 Issue 编号 |
 | Child Issues | 子 Issues 列表（由 story 填充）|

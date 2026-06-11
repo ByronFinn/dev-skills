@@ -79,9 +79,11 @@ Check and update related local files:
 - [ ] New architecture decisions recorded
 - [ ] Outdated decisions marked deprecated
 
-## Step 7: Sync GitHub Issues (only with current-turn authorization)
+## Step 7: Sync Issues (only with current-turn authorization)
 
-Do not close, comment on, or update GitHub Issues unless the user explicitly requests that remote sync in the current turn.
+Read `docs/agents/issue-tracker.md` for the issue operations convention (close, comment, update).
+
+Do not close, comment on, or update issues unless the user explicitly requests that remote sync in the current turn.
 
 **Update Issue Status:**
 - [ ] Close completed sub-issues
@@ -111,8 +113,7 @@ If user explicitly requests release/publish/push in the current turn:
 - Create tag (if applicable)
 - Push to remote
 - Publish to registry (if applicable)
-- Add GitHub release reactions (+1, heart, hooray, rocket, eyes)
-- Create/update GitHub Release (if applicable)
+- Create/update release (if applicable)
 
 If the user only approves the review report, list these as recommended next steps instead of executing them.
 
@@ -185,7 +186,7 @@ Run these on every review:
 - CONTEXT.md — updated (if any)
 - docs/adr/*.md — updated (if any)
 
-**Synced to GitHub:**
+**Synced:**
 - Issues: <count> closed
 - Comments: <count> added
 

@@ -16,6 +16,9 @@ skills/
 ├── RESOLVER.md                  # Skill routing table and disambiguation rules
 ├── rules/
 │   └── anti-patterns.md         # 36 cross-skill behavioral constraints (always apply)
+├── setup-project/               # Project initialization skill → AGENTS.md + docs/agents/
+│   ├── SKILL.md
+│   └── REFERENCE.md
 ├── think/                       # Brainstorming skill → PRD
 │   ├── SKILL.md
 │   ├── REFERENCE.md
@@ -58,6 +61,7 @@ Every skill follows the same structure:
 Skills compose into standard software engineering workflows:
 
 ```
+First time:           setup-project → (skills configured)
 New feature:          think → grill → story → tdd → review → (release)
 Bug/regression:       debug → review (optional)
 Architecture health:  improve-architecture → grill/story/tdd (if approved)
@@ -71,6 +75,7 @@ Route by the user's **work object** first, then by workflow phase:
 
 | User provides / asks about | Route to |
 |---|---|
+| New project, configure skills, issue tracker setup | `setup-project` |
 | Rough idea, unclear requirements, design approach | `think` |
 | Existing PRD/plan, "challenge this plan", terminology questions | `grill` |
 | Completed PRD needing tickets, issue breakdown | `story` |
@@ -110,7 +115,7 @@ When skills are used in target projects, they create and maintain these files:
 | `docs/prd/<feature>.md` | `think` | Product Requirements Document |
 | `CONTEXT.md` | `grill` | Domain glossary (no implementation details) |
 | `docs/adr/<NNNN>-<title>.md` | `grill` | Architecture Decision Records |
-| GitHub Issues | `story` | Vertical-slice implementation tickets |
+| Issues | `story` | Vertical-slice implementation tickets |
 
 ## Contributing
 

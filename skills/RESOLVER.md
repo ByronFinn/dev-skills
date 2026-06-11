@@ -17,6 +17,7 @@ Priority when multiple skills could match:
 
 | User provides / asks about | Skill | Why |
 |---|---|---|
+| New project, configure skills, issue tracker setup, initialize workflow | `setup-project` | Scaffold `docs/agents/` configuration and AGENTS.md before skills can run. |
 | Rough idea, unclear requirements, feasibility, design approach, “how should we build this?” | `think` | Convert ambiguity into a decision-complete PRD. |
 | Existing PRD/plan/terminology/domain model/ADR questions, “challenge this plan”, “is this design sound?” | `grill` | Stress-test plan against domain language and decision records. |
 | Completed PRD that needs tickets, issue breakdown, implementation tasks, vertical slices | `story` | Convert PRD requirements into executable Issues. |
@@ -27,20 +28,26 @@ Priority when multiple skills could match:
 
 ## Route by Workflow Phase
 
+### Project Setup (First time)
+
+| Trigger | Skill | Description |
+|---------|-------|-------------|
+| setup / 初始化 / 配置技能 / issue tracker setup / new project | `setup-project` | Scaffold `docs/agents/` configuration and AGENTS.md block |
+
 ### New Feature Development (Pre-build)
 
 | Trigger | Skill | Description |
 |---------|-------|-------------|
-| brainstorm / 构思 / 方案 / 出方案 / 深入分析 / 怎么设计 | `think` | Diverge on possibilities, converge to concrete plan, generate initial PRD and GitHub Issue |
-| 挑战方案 / grill / 细化方案 / 深挖计划 / 术语审查 | `grill` | Challenge plan against domain model, sharpen terminology, update CONTEXT.md, ADRs, GitHub Issue |
-| 分解 / story / 拆分 / Issues / 任务 / 子任务 | `story` | Break PRD into executable Issues (vertical slices), update PRD child issues, sync GitHub |
+| brainstorm / 构思 / 方案 / 出方案 / 深入分析 / 怎么设计 | `think` | Diverge on possibilities, converge to concrete plan, generate initial PRD and issue |
+| 挑战方案 / grill / 细化方案 / 深挖计划 / 术语审查 | `grill` | Challenge plan against domain model, sharpen terminology, update CONTEXT.md, ADRs, issue |
+| 分解 / story / 拆分 / Issues / 任务 / 子任务 | `story` | Break PRD into executable Issues (vertical slices), update PRD child issues, sync issue tracker |
 | TDD / 测试优先 / 实现已确认行为 / red-green-refactor | `tdd` | Test-driven development, red-green-refactor loop, one vertical slice at a time |
 
 ### Completion & Finish (Post-build)
 
 | Trigger | Skill | Description |
 |---------|-------|-------------|
-| 代码审查 / review / check / 把关 / 发布前 / 完成 / 验收 | `review` | Code review, verification, documentation sync, GitHub/release follow-through when explicitly authorized |
+| 代码审查 / review / check / 把关 / 发布前 / 完成 / 验收 | `review` | Code review, verification, documentation sync, issue sync/release follow-through when explicitly authorized |
 
 ### Bug Fix (Diagnostic)
 
@@ -57,6 +64,11 @@ Priority when multiple skills could match:
 ## Common Sequences
 
 Skills don't auto-chain by default. Each skill stops and waits for user's next step.
+
+**Project setup (first time):**
+```
+/setup-project → skills configured → /think (start feature work)
+```
 
 **New feature complete workflow:**
 ```
@@ -103,9 +115,10 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 
 | Skill | Format Files | Core Role | Updates |
 |-------|-------------|-----------|---------|
-| `think` | PRD-FORMAT.md | Diverge → converge to initial PRD | PRD + GitHub Issue if explicitly confirmed |
-| `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | Challenge plan + update domain knowledge | PRD + CONTEXT.md + ADRs + GitHub Issue if confirmed |
-| `story` | STORY-FORMAT.md | Vertical slices to Issues | PRD Child Issues + GitHub Issues if confirmed |
+| `setup-project` | — | Scaffold per-repo skill configuration | `docs/agents/*.md` + AGENTS.md block |
+| `think` | PRD-FORMAT.md | Diverge → converge to initial PRD | PRD + issue if explicitly confirmed |
+| `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | Challenge plan + update domain knowledge | PRD + CONTEXT.md + ADRs + issue if confirmed |
+| `story` | STORY-FORMAT.md | Vertical slices to Issues | PRD Child Issues + issues if confirmed |
 | `tdd` | — | Red-green-refactor loop | Code + tests |
 | `review` | — | Code review + evidence + authorized finish work | Report + local docs + remote updates only when explicitly authorized |
 | `debug` | — | Root cause → 6-phase fix | Root cause report + code fix |
@@ -119,6 +132,9 @@ Cross-skill behavioral constraints live in `rules/anti-patterns.md`. Skills shou
 
 ```
 skills/
+├── setup-project/
+│   ├── SKILL.md
+│   └── REFERENCE.md
 ├── think/
 │   ├── SKILL.md
 │   ├── REFERENCE.md

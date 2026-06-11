@@ -1,6 +1,6 @@
 ---
 name: review
-description: "Code review, doc sync, and release check. Review code diffs, verify with evidence, update local PRD/docs when needed, and handle GitHub/release follow-through only when explicitly authorized in the current user turn. Use after task completion, before merge, or before release."
+description: "Code review, doc sync, and release check. Review code diffs, verify with evidence, update local PRD/docs when needed, and handle issue sync/release follow-through only when explicitly authorized in the current user turn. Use after task completion, before merge, or before release."
 when_to_use: "review,check,把关,发布前,完成开发,验收"
 dispatch_intent: "Code review, doc sync, release check, completion workflow"
 ---
@@ -37,7 +37,7 @@ Review code diffs, verify evidence, update local files (PRD, docs) when needed, 
 
 **Step 6**: Update local files — PRD, docs, CONTEXT.md, ADRs
 
-**Step 7**: Sync GitHub Issues only if explicitly authorized in the current user turn — close completed, update parent
+**Step 7**: Sync Issues only if explicitly authorized in the current user turn — read `docs/agents/issue-tracker.md` for convention, close completed, update parent
 
 **Step 8**: Handle release follow-through only if explicitly authorized in the current user turn — tag, push, publish, reactions
 
@@ -51,7 +51,7 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 
 - Default review is local inspection and verification only.
 - Local docs/PRD/CONTEXT/ADR updates are allowed when they are necessary to make completed work accurate; otherwise list them as follow-up.
-- GitHub issue close/comment/update, tag, push, publish, registry upload, and GitHub Release creation/update require explicit user authorization in the current turn.
+- Issue close/comment/update, tag, push, publish, registry upload, and release creation/update require explicit user authorization in the current turn.
 - Approval of a draft report or recommendation does not authorize remote or destructive actions.
 
 ## Hard Rules
@@ -72,7 +72,7 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 | Didn't check security issues | Hard Rules: Security first |
 | Didn't verify test coverage | Step 2: Check tests |
 | PRD not updated | Step 6: Update local files |
-| Issues not closed | Step 7: Sync GitHub Issues |
+| Issues not closed | Step 7: Sync Issues |
 | Docs out of sync | Step 6: Check doc updates |
 
 ## Output
@@ -95,7 +95,7 @@ Updated files:
 - CONTEXT.md — updated (if any)
 - docs/adr/*.md — updated (if any)
 
-Synced to GitHub:
+Synced:
 - Issues: <count> closed
 - Comments: <count> added
 

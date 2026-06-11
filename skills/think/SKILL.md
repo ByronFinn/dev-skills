@@ -48,7 +48,7 @@ Transform rough ideas into decision-complete plans. Do not write code, generate 
 
 **Step 8**: Final confirmation with implementation plan; stop after PRD approval
 
-**Step 9**: Create GitHub Issue (optional)
+**Step 9**: Create Issue (optional)
 
 See [REFERENCE.md](REFERENCE.md) for detailed templates and examples.
 
