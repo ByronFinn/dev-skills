@@ -13,9 +13,9 @@ Transform rough ideas into decision-complete plans. Do not write code, generate 
 
 ## Outcome Contract
 
-- **Outcome**: Decision-complete PRD with clear requirements, acceptance criteria, technical approach, and implementation plan
-- **Done when**: User approves plan and PRD is ready for `/grill`
-- **Evidence**: Updated `docs/prd/<feature-name>.md` with all sections complete
+- **Outcome**: Decision-complete plan. Optionally persisted as a PRD with clear requirements, acceptance criteria, technical approach, and implementation plan
+- **Done when**: User approves plan and (optionally) PRD is created for `/grill`
+- **Evidence**: Updated `docs/prd/<feature-name>.md` (if user opts to create PRD), or approved design summary
 - **Output**: Approved design summary with next step to `/grill`
 
 ## Core Principles
@@ -30,7 +30,9 @@ Transform rough ideas into decision-complete plans. Do not write code, generate 
 
 ## Process Summary
 
-**Step 0**: Quick assessment — if Trivial (typo, single-line fix), recommend `/tdd` or direct implementation and stop. Otherwise create PRD at `docs/prd/<feature-name>.md`
+**Step 0**: Quick assessment — if Trivial (typo, single-line fix), recommend `/tdd` or direct implementation and stop
+
+**Step 0.5**: Ask user if they want to create a PRD — don't create one automatically
 
 **Step 1**: Auto-collect context from codebase and docs before asking
 
@@ -42,11 +44,11 @@ Transform rough ideas into decision-complete plans. Do not write code, generate 
 
 **Step 5**: Expansion scan on future evolution, related scenarios, failure/edge cases
 
-**Step 6**: Q&A loop — one question at a time, update PRD after each answer
+**Step 6**: Q&A loop — one question at a time, update PRD (if created) after each answer
 
-**Step 7**: Propose approaches + record decision as ADR-lite
+**Step 7**: Propose approaches + record decision as ADR-lite (in PRD if created)
 
-**Step 8**: Final confirmation with implementation plan; stop after PRD approval
+**Step 8**: Final confirmation with implementation plan; stop after approval
 
 **Step 9**: Create Issue (optional)
 
@@ -58,6 +60,7 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 
 | What happened | Rule |
 |---|---|
+| Created PRD without asking user first | Step 0.5: Ask before creating PRD |
 | Asked user about code/context that could be derived | Step 1: Auto-collect context first |
 | Had user choose approach before presenting options | Step 4: Research-first for technical choices |
 | Asked meta questions like "should I search?" | Step 3: Use question gates |

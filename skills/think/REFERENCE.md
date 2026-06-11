@@ -1,17 +1,34 @@
 # Think: Detailed Reference
 
-## Step 0: Quick Assessment (Before PRD Creation)
+## Step 0: Quick Assessment (Before Asking)
 
-Before creating any file, assess complexity from the user's request:
+Before doing anything, assess complexity from the user's request:
 
 - If the request is obviously **Trivial** (single-line fix, typo, obvious change with one clear approach): tell the user `/think` is unnecessary, recommend direct implementation or `/tdd`, and **stop here**. No PRD file is created.
-- For all other complexity levels: proceed to create PRD at `docs/prd/<feature-name>.md` using the template below.
+- For all other complexity levels: proceed to Step 0.5.
 
-This avoids leaving empty PRD files for requests that don't need them.
+This avoids wasting time on requests that don't need brainstorming.
+
+## Step 0.5: Ask Before Creating PRD
+
+After quick assessment, ask the user if they want to persist the plan as a PRD file. **Do not create the PRD automatically.**
+
+**Ask (for non-Trivial tasks):**
+
+```
+I'll help you think through this. Would you like me to create a PRD file at `docs/prd/<feature-name>.md` as we work through the design?
+
+- **Yes** — I'll create and update a PRD file throughout our discussion
+- **No** — I'll work through the plan conversationally and provide a summary at the end
+```
+
+**If Yes:** create PRD at `docs/prd/<feature-name>.md` using the template below.
+
+**If No:** skip PRD creation. Still follow the brainstorming process (Steps 1-8), but keep notes in your working context and produce a design summary at the end.
 
 **PRD Location:** `docs/prd/<feature-name>.md`
 
-If not exists, create with template:
+If creating, use this template:
 
 ```markdown
 # <Feature Name>
