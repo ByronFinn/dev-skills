@@ -65,7 +65,7 @@ Every sub-agent must independently re-read all shared context. A sub-agent must 
 ## Authorization Boundaries
 
 - Default review is local inspection and verification only.
-- Local docs/PRD/CONTEXT/ADR updates are allowed when necessary to make completed work accurate; otherwise list them as follow-up.
+- Local docs/PRD/CONTEXT/ADR updates are allowed only when the review has verified the underlying change — never update speculatively or for forward-looking statements. When in doubt, list as follow-up.
 - **Issue body update / add comment** — allowed when necessary to reflect completed work (the review verified the code). Equivalent to local doc sync.
 - **Issue close / status change / label change** — requires explicit user authorization in the current turn. These are public, irreversible signals.
 - Tag, push, publish, registry upload, and release creation/update — require explicit user authorization in the current turn.

@@ -75,6 +75,33 @@ Before declaring grill complete, verify:
 - [ ] Every scope boundary confirmed (why is X out of scope?)
 - [ ] Code cross-check completed for all stated behaviors
 
+## Question Pacing: Dependency Chains vs Independent Decisions
+
+Not every question needs to be asked one at a time. Use this decision framework:
+
+**Ask one at a time when:**
+- The answer to question A changes how you frame question B (dependency chain)
+- The answer determines which branch of the design tree to explore next
+- Example: "What payment provider?" → answer determines "What webhook format?" → answer determines "What retry strategy?"
+
+**Batch 2-3 questions together when:**
+- Each question's answer is independent of the others
+- The answers won't change how you frame subsequent questions
+- Example: "Should subscription include a trial state?" + "Is upgrade/downgrade in scope?" + "What's the minimum billing period?" — these three don't depend on each other
+
+**Batch format:**
+```markdown
+These 3 decisions are independent — I'll ask them together:
+
+1. **<topic A>**: <options>
+2. **<topic B>**: <options>
+3. **<topic C>**: <options>
+
+Answer any or all. If you're unsure on any, I can drill down separately.
+```
+
+This reduces total rounds without sacrificing the depth of dependency-chain questioning.
+
 ## Example Dialogue
 
 ```

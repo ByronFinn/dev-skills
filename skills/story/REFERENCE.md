@@ -38,6 +38,8 @@ Check what input the user provided:
 2. **Direct description** — user describes a feature verbally: "帮我拆分用户订阅功能的 issues", "break down the payment integration", or provides a rough spec
 3. **Existing issue** — user references an existing issue number as the parent
 
+**PRD Issue field detection:** When an existing PRD is found, read its `## Issue` section (e.g., `#42`). If present, this is the parent issue — use it as the parent reference when creating child issues in Step 6, and update it in Step 8. Do not ask the user for the parent if it's already recorded in the PRD.
+
 If a PRD exists, skip to Step 3 (Draft Vertical Slices).
 
 If no PRD exists and the user gave a direct description, proceed to Step 1 to extract requirements.
@@ -81,7 +83,7 @@ If no PRD exists, create a minimal PRD using the template from `think/PRD-FORMAT
 - `Out of Scope` — if the user mentioned boundaries
 - `Technical Notes` — findings from codebase exploration
 
-Leave optional sections (Research References, Feasible Approaches, ADR-lite, Implementation Plan) empty or omit them — they are `/think`'s output, not required for slicing.
+Omit sections you have no information for entirely — do not leave empty headings in the file. Only include sections with real content. Sections like Research References, Feasible Approaches, Decision (ADR-lite), and Implementation Plan are `/think`'s output, not required for slicing.
 
 Write the file. This PRD will be updated in Step 7 with child issues.
 

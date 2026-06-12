@@ -104,6 +104,19 @@ If correct seam exists:
 4. See it pass
 5. Run Phase 1 feedback loop on original (non-minimal) scenario
 
+**Regression test vs `/tdd` Acceptance Criterion Cycle:**
+
+The regression test in `/debug` is a **targeted verification** — a single test that proves the specific bug is fixed (fails on old code, passes on fix). It is deliberately simpler than the TDD cycle:
+
+| Aspect | Debug regression test | TDD Acceptance Criterion Cycle |
+|--------|----------------------|-------------------------------|
+| Scope | One bug, one test | One acceptance criterion, multiple scenarios |
+| Scenario design | Not needed — bug already defines the scenario | Mandatory — scenario table + Scenario Review Gate |
+| Human review gates | None | Two gates (Scenario Review + Test Code Review) |
+| Sub-agent structure | Single agent | Test Sub-Agent + Develop Sub-Agent |
+
+Do not apply the Acceptance Criterion Cycle structure during `/debug`. If the fix grows beyond a targeted regression test (e.g., the fix requires new features or changes acceptance criteria), switch to `/tdd` — the user must explicitly request this switch.
+
 ### Phase 6 — Cleanup + Retrospective
 
 Required before done:

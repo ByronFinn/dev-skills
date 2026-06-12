@@ -177,6 +177,8 @@ Do NOT review implementation quality, security, performance, or release impact �
 ### Verdict
 
 <Approve | Request Changes> — <one-line justification>
+
+**Verdict reasoning**: <2-3 sentences explaining the key factors that determined this verdict. What tipped the balance? If Request Changes, what must be fixed? This reasoning helps the orchestrator identify contradictions between sub-agents.>
 ```
 
 **Severity levels:**
@@ -289,6 +291,8 @@ If any security check fails, the verdict must be **Request Changes** with severi
 ### Verdict
 
 <Approve | Request Changes> — <one-line justification>
+
+**Verdict reasoning**: <2-3 sentences explaining the key factors that determined this verdict. What tipped the balance? If Request Changes, what must be fixed? This reasoning helps the orchestrator identify contradictions between sub-agents.>
 ```
 
 **Severity levels:**
@@ -424,6 +428,8 @@ For **global** architecture concerns — overall system design health, cross-cut
 ### Verdict
 
 <Approve | Request Changes> — <one-line justification>
+
+**Verdict reasoning**: <2-3 sentences explaining the key factors that determined this verdict. What tipped the balance? If Request Changes, what must be fixed? This reasoning helps the orchestrator identify contradictions between sub-agents.>
 ```
 
 **Severity levels:**
@@ -543,7 +549,7 @@ After presenting the merged report, the orchestrator asks the user what to do ne
 
 ### Local Doc Updates (Allowed Without Authorization)
 
-These updates are allowed whenever necessary to keep local documentation accurate:
+These updates are allowed **only when the review has verified the underlying change**:
 
 | Action | When |
 |--------|------|
@@ -553,6 +559,8 @@ These updates are allowed whenever necessary to keep local documentation accurat
 | Update or create ADRs | Architecture decisions made in the change |
 | Update README | Setup instructions or project description changed |
 | Update CHANGELOG | User-visible changes exist |
+
+**Judgment standard:** Only update when the review verified a change that the document should reflect (e.g., acceptance criteria met, new terms introduced in verified code). If the update is speculative or forward-looking (e.g., "will be implemented in next PR"), list it as follow-up instead — do not update the file.
 
 Perform these updates as part of the review when applicable. List what was updated in the report.
 
@@ -602,3 +610,36 @@ When the recommendation is **Request Changes**, guide the user based on severity
 - If requirements changed → `/think` or `/grill` to update the plan
 - If global architecture concerns surfaced → `/improve-architecture`
 - If the fix is straightforward → fix → `/review` again
+
+---
+
+## Chapter 7: Session Recovery
+
+If the session is interrupted during the review process, follow these steps.
+
+### General Recovery Steps
+
+1. **Re-read the latest user message** — determine what triggered the review
+2. **Re-read shared context from disk** — PRD, Story/Issue, CONTEXT.md, ADRs (anti-pattern #39)
+3. **Re-read the diff** — run `git diff HEAD` again; the code may have changed since the interruption
+4. **Determine progress** — which sub-agents completed, which was in progress
+5. **State recovery summary** — tell the user what was recovered and where you'll resume from. Confirm before continuing
+
+### Recovery by Phase
+
+**If interrupted during Context Collection (Chapter 1):**
+- No sub-agents have run yet. Re-read project config and diff from disk. Resume from Step 1.
+
+**If interrupted during Sub-Agent Dispatch (Chapter 2-4):**
+- Check which sub-agent reports were completed (look for any partial output in the conversation)
+- Re-dispatch any sub-agents whose reports are missing or incomplete
+- Each sub-agent independently re-reads all shared context — no state is lost
+- Do NOT reuse a sub-agent's partial output from memory — re-run the sub-agent from scratch
+
+**If interrupted during Report Merge (Chapter 5):**
+- If all three reports were produced, re-merge them from the sub-agent outputs
+- If some reports are missing, re-dispatch the missing sub-agents
+
+**If interrupted during Authorization (Chapter 6):**
+- Present the merged report again (re-read from disk if any local files were updated)
+- Re-ask the user for authorization — never assume a previous authorization carries over after interruption

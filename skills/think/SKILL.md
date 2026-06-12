@@ -52,6 +52,8 @@ Transform rough ideas into decision-complete plans. Do not write code, generate 
 
 **Step 9**: Create Issue (optional)
 
+**Step 10**: Record domain terms (if any new terms were introduced) — capture a `## Domain Terms` section in the PRD for `/grill` to promote into `CONTEXT.md`
+
 See [REFERENCE.md](REFERENCE.md) for detailed templates and examples.
 
 Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
@@ -66,6 +68,7 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 | Asked meta questions like "should I search?" | Step 3: Use question gates |
 | Drifted without updating PRD | Update PRD after every answer |
 | Stayed on initial request without considering edges | Step 5: Expansion scan before converging |
+| Domain terms introduced but not recorded for grill | Step 10: Record new terms in PRD `## Domain Terms` section |
 
 ## Output
 

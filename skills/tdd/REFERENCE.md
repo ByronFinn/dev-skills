@@ -508,3 +508,47 @@ expect(result.emailSent).toBe(true);
 ```
 
 If the implementation changes to send two emails (one welcome, one verification) instead of one, the mock count test breaks even though the behavior of "send an email" is still correct.
+
+---
+
+## Chapter 7: Session Recovery
+
+If the session is interrupted (crash, context compression, manual resume) during the TDD process, follow these steps before continuing.
+
+### General Recovery Steps
+
+1. **Re-read the latest user message** — determine what was being worked on
+2. **Re-read shared context from disk** — PRD, Story/Issue, CONTEXT.md, ADRs (anti-pattern #39)
+3. **Verify artifacts on disk** — check that test files and implementation files created in previous cycles still exist
+4. **Determine progress** — which acceptance criterion cycles completed, which was in progress, what phase of that cycle
+5. **State recovery summary** — tell the user what was recovered and where you'll resume from. Confirm before continuing
+
+### Recovery by Phase
+
+**If interrupted during Planning (Chapter 1):**
+- Re-read the input (Issue, PRD, or description) from disk
+- Check if acceptance criteria were already extracted — look for any notes or partial output
+- Resume from where you left off, or restart planning if no artifacts were created
+
+**If interrupted during an Acceptance Criterion Cycle (Chapters 2-4):**
+- Check which cycle was in progress by looking at test files on disk
+- Each completed cycle should have a GREEN test file; the latest cycle may have a RED test or no test
+- Determine the sub-phase:
+  - **Scenario design** — no test file exists yet. Re-read the acceptance criterion, re-design scenarios.
+  - **Test code** — test file exists but is RED. Re-read approved scenarios and test code from disk.
+  - **Implementation** — test file exists (RED or partially GREEN). Re-read test code and any partial implementation.
+- Do NOT assume the scenario table or test code from memory — always re-read from disk
+
+**If interrupted during Refactor (Chapter 5):**
+- Run the full test suite first — if all GREEN, refactoring was either not started or completed safely
+- If any RED, the refactor was in progress and may be in a broken state. Examine the diff to determine if a partial refactor needs to be reverted or completed.
+
+### Progress Tracking
+
+To aid recovery, output a brief progress marker after each cycle completes:
+
+```
+Cycle progress: <n>/<total> — <criterion> GREEN
+```
+
+This gives future sessions a clear recovery point.

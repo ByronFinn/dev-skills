@@ -30,15 +30,15 @@ Read available domain context before starting. If any are missing, proceed witho
 
 **Step 2**: Analyze current development direction — extract planned features, check compatibility with existing architecture
 
-**Step 3**: Scan codebase — look for design debt signals and deepening opportunities
+**Step 3**: Scan codebase using prioritized strategy — PRD-linked modules first, high-change-frequency modules next, cross-cutting concerns last. Apply objective detection heuristics for each debt signal. Run ADR compliance check against each ADR in `docs/adr/`.
 
-**Step 4**: Analyze findings — categorize as blocking/high priority/medium priority with PRD links
+**Step 4**: Analyze findings — categorize as blocking/high priority/medium priority with PRD links. Each finding must have specific location, evidence, and impact.
 
-**Step 5**: Propose improvements — problem, suggestion, benefit, effort, linked PRD
+**Step 5**: Propose improvements — problem, suggestion, benefit, effort (Low/Medium/High with rationale), linked PRD
 
 **Step 6**: Generate report — structured findings with next steps
 
-See [REFERENCE.md](REFERENCE.md) for detailed design debt signals and report template.
+See [REFERENCE.md](REFERENCE.md) for scanning strategy, detection heuristics, ADR compliance procedure, and extended examples.
 
 Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
 

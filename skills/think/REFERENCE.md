@@ -309,6 +309,36 @@ Record Issue number in PRD:
 #<issue-number>
 ```
 
+## Step 10: Record Domain Terms
+
+Throughout the brainstorming process, new domain concepts may emerge. Capture these so `/grill` can sharpen and promote them into `CONTEXT.md`.
+
+**When to record:**
+- A new concept was named or defined during discussion (not just code-level variables)
+- A term was used in an ambiguous or overloaded way and a working definition was agreed
+- An entity, relationship, or lifecycle was introduced that does not yet exist in `CONTEXT.md`
+
+**Where to record:**
+- If PRD was created: add a `## Domain Terms` section at the bottom of the PRD
+- If no PRD: include the terms in the approved design summary under a `## Domain Terms` heading
+
+**Format:**
+
+```markdown
+## Domain Terms (draft — for /grill to refine)
+
+| Term | Working Definition | Status |
+|------|--------------------|--------|
+| <term> | <one-sentence working definition> | new / needs sharpening / conflicts with existing |
+```
+
+These are **draft** terms — they do NOT go into `CONTEXT.md` during `/think`. The `/grill` skill is responsible for sharpening terminology and updating `CONTEXT.md`. Recording them here ensures `/grill` knows what was discussed without re-discovering the same concepts.
+
+**Rules:**
+- Record only terms that are genuinely new or ambiguous — don't duplicate what's already clearly defined in `CONTEXT.md`
+- If a term conflicts with an existing `CONTEXT.md` entry, flag it explicitly (`Status: conflicts with existing`) so `/grill` knows to resolve the conflict
+- This step is lightweight — don't turn it into a full glossary exercise. 3-7 terms is typical; if you have more, consider whether the scope is too broad
+
 ## Complexity Classification Detail
 
 ### Trivial

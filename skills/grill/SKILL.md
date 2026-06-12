@@ -13,6 +13,8 @@ Interview me relentlessly about every aspect of this plan until we reach shared 
 
 Ask decision-tree questions one at a time — each question's answer may change how you frame the next one (this is not serial interrogation; see anti-pattern #3 exception for dependency-chain questions).
 
+**Batch independent questions.** When multiple open decisions are independent — the answer to one does not affect how you frame the others — batch them in groups of 2-3 in a single message. Reserve one-at-a-time for genuine dependency chains where each answer reshapes the next question.
+
 If a question can be answered by exploring the codebase, explore the codebase instead.
 
 Before starting, read the PRD at `docs/prd/<feature-name>.md`. If no PRD exists or it's too thin, suggest running `/think` first. Extract every open decision, unresolved assumption, vague term, and scope boundary into a mental checklist. Work through the checklist — skip none. Do not declare grill complete until every item is resolved.

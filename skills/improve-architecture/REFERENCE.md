@@ -21,20 +21,58 @@ Extract from PRDs:
 
 ## Step 3: Scan Codebase
 
-Look for following patterns:
+### 3.1 Scanning Strategy
 
-**Design debt signals:**
-- Code duplication (same logic appears multiple times)
-- Long functions/classes (too many responsibilities)
-- Tight coupling (changing one affects many others)
-- Global state (hard to reason about)
-- Leaked abstractions (implementation details leak)
-- Missing abstractions (direct use of low-level details)
+Scan in this order — not random full-repo reads:
 
-**Deepening opportunities:**
-- Complex logic that can hide behind simple interface
-- Similar functionality that can merge
-- Common patterns that can extract
+1. **PRD-linked modules first** — for each PRD, identify the modules it will touch. Scan those modules for design debt that would block or complicate the planned feature. This produces the highest-signal findings.
+
+2. **High-change-frequency modules next** — run `git log --oneline --since="4 weeks ago" -- <path>` or equivalent to find modules with the most recent changes. Active code accumulates debt faster.
+
+3. **Cross-cutting concerns last** — scan shared utilities, middleware, configuration, error handling patterns across the repo. These affect everything but are often neglected.
+
+**Skip entirely:**
+- Generated code, build output, vendored dependencies
+- Files not tracked by version control
+
+### 3.2 Design Debt Signals
+
+For each signal, a concrete heuristic is provided to make detection objective:
+
+| Signal | Detection Heuristic | Threshold |
+|--------|-------------------|-----------|
+| **Code duplication** | Same 6+ line block appears in ≥2 files | 2+ occurrences with ≥70% line similarity |
+| **Long functions/classes** | Function body exceeds N lines; class has N+ methods | Function > 50 lines; class > 15 methods |
+| **Tight coupling** | Module A imports >N modules from module B's internals | >3 direct imports from internal paths of another module |
+| **Global state** | Mutable variable accessible from outside its defining module | Any `export let` / module-level mutable state / singleton pattern |
+| **Leaked abstractions** | Caller must know implementation detail to use function correctly | Function requiring caller to pass internal config/state |
+| **Missing abstractions** | Raw low-level calls repeated without wrapper | ≥3 direct uses of low-level API (fetch, fs, SQL) without shared adapter |
+| **Shallow modules** | Interface surface ≈ implementation complexity | Public method count ≥ 50% of total lines of code |
+| **God objects** | Single class/file handles >3 unrelated responsibilities | Class name contains "Manager", "Handler", "Service" + >500 lines |
+
+**These thresholds are guidelines, not hard cutoffs.** Use judgment — a 55-line function doing one clear thing is fine; a 40-line function juggling three responsibilities is not. The heuristic identifies *candidates*; human judgment confirms.
+
+### 3.3 ADR Compliance Check
+
+For each ADR in `docs/adr/`, verify the codebase still follows the decision:
+
+1. Read each ADR's `Decision` and `Consequences` sections
+2. Identify the code areas the ADR governs (from `Context` section or file references)
+3. Check whether current code contradicts the ADR's decision
+4. If contradicted, classify the finding:
+   - **ADR drift** — code evolved away from the decision unintentionally. Flag as High priority.
+   - **ADR obsolete** — the decision no longer makes sense given current requirements. Flag as Medium priority, suggest updating or superseding the ADR.
+   - **ADR violated** — code directly contradicts a still-valid decision. Flag as Blocking.
+
+5. Record findings with ADR reference, affected code, and classification.
+
+### 3.4 Deepening Opportunities
+
+Look for:
+
+- **Complex logic behind wide interface** — a module with many public methods but each does little. Candidate for merging into fewer, deeper methods.
+- **Similar functionality scattered across modules** — two or more modules solving variants of the same problem. Candidate for unified abstraction.
+- **Repeated patterns that can be extracted** — initialization, validation, error handling, logging patterns that appear in many places. Candidate for shared utility or middleware.
 
 ## Step 4: Analyze Findings
 
@@ -46,70 +84,38 @@ Categorize findings into:
 | **High** | Technical debt accumulating, affects future | High | May affect multiple PRDs |
 | **Medium** | Improves structure, not urgent | Medium | Doesn't directly affect PRDs |
 
+### Finding Quality Checklist
+
+Each finding must include:
+- [ ] **Location**: specific file and module (not "the auth module" — use file paths)
+- [ ] **Signal detected**: which debt signal or ADR violation was found
+- [ ] **Evidence**: paste the relevant code snippet or metric (e.g., line count, import count)
+- [ ] **Impact**: why this matters — performance, maintainability, onboarding cost, or blocked PRD
+- [ ] **PRD link** (if applicable): which planned feature is affected
+
+Findings without evidence are not actionable — do not include vague observations.
+
 ## Step 5: Propose Improvements
 
 For each finding, propose:
 - Current problem (why it's a problem)
 - Suggested improvement (how to improve)
 - Expected benefit (what improvement brings)
-- Effort estimate (rough effort level)
+- Effort estimate: rough level with rationale
+  - **Low**: <1 day, isolated change
+  - **Medium**: 1-3 days, touches multiple files
+  - **High**: >3 days, cross-cutting or requires coordination
 - **Linked PRD** (if applicable)
 
 ## Step 6: Generate Report
 
-Output structured report:
+Output structured report using the template in SKILL.md Output section.
 
-```markdown
-# Architecture Improvement Report
-
-## Summary
-
-<one-line summary>
-
-## Current Development Direction
-
-Based on PRDs:
-- <PRD 1>: <one-sentence>
-- <PRD 2>: <one-sentence>
-
-## Architecture Alignment
-
-✅ Compatible: <features>
-⚠️ Needs improvement: <features>
-❌ Conflicts: <features>
-
-## Findings
-
-### Blocking (Urgent)
-
-1. **<Issue Title>**
-   - **Location**: `<file:line>`
-   - **Problem**: <description>
-   - **Suggestion**: <description>
-   - **Benefit**: <description>
-   - **Effort**: <low/medium/high>
-   - **Blocking PRD**: `docs/prd/<name>.md`
-
-### High Priority
-
-...
-
-### Medium Priority
-
-...
-
-## Next Steps
-
-1. Review and prioritize findings
-2. Create issues for approved improvements
-3. Implement before blocked PRDs
-```
-
-## Design Debt Signals
+## Design Debt Signals — Extended Examples
 
 ### Code Duplication
 
-**Signal:** Same logic appears in multiple places.
+**Signal:** Same logic appears in multiple places (≥6 line block, ≥2 occurrences, ≥70% similarity).
 
 **Example:**
 ```javascript
@@ -128,7 +134,7 @@ function validateEmail(email) {
 
 ### Long Functions/Classes
 
-**Signal:** Function or class does too many things.
+**Signal:** Function body > 50 lines; class > 15 methods.
 
 **Example:**
 ```javascript
@@ -145,7 +151,7 @@ function processOrder(order) {
 
 ### Tight Coupling
 
-**Signal:** Change in one module forces changes in many others.
+**Signal:** Module imports >3 internal paths from another module.
 
 **Example:**
 ```javascript
@@ -163,7 +169,7 @@ class OrderService {
 
 ### Global State
 
-**Signal**: Shared mutable state accessible from anywhere.
+**Signal**: Mutable variable accessible from outside its defining module.
 
 **Example:**
 ```javascript
@@ -183,7 +189,7 @@ function getUser() {
 
 ### Leaked Abstractions
 
-**Signal:** Implementation details visible to callers.
+**Signal:** Caller must know implementation detail to use function correctly.
 
 **Example:**
 ```javascript
@@ -198,7 +204,7 @@ function loadData() {
 
 ### Missing Abstractions
 
-**Signal:** Direct use of low-level operations everywhere.
+**Signal:** ≥3 direct uses of low-level API without shared adapter.
 
 **Example:**
 ```javascript
@@ -236,30 +242,4 @@ function process(data) {
 - **Regular check:** Every 2-4 weeks proactively
 - **Code health assessment:** When code quality feels degraded
 - **Technical debt accumulation:** When hitting same pain points repeatedly
-
-## Report Template
-
-```markdown
-**Improve Architecture Complete**
-
-**Scan scope:**
-- PRDs: <count>
-- Code files: <count>
-- ADRs: <count>
-
-**Architecture alignment:**
-- ✅ Compatible: <count> features
-- ⚠️ Needs improvement: <count> features
-- ❌ Conflicts: <count> features
-
-**Findings:**
-- Blocking: <count>
-- High priority: <count>
-- Medium priority: <count>
-
-**Suggested next steps:**
-1. Review blocking issues
-2. Create issues for approved improvements
-3. Use /story to decompose
-4. Use /tdd to implement
-```
+- **Pre-feature planning:** Before starting a major feature (quick scan of affected modules)

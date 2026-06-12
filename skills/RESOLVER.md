@@ -145,6 +145,23 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 
 > **Format Files column**: "—" means the skill's output format is embedded in REFERENCE.md rather than in a separate *-FORMAT.md file. Skills with named format files (PRD-FORMAT.md, STORY-FORMAT.md, etc.) use them as bilingual templates shared with the user.
 
+## Prerequisites Matrix
+
+Each skill may depend on files or configuration produced by earlier skills. Missing prerequisites are handled gracefully — the skill either works without them (with reduced precision) or suggests running a prerequisite skill first.
+
+| Skill | Required | Optional (enhances output if present) | Auto-created by |
+|-------|----------|---------------------------------------|-----------------|
+| `setup-project` | Git repo | — | — (this is the foundation) |
+| `think` | — | `CONTEXT.md`, `docs/adr/`, existing PRDs | Creates PRD if user opts in |
+| `grill` | PRD (`docs/prd/<name>.md`) | `CONTEXT.md`, `docs/adr/` | Creates `CONTEXT.md` and ADRs lazily |
+| `story` | — | `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `CONTEXT.md`, PRD | Creates minimal PRD if none exists |
+| `tdd` | — | `docs/agents/issue-tracker.md`, PRD, `CONTEXT.md`, ADRs | — |
+| `review` | Code changes (staged or unstaged) | PRD, `CONTEXT.md`, ADRs, CI configs | Updates local docs when verified |
+| `debug` | Reproducible error or symptom | `CONTEXT.md`, ADRs | — |
+| `improve-architecture` | — | `CONTEXT.md`, `docs/adr/`, `docs/prd/*.md` | — |
+
+**Recommended first run:** `/setup-project` — creates `docs/agents/` configuration that `story`, `tdd`, and `review` consume. Other skills work without it but benefit from it.
+
 ## Mid-Skill Switching
 
 Users may switch skills at any time. Rules:
