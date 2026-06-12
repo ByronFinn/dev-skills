@@ -14,6 +14,9 @@ The orchestrator reads the user's input, extracts acceptance criteria, confirms 
 
 Accept any of these, in priority order:
 
+**First, read domain doc layout:**
+0. Read `docs/agents/domain.md` (if exists) to locate CONTEXT.md and ADR paths
+
 **If input is an Issue (e.g., `#42` or a URL):**
 1. Fetch the issue body via the tracker convention in `docs/agents/issue-tracker.md`
 2. Extract `Acceptance Criteria` as the test target list
@@ -21,7 +24,7 @@ Accept any of these, in priority order:
 4. Confirm understanding with user before proceeding
 
 **If input is a PRD:**
-1. Read `docs/prd/<feature-name>.md`
+1. Read `docs/prd/<feature-name>.md` (use path from `domain.md` if available)
 2. Focus on `Requirements`, `Acceptance Criteria`, and `Technical Approach` sections
 3. Extract each acceptance criterion as a separate cycle target
 

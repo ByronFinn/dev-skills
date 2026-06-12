@@ -297,9 +297,47 @@ Does this look correct? If so, I'll finalize the PRD and recommend the next work
 
 If user confirms, create issue as parent task. Read `docs/agents/issue-tracker.md` for the issue creation convention.
 
+Create the issue with a structured body (not the raw PRD dump). Use the same Issue Format as `/story` for consistency:
+
+```markdown
+## Parent
+
+(This is the parent issue — child issues created by `/story`)
+
+## What to build
+
+<goal from PRD, 1-2 sentences>
+
+## Acceptance Criteria
+
+* [ ] <from PRD>
+* [ ] ...
+
+## Blocked by
+
+None — this is a parent issue
+```
+
 For GitHub:
 ```bash
-gh issue create --title "<Feature Name>" --body "<PRD content>" --label "prd"
+gh issue create --title "<Feature Name>" --body "$(cat <<'EOF'
+## Parent
+
+(This is the parent issue — child issues created by \`/story\`)
+
+## What to build
+
+<goal>
+
+## Acceptance Criteria
+
+* [ ] ...
+
+## Blocked by
+
+None — this is a parent issue
+EOF
+)" --label "prd"
 ```
 
 Record Issue number in PRD:

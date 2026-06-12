@@ -51,11 +51,31 @@ From these, determine the exact commands to run for verification:
 - **Typecheck command**: e.g., `tsc --noEmit`, `mypy .`
 - **Build command**: e.g., `npm run build`, `cargo build`, `go build ./...`
 
-### Step 3: Gather Shared Context Paths
+### Step 3: Read Domain Doc Layout
 
-Collect paths to all domain documents that sub-agents will need to re-read:
+Read `docs/agents/domain.md` (if exists) to determine where domain docs actually live. This file, created by `setup-project`, tells skills the actual paths for CONTEXT.md, PRDs, and ADRs — which may differ from defaults in multi-repo or monorepo setups.
 
-| Document | Path pattern | Purpose |
+Read `docs/agents/repo-map.md` (if exists) to identify which repos are part of this project. If the diff touches files in multiple repos, note the cross-repo scope for the Impact Review sub-agent.
+
+If `domain.md` does not exist, use default paths below.
+
+### Step 3.1: Quality Check (Degradation Handling)
+
+After reading the shared context, check for signs that upstream skills were skipped:
+
+| Signal | Meaning | Action |
+|--------|---------|--------|
+| PRD has `Open Questions` or `TODO` markers | `/grill` may not have resolved all decisions | Note in report: "PRD has unresolved items — some decisions may be unvalidated" |
+| No tests in diff | Tests may not have been written | Flag in Test Review: "No new tests found in diff" |
+| `CONTEXT.md` mentions terms not used in code | Domain model may have drifted | Note in Impact Review: "Domain terms in CONTEXT.md not reflected in implementation" |
+
+These are notes, not blockers. Record them in the appropriate sub-agent reports.
+
+### Step 4: Gather Shared Context Paths
+
+Collect paths to all domain documents that sub-agents will need to re-read. Use paths from `domain.md` (Step 3) if available, otherwise fall back to defaults:
+
+| Document | Default path | Purpose |
 |----------|-------------|---------|
 | PRD | `docs/prd/<feature>.md` | Requirements, acceptance criteria |
 | Story / Issues | Issue tracker or `docs/issues/` | Vertical-slice implementation tickets |
@@ -64,15 +84,16 @@ Collect paths to all domain documents that sub-agents will need to re-read:
 
 Not all documents may exist. Record which are available and which are missing — sub-agents need to know the boundaries of available context.
 
-### Step 4: Build the Context Bundle
+### Step 5: Build the Context Bundle
 
 The orchestrator assembles a context bundle containing:
 
 1. **Diff** — full staged + unstaged diff
 2. **Changed file list** — every file touched, with full paths
 3. **Project commands** — test, lint, typecheck, build commands extracted from config
-4. **Shared context paths** — available PRD, Story/Issue, CONTEXT.md, ADR paths
-5. **Project metadata** — language, framework, package manager (derived from config files)
+4. **Domain doc layout** — from `domain.md` (if read in Step 3), otherwise default paths
+5. **Shared context paths** — available PRD, Story/Issue, CONTEXT.md, ADR paths
+6. **Project metadata** — language, framework, package manager (derived from config files)
 
 This bundle is passed to all three sub-agents. Each sub-agent re-reads the actual files from disk independently (anti-patterns #37, #38).
 
@@ -88,10 +109,11 @@ This sub-agent independently re-reads all shared context from disk. It must not 
 
 Before starting the review, re-read all of the following from disk:
 
-- [ ] PRD (from `docs/prd/`) — requirements and acceptance criteria
+- [ ] `docs/agents/domain.md` (if exists) — domain doc layout
+- [ ] PRD (from `docs/prd/` or path from `domain.md`) — requirements and acceptance criteria
 - [ ] Story / Issue — vertical-slice implementation ticket being reviewed
 - [ ] `CONTEXT.md` — domain glossary and terminology
-- [ ] ADRs (from `docs/adr/`) — relevant architecture decisions
+- [ ] ADRs (from `docs/adr/` or path from `domain.md`) — relevant architecture decisions
 - [ ] Full diff (staged + unstaged)
 - [ ] All test files in the diff — read full file content, not just changed lines
 
@@ -198,10 +220,11 @@ This sub-agent independently re-reads all shared context from disk. It must not 
 
 Before starting the review, re-read all of the following from disk:
 
-- [ ] PRD (from `docs/prd/`) — requirements and acceptance criteria
+- [ ] `docs/agents/domain.md` (if exists) — domain doc layout
+- [ ] PRD (from `docs/prd/` or path from `domain.md`) — requirements and acceptance criteria
 - [ ] Story / Issue — vertical-slice implementation ticket being reviewed
 - [ ] `CONTEXT.md` — domain glossary and terminology
-- [ ] ADRs (from `docs/adr/`) — relevant architecture decisions
+- [ ] ADRs (from `docs/adr/` or path from `domain.md`) — relevant architecture decisions
 - [ ] Full diff (staged + unstaged)
 - [ ] All implementation files in the diff — read full file content, not just changed lines
 
@@ -312,10 +335,11 @@ This sub-agent independently re-reads all shared context from disk. It must not 
 
 Before starting the review, re-read all of the following from disk:
 
-- [ ] PRD (from `docs/prd/`) — requirements and acceptance criteria
+- [ ] `docs/agents/domain.md` (if exists) — domain doc layout
+- [ ] PRD (from `docs/prd/` or path from `domain.md`) — requirements and acceptance criteria
 - [ ] Story / Issue — vertical-slice implementation ticket being reviewed
 - [ ] `CONTEXT.md` — domain glossary and terminology
-- [ ] ADRs (from `docs/adr/`) — relevant architecture decisions
+- [ ] ADRs (from `docs/adr/` or path from `domain.md`) — relevant architecture decisions
 - [ ] Full diff (staged + unstaged)
 - [ ] CI configs (`.github/workflows/*`, `.gitlab-ci.yml`, etc.) — pipeline stages and checks
 - [ ] Release configs (`CHANGELOG.md`, version files, deployment configs) — release process
@@ -334,6 +358,10 @@ Perform full-chain impact analysis. Focus on what this change affects beyond the
 - **Tech debt**: does this change introduce technical debt?
 - **Release strategy**: feature flags, canary, rollback plan?
 - **Documentation**: are docs updated?
+
+**Traceability:**
+- **New domain terms**: identify terms used in the code that are not in `CONTEXT.md`. Record them as suggestions for CONTEXT.md update.
+- **New decisions**: identify architectural decisions made in the code that are not in `docs/adr/`. Record them as suggestions for ADR creation.
 
 Do NOT review test quality or implementation quality — those belong to other sub-agents.
 
@@ -523,6 +551,13 @@ Files changed: <count>
 - Typecheck: <pass/fail>
 - Build: <pass/fail>
 
+── Findings ──
+New domain terms (for CONTEXT.md):
+- <term>: <definition> (if any)
+
+New decisions (for ADR):
+- <decision summary> (if any)
+
 Updated files:
 - docs/prd/<name>.md — updated
 - CONTEXT.md — updated (if any)
@@ -561,6 +596,11 @@ These updates are allowed **only when the review has verified the underlying cha
 | Update CHANGELOG | User-visible changes exist |
 
 **Judgment standard:** Only update when the review verified a change that the document should reflect (e.g., acceptance criteria met, new terms introduced in verified code). If the update is speculative or forward-looking (e.g., "will be implemented in next PR"), list it as follow-up instead — do not update the file.
+
+**PRD Traceability:** When updating the PRD, fill the `## Traceability` section:
+- `Reviewed by`: add `/review` with PR reference (if available) or date
+- `New terms`: add domain terms found in the code that are not yet in CONTEXT.md
+- `New decisions`: add architectural decisions made in the code that are not yet in ADRs
 
 Perform these updates as part of the review when applicable. List what was updated in the report.
 

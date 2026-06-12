@@ -134,7 +134,7 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 
 | Skill | Format Files | Core Role | Updates |
 |-------|-------------|-----------|---------|
-| `setup-project` | — | Scaffold per-repo skill configuration | `docs/agents/*.md` + AGENTS.md block |
+| `setup-project` | — | Scaffold or update per-repo skill configuration (idempotent — safe to re-run) | `docs/agents/*.md` + AGENTS.md block |
 | `think` | PRD-FORMAT.md | Diverge → converge to initial PRD | PRD + issue if explicitly confirmed |
 | `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | Challenge plan + update domain knowledge | PRD + CONTEXT.md + ADRs + issue if confirmed |
 | `story` | STORY-FORMAT.md | Vertical slices to Issues (accepts PRD or direct description) | PRD (created or updated) + Child Issues + issues if confirmed |
@@ -149,18 +149,22 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 
 Each skill may depend on files or configuration produced by earlier skills. Missing prerequisites are handled gracefully — the skill either works without them (with reduced precision) or suggests running a prerequisite skill first.
 
-| Skill | Required | Optional (enhances output if present) | Auto-created by |
-|-------|----------|---------------------------------------|-----------------|
-| `setup-project` | Git repo | — | — (this is the foundation) |
-| `think` | — | `CONTEXT.md`, `docs/adr/`, existing PRDs | Creates PRD if user opts in |
-| `grill` | PRD (`docs/prd/<name>.md`) | `CONTEXT.md`, `docs/adr/` | Creates `CONTEXT.md` and ADRs lazily |
-| `story` | — | `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `CONTEXT.md`, PRD | Creates minimal PRD if none exists |
-| `tdd` | — | `docs/agents/issue-tracker.md`, PRD, `CONTEXT.md`, ADRs | — |
-| `review` | Code changes (staged or unstaged) | PRD, `CONTEXT.md`, ADRs, CI configs | Updates local docs when verified |
-| `debug` | Reproducible error or symptom | `CONTEXT.md`, ADRs | — |
-| `improve-architecture` | — | `CONTEXT.md`, `docs/adr/`, `docs/prd/*.md` | — |
+| Skill | Config (always read first) | Required | Optional (enhances output if present) | Format Contract | Auto-created by |
+|-------|---------------------------|----------|---------------------------------------|----------------|-----------------|
+| `setup-project` | — | Git repo | — | — | — (this is the foundation) |
+| `think` | — | — | `CONTEXT.md`, `docs/adr/`, existing PRDs | PRD-FORMAT.md | Creates PRD if user opts in |
+| `grill` | `domain.md` | PRD (`docs/prd/<name>.md`) | `CONTEXT.md`, `docs/adr/` | CONTEXT-FORMAT.md, ADR-FORMAT.md | Creates `CONTEXT.md` and ADRs lazily |
+| `story` | `domain.md`, `repo-map.md`, `issue-tracker.md`, `triage-labels.md` | — | `CONTEXT.md`, PRD | STORY-FORMAT.md (Issue body), minimal PRD | Creates minimal PRD if none exists |
+| `tdd` | `domain.md`, `repo-map.md` | — | `issue-tracker.md`, PRD, `CONTEXT.md`, ADRs | Issue body = STORY-FORMAT.md | — |
+| `review` | `domain.md`, `repo-map.md` | Code changes (staged or unstaged) | PRD, `CONTEXT.md`, ADRs, CI configs | Issue body = STORY-FORMAT.md | Updates local docs when verified |
+| `debug` | `domain.md`, `repo-map.md` | Reproducible error or symptom | `CONTEXT.md`, ADRs | — | — |
+| `improve-architecture` | `domain.md`, `repo-map.md` | — | `CONTEXT.md`, `docs/adr/`, `docs/prd/*.md` | — | — |
 
-**Recommended first run:** `/setup-project` — creates `docs/agents/` configuration that `story`, `tdd`, and `review` consume. Other skills work without it but benefit from it.
+**Config column**: Files under `docs/agents/`. `domain.md` tells consumer skills where domain docs live. `repo-map.md` tells them about multi-repo structure. Both are optional — skills fall back to default paths if missing.
+
+**Format Contract column**: The output format expected by downstream skills. "Issue body = STORY-FORMAT.md" means issues created by the skill use the Story Format body.
+
+**Config maintenance:** `/setup-project` creates `docs/agents/` configuration that consumer skills read. When project structure changes (repos added/removed, issue tracker switched, domain docs reorganized), re-run `/setup-project` — it reads existing config, detects drift, and updates only what changed. Consumer skills may suggest running `/setup-project` if they detect missing or stale config.
 
 ## Mid-Skill Switching
 

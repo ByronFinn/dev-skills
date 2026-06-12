@@ -93,6 +93,16 @@ PRD 文件格式模板。由 `think` 或 `story`（无 PRD 时）生成和维护
 * <files inspected, constraints, links, references>
 * <research notes summary if applicable>
 
+## Traceability
+
+- **Created by**: `/think` (or `/story` for minimal PRD)
+- **Grilled by**: `/grill` (if run) — decision quality validated
+- **Sliced by**: `/story` → Child Issues below
+- **Implemented by**: `/tdd` (Issue reference)
+- **Reviewed by**: `/review` (PR reference)
+- **New terms**: <domain terms found during review, for CONTEXT.md>
+- **New decisions**: <decisions made during implementation, for ADR>
+
 ## Issue
 
 #<issue-number>
@@ -125,5 +135,6 @@ PRD 文件格式模板。由 `think` 或 `story`（无 PRD 时）生成和维护
 | Decision (ADR-lite) | 决策记录（轻量级ADR）|
 | Implementation Plan | 实施计划（拆分成小PR）|
 | Technical Notes | 技术笔记 |
+| Traceability | 全链路追踪（各 skill 阶段自动填充）|
 | Issue | 对应的 Issue 编号 |
 | Child Issues | 子 Issues 列表（由 /story 自动填写，格式：`#<number> — <title> (type)`）|

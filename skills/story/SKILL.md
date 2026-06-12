@@ -21,6 +21,8 @@ Break plan into independently actionable issues using vertical slices (tracer bu
 ## Prerequisites
 
 - **Input**: an existing PRD at `docs/prd/<feature-name>.md`, or a direct feature description from the user
+- `docs/agents/domain.md` — read to locate CONTEXT.md and ADR paths (if exists)
+- `docs/agents/repo-map.md` — read to determine which repo owns the issue tracker and domain docs (if exists)
 - `docs/agents/issue-tracker.md` — read for issue creation convention
 - `docs/agents/triage-labels.md` — read for label mapping
 - If tracker files are not found, ask the user which issue tracker they use (GitHub / GitLab / Local / Other), then create the files with matching convention. Or suggest running `/setup-project` for full interactive setup.

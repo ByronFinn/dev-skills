@@ -1,5 +1,17 @@
 # Debug: Detailed Reference
 
+## Stage 0: Context Setup
+
+Read `docs/agents/domain.md` (if exists) to locate CONTEXT.md and ADR paths. Read `docs/agents/repo-map.md` (if exists) to identify which repos might be involved in the bug. Read `CONTEXT.md` for domain vocabulary that helps form accurate hypotheses.
+
+**Quality check (degradation handling):**
+
+| Signal | Meaning | Action |
+|--------|---------|--------|
+| `docs/agents/domain.md` missing | `/setup-project` may not have been run | Use default paths. Proceed silently. Suggest `/setup-project` after fix if domain docs would help. |
+| `CONTEXT.md` missing | No domain glossary | Form hypotheses using code-level terminology only |
+| `repo-map.md` missing but bug mentions multiple repos | May be multi-repo setup | Ask user: "Is this a multi-repo project? If so, which repos might be involved?" Suggest `/setup-project` to record repo map. |
+
 ## Stage 1: Root Cause Analysis (Quick Location)
 
 **Goal:** Quickly locate root cause, output one-sentence root cause statement.

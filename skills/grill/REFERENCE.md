@@ -102,6 +102,16 @@ Answer any or all. If you're unsure on any, I can drill down separately.
 
 This reduces total rounds without sacrificing the depth of dependency-chain questioning.
 
+## PRD Traceability Update
+
+When updating the PRD after grill, fill the `Grilled by` field in the PRD's `## Traceability` section:
+
+```markdown
+- **Grilled by**: `/grill` (completed <YYYY-MM-DD>) — <summary: terms sharpened, assumptions resolved, ADRs created>
+```
+
+This enables downstream skills (story, tdd, review) to verify that the plan was validated.
+
 ## Example Dialogue
 
 ```

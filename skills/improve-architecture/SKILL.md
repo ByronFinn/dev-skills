@@ -26,7 +26,7 @@ Read available domain context before starting. If any are missing, proceed witho
 
 ## Process Summary
 
-**Step 1**: Read domain context — CONTEXT.md, ADRs, PRDs. If any file is missing, note it and proceed. The scan will be less precise but still useful — code-level design debt signals (duplication, coupling, long functions) don't require domain context to detect.
+**Step 1**: Read domain doc layout — check `docs/agents/domain.md` (if exists) to locate CONTEXT.md, ADR, and PRD paths. Read `docs/agents/repo-map.md` (if exists) to identify cross-repo architecture scope. Read domain context — CONTEXT.md, ADRs, PRDs. If any file is missing, note it and proceed. The scan will be less precise but still useful — code-level design debt signals (duplication, coupling, long functions) don't require domain context to detect.
 
 **Step 2**: Analyze current development direction — extract planned features, check compatibility with existing architecture
 

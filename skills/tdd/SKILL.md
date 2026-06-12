@@ -57,7 +57,7 @@ RIGHT (Acceptance Criterion Cycle):
 
 ## Process Summary
 
-**Step 1: Plan** — Read input (Issue, PRD, or description). Extract acceptance criteria. Confirm interface changes with user. Prioritize behaviors. Identify which Issues/criteria to work on.
+**Step 1: Plan** — Read `docs/agents/domain.md` (if exists) to locate CONTEXT.md and ADR paths. Read `docs/agents/repo-map.md` (if exists) to identify cross-repo context. Read input (Issue, PRD, or description). Extract acceptance criteria. Confirm interface changes with user. Prioritize behaviors. Identify which Issues/criteria to work on.
 
 **Step 2: Acceptance Criterion Cycle** — For EACH acceptance criterion, run the 5-step loop:
 1. **Test Sub-Agent (scenario design)** — design test scenarios as structured table
@@ -68,7 +68,7 @@ RIGHT (Acceptance Criterion Cycle):
 
 **Step 3: Refactor** — After all cycles GREEN, Develop Sub-Agent performs unified refactor: extract duplication, deepen modules, apply SOLID. Run full test suite after each refactor step.
 
-**Step 4: Output** — Produce result summary.
+**Step 4: Output** — Produce result summary. If a PRD file exists, fill the `Implemented by` field in its `## Traceability` section with the Issue reference.
 
 See [REFERENCE.md](REFERENCE.md) for detailed sub-agent instructions, checklists, and independence constraints.
 
@@ -139,6 +139,11 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 
 ```
 TDD complete.
+
+Traceability:
+- Source: <Issue #N / PRD <name> / direct description>
+- Feature: <feature name>
+- Criteria implemented: <count>
 
 Cycles:
 * <acceptance criterion 1> — test: <test-file>:<line> — GREEN

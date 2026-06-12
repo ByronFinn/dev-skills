@@ -25,7 +25,7 @@ Dispatches three independent review sub-agents in parallel — Test Review, Code
 
 ## Process Summary
 
-**Step 1 — Collect context**: Read diff (staged + unstaged), README, package.json, Makefile, CI configs. Gather available shared context paths (PRD, Story, Issues, CONTEXT.md, ADRs).
+**Step 1 — Collect context**: Read diff (staged + unstaged), README, package.json, Makefile, CI configs. Read `docs/agents/domain.md` (if exists) to locate domain doc paths. Read `docs/agents/repo-map.md` (if exists) to identify which repos are involved in this project. Gather available shared context paths (PRD, Story, Issues, CONTEXT.md, ADRs).
 
 **Step 2 — Dispatch three parallel review sub-agents**: Each sub-agent independently re-reads all shared context files. No shared internal state between sub-agents. See [Three Sub-Agents](#three-sub-agents) below.
 
@@ -98,9 +98,11 @@ Every sub-agent must independently re-read all shared context. A sub-agent must 
 ```
 Review complete.
 
-Summary: <one-line summary>
-
-Files changed: <count>
+Traceability:
+- Source: <Issue #N / PRD <name>>
+- Feature: <feature name>
+- Files changed: <count>
+- Tests added: <count>
 
 ── Test Review ──
 <Test Review Sub-Agent report>
@@ -120,6 +122,13 @@ Files changed: <count>
 - Lint: <pass/fail>
 - Typecheck: <pass/fail>
 - Build: <pass/fail>
+
+── Findings ──
+New domain terms (for CONTEXT.md):
+- <term>: <definition> (if any)
+
+New decisions (for ADR):
+- <decision summary> (if any)
 
 Updated files:
 - docs/prd/<name>.md — updated

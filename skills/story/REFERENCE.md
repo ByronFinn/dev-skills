@@ -2,10 +2,12 @@
 
 ## Issue Template
 
+This is the shared Issue body format used by both `/think` (parent issues) and `/story` (child issues). All issue-tracker templates reference this format.
+
 ```markdown
 ## Parent
 
-Reference to parent issue (omit if source is existing issue, otherwise omit this section)
+#<parent-issue-number> (only include this section if there is a parent issue; omit entirely for standalone or parent issues)
 
 ## What to build
 
@@ -30,7 +32,15 @@ Or "None - can start immediately" (if no blockers)
 
 ## Process Detail
 
-### Step 0: Determine Input Source
+### Step 0: Read Project Configuration
+
+Read `docs/agents/domain.md` (if exists) to locate CONTEXT.md and ADR paths. Read `docs/agents/repo-map.md` (if exists) to determine which repo owns the issue tracker and where domain docs live across repos. Read `docs/agents/issue-tracker.md` and `docs/agents/triage-labels.md`.
+
+If neither `domain.md` nor `repo-map.md` exists, use default paths (`CONTEXT.md`, `docs/prd/`, `docs/adr/`).
+
+If `repo-map.md` exists and indicates issues should be created in a different repo, note this for Step 6.
+
+### Step 1: Determine Input Source
 
 Check what input the user provided:
 
@@ -40,11 +50,21 @@ Check what input the user provided:
 
 **PRD Issue field detection:** When an existing PRD is found, read its `## Issue` section (e.g., `#42`). If present, this is the parent issue — use it as the parent reference when creating child issues in Step 6, and update it in Step 8. Do not ask the user for the parent if it's already recorded in the PRD.
 
-If a PRD exists, skip to Step 3 (Draft Vertical Slices).
+If a PRD exists, skip to Step 4 (Draft Vertical Slices).
 
-If no PRD exists and the user gave a direct description, proceed to Step 1 to extract requirements.
+If no PRD exists and the user gave a direct description, proceed to Step 2 to extract requirements.
 
-### Step 1: Extract Requirements
+### Step 2: Extract Requirements & Quality Check
+
+**Quality check (degradation handling):** When reading an existing PRD, check for signs that `/grill` was skipped:
+
+| Signal | Meaning | Action |
+|--------|---------|--------|
+| PRD has `Open Questions` / `TODO` / `?` markers | Decisions unresolved | Note: "PRD has unresolved questions. Consider `/grill` to resolve them, or proceed and clarify during slicing." |
+| `CONTEXT.md` does not exist | No domain glossary | Proceed silently. Note domain terms found during slicing for later `/grill`. |
+| `docs/adr/` is empty or missing | No architecture decisions recorded | Proceed silently. Flag significant design decisions in issue descriptions. |
+
+If multiple signals are present (no CONTEXT.md + no ADRs + unresolved PRD), suggest: "PRD appears未经 grill 验证。建议先跑 `/grill` 再拆分，或直接继续但注意设计中可能有未解决问题。"
 
 **When input is a direct description (no PRD):**
 
@@ -70,28 +90,31 @@ Read `docs/prd/<feature-name>.md` file, understand complete requirements. After 
 
 If these cannot be extracted, suggest running `/think` first — the feature is too underspecified for direct slicing.
 
-### Step 2: Ensure PRD Exists
+### Step 3: Ensure PRD Exists
 
 If PRD already exists at `docs/prd/<feature-name>.md`: skip this step.
 
-If no PRD exists, create a minimal PRD using the template from `think/PRD-FORMAT.md`. Only fill sections where you have information:
+If no PRD exists, create a minimal PRD. Include **only** sections where you have real information — do not leave empty headings. Use these sections:
 
-- `Goal` — from the user's description
-- `What I already know` — facts from description + codebase exploration
-- `Requirements` — extracted in Step 1
-- `Acceptance Criteria` — derived from requirements
-- `Out of Scope` — if the user mentioned boundaries
-- `Technical Notes` — findings from codebase exploration
+| Section | Source |
+|---------|--------|
+| `Goal` | From the user's description |
+| `Requirements` | Extracted in Step 2 |
+| `Acceptance Criteria` | Derived from requirements |
+| `Out of Scope` | If the user mentioned boundaries |
+| `Technical Notes` | Findings from codebase exploration |
+| `Child Issues` | Left empty — filled in Step 8 |
+| `Traceability` | Add `- **Created by**: `/story` (minimal PRD, no `/think` session)` |
 
-Omit sections you have no information for entirely — do not leave empty headings in the file. Only include sections with real content. Sections like Research References, Feasible Approaches, Decision (ADR-lite), and Implementation Plan are `/think`'s output, not required for slicing.
+Sections like Research References, Feasible Approaches, Decision (ADR-lite), and Implementation Plan are `/think`'s output — do not include them.
 
-Write the file. This PRD will be updated in Step 7 with child issues.
+Write the file. This PRD will be updated in Step 8 with child issues.
 
-### Step 3: Explore Codebase (Optional)
+### Step 4: Explore Codebase (Optional)
 
 If codebase not yet explored, do so to understand current state. Issue titles and descriptions should use project's domain glossary vocabulary and respect ADRs in areas you're touching.
 
-### Step 4: Draft Vertical Slices
+### Step 5: Draft Vertical Slices
 
 Break plan into **tracer bullet** issues. Each issue is a **thin vertical slice** that goes through all integration layers end-to-end, **not** a horizontal slice of one layer.
 
@@ -104,7 +127,7 @@ Slices may be 'HITL' or 'AFK':
 - Completed slice is demonstrable or verifiable on its own
 - Prefer many thin slices over few thick slices
 
-### Step 5: Present to User
+### Step 6: Present to User
 
 Present proposed breakdown as numbered list. For each slice, show:
 
@@ -121,17 +144,19 @@ Ask user:
 
 Iterate until user approves breakdown.
 
-### Step 6: Publish Issues
+### Step 7: Publish Issues
 
 Read `docs/agents/issue-tracker.md` for the issue creation convention (e.g., `gh issue create`, `glab issue create`, or writing markdown files). Read `docs/agents/triage-labels.md` for the label mapping.
+
+**Multi-repo:** If `repo-map.md` indicates issues should be created in a different repo, use that repo's issue tracker. Add `cross-repo` label (if configured) to issues touching multiple repos.
 
 For each approved slice, publish new issue to tracker. Use issue body template above. If not otherwise indicated, these issues are considered ready for AFK agents, so publish with correct triage labels.
 
 Publish issues in dependency order (blockers first) so you can reference real issue identifiers in "Blocked by" fields.
 
-### Step 7: Update PRD
+### Step 8: Update PRD
 
-Add created issues to PRD's `Child Issues` section:
+Add created issues to PRD's `## Child Issues` section:
 
 ```markdown
 ## Child Issues
@@ -140,7 +165,13 @@ Add created issues to PRD's `Child Issues` section:
 * #<issue-3> — <title> (AFK)
 ```
 
-### Step 8: Sync Issue (if exists)
+Fill the `Sliced by` field in the PRD's `## Traceability` section:
+
+```markdown
+- **Sliced by**: `/story` → Child Issues above
+```
+
+### Step 9: Sync Issue (if exists)
 
 If parent Issue exists, update its body to include child issues list.
 
