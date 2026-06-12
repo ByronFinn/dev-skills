@@ -1,33 +1,35 @@
 ---
 name: tdd
-description: "Test-driven development. Build features or fix bugs using red-green-refactor loop. One vertical slice at a time, test behavior not implementation details. Use when user wants TDD for feature building or bug fixing, mentions red-green-refactor, or wants test-first development."
-when_to_use: "TDD,测试,实现,red-green-refactor,test-driven"
+description: "Sub-agent orchestrated test-driven development. For each acceptance criterion, Test Sub-Agent designs scenarios and writes tests (RED), human reviews at two gates, Develop Sub-Agent implements (GREEN). After all cycles, unified Refactor. Use when user wants TDD for feature building or bug fixing, mentions red-green-refactor, or wants test-first development."
+when_to_use: "TDD,测试,实现,red-green-refactor,test-driven,测试驱动"
 dispatch_intent: "Test-driven development, feature implementation, bug fix"
 ---
 
 # TDD: Test-Driven Development
 
-🥷 Red-green-refactor, one test at a time.
+🥷 Sub-agent orchestrated red-green-refactor, one acceptance criterion at a time.
 
 ## Outcome Contract
 
-- **Outcome**: Feature implemented with passing tests, code behavior verified
-- **Done when**: All acceptance criteria (from input Issue, PRD, or confirmed in Step 1) pass, tests cover public interface behavior
-- **Evidence**: Failing tests turn green, implementation passes all tests
-- **Output**: Behavior list with test locations, test statistics, next step to `/review`
+- **Outcome**: Feature implemented with passing tests, verified through independent sub-agent perspectives and two-stage human review
+- **Done when**: All acceptance criteria (from input Issue, PRD, or confirmed in Step 1) pass their cycle; unified refactor complete; all tests GREEN
+- **Evidence**: Tests turn GREEN per cycle; human approved scenario design and test code at each gate; final refactor passes full suite
+- **Output**: Per-cycle results with test locations, test statistics, refactor summary, next step to `/review`
 
-## Core Principle
+## Core Principles
 
-**Tests should verify behavior through public interfaces, not implementation details.** Code can change completely; tests should not.
+**Behavior testing through public interfaces.** Tests verify what the system does, not how. Code can change completely; tests should not.
 
-**Good tests** are integration-style: exercise real code paths through public API. Describe **what** system does, not **how**. Survive refactoring because they don't care about internal structure.
+**Sub-agent independence.** Test Sub-Agent and Develop Sub-Agent each re-read shared context (PRD, Story, Issue, CONTEXT.md, ADRs) from disk before acting. They never share internal state or cached understanding. See anti-patterns.md #38.
 
-**Bad tests** couple to implementation: mock internal collaborators, test private methods, verify externally. Warning sign: tests fail during refactoring when behavior unchanged.
+**Two-stage human review.** Each acceptance criterion passes through two synchronous gates — Scenario Review Gate (scenario design quality) and Test Code Review Gate (code quality and fidelity). Both gates are blocking; execution halts until the human responds.
+
+**Vertical slicing.** One acceptance criterion = one independent cycle (design → review → test code → review → implement). The cycle structure enforces vertical slicing naturally — there is no way to batch all tests then implement.
 
 ## Input
 
 Accept any of these, in priority order:
-1. **Issue reference** (e.g., `#42` or a URL) — read the issue body; use its Acceptance Criteria as the test target list
+1. **Issue reference** (e.g., `#42` or a URL) — read the issue body; use its Acceptance Criteria as the cycle list
 2. **PRD file** — read `docs/prd/<feature-name>.md`; extract Requirements and Acceptance Criteria
 3. **Direct description** — user describes the behavior to implement; confirm acceptance criteria in Step 1 before proceeding
 
@@ -38,39 +40,81 @@ Accept any of these, in priority order:
 - End up testing **shape** (data structures, function signatures) not user-visible behavior
 - Tests become insensitive to real changes — pass when behavior breaks, fail when behavior correct
 
-**Correct method:** Vertical slicing via tracer bullets. One test → one implementation → repeat.
+**The Acceptance Criterion Cycle IS vertical slicing.** Each cycle completes one criterion end-to-end: scenario design → human review → test code → human review → implementation. The sub-agent pattern enforces this naturally — the Develop Sub-Agent only sees one approved test at a time, and cannot batch.
 
 ```
 WRONG (horizontal):
   RED:   test1, test2, test3, test4, test5
   GREEN: impl1, impl2, impl3, impl4, impl5
 
-RIGHT (vertical):
-  RED→GREEN: test1→impl1
-  RED→GREEN: test2→impl2
-  RED→GREEN: test3→impl3
+RIGHT (Acceptance Criterion Cycle):
+  Cycle 1: scenarios→review→test1→review→impl1
+  Cycle 2: scenarios→review→test2→review→impl2
+  Cycle 3: scenarios→review→test3→review→impl3
   ...
+  Refactor: unified after all cycles GREEN
 ```
 
 ## Process Summary
 
-**Step 1**: Plan — read input (Issue, PRD, or description), extract acceptance criteria, confirm interface changes with user, prioritize behaviors, identify deep module opportunities
+**Step 1: Plan** — Read input (Issue, PRD, or description). Extract acceptance criteria. Confirm interface changes with user. Prioritize behaviors. Identify which Issues/criteria to work on.
 
-**Step 2**: Tracer bullet — write ONE test confirming ONE thing → test fails → write minimal code → test passes
+**Step 2: Acceptance Criterion Cycle** — For EACH acceptance criterion, run the 5-step loop:
+1. **Test Sub-Agent (scenario design)** — design test scenarios as structured table
+2. **Scenario Review Gate** — human reviews scenario design
+3. **Test Sub-Agent (test code)** — write test code from approved scenarios → RED
+4. **Test Code Review Gate** — human reviews test code
+5. **Develop Sub-Agent (implementation)** — write code to make test GREEN
 
-**Step 3**: Incremental loop — repeat for each remaining behavior
+**Step 3: Refactor** — After all cycles GREEN, Develop Sub-Agent performs unified refactor: extract duplication, deepen modules, apply SOLID. Run full test suite after each refactor step.
 
-**Step 4**: Refactor — after all green, extract duplication, deepen modules, apply SOLID
+**Step 4: Output** — Produce result summary.
 
-See [REFERENCE.md](REFERENCE.md) for detailed checklist and examples.
+See [REFERENCE.md](REFERENCE.md) for detailed sub-agent instructions, checklists, and independence constraints.
+
+## Scenario Review Gate
+
+Test Sub-Agent produces a structured scenario table:
+
+```
+| Scenario | Input | Expected Output | Boundary Conditions |
+|----------|-------|-----------------|---------------------|
+| <description> | <what goes in> | <what comes out> | <edges, limits, edge cases> |
+```
+
+**Human review checklist:**
+- [ ] All acceptance criterion behaviors covered
+- [ ] Boundary conditions identified and appropriate
+- [ ] No missing or redundant scenarios
+- [ ] Scenario scope is reasonable (not too broad, not too narrow)
+
+**Human response:** Approve (proceed to test code) / Reject with feedback (Test Sub-Agent revises scenarios)
+
+## Test Code Review Gate
+
+Test Sub-Agent writes test code faithful to approved scenarios. Tests are RED by design.
+
+**Human review checklist:**
+- [ ] Tests use only public interface
+- [ ] Tests verify behavior, not implementation
+- [ ] Test naming reflects scenario intent
+- [ ] Tests are faithful to approved scenarios
+- [ ] No implementation coupling (mocking internals, testing private methods)
+
+**Human response:** Approve (proceed to Develop Sub-Agent) / Reject with feedback (Test Sub-Agent revises test code)
 
 ## Per-Cycle Checklist
 
 ```
-[ ] Test describes behavior, not implementation
-[ ] Test uses only public interface
-[ ] Test survives internal refactoring
-[ ] Code minimal for this test
+[ ] Test Sub-Agent re-read shared context from disk
+[ ] Scenarios cover acceptance criterion completely
+[ ] Scenario Review Gate passed
+[ ] Test code faithful to approved scenarios
+[ ] Test code uses public interface only
+[ ] Test Code Review Gate passed
+[ ] Develop Sub-Agent re-read shared context from disk
+[ ] Implementation is minimal for this test
+[ ] Test turns GREEN
 [ ] No speculative features added
 ```
 
@@ -80,25 +124,36 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 
 | What happened | Rule |
 |---|---|
-| Batch write tests then implement | Use vertical slicing: test→impl, repeat |
-| Tests fail when renaming function | Test behavior, not implementation |
-| Test private methods | Test public interfaces |
+| Develop Sub-Agent modifies tests | Stop work, report issue to human, let human decide |
+| Sub-agent uses cached context | Re-read PRD/Story/Issue/CONTEXT.md/ADRs from disk before each phase |
+| Batch all scenarios across criteria | One acceptance criterion per cycle, enforced by gate structure |
+| Tests fail when renaming function | Test behavior through public interface, not implementation |
+| Test private methods | Test public interfaces only |
 | Mock internal collaborators | Test real integrations |
-| Tests pass but behavior broken | Tests describe observable behavior |
-| Refactor while RED | Get to GREEN first |
+| Refactor while any test is RED | Get all cycles GREEN first, then unified refactor |
+| Scenario review skipped | Two-stage gate is mandatory — scenario design is the highest-leverage decision |
+| Sub-agents share internal state | Each sub-agent starts fresh — no inherited context or cached understanding |
+| Human says "looks fine" at gate | Use explicit checklist; treat approval as checklist confirmation |
 
 ## Output
 
 ```
 TDD complete.
 
-Implemented behaviors:
-* <behavior 1> — test: <test-file>:<line>
-* <behavior 2> — test: <test-file>:<line>
+Cycles:
+* <acceptance criterion 1> — test: <test-file>:<line> — GREEN
+* <acceptance criterion 2> — test: <test-file>:<line> — GREEN
+
+Refactor:
+- <refactor summary>
 
 Test statistics:
 - <count> tests passing
 - <count> failures (if any)
+
+Gates passed:
+- Scenario Review: <count> approved
+- Test Code Review: <count> approved
 
 Next: Run /review for code review.
 ```

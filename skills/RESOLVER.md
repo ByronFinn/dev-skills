@@ -21,9 +21,9 @@ Priority when multiple skills could match:
 | Rough idea, unclear requirements, feasibility, design approach, “how should we build this?” | `think` | Convert ambiguity into a decision-complete PRD. |
 | Existing PRD/plan/terminology/domain model/ADR questions, “challenge this plan”, “is this design sound?” | `grill` | Stress-test plan against domain language and decision records. |
 | Completed PRD or clear feature description needing tickets, issue breakdown, implementation tasks, vertical slices | `story` | Convert plan into executable Issues. Accepts PRD or direct description. |
-| Accepted issue, known behavior to implement, explicit TDD/red-green-refactor request | `tdd` | Implement one vertical slice at a time through tests. |
+| Accepted issue, known behavior to implement, explicit TDD/red-green-refactor request | `tdd` | Sub-agent orchestration: Test Sub-Agent → Human Review Gates → Develop Sub-Agent. One acceptance criterion per cycle. |
 | Error, crash, failing test, regression, anomalous behavior, “used to work” | `debug` | Unknown root cause must be diagnosed before fixing. |
-| Diff, staged/unstaged changes, completed work, merge readiness, release readiness | `review` | Verify implementation, docs, artifacts, and release state with evidence. |
+| Diff, staged/unstaged changes, completed work, merge readiness, release readiness | `review` | Parallel three-perspective sub-agent review: Test Review ∥ Code Review ∥ Impact Review. |
 | Periodic health check, design debt scan, architecture review, proactive cleanup candidates | `improve-architecture` | Produce architecture improvement report and deepening opportunities. |
 
 ## Route by Workflow Phase
@@ -95,16 +95,24 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 /improve-architecture → review report → /grill (if terminology/ADR decisions) → /story (if approved improvements) → /tdd (optional)
 ```
 
+**Note on sub-agent orchestration:** `/tdd` now internally runs Acceptance Criterion Cycles — a 5-step loop per criterion (Test Sub-Agent designs scenarios → Scenario Review Gate → Test Sub-Agent writes tests (RED) → Test Code Review Gate → Develop Sub-Agent implements (GREEN)), followed by a unified Refactor phase after all cycles. `/review` now internally dispatches three parallel sub-agents (Test Review, Code Review, Impact Review), each independently re-reading all shared context, then merges their reports for human adjudication.
+
 ## Disambiguation
 
 **Bug/test failure conflict (`debug` vs `tdd`):**
 - Root cause unknown, failing test unexplained, regression, crash, or anomaly → `/debug`.
 - Root cause known and user wants test-first implementation of accepted behavior → `/tdd`.
 - During `/debug`, Phase 5 may use TDD discipline locally; do not switch the main skill unless user asks.
+- Note: `/tdd` now uses sub-agent orchestration (Test Sub-Agent → Human Review Gates → Develop Sub-Agent per acceptance criterion). If the user only wants a quick fix without the full cycle structure, `/debug` is more appropriate.
 
 **“审查” conflict (`grill` vs `review`):**
 - PRD, plan, approach, terminology, domain model, ADR, “方案是否合理” → `/grill`.
 - Diff, changed files, staged work, completed task, verification, merge/release readiness → `/review`.
+- Note: `/review` now runs three parallel perspectives (Test Review, Code Review, Impact Review). It covers implementation quality and change impact, not plan design.
+
+**Impact Review vs improve-architecture:**
+- Local change impact, regression risk for current diff, compatibility and release strategy → `/review` (Impact Review sub-agent).
+- Global architecture health, design debt scan, periodic code health check → `/improve-architecture`.
 
 **"拆分任务" conflict (`story` vs `think`):**
 - User has a clear, specific plan in mind and wants it broken into issues → `/story`
@@ -130,8 +138,8 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 | `think` | PRD-FORMAT.md | Diverge → converge to initial PRD | PRD + issue if explicitly confirmed |
 | `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | Challenge plan + update domain knowledge | PRD + CONTEXT.md + ADRs + issue if confirmed |
 | `story` | STORY-FORMAT.md | Vertical slices to Issues (accepts PRD or direct description) | PRD (created or updated) + Child Issues + issues if confirmed |
-| `tdd` | — | Red-green-refactor loop | Code + tests |
-| `review` | — | Code review + evidence + authorized finish work | Report + local docs + remote updates only when explicitly authorized |
+| `tdd` | — | Sub-agent orchestration: Test Sub-Agent → Human Review Gates → Develop Sub-Agent | Code + tests (via Acceptance Criterion Cycles) |
+| `review` | — | Parallel three-perspective review: Test Review ∥ Code Review ∥ Impact Review | Merged report + local docs + remote updates only when explicitly authorized |
 | `debug` | — | Root cause → 6-phase fix | Root cause report + code fix |
 | `improve-architecture` | — | Periodic architecture review | Architecture report |
 
@@ -150,7 +158,13 @@ Users may switch skills at any time. Rules:
 
 Cross-skill behavioral constraints live in `rules/anti-patterns.md`. Skills should reference this file directly when applying global rules; it is a shared reference, not a standalone workflow skill.
 
+Key anti-patterns for sub-agent skills:
+- **#37 Skill-to-skill state drift** — re-read latest shared files when entering a skill
+- **#38 Sub-agent state leakage** — each sub-agent independently re-reads all shared context from disk; no shared memory, no cached understanding
+
 ## Project Structure
+
+> **Note:** In `tdd/` and `review/`, REFERENCE.md now contains sub-agent instruction chapters describing each sub-agent’s responsibilities, checklists, and independence constraints.
 
 ```
 skills/

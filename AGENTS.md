@@ -15,7 +15,7 @@ npx skills@latest add ByronFinn/dev-skills
 skills/
 ├── RESOLVER.md                  # Skill routing table and disambiguation rules
 ├── rules/
-│   └── anti-patterns.md         # 37 cross-skill behavioral constraints (always apply)
+│   └── anti-patterns.md         # 38 cross-skill behavioral constraints (always apply)
 ├── setup-project/               # Project initialization skill → AGENTS.md + docs/agents/
 │   ├── SKILL.md
 │   └── REFERENCE.md
@@ -32,12 +32,12 @@ skills/
 │   ├── SKILL.md
 │   ├── REFERENCE.md
 │   └── STORY-FORMAT.md
-├── tdd/                         # Test-driven development skill
-│   ├── SKILL.md
-│   └── REFERENCE.md
-├── review/                      # Code review and release check skill
-│   ├── SKILL.md
-│   └── REFERENCE.md
+├── tdd/                         # Sub-agent orchestrated TDD (Test Sub-Agent → Gates → Develop Sub-Agent)
+│   ├── SKILL.md               # Orchestrator entry point
+│   └── REFERENCE.md           # Sub-agent instruction chapters
+├── review/                    # Parallel three-perspective review (Test ∥ Code ∥ Impact)
+│   ├── SKILL.md               # Orchestrator entry point
+│   └── REFERENCE.md           # Sub-agent instruction chapters
 ├── debug/                       # Root cause analysis and fix skill
 │   ├── SKILL.md
 │   └── REFERENCE.md
@@ -52,8 +52,8 @@ Every skill follows the same structure:
 
 | File | Purpose |
 |---|---|
-| `SKILL.md` | Entry point. Contains YAML front matter (`name`, `description`, `when_to_use`, `dispatch_intent`), outcome contract, process summary, gotchas table, and output template. |
-| `REFERENCE.md` | Detailed process steps, checklists, examples, and templates. Loaded on demand. |
+| `SKILL.md` | Entry point. Contains YAML front matter (`name`, `description`, `when_to_use`, `dispatch_intent`), outcome contract, process summary, gotchas table, and output template. For sub-agent orchestrated skills (`tdd`, `review`), this is the orchestrator — it defines sub-agent sequence, human review gates, and merge rules, but does not perform implementation work itself. |
+| `REFERENCE.md` | Detailed process steps, checklists, examples, and templates. Loaded on demand. For sub-agent orchestrated skills, each sub-agent gets its own chapter with: context re-read checklist, responsibilities, checklist, output template, and independence constraint. |
 | `*-FORMAT.md` | Document format templates (PRD, CONTEXT, ADR, STORY) used by the skill. Written bilingually (English headings, Chinese field descriptions). |
 
 ## Workflow Pipeline
@@ -66,9 +66,15 @@ New feature:          think → grill → story → tdd → review → (release)
 Direct breakdown:     story → tdd → review → (release)
 Bug/regression:       debug → review (optional)
 Architecture health:  improve-architecture → grill/story/tdd (if approved)
+
+/tdd internals:       Per acceptance criterion: Test Sub-Agent (scenarios) → Scenario Gate → Test Sub-Agent (code) → Code Gate → Develop Sub-Agent (implement)
+                      After all cycles: Develop Sub-Agent (refactor)
+
+/review internals:    Test Review Sub-Agent ∥ Code Review Sub-Agent ∥ Impact Review Sub-Agent
+                      → Report merge + contradiction highlighting → Human adjudication
 ```
 
-Skills do **not** auto-chain. Each skill stops and waits for the user to trigger the next step.
+Skills do **not** auto-chain. Each skill stops and waits for the user to trigger the next step. Sub-agents within a skill do not share state. Each sub-agent re-reads shared context independently.
 
 ## Skill Routing (RESOLVER.md)
 
@@ -80,9 +86,9 @@ Route by the user's **work object** first, then by workflow phase:
 | Rough idea, unclear requirements, design approach | `think` |
 | Existing PRD/plan, "challenge this plan", terminology questions | `grill` |
 | Completed PRD or clear feature description needing tickets, issue breakdown | `story` |
-| Accepted issue, TDD / red-green-refactor request | `tdd` |
+| Accepted issue, TDD / red-green-refactor request | `tdd` (sub-agent orchestrated: Test Sub-Agent → Gates → Develop Sub-Agent) |
 | Error, crash, failing test, regression | `debug` |
-| Diff, staged changes, completed work, release readiness | `review` |
+| Diff, staged changes, completed work, release readiness | `review` (parallel sub-agents: Test Review ∥ Code Review ∥ Impact Review) |
 | Periodic health check, architecture review, design debt | `improve-architecture` |
 
 Key disambiguation rules:
@@ -92,7 +98,7 @@ Key disambiguation rules:
 
 ## Cross-Skill Rules (anti-patterns.md)
 
-37 behavioral constraints apply to **all** skills at all times. Key ones:
+38 behavioral constraints apply to **all** skills at all times. Key ones:
 
 - **Read before acting** — never edit based on first sentence of a request.
 - **Evidence over claims** — run commands, paste output. Never say "should work".
@@ -129,6 +135,7 @@ When skills are used in target projects, they create and maintain these files:
 
 - Follow existing file structure: `SKILL.md` (entry) → `REFERENCE.md` (detail) → `*-FORMAT.md` (templates).
 - Keep `SKILL.md` concise; move deep detail to `REFERENCE.md`.
+- When a skill uses sub-agent orchestration, structure `REFERENCE.md` as one chapter per sub-agent. Each chapter must include: context re-read checklist, responsibilities, checklist, output template, and independence constraint.
 - Update `RESOLVER.md` when adding or changing skill routing.
 - Run `anti-patterns.md` rules against your own output.
 - Documentation is bilingual (English primary, Chinese supplementary in format files).
