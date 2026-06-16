@@ -21,7 +21,7 @@ Transform rough ideas into decision-complete plans. Do not write code, generate 
 ## Core Principles
 
 1. **Task-first**: Capture idea immediately
-2. **Action-before-asking**: Derive from codebase/docs before asking
+2. **Action-before-asking**: Derive from codebase/docs before asking — apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate any existing domain docs and prior PRDs
 3. **One question per message**: Ask one, update PRD, repeat
 4. **Prefer concrete options**: Present 2-3 viable approaches with trade-offs
 5. **Research-first for technical choices**: Study industry conventions before proposing
@@ -32,9 +32,9 @@ Transform rough ideas into decision-complete plans. Do not write code, generate 
 
 **Step 0**: Quick assessment — if Trivial (typo, single-line fix), recommend `/tdd` or direct implementation and stop
 
-**Step 0.5**: Ask user if they want to create a PRD — don't create one automatically
-
 **Step 1**: Auto-collect context from codebase and docs before asking
+
+**Step 0.5**: Ask user if they want to create a PRD (after context collection, so user decides with findings in hand) — don't create one automatically
 
 **Step 2**: Classify complexity (Simple/Moderate/Complex)
 

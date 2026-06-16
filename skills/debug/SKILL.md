@@ -18,7 +18,7 @@ dispatch_intent: "Bug fix, root cause analysis, performance regression"
 
 ## Process Summary
 
-**Stage 0 (Context Setup)**: Read `docs/agents/domain.md` (if exists) to locate CONTEXT.md and ADR paths. Read `docs/agents/repo-map.md` (if exists) to identify which repos might be involved in the bug. Read `CONTEXT.md` for domain vocabulary that helps form accurate hypotheses.
+**Stage 0 (Context Setup)**: Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs and identify multi-repo scope. Read `CONTEXT.md` for domain vocabulary that helps form accurate hypotheses.
 
 **Stage 1 (Quick Locate)**: Root cause analysis — form 1-2 hypotheses, validate, output one-sentence root cause
 

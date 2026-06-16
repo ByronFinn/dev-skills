@@ -11,13 +11,13 @@ dispatch_intent: "Plan validation, domain model consistency, terminology sharpen
 
 Interview me relentlessly about every aspect of this plan until we reach shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one. For each question, provide your recommended answer.
 
-Ask decision-tree questions one at a time — each question's answer may change how you frame the next one (this is not serial interrogation; see anti-pattern #3 exception for dependency-chain questions).
+Ask decision-tree questions one at a time — each question's answer may change how you frame the next one (this is not serial interrogation; see anti-pattern #3 and #3a for the dependency-chain exception).
 
 **Batch independent questions.** When multiple open decisions are independent — the answer to one does not affect how you frame the others — batch them in groups of 2-3 in a single message. Reserve one-at-a-time for genuine dependency chains where each answer reshapes the next question.
 
 If a question can be answered by exploring the codebase, explore the codebase instead.
 
-Before starting, read domain doc layout from `docs/agents/domain.md` (if exists) to locate `CONTEXT.md` and ADR paths. Read `docs/agents/repo-map.md` (if exists) to identify cross-repo domain model and ADRs. Then read the PRD at `docs/prd/<feature-name>.md`. If no PRD exists or it's too thin, suggest running `/think` first. Extract every open decision, unresolved assumption, vague term, and scope boundary into a mental checklist. Work through the checklist — skip none. Do not declare grill complete until every item is resolved.
+Before starting, apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate all domain docs and check upstream artifacts. Then read the PRD at `docs/prd/<feature-name>.md`. If no PRD exists or it's too thin, suggest running `/think` first. Extract every open decision, unresolved assumption, vague term, and scope boundary into a mental checklist. Work through the checklist — skip none. Do not declare grill complete until every item is resolved.
 
 ## Outcome Contract
 

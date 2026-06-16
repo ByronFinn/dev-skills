@@ -31,6 +31,14 @@ git ls-files --others --exclude-standard
 
 Read each changed file's full content (not just the diff) for complete context.
 
+**Large diff handling (>30 files):** When the diff exceeds 30 files, reading every full file may exceed context limits. Strategy:
+
+1. Group changed files by module/package
+2. Prioritize high-risk groups for full reads: business logic, security-sensitive code, public API changes
+3. For low-risk groups (config, docs, generated code, test fixtures), read diffs only — skip full file reads
+4. State explicitly: "Large diff detected (<N> files). Reviewing by module group, full-reading high-risk files only."
+5. Each sub-agent applies the same prioritization independently
+
 ### Step 2: Read Project Config
 
 Extract project commands, conventions, and constraints from:
@@ -53,7 +61,7 @@ From these, determine the exact commands to run for verification:
 
 ### Step 3: Read Domain Doc Layout
 
-Read `docs/agents/domain.md` (if exists) to determine where domain docs actually live. This file, created by `setup-project`, tells skills the actual paths for CONTEXT.md, PRDs, and ADRs — which may differ from defaults in multi-repo or monorepo setups.
+Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to determine where domain docs actually live. The entry protocol reads `domain.md` and `repo-map.md` to discover actual paths for CONTEXT.md, PRDs, and ADRs — which may differ from defaults in multi-repo or monorepo setups.
 
 Read `docs/agents/repo-map.md` (if exists) to identify which repos are part of this project. If the diff touches files in multiple repos, note the cross-repo scope for the Impact Review sub-agent.
 

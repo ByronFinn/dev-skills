@@ -9,9 +9,29 @@ Before doing anything, assess complexity from the user's request:
 
 This avoids wasting time on requests that don't need brainstorming.
 
+## Step 1: Auto-Context Collection (Before Asking)
+
+Before asking "what does the code look like?", collect context yourself:
+
+**Codebase Checklist:**
+- Identify likely affected modules/files
+- Find existing patterns (similar features, conventions, error handling style)
+- Check configs, scripts, existing command definitions
+- Note constraints (runtime, dependency policies, build tools)
+
+**Docs Checklist:**
+- Find existing PRD/spec/templates
+- Find command usage examples, README, ADRs (if any)
+
+Write findings to PRD:
+- Add to `What I already know`
+- Add constraints/links to `Technical Notes`
+
 ## Step 0.5: Ask Before Creating PRD
 
-After quick assessment, ask the user if they want to persist the plan as a PRD file. **Do not create the PRD automatically.**
+After auto-context collection (Step 1), ask the user if they want to persist the plan as a PRD file. **Do not create the PRD automatically.** By this point you have enough context to explain what the PRD would contain.
+
+**Note:** Step 0.5 is sequenced after Step 1 (Auto-Context Collection) so the user can make an informed decision based on actual findings, not just the initial request.
 
 **Ask (for non-Trivial tasks):**
 
@@ -65,24 +85,6 @@ If creating, use this template:
 * <files checked, constraints, links, references>
 * <summary of research notes (if applicable)>
 ```
-
-## Step 1: Auto-Context Collection (Before Asking)
-
-Before asking "what does the code look like?", collect context yourself:
-
-**Codebase Checklist:**
-- Identify likely affected modules/files
-- Find existing patterns (similar features, conventions, error handling style)
-- Check configs, scripts, existing command definitions
-- Note constraints (runtime, dependency policies, build tools)
-
-**Docs Checklist:**
-- Find existing PRD/spec/templates
-- Find command usage examples, README, ADRs (if any)
-
-Write findings to PRD:
-- Add to `What I already know`
-- Add constraints/links to `Technical Notes`
 
 ## Step 2: Classify Complexity
 

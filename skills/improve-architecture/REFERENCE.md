@@ -2,7 +2,7 @@
 
 ## Step 1: Read Domain Context
 
-Read files to understand project:
+Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate and read domain context:
 - `CONTEXT.md` — domain terms and concepts
 - `docs/adr/*.md` — historical architecture decisions
 - `docs/prd/*.md` — current and planned features
@@ -101,10 +101,10 @@ For each finding, propose:
 - Current problem (why it's a problem)
 - Suggested improvement (how to improve)
 - Expected benefit (what improvement brings)
-- Effort estimate: rough level with rationale
-  - **Low**: <1 day, isolated change
-  - **Medium**: 1-3 days, touches multiple files
-  - **High**: >3 days, cross-cutting or requires coordination
+- **Scope estimate**: rough level with rationale
+  - **Low**: isolated change, 1-3 files, no cross-module impact
+  - **Medium**: multi-file change within one module, some cross-cutting concerns
+  - **High**: cross-module refactor, affects multiple packages/services, requires coordinated rollout
 - **Linked PRD** (if applicable)
 
 ## Step 6: Generate Report

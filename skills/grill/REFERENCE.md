@@ -9,9 +9,11 @@
 If during grill the user raises entirely new requirements not in the PRD, consider whether this should go back to `/think` first. Small clarifications can be resolved inline. Major scope changes deserve a proper think session.
 
 **When to send back to /think:**
-- Grill uncovered entirely new requirements that change the goal statement
-- Fundamental technical approach needs to be re-evaluated (not just refined)
-- More than 30% of the original requirements changed
+- The goal statement itself needs to change (not just individual requirements)
+- A fundamental technical approach needs re-evaluation (not just refinement)
+- New requirements introduce an entirely new domain area not in the original scope
+- The PRD's Decision (ADR-lite) section's chosen approach is invalidated by new information
+- The original PRD was created by `/story` as a minimal PRD (no `/think` session) and major design questions surface during grilling
 
 **When to proceed to /story:**
 - Only terminology was sharpened

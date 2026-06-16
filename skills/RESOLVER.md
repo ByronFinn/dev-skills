@@ -179,6 +179,8 @@ Users may switch skills at any time. Rules:
 
 Cross-skill behavioral constraints live in `rules/anti-patterns.md`. Skills should reference this file directly when applying global rules; it is a shared reference, not a standalone workflow skill.
 
+The shared bootstrap sequence lives in `rules/entry-protocol.md`. All skills reference this protocol instead of duplicating context-read instructions. It ensures skills work standalone (graceful degradation) and composable (reads prior skill outputs via Traceability chain).
+
 Key anti-patterns for sub-agent skills:
 - **#37 Skill-to-skill state drift** — re-read latest shared files when entering a skill
 - **#38 Sub-agent state leakage** — each sub-agent independently re-reads all shared context from disk; no shared memory, no cached understanding
@@ -218,6 +220,7 @@ skills/
 │   ├── SKILL.md
 │   └── REFERENCE.md
 ├── RESOLVER.md
-└── rules/
-    └── anti-patterns.md
+├── rules/
+│   ├── anti-patterns.md
+│   └── entry-protocol.md
 ```

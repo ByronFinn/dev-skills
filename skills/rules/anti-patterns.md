@@ -6,7 +6,8 @@ Behavioral constraints that always apply. Regardless of active skill. Per-skill 
 |---|--------------|-----------|-----------|
 | 1 | Act before reading | Start editing after first sentence of request | Read full message, then act |
 | 2 | Hallucinate paths | Reference `src/components/Auth.tsx` from memory | `grep -r` to confirm file exists before referencing |
-| 3 | Serial interrogation | Ask 5 different questions across 5 messages | Combine independent questions into one message. Exception: dependency-chain questions where each answer shapes the next question — ask these one at a time (e.g., /grill decision trees) |
+| 3 | Serial interrogation | Ask 5 different questions across 5 messages | Combine independent questions into one message. Exception: dependency-chain questions where each answer shapes the next question — ask these one at a time (e.g., /grill decision trees). See anti-pattern #3a for the full exception rule |
+| 3a | Over-batch dependency questions | Batch questions where each answer reshapes how you frame the next | For genuine dependency chains (answer to Q1 changes Q2's framing), ask one at a time. Only batch when answers are truly independent. /grill decision trees are the canonical example of when serial questioning is correct |
 | 4 | Do more than asked | "Fix X" becomes fix X + refactor Y + add Z | Make minimal change that satisfies request |
 | 5 | Claim without evidence | Say "this should work", "I ran tests" | Run command and paste output, or note `(verified: <command>)` |
 | 6 | Trust stale memory | "We discussed this before" | Re-verify current state before acting |

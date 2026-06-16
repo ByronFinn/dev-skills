@@ -23,9 +23,13 @@ Dispatches three independent review sub-agents in parallel — Test Review, Code
 - Code is complete (by `tdd` or manual)
 - Uncommitted changes exist (staged or unstaged)
 
+## Runtime Note
+
+"Parallel sub-agents" means each review perspective independently re-reads all shared context from disk (anti-patterns #37, #38). If your runtime supports true parallel dispatch, dispatch all three simultaneously. If not, execute sequentially — the independence guarantee comes from re-reading shared context from disk, not from concurrent execution timing.
+
 ## Process Summary
 
-**Step 1 — Collect context**: Read diff (staged + unstaged), README, package.json, Makefile, CI configs. Read `docs/agents/domain.md` (if exists) to locate domain doc paths. Read `docs/agents/repo-map.md` (if exists) to identify which repos are involved in this project. Gather available shared context paths (PRD, Story, Issues, CONTEXT.md, ADRs).
+**Step 1 — Collect context**: Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs, identify multi-repo scope, and check upstream artifacts. Read diff (staged + unstaged), README, package.json, Makefile, CI configs. Gather available shared context paths (PRD, Story, Issues, CONTEXT.md, ADRs). **PRD quality check:** if PRD Traceability shows `Created by: /story (minimal PRD)`, note that requirements may not be decision-complete — review acceptance criteria coverage with extra care.
 
 **Step 2 — Dispatch three parallel review sub-agents**: Each sub-agent independently re-reads all shared context files. No shared internal state between sub-agents. See [Three Sub-Agents](#three-sub-agents) below.
 
@@ -78,6 +82,18 @@ Every sub-agent must independently re-read all shared context. A sub-agent must 
 - **Evidence first**: Every conclusion needs evidence. Run actual commands — never say "should work".
 - **Don't assume**: Derive from code/config, don't guess.
 
+## Integration Review
+
+When all vertical slices of a PRD are complete (user says "review all", "integration check", or the review detects the last child issue of a PRD), perform additional checks beyond single-slice review:
+
+- **Cross-slice data flow**: Do the slices integrate correctly when combined?
+- **Shared state consistency**: Do slices agree on data models, state transitions, event payloads?
+- **Full PRD acceptance criteria coverage**: Are ALL acceptance criteria from the PRD met across all child issues?
+- **Integration test coverage**: Are there tests that verify slices working together, not just unit tests per slice?
+- **Dependency order verification**: Were slices implemented in the correct dependency order?
+
+State explicitly: "Integration Review — checking <N> slices for PRD <name>."
+
 ## Gotchas
 
 | What happened | Rule |
@@ -88,7 +104,7 @@ Every sub-agent must independently re-read all shared context. A sub-agent must 
 | Assumed project commands | Step 1: extract from config |
 | Didn't check security issues | Hard Rules: Security first — Code Review Sub-Agent runs Security Checklist |
 | Impact Review drifts into global architecture review | Impact Review scope: local impact only. Suggest `/improve-architecture` for global concerns |
-| Sub-agents run sequentially | Process: dispatch all three in parallel |
+| Sub-agents run sequentially when parallel is possible | Runtime Note: dispatch in parallel if runtime supports it; sequential is acceptable fallback |
 | PRD not updated after review | Step 6: update local files when authorized |
 | Issues closed without authorization | Authorization Boundaries: close/status/label requires current-turn authorization |
 | Sub-agent skipped re-reading shared context | Independence rule: never cache file reads from previous skill or sub-agent (anti-pattern #37, #38) |

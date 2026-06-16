@@ -45,6 +45,8 @@ Routing conflicts are documented in `skills/RESOLVER.md`. Route by the user's wo
 
 `skills/rules/anti-patterns.md` contains cross-skill behavioral constraints. It is a shared reference, not a standalone workflow skill.
 
+`skills/rules/entry-protocol.md` defines the shared bootstrap sequence all skills apply before starting — locating domain docs, checking upstream artifacts, and ensuring standalone/composable execution.
+
 ## Repository Structure
 
 ```
@@ -59,8 +61,11 @@ skills/
 ├── improve-architecture/        # Architecture improvement skill
 ├── RESOLVER.md                  # Human-readable skill routing table
 └── rules/                       # Shared cross-skill constraints
-    └── anti-patterns.md
+    ├── anti-patterns.md
+    └── entry-protocol.md
 ```
+
+See [CONTEXT.md](CONTEXT.md) for this project's own domain model — it demonstrates the output of the `/grill` skill and serves as a living example.
 
 ## License
 

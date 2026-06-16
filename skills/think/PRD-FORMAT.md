@@ -99,6 +99,8 @@ PRD 文件格式模板。由 `think` 或 `story`（无 PRD 时）生成和维护
 - **Grilled by**: `/grill` (if run) — decision quality validated
 - **Sliced by**: `/story` → Child Issues below
 - **Implemented by**: `/tdd` (Issue reference)
+- **Debugged by**: `/debug` (if bug fix touched this feature) — <bug summary + root cause>
+- **Arch reviewed by**: `/improve-architecture` (if architecture review performed) — <finding summary>
 - **Reviewed by**: `/review` (PR reference)
 - **New terms**: <domain terms found during review, for CONTEXT.md>
 - **New decisions**: <decisions made during implementation, for ADR>

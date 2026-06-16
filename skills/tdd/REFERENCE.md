@@ -14,8 +14,8 @@ The orchestrator reads the user's input, extracts acceptance criteria, confirms 
 
 Accept any of these, in priority order:
 
-**First, read domain doc layout:**
-0. Read `docs/agents/domain.md` (if exists) to locate CONTEXT.md and ADR paths
+**First, apply the Skill Entry Protocol:**
+0. Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate CONTEXT.md, ADR paths, and multi-repo scope
 
 **If input is an Issue (e.g., `#42` or a URL):**
 1. Fetch the issue body via the tracker convention in `docs/agents/issue-tracker.md`
@@ -94,6 +94,27 @@ Acceptance Criteria (ordered):
 4. User receives error with wrong password
 5. User session persists across page reloads
 ```
+
+### Gate Mode Selection
+
+Before starting cycles, confirm the gate mode with the user:
+
+- **Full** (default): two gates per criterion. Use unless user requests otherwise.
+- **Fast**: one gate per criterion (test code review only, scenarios written inline). User must explicitly request (e.g., "use fast mode", "skip scenario gates").
+- **Batch**: one gate per 2-3 homogeneous criteria. User must explicitly request.
+
+If the user doesn't specify, use Full mode and mention the lighter alternatives are available.
+
+When switching to Fast mode:
+- Test Sub-Agent combines scenario design + test code into one phase (Chapter 2 and Chapter 3 merge)
+- The single gate review checklist includes both scenario coverage AND code quality items
+- The Scenario Review Gate is skipped; Test Code Review Gate covers both concerns
+
+When switching to Batch mode:
+- Group homogeneous criteria (same domain, similar testing patterns)
+- Present all scenarios for the group at one Scenario Review Gate
+- Present all test code for the group at one Test Code Review Gate
+- After gate approval, Develop Sub-Agent implements each criterion in the group sequentially
 
 ---
 
@@ -434,6 +455,8 @@ When refactoring, look for opportunities to create deep modules. Hide complexity
 - [ ] Full test suite GREEN after each step
 - [ ] No new behavior introduced
 - [ ] Existing tests unchanged (refactor does not touch tests)
+
+**Exception — Implementation-coupled tests:** If a test is discovered to be coupled to implementation details (asserts on private method calls, mocks internal collaborators, verifies mock call counts), the refactor SHOULD fix the test to test through public interface instead. This is not "adding" or "removing" a test — it's making the test behavior-focused so refactoring is safe. Document each test change in the refactor report with the reason.
 
 ### Output
 

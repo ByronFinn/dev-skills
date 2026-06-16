@@ -2,7 +2,7 @@
 
 ## Stage 0: Context Setup
 
-Read `docs/agents/domain.md` (if exists) to locate CONTEXT.md and ADR paths. Read `docs/agents/repo-map.md` (if exists) to identify which repos might be involved in the bug. Read `CONTEXT.md` for domain vocabulary that helps form accurate hypotheses.
+Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs and identify multi-repo scope. Read `CONTEXT.md` for domain vocabulary that helps form accurate hypotheses.
 
 **Quality check (degradation handling):**
 
@@ -49,7 +49,20 @@ Read `docs/agents/domain.md` (if exists) to locate CONTEXT.md and ADR paths. Rea
 7. **Property / fuzz loop**. If bug is "sometimes wrong output", run 1000 random inputs, look for failure pattern
 8. **Bisection harness**. If bug appears between two known states (commit, dataset, version), automate "boot state X, check, repeat" so you can `git bisect run` it
 9. **Differential loop**. Run same input through old-version vs new-version (or two configs) and diff output
-10. **HITL bash script**. Last resort. If human must click, use `scripts/hitl-loop.template.sh` to drive them, keeping loop structured. Capture output feedback for you.
+10. **HITL bash script**. Last resort. If human must click, write a small bash script that: prints clear step instructions, waits for human input, captures the output (exit code, stdout, stderr), and loops automatically. This keeps the feedback loop structured even when human interaction is required. Example structure:
+    ```bash
+    #!/usr/bin/env bash
+    # hitl-repro.sh — structured human-in-the-loop repro
+    set -euo pipefail
+    for i in $(seq 1 10); do
+      echo "=== Run $i ==="
+      echo "Perform the action, then press ENTER when done."
+      read -r
+      echo "Capturing state..."
+      # Add your state-capture commands here
+      echo "Exit code: $?"
+    done
+    ```
 
 **Iterate on the loop itself.** Treat loop as product. Once you have loop, ask:
 - Can I make it faster? (cache setup, skip irrelevant init, narrow test scope)
@@ -60,6 +73,15 @@ Build right loop, bug 90% fixed.
 
 **Non-deterministic bugs:**
 Goal isn't clean repro but **higher repro rate**. Trigger loop 100×, parallelize, add stress, narrow time window, inject sleeps. 50%-flake bug is debuggable; 1% isn't — keep raising rate until debuggable.
+
+**Environment-dependent bugs ("works on my machine"):**
+Goal is finding the environment variable that differs. Don't stare at code — diff the environments:
+1. Compare runtime versions: `node --version`, `python --version`, `go version`, etc. across environments
+2. Compare dependency lockfiles (`package-lock.json` hashes, `requirements.txt`, `go.sum`)
+3. Check OS-specific behavior: path separators (`\` vs `/`), case sensitivity, line endings (CRLF vs LF), file permissions
+4. Compare environment variables and config files that differ between environments
+5. Check locale/timezone-dependent behavior (date formatting, string sorting, decimal separators)
+6. If possible, containerize one environment and diff behavior, or use Docker/devcontainer to match the failing environment
 
 **When you truly cannot build loop:**
 Stop and state explicitly. List what you tried. Request user provide: (a) access to environment reproducing it, (b) captured artifacts (HAR file, log dump, core dump, timestamped screen recording), or (c) permission to add temporary production instrumentation. **Don't proceed without loop.**

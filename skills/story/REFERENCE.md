@@ -34,7 +34,7 @@ Or "None - can start immediately" (if no blockers)
 
 ### Step 0: Read Project Configuration
 
-Read `docs/agents/domain.md` (if exists) to locate CONTEXT.md and ADR paths. Read `docs/agents/repo-map.md` (if exists) to determine which repo owns the issue tracker and where domain docs live across repos. Read `docs/agents/issue-tracker.md` and `docs/agents/triage-labels.md`.
+Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate CONTEXT.md, ADR paths, and determine multi-repo scope. Read `docs/agents/issue-tracker.md` and `docs/agents/triage-labels.md`.
 
 If neither `domain.md` nor `repo-map.md` exists, use default paths (`CONTEXT.md`, `docs/prd/`, `docs/adr/`).
 
