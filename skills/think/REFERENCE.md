@@ -1,15 +1,15 @@
 # Think: Detailed Reference
 
-## Step 0: Quick Assessment (Before Asking)
+## Step 0: Quick Assessment
 
 Before doing anything, assess complexity from the user's request:
 
 - If the request is obviously **Trivial** (single-line fix, typo, obvious change with one clear approach): tell the user `/think` is unnecessary, recommend direct implementation or `/tdd`, and **stop here**. No PRD file is created.
-- For all other complexity levels: proceed to Step 0.5.
+- For all other complexity levels: proceed to Step 1.
 
 This avoids wasting time on requests that don't need brainstorming.
 
-## Step 1: Auto-Context Collection (Before Asking)
+## Step 1: Auto-Context Collection
 
 Before asking "what does the code look like?", collect context yourself:
 
@@ -27,11 +27,11 @@ Write findings to PRD:
 - Add to `What I already know`
 - Add constraints/links to `Technical Notes`
 
-## Step 0.5: Ask Before Creating PRD
+## Step 2: Offer to Create a PRD
 
 After auto-context collection (Step 1), ask the user if they want to persist the plan as a PRD file. **Do not create the PRD automatically.** By this point you have enough context to explain what the PRD would contain.
 
-**Note:** Step 0.5 is sequenced after Step 1 (Auto-Context Collection) so the user can make an informed decision based on actual findings, not just the initial request.
+Step 2 is sequenced after Step 1 so the user can make an informed decision based on actual findings, not just the initial request.
 
 **Ask (for non-Trivial tasks):**
 
@@ -44,7 +44,7 @@ I'll help you think through this. Would you like me to create a PRD file at `doc
 
 **If Yes:** create PRD at `docs/prd/<feature-name>.md` using the template below.
 
-**If No:** skip PRD creation. Still follow the brainstorming process (Steps 1-8), but keep notes in your working context and produce a design summary at the end.
+**If No:** skip PRD creation. Still follow the brainstorming process (Steps 3-9), but keep notes in your working context and produce a design summary at the end.
 
 **PRD Location:** `docs/prd/<feature-name>.md`
 
@@ -86,7 +86,7 @@ If creating, use this template:
 * <summary of research notes (if applicable)>
 ```
 
-## Step 2: Classify Complexity
+## Step 3: Classify Complexity
 
 Determine depth of brainstorming for Simple/Moderate/Complex tasks:
 
@@ -96,7 +96,7 @@ Determine depth of brainstorming for Simple/Moderate/Complex tasks:
 | **Moderate** | Multiple files, some ambiguity | Light brainstorming (2-3 high-value questions) |
 | **Complex** | Unclear goal, architecture choices, multiple approaches | Full brainstorming |
 
-## Step 3: Question Gates (Only Ask High-Value Questions)
+## Step 4: Question Gates (Only Ask High-Value Questions)
 
 Before asking any question, run these gates:
 
@@ -126,7 +126,7 @@ Examples:
 
 → Only ask **Blocking** or **Preference**.
 
-## Step 4: Research-First Mode (Mandatory for Technical Choices)
+## Step 5: Research-First Mode (Mandatory for Technical Choices)
 
 **Triggers (any one → research first):**
 - Task involves choosing approach, library, protocol, framework, template system, plugin mechanism, or CLI UX convention
@@ -162,7 +162,7 @@ Then present **2-3 viable approaches** in PRD:
 Then ask **one** preference question:
 - "Which approach do you prefer: A / B / C (or other)?"
 
-## Step 5: Expansion Scan (DIVERGE) — Required After Initial Understanding
+## Step 6: Expansion Scan (DIVERGE) — Required After Initial Understanding
 
 Once you can summarize the goal, proactively expand your thinking before converging.
 
@@ -203,7 +203,7 @@ Then update PRD:
 - What goes in MVP → `Requirements`
 - What's excluded → `Out of Scope`
 
-## Step 6: Q&A Loop (CONVERGE)
+## Step 7: Q&A Loop (CONVERGE)
 
 **Rules:**
 - One question at a time
@@ -231,7 +231,7 @@ For <topic>, which approach do you prefer?
 4. **Other** — describe your preference
 ```
 
-## Step 7: Propose Approaches + Record Decision (Complex Tasks)
+## Step 8: Propose Approaches + Record Decision (Complex Tasks)
 
 When requirements are clear enough, propose 2-3 approaches (if not already done via research-first):
 
@@ -260,7 +260,7 @@ Record result in PRD as ADR-lite section:
 **Consequences**: Trade-offs, risks, potential future improvements
 ```
 
-## Step 8: Final Confirmation + Implementation Plan
+## Step 9: Final Confirmation + Implementation Plan
 
 When open questions are resolved, confirm complete requirements with structured summary:
 
@@ -295,7 +295,7 @@ Here is my understanding of complete requirements:
 Does this look correct? If so, I'll finalize the PRD and recommend the next workflow step (`/grill` for plan challenge, or `/story` if already validated).
 ```
 
-## Step 9: Create Issue (Optional)
+## Step 9a: Create Issue (Optional)
 
 If user confirms, create issue as parent task. Read `docs/agents/issue-tracker.md` for the issue creation convention.
 
@@ -349,7 +349,7 @@ Record Issue number in PRD:
 #<issue-number>
 ```
 
-## Step 10: Record Domain Terms
+## Step 9b: Record Domain Terms
 
 Throughout the brainstorming process, new domain concepts may emerge. Capture these so `/grill` can sharpen and promote them into `CONTEXT.md`.
 
