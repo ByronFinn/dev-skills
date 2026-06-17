@@ -65,6 +65,12 @@ Status: **resolved**, **resolved with caveats**, or **blocked**.
 
 **Regression guard:** For recurrence, fix not complete until regression test exists (fails on old, passes on new), lives in project suite, and commit message explains why bug recurred and why this fix prevents it.
 
+**PRD Traceability:** If a PRD exists for the affected feature, fill the `Debugged by` field in its `## Traceability` section so downstream skills know a bug fix touched this feature:
+
+```markdown
+- **Debugged by**: `/debug` (<YYYY-MM-DD>) — <one-line root cause + fix summary>
+```
+
 Next: Run `/review` for code review (recommended for non-trivial fixes). For simple, well-tested fixes with clear regression tests, review is optional.
 
 ## Output (Handoff Format after 3 failed hypotheses)

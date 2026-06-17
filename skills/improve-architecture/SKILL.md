@@ -81,6 +81,12 @@ Suggested next steps:
 4. Use /tdd to implement
 ```
 
+**PRD Traceability:** If findings link to a PRD, fill the `Arch reviewed by` field in that PRD's `## Traceability` section so downstream skills know an architecture review touched it:
+
+```markdown
+- **Arch reviewed by**: `/improve-architecture` (<YYYY-MM-DD>) — <one-line finding summary + priority>
+```
+
 ## Workflow Position
 
 **Independent periodic activity**, not in main development flow:

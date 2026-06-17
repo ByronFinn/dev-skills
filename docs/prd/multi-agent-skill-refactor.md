@@ -132,7 +132,17 @@ skills/
 ## ADRs
 
 * [0001 - Sub-Agent Orchestration Pattern](docs/adr/0001-sub-agent-orchestration-pattern.md)
-* [0002 - Two-Stage Human Review Gate](docs/adr/0002-two-stage-human-review-gate.md)
+* [0002 - Two-Stage Human Review Gate](docs/adr/0002-two-stage-human-review-gate.md) — Superseded by 0003 (Full mode 保留其决策)
+* [0003 - Gate Modes (Full / Fast / Batch)](docs/adr/0003-gate-modes-full-fast-batch.md)
+
+## Traceability
+
+- **Created by**: `/think`
+- **Grilled by**: `/grill` (2026-06-12) — sub-agent 编排模式、两阶段审查门、Acceptance Criterion Cycle 术语确定
+- **Sliced by**: `/story` → Child Issues below
+- **Implemented by**: `/tdd` + `/review` — TDD/Review skill 重构为 sub-agent 编排(#2-#5)
+- **Arch reviewed by**: `/improve-architecture` (2026-06-17) — 发现 ADR 0002 被 Gate Modes 违反(B1,已由 ADR 0003 解决)、Traceability 链路断裂(H1)、CONTEXT.md 概念漂移(H2)
+- **Reviewed by**: `/review` (2026-06-17) — grill/think/tdd/review skill 优化落地
 
 ## Child Issues
 
