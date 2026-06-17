@@ -1,228 +1,158 @@
 # Grill: Detailed Reference
 
+## File Layout
+
+grill creates and updates domain docs. Where they live depends on the repo shape.
+
+**Single context (most repos):**
+
+```
+/
+├── CONTEXT.md
+├── docs/
+│   ├── adr/
+│   │   ├── 0001-event-sourced-orders.md
+│   │   └── 0002-postgres-for-write-model.md
+│   └── prd/
+│       └── <feature>.md
+└── src/
+```
+
+**Multi-context** — a root `CONTEXT-MAP.md` marks the repo as having several bounded contexts, each with its own glossary and ADRs:
+
+```
+/
+├── CONTEXT-MAP.md
+├── docs/adr/                 ← system-wide decisions
+└── src/
+    ├── ordering/
+    │   ├── CONTEXT.md
+    │   └── docs/adr/         ← context-specific decisions
+    └── billing/
+        ├── CONTEXT.md
+        └── docs/adr/
+```
+
+Create files lazily — only when you have something to write. No `CONTEXT.md` yet → create it when the first term resolves. No `docs/adr/` yet → create it when the first ADR is needed.
+
 ## Think vs Grill Boundary
 
-**think** is for requirements discovery — what to build. The output is a PRD at `docs/prd/<feature-name>.md`.
+**think** discovers *what to build* → outputs a PRD. **grill** validates *how well the PRD holds up* → outputs a sharpened PRD + CONTEXT.md + ADRs.
 
-**grill** is for plan validation — how well does the PRD hold up. The input is an existing PRD, the output is a validated PRD with sharpened terminology and documented decisions.
-
-If during grill the user raises entirely new requirements not in the PRD, consider whether this should go back to `/think` first. Small clarifications can be resolved inline. Major scope changes deserve a proper think session.
-
-**When to send back to /think:**
+**Send back to `/think`** when:
 - The goal statement itself needs to change (not just individual requirements)
 - A fundamental technical approach needs re-evaluation (not just refinement)
-- New requirements introduce an entirely new domain area not in the original scope
-- The PRD's Decision (ADR-lite) section's chosen approach is invalidated by new information
-- The original PRD was created by `/story` as a minimal PRD (no `/think` session) and major design questions surface during grilling
+- New requirements introduce an entirely new domain area outside original scope
+- The PRD's Decision (ADR-lite) is invalidated by new information
+- The PRD was a minimal `/story` PRD (no `/think` session) and major design questions surface
 
-**When to proceed to /story:**
-- Only terminology was sharpened
-- Scope boundaries were confirmed or slightly adjusted
-- Technical approach was validated with minor refinements
-- ADRs were created but the approach direction is the same
+**Proceed to `/story`** when only terminology was sharpened, scope confirmed, or approach validated with refinements.
+
+Small clarifications can be resolved inline. Major scope changes deserve a proper think session.
 
 ## What to Challenge
 
-When reading the PRD at `docs/prd/<feature-name>.md`, look for these categories of open decisions:
+Read the PRD with hostile eyes. Pull out every open decision across these categories — skip none:
 
-- **Open Questions** — unresolved items explicitly listed in the PRD
-- **Assumptions** — things the PRD assumes but hasn't validated
-- **Vague terms** — words that could mean different things to different people
-- **Scope boundaries** — why is something in scope vs out of scope
-- **Technical approach** — is the chosen approach sound, are alternatives considered
-- **Edge cases** — what happens when things go wrong
-- **Conflicts with CONTEXT.md** — terms that clash with existing domain glossary
-- **Code contradictions** — stated behavior that doesn't match what the code does
-- **ADR-lite decisions in PRD** — decisions recorded in the PRD's "Decision (ADR-lite)" section during /think. Evaluate each against the 3 ADR conditions. Upgrade qualifying ones to formal ADRs; leave the rest as PRD-internal notes.
+| Category | What to look for |
+|---|---|
+| **Open Questions** | Items explicitly unresolved in the PRD |
+| **Assumptions** | Things the PRD assumes but hasn't validated |
+| **Vague terms** | Words that could mean different things to different people |
+| **Scope boundaries** | Why something is in vs out of scope — and is "out" really "deferred"? |
+| **Technical approach** | Is the chosen approach sound? Were alternatives considered? |
+| **Edge cases** | What happens when things go wrong (mid-billing cancellation, partial failure, concurrency)? |
+| **CONTEXT.md conflicts** | Terms that clash with the existing domain glossary |
+| **Code contradictions** | Stated behavior that doesn't match what the code does |
+| **ADR-lite decisions** | Each decision in the PRD's "Decision (ADR-lite)" section — evaluate against the 3 ADR conditions; upgrade qualifying ones to formal ADRs |
 
-## Challenge Types
+## Challenge Patterns
 
-### Terminology Conflict
+For each item, lead with your recommended answer, then ask. A few patterns:
 
-When a term in the PRD conflicts with existing language in `CONTEXT.md`:
+- **Terminology conflict** — *"Your glossary defines 'cancellation' as X, but the PRD seems to mean Y — which is it?"*
+- **Fuzzy language** — *"The PRD says 'account' — do you mean Customer or User? Those are different."* Propose a precise canonical term.
+- **Scope boundary** — *"You've excluded batch operations — genuinely not needed, or deferred? If deferred, note the extension point."*
+- **Edge case** — *"What happens when a customer cancels mid-billing cycle? Prorate / full refund / no refund?"*
+- **Code cross-check** — *"The PRD says partial cancellation is possible, but the code cancels entire Orders — which is the target state?"* Verify by reading the code, don't just ask.
 
-> "Your glossary defines 'cancellation' as X, but the PRD seems to mean Y — which is it?"
+## Question Pacing
 
-### Fuzzy Language
+Default to **one question at a time** — grill is a dependency tree, and a question's answer often reshapes the next. This is the anti-pattern #3 dependency-chain exception, not serial interrogation.
 
-When the PRD uses vague or overloaded terms, propose a precise canonical term:
-
-> "The PRD says 'account' — do you mean the Customer or the User? Those are different things."
-
-### Scope Boundary
-
-When something is excluded without clear justification:
-
-> "You've excluded batch operations from scope — is that because they're genuinely not needed, or because they're deferred? If deferred, should we note the extension point?"
-
-### Edge Case
-
-When domain relationships are discussed, stress-test with specific scenarios:
-
-> "What happens when a customer cancels mid-billing cycle? Prorate? Full refund? No refund?"
-
-### Code Cross-Check
-
-When the PRD states how something works, verify against code:
-
-> "The PRD says partial cancellation is possible, but the code currently cancels entire Orders — which is the target state?"
+You may batch 2-3 questions in one message **only** when they are genuinely independent — no answer changes how you frame the others. When in doubt, stay one-at-a-time.
 
 ## Exhaustiveness Gate
 
-Before declaring grill complete, verify:
+Before declaring complete, verify every box:
 
 - [ ] Every PRD Open Question has a resolution
-- [ ] Every PRD Assumption validated or converted to requirement
+- [ ] Every Assumption validated or converted to a requirement
 - [ ] Every term conflict with CONTEXT.md addressed
 - [ ] Every scope boundary confirmed (why is X out of scope?)
 - [ ] Code cross-check completed for all stated behaviors
 
-## Question Pacing: Dependency Chains vs Independent Decisions
-
-Not every question needs to be asked one at a time. Use this decision framework:
-
-**Ask one at a time when:**
-- The answer to question A changes how you frame question B (dependency chain)
-- The answer determines which branch of the design tree to explore next
-- Example: "What payment provider?" → answer determines "What webhook format?" → answer determines "What retry strategy?"
-
-**Batch 2-3 questions together when:**
-- Each question's answer is independent of the others
-- The answers won't change how you frame subsequent questions
-- Example: "Should subscription include a trial state?" + "Is upgrade/downgrade in scope?" + "What's the minimum billing period?" — these three don't depend on each other
-
-**Batch format:**
-```markdown
-These 3 decisions are independent — I'll ask them together:
-
-1. **<topic A>**: <options>
-2. **<topic B>**: <options>
-3. **<topic C>**: <options>
-
-Answer any or all. If you're unsure on any, I can drill down separately.
-```
-
-This reduces total rounds without sacrificing the depth of dependency-chain questioning.
+If any box is unchecked, keep going.
 
 ## PRD Traceability Update
 
-When updating the PRD after grill, fill the `Grilled by` field in the PRD's `## Traceability` section:
+Fill the `Grilled by` field in the PRD's `## Traceability` section so downstream skills know the plan was validated:
 
 ```markdown
 - **Grilled by**: `/grill` (completed <YYYY-MM-DD>) — <summary: terms sharpened, assumptions resolved, ADRs created>
 ```
 
-This enables downstream skills (story, tdd, review) to verify that the plan was validated.
-
-## Example Dialogue
+## Worked Example
 
 ```
-User: /grill (after completing /think for "user subscription feature")
+User: /grill  (after /think for "user subscription feature")
 
-Agent: [Reads docs/prd/subscription.md and CONTEXT.md]
+Agent: [reads docs/prd/subscription.md and CONTEXT.md]
 
 I've reviewed the PRD and found 6 items to resolve:
 
-1. "Subscription" — not defined in CONTEXT.md, used ambiguously in PRD
-2. Assumption: "Payment is immediate" — not validated
+1. "Subscription" — not in CONTEXT.md, used ambiguously
+2. Assumption: "payment is immediate" — not validated
 3. Open Question: cancellation policy
-4. Scope: "upgrade/downgrade" listed as out of scope without reason
+4. Scope: "upgrade/downgrade" excluded without reason
 5. Technical: Stripe vs custom payment — no decision recorded
-6. Code: existing User model has no payment fields — migration path unclear
+6. Code: existing User model has no payment fields — migration unclear
 
-Starting with #1.
-
-Your PRD uses "subscription" to mean both "the act of subscribing" and
-"the subscription entity". In CONTEXT.md, neither term exists yet.
-
-I recommend defining it as: **Subscription** — a Customer's active paid
-access agreement, with a lifecycle (created → active → past_due → cancelled).
-
-Does this definition match your intent, or should it be narrower/wider?
+Starting with #1. Your PRD uses "subscription" to mean both the act and
+the entity. I recommend defining it as: **Subscription** — a Customer's
+active paid access agreement with a lifecycle
+(created → active → past_due → cancelled). Match your intent, or narrower?
 
 User: That works, but add "trial" as a possible state.
 
-Agent: Updated CONTEXT.md: Subscription definition includes trial state.
+Agent: Updated CONTEXT.md — Subscription definition includes trial state.
+Moving to #2...
 
-[Updates CONTEXT.md]
+#2 is a code question — let me check rather than ask.
+[grep: payment, stripe, gateway] → found src/payment/ with custom gateway,
+no Stripe. Updating PRD to match existing architecture.
 
-Moving to #2. The PRD assumes "payment is immediate" — but what about:
-- Bank transfers (1-3 business days)
-- Payment failures and retries
-- Free trial period before first charge
+#3. Cancellation policy — recommend End-of-period (simpler, less refund
+logic). Alternatives: immediate+prorate, immediate+no-refund. Which?
 
-I recommend starting with credit card + retry as the default, and adding
-free trial support as an extension point later.
+User: End-of-period.
 
-Which of these exist in your system?
+Agent: Recorded. Checking ADR conditions: hard to reverse ✓ (affects
+billing/UX/expectations), surprising without context ✓, real trade-off ✓
+(simplicity over prorate fairness). All three met — creating ADR.
+[creates docs/adr/0003-cancellation-eop.md]
 
-User: Only credit card, with retry on failure. No free trial for now.
+[continues through #4-6...]
 
-Agent: Clear. I'll update the PRD:
-- Assumption validated: payment is credit card only, with retry
-- "Free trial" noted as explicitly out of scope
+All 6 resolved. Exhaustiveness check: ✓ Open Questions, ✓ Assumptions,
+✓ Terms, ✓ Scope, ✓ Code.
 
-Moving to #3. Cancellation policy — when a customer cancels:
-
-1. **End of billing period** — access continues until paid period ends (Recommended: simpler, less refund logic)
-2. **Immediate with prorate** — access ends now, refund unused portion
-3. **Immediate, no refund** — access ends now, no refund
-
-Which approach?
-
-User: Option 1 for now.
-
-Agent: Recorded. Checking ADR conditions:
-1. Hard to reverse? Yes — changing cancellation policy later affects billing, UX, and customer expectations
-2. Surprising without context? Yes — a future reader won't know why EOP was chosen
-3. Real trade-off? Yes — we chose simplicity over prorate fairness
-
-All three met. Creating ADR.
-
-[Creates docs/adr/0003-cancellation-eop.md]
-
-Moving to #4. "Upgrade/downgrade" is out of scope — is that because they're
-genuinely not needed, or deferred? I recommend deferring and noting the
-extension point for future phases.
-
-User: Deferred.
-
-Agent: Recorded. Updated PRD to mark upgrade/downgrade as deferred with extension note.
-
-Moving to #5. I'll check the codebase instead of asking — whether Stripe
-or a custom payment module exists.
-
-[Grep: payment, stripe, gateway]
-
-Found `src/payment/` with custom gateway. Stripe is not used. The PRD
-didn't specify — updating it to match existing architecture.
-
-Moving to #6. Checking the User model:
-
-[Read: src/models/user.ts]
-
-Confirmed — User model has no payment-related fields. I recommend adding
-a `payment_method_id` field and a `payments` relation, or creating a
-separate `Customer` entity. Which do you prefer?
-
-User: Separate Customer entity.
-
-Agent: Recorded. Updated PRD.
-
-[Continues through remaining items]
-
-Agent: All 6 items resolved. Running exhaustiveness check:
-
-- [x] Every PRD Open Question resolved
-- [x] Every Assumption validated
-- [x] No term conflicts with CONTEXT.md
-- [x] Scope boundaries confirmed
-- [x] Code cross-check done
-
-Files updated:
+Updated files:
 - docs/prd/subscription.md — updated
 - CONTEXT.md — 3 new terms, 1 sharpened
 - docs/adr/0003-cancellation-eop.md — created
 
-Next: Run /story to break PRD into Issues.
+Next: /story to break PRD into Issues.
 ```
+
+Note the shape: extract all items up front, give a recommendation before each ask, fall back to the code when a question is code-answerable, and create the ADR inline the moment its decision lands — not in a batch at the end.
