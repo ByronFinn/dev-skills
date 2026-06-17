@@ -8,12 +8,37 @@
 
 `story` skill 创建 Issues 时使用此格式。
 
-## Issue 模板
+## Issue 标题格式
+
+```
+[PRD-NNNN] <垂直切片描述> — <核心行为>
+```
+
+**规则**：
+- `[PRD-NNNN]` — 所属 PRD 编号（稳定短引用）
+- `<垂直切片描述>` — 一句话描述这个切片的范围
+- `—` — 分隔符（en-dash + 空格）
+- `<核心行为>` — 用户可感知的核心行为
+
+**示例**：
+```
+[PRD-0003] 用户订阅数据模型 — schema + CRUD API + 测试
+[PRD-0003] 支付流程 — 支付网关集成 + webhook 处理 + 测试
+[PRD-0003] 订阅管理 UI — 查看/取消/升级 + E2E 测试
+```
+
+## Issue Body 模板
 
 ```markdown
+## Meta
+
+- **PRD**: PRD-NNNN-<title>.md
+- **Type**: AFK | HITL
+- **Siblings**: #<issue-2>, #<issue-3> (如有)
+
 ## Parent
 
-#<parent-issue-number> (如果存在父 Issue)
+#<parent-issue-number> (如存在父 Issue；独立 Issue 或删除此段)
 
 ## What to build
 
@@ -38,6 +63,9 @@
 
 | 字段 | 说明 |
 |------|------|
+| Meta → PRD | 所属 PRD 文件路径（PRD-NNNN-<title>.md）|
+| Meta → Type | AFK（可自动完成）或 HITL（需人工交互）|
+| Meta → Siblings | 同一 PRD 的其他 Child Issues（用于交叉引用）|
 | Parent | 父 Issue 引用（如有）|
 | What to build | 端到端行为描述 |
 | Acceptance Criteria | 可测试的验收标准 |

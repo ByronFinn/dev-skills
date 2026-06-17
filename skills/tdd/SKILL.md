@@ -76,7 +76,7 @@ The two-stage Human Review Gate (Scenario Review + Test Code Review) is the **de
 
 ## Process Summary
 
-**Step 1: Plan** — Apply the [Skill Entry Protocol](../rules/entry-protocol.md). Read input (Issue, PRD, or description). Extract acceptance criteria. **PRD quality check:** if PRD Traceability shows `Created by: /story (minimal PRD)`, note that requirements may not be decision-complete — confirm acceptance criteria with user before proceeding. Confirm interface changes with user. Prioritize behaviors. Identify which Issues/criteria to work on.
+**Step 1: Plan** — Apply the [Skill Entry Protocol](../rules/entry-protocol.md). Read input (Issue, PRD, or description)。如果输入是 Issue，从 Issue body 的 `Meta → PRD` 字段读取 PRD 路径并加载对应 PRD 文件。如果 Issue 没有 PRD 引用，尝试从 `docs/prd/` 目录扫描匹配 PRD-NNNN 编号，或向用户确认。Extract acceptance criteria. **PRD quality check:** if PRD Traceability shows `Created by: /story (minimal PRD)`, note that requirements may not be decision-complete — confirm acceptance criteria with user before proceeding. Confirm interface changes with user. Prioritize behaviors. Identify which Issues/criteria to work on.
 
 **Step 2: Acceptance Criterion Cycle** — For EACH acceptance criterion, run the 5-step loop:
 1. **Test Sub-Agent (scenario design)** — design test scenarios as structured table
@@ -87,7 +87,7 @@ The two-stage Human Review Gate (Scenario Review + Test Code Review) is the **de
 
 **Step 3: Refactor** — After all cycles GREEN, Develop Sub-Agent performs unified refactor: extract duplication, deepen modules, apply SOLID. Run full test suite after each refactor step.
 
-**Step 4: Output** — Produce result summary. If a PRD file exists, fill the `Implemented by` field in its `## Traceability` section with the Issue reference.
+**Step 4: Output** — Produce result summary. If a PRD file exists, fill the `Implemented by` field in its `## Traceability` section with the Issue reference。更新 PRD 的 `Sliced into` 列表中对应 Issue 的状态标记为 `🔄`（正在实现中）。
 
 See [REFERENCE.md](REFERENCE.md) for detailed sub-agent instructions, checklists, and independence constraints.
 

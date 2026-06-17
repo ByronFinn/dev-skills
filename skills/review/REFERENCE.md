@@ -610,6 +610,14 @@ These updates are allowed **only when the review has verified the underlying cha
 - `New terms`: add domain terms found in the code that are not yet in CONTEXT.md
 - `New decisions`: add architectural decisions made in the code that are not yet in ADRs
 
+**PRD Child Issues Status Sync:** When the review verifies a task is complete:
+1. From the Issue being reviewed, read `Meta → PRD` to locate the PRD
+2. Find the Issue in the PRD's `Sliced into` list
+3. Update the Issue's status marker: `🔄` → `✅`
+4. Check if ALL Child Issues are marked `✅`:
+   - If yes: update PRD `Status` from `InProgress` to `Done`
+   - If no: keep PRD `Status` as `InProgress`
+
 Perform these updates as part of the review when applicable. List what was updated in the report.
 
 ### Issue Comments and Updates (Allowed for Verified Work)

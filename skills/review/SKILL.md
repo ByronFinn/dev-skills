@@ -29,7 +29,7 @@ Dispatches three independent review sub-agents in parallel — Test Review, Code
 
 ## Process Summary
 
-**Step 1 — Collect context**: Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs, identify multi-repo scope, and check upstream artifacts. Read diff (staged + unstaged), README, package.json, Makefile, CI configs. Gather available shared context paths (PRD, Story, Issues, CONTEXT.md, ADRs). **PRD quality check:** if PRD Traceability shows `Created by: /story (minimal PRD)`, note that requirements may not be decision-complete — review acceptance criteria coverage with extra care.
+**Step 1 — Collect context**: Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs, identify multi-repo scope, and check upstream artifacts. Read diff (staged + unstaged), README, package.json, Makefile, CI configs。如果 diff 包含 Issue 引用，从 Issue body 的 `Meta → PRD` 字段读取 PRD 路径并加载。Gather available shared context paths (PRD, Story, Issues, CONTEXT.md, ADRs). **PRD quality check:** if PRD Traceability shows `Created by: /story (minimal PRD)`, note that requirements may not be decision-complete — review acceptance criteria coverage with extra care.
 
 **Step 2 — Dispatch three parallel review sub-agents**: Each sub-agent independently re-reads all shared context files. No shared internal state between sub-agents. See [Three Sub-Agents](#three-sub-agents) below.
 
@@ -39,7 +39,7 @@ Dispatches three independent review sub-agents in parallel — Test Review, Code
 
 **Step 5 — Authorization gate**: Ask the user what to do next. Options: approve and merge, fix issues then re-review, proceed to release. Local doc updates are allowed when necessary; remote actions require current-turn explicit authorization.
 
-**Step 6 — Execute authorized actions**: Perform only actions the user explicitly requested in the current turn — local file updates, issue sync, release follow-through. See [Authorization Boundaries](#authorization-boundaries).
+**Step 6 — Execute authorized actions**: Perform only actions the user explicitly requested in the current turn — local file updates, issue sync, release follow-through。如果 review 通过且 Issue 属于某个 PRD 的 Child Issues，更新 PRD 的 `Sliced into` 列表中对应 Issue 的状态标记为 `✅`。如果所有 Child Issues 都标记为 `✅`，将 PRD Status 更新为 `Done`。See [Authorization Boundaries](#authorization-boundaries).
 
 See [REFERENCE.md](REFERENCE.md) for detailed sub-agent instructions, checklists, and report templates.
 

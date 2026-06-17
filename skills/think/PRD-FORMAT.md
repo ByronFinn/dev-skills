@@ -138,7 +138,10 @@ Draft → Grilled → Sliced → InProgress → Done
 
 - **Created by**: `/think` (or `/story` for minimal PRD)
 - **Grilled by**: `/grill` (if run) — decision quality validated
-- **Sliced by**: `/story` → Child Issues below
+- **Sliced into**:
+  - #<issue-1> — [PRD-NNNN] <slice title> (AFK) ✅
+  - #<issue-2> — [PRD-NNNN] <slice title> (HITL, blocked by #<issue-1>) 🔄
+  - #<issue-3> — [PRD-NNNN] <slice title> (AFK)
 - **Implemented by**: `/tdd` (Issue reference)
 - **Debugged by**: `/debug` (if bug fix touched this feature) — <bug summary + root cause>
 - **Arch reviewed by**: `/improve-architecture` (if architecture review performed) — <finding summary>
@@ -148,16 +151,7 @@ Draft → Grilled → Sliced → InProgress → Done
 
 ## Issue
 
-#<issue-number>
-
-## Child Issues
-
-* (待 story 填充)
-
-<!-- 格式示例（由 /story skill 自动填写）:
-* #<issue-1> — <title> (AFK)
-* #<issue-2> — <title> (HITL, blocked by #<issue-1>)
--->
+#<issue-number>（父 Issue，如有）
 ```
 
 ## 字段说明

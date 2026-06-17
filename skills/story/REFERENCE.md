@@ -150,20 +150,34 @@ Read `docs/agents/issue-tracker.md` for the issue creation convention (e.g., `gh
 
 **Multi-repo:** If `repo-map.md` indicates issues should be created in a different repo, use that repo's issue tracker. Add `cross-repo` label (if configured) to issues touching multiple repos.
 
-For each approved slice, publish new issue to tracker. Use issue body template above. If not otherwise indicated, these issues are considered ready for AFK agents, so publish with correct triage labels.
+**Issue 标题格式**：`[PRD-NNNN] <垂直切片描述> — <核心行为>`
+
+For each approved slice, publish new issue to tracker. Use issue body template above. The `Meta` section must include:
+- **PRD**: Full PRD file path (PRD-NNNN-<title>.md)
+- **Type**: AFK or HITL
+- **Siblings**: Other child issues from the same PRD (if any)
+
+If not otherwise indicated, these issues are considered ready for AFK agents, so publish with correct triage labels.
 
 Publish issues in dependency order (blockers first) so you can reference real issue identifiers in "Blocked by" fields.
 
 ### Step 8: Update PRD
 
-Add created issues to PRD's `## Child Issues` section:
+**Issue 标题格式**：`[PRD-NNNN] <垂直切片描述> — <核心行为>`
+
+Add created issues to PRD's `## Traceability → Sliced into` section:
 
 ```markdown
-## Child Issues
-* #<issue-1> — <title> (AFK)
-* #<issue-2> — <title> (HITL, blocked by #<issue-1>)
-* #<issue-3> — <title> (AFK)
+- **Sliced into**:
+  - #<issue-1> — [PRD-NNNN] <slice title> (AFK) ✅
+  - #<issue-2> — [PRD-NNNN] <slice title> (HITL, blocked by #<issue-1>) 🔄
+  - #<issue-3> — [PRD-NNNN] <slice title> (AFK)
 ```
+
+**状态标记规则**：
+- `✅` — Issue 已关闭且代码已合并
+- `🔄` — Issue 正在实现中（tdd 进行中）
+- 无标记 — Issue 尚未开始
 
 Fill the `Sliced by` field in the PRD's `## Traceability` section:
 

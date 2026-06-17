@@ -40,11 +40,11 @@ Break plan into independently actionable issues using vertical slices (tracer bu
 
 **Step 5**: Present to user — show title, type (HITL/AFK), blocked-by, user stories
 
-**Step 6**: Publish issues in dependency order (blockers first)
+**Step 6**: Publish issues in dependency order (blockers first)。Issue 标题格式：`[PRD-NNNN] <切片描述> — <核心行为>`。Issue body 包含 `Meta` 段（PRD 引用、Type、Siblings）。
 
-**Step 7**: Update PRD with child issues; set `Status` to `Sliced` in the PRD metadata line
+**Step 7**: Update PRD with child issues; set `Status` to `Sliced` in the PRD metadata line。更新 `## Traceability` 的 `Sliced into` 字段，填入 Child Issues 列表（含编号、标题、类型、状态标记）。
 
-**Step 8**: Sync Issue (if parent exists)
+**Step 8**: Sync Issue (if parent exists)。更新父 Issue body，追加 Child Issues 列表。
 
 **Slice Types:**
 - **HITL**: Human-in-the-loop — this issue requires human judgment at some point (architecture decisions, design reviews, UX choices). Marked for the human's project planning; the implementing agent treats it like any other issue but may pause at decision points to request human input.
