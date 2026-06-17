@@ -93,34 +93,13 @@ See [REFERENCE.md](REFERENCE.md) for detailed sub-agent instructions, checklists
 
 ## Scenario Review Gate
 
-Test Sub-Agent produces a structured scenario table:
-
-```
-| Scenario | Input | Expected Output | Boundary Conditions |
-|----------|-------|-----------------|---------------------|
-| <description> | <what goes in> | <what comes out> | <edges, limits, edge cases> |
-```
-
-**Human review checklist:**
-- [ ] All acceptance criterion behaviors covered
-- [ ] Boundary conditions identified and appropriate
-- [ ] No missing or redundant scenarios
-- [ ] Scenario scope is reasonable (not too broad, not too narrow)
-
-**Human response:** Approve (proceed to test code) / Reject with feedback (Test Sub-Agent revises scenarios)
+Test Sub-Agent produces a structured scenario table; the human reviews scenario design (coverage, boundaries, scope) before any test code is written. This is the highest-leverage decision in the cycle. Gate is **blocking**. See [REFERENCE.md Chapter 2](REFERENCE.md) for the scenario table format, review checklist, and human response options.
 
 ## Test Code Review Gate
 
-Test Sub-Agent writes test code faithful to approved scenarios. Tests are RED by design.
+Test Sub-Agent writes test code faithful to the approved scenarios (RED by design); the human reviews code quality (public interface use, behavior-not-implementation, fidelity to scenarios). Gate is **blocking**. See [REFERENCE.md Chapter 3](REFERENCE.md) for the review checklist and human response options.
 
-**Human review checklist:**
-- [ ] Tests use only public interface
-- [ ] Tests verify behavior, not implementation
-- [ ] Test naming reflects scenario intent
-- [ ] Tests are faithful to approved scenarios
-- [ ] No implementation coupling (mocking internals, testing private methods)
-
-**Human response:** Approve (proceed to Develop Sub-Agent) / Reject with feedback (Test Sub-Agent revises test code)
+> **Gate Modes:** In Fast mode these two gates collapse into one Test Code Review Gate (scenarios written inline, checklist folds in scenario coverage). In Batch mode, one gate per 2-3 homogeneous grouped criteria. Full mode (two gates) is the default. See [Gate Modes](#gate-modes) above and [REFERENCE.md Chapter 1](REFERENCE.md).
 
 ## Per-Cycle Checklist
 

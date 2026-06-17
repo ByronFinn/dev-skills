@@ -61,19 +61,11 @@ Every sub-agent must independently re-read all shared context. A sub-agent must 
 
 ## Report Merge Rules
 
-1. **Concatenate** — present each sub-agent's report as a distinct section (Test, Code, Impact)
-2. **Contradictions** — if two or more sub-agents reach conflicting conclusions about the same item, extract those into a dedicated `Contradictions` block. Present each side's reasoning. Do not auto-resolve — the human adjudicates
-3. **Unified recommendation** — after all perspectives and contradictions, state a single recommendation (Approve / Request Changes / Comments). If sub-agents disagree on recommendation, the recommendation is "Request Changes" and the disagreement is listed in the Contradictions block
-4. **No silent resolution** — never drop or merge away a sub-agent's finding to avoid presenting a contradiction
+Concatenate the three sub-agent reports as distinct sections. If two or more reach conflicting conclusions on the same item, extract them into a `Contradictions` block — present both sides, **never auto-resolve** (the human adjudicates). Derive a single recommendation; if sub-agents disagree, the recommendation is "Request Changes" and the disagreement goes in Contradictions. See [REFERENCE.md Chapter 5](REFERENCE.md) for the merge steps, contradiction format, and merged-report template.
 
 ## Authorization Boundaries
 
-- Default review is local inspection and verification only.
-- Local docs/PRD/CONTEXT/ADR updates are allowed only when the review has verified the underlying change — never update speculatively or for forward-looking statements. When in doubt, list as follow-up.
-- **Issue body update / add comment** — allowed when necessary to reflect completed work (the review verified the code). Equivalent to local doc sync.
-- **Issue close / status change / label change** — requires explicit user authorization in the current turn. These are public, irreversible signals.
-- Tag, push, publish, registry upload, and release creation/update — require explicit user authorization in the current turn.
-- Approval of a draft report or recommendation does not authorize remote or destructive actions.
+Default review is local inspection only. Local docs/PRD/CONTEXT/ADR updates are allowed **only when the review verified the underlying change** — never speculatively. Issue close / status / label changes, and all release actions (tag, push, publish), require explicit user authorization **in the current turn** — a prior "ok" on the draft does not carry over. See [REFERENCE.md Chapter 6](REFERENCE.md) for the full boundary table and execution guidance.
 
 ## Hard Rules
 
