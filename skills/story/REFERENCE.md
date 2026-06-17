@@ -150,7 +150,7 @@ Read `docs/agents/issue-tracker.md` for the issue creation convention (e.g., `gh
 
 **Multi-repo:** If `repo-map.md` indicates issues should be created in a different repo, use that repo's issue tracker. Add `cross-repo` label (if configured) to issues touching multiple repos.
 
-**Issue 标题格式**：`[PRD-NNNN] <垂直切片描述> — <核心行为>`
+**Issue 标题格式**：`[PRD-NNNN] <垂直切片描述> — <核心行为>`。语言跟随用户输入，不确定时询问用户。
 
 For each approved slice, publish new issue to tracker. Use issue body template above. The `Meta` section must include:
 - **PRD**: Full PRD file path (PRD-NNNN-<title>.md)

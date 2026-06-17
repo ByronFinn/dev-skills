@@ -11,9 +11,9 @@ PRD 文件格式模板。由 `think` 或 `story`（无 PRD 时）生成和维护
 **命名规则**:
 
 - **NNNN**：四位零填充序号（0000-9999）。由 `/think` 创建时自动分配：扫描 `docs/prd/` 下现有 `PRD-NNNN-*.md` 文件，取最大序号 +1。首次创建从 `0000` 开始。
-- **title**：语义标题，使用 kebab-case（小写字母 + 连字符）。简明描述 PRD 主题，与 `# <Feature Name>` 标题一致或缩写。
+- **title**：语义标题，使用 kebab-case（小写字母 + 连字符）。简明描述 PRD 主题，与 `# <Feature Name>` 标题对应。
+- **语言**：跟随用户输入语言。不确定时询问用户。
 - 示例：`PRD-0000-agent-runtime-evolution.md`、`PRD-0005-minio-storage-switch.md`
-- 避免使用 camelCase、PascalCase 或中文作为文件名。
 
 **为什么用编号**:
 - 稳定短引用：Issue、commit、对话中 `PRD-0005` 比 `minio-storage-switch.md` 精确且不受改名影响
