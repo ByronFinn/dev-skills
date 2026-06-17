@@ -20,15 +20,18 @@ The SKILL.md entry point of a multi-phase skill. The orchestrator defines the se
 
 ### Human Review Gate
 
-A synchronous checkpoint where a human must review and approve sub-agent output before the next phase begins. The gate is blocking — execution halts until the human responds. In the TDD flow, there are two gates per acceptance criterion:
+A synchronous checkpoint where a human must review and approve sub-agent output before the next phase begins. The gate is blocking — execution halts until the human responds. In the TDD flow, the number of gates per acceptance criterion depends on the **Gate Mode** (ADR 0003):
 
-1. **Scenario Review Gate** — human reviews test scenario design (completeness, boundary coverage, reasonableness) before test code is written
-2. **Test Code Review Gate** — human reviews test code (quality, naming, fidelity to approved scenarios, public interface usage) before implementation begins
+1. **Full mode (default)** — two gates: **Scenario Review Gate** (human reviews test scenario design: completeness, boundary coverage, reasonableness) and **Test Code Review Gate** (human reviews test code: quality, naming, fidelity to approved scenarios, public interface usage).
+2. **Fast mode** — one gate: the Scenario Review Gate collapses into the Test Code Review Gate (scenarios written inline, checklist folds in scenario coverage). Used for bug-fix TDD or well-defined criteria.
+3. **Batch mode** — one gate per 2-3 homogeneous grouped criteria.
 
-**Related terms**: Sub-Agent, Test Sub-Agent, Acceptance Criterion Cycle
+Full mode is the default; switching to Fast or Batch requires explicit user request.
+
+**Related terms**: Sub-Agent, Test Sub-Agent, Acceptance Criterion Cycle, Gate Mode
 
 **Anti-patterns**:
-- Don't skip the Scenario Review Gate and jump straight to test code — scenario design is where the most important decisions happen
+- Don't skip the Scenario Review Gate in Full mode — scenario design is where the most important decisions happen
 - Don't treat "looks fine" as approval — use the explicit checklist
 
 ### Acceptance Criterion Cycle
@@ -74,8 +77,9 @@ One of three parallel sub-agents within the Review skill: Test Review, Code Revi
 |------|------------|---------|
 | Sub-Agent | Independent execution phase within a skill, re-reads context from disk | Orchestrator, Human Review Gate |
 | Orchestrator | SKILL.md entry point that sequences sub-agents | Sub-Agent |
-| Human Review Gate | Two-stage synchronous human checkpoint (scenario + code review) | Test Sub-Agent, Develop Sub-Agent |
+| Human Review Gate | Synchronous human checkpoint; 1-2 gates per criterion per Gate Mode (Full=2, Fast/Batch=1) | Test Sub-Agent, Develop Sub-Agent, Gate Mode |
 | Acceptance Criterion Cycle | Per-acceptance-criterion loop: design→review→code→review→implement | Test Sub-Agent, Develop Sub-Agent |
+| Gate Mode | TDD gate configuration: Full (2 gates, default), Fast (1 gate, bug-fix/well-defined), Batch (1 gate per 2-3 homogeneous criteria). See ADR 0003 | Human Review Gate |
 | Test Sub-Agent | Designs test scenarios + writes test code per acceptance criterion (RED) | Develop Sub-Agent, Human Review Gate |
 | Develop Sub-Agent | Implements code to make approved test GREEN + unified refactor | Test Sub-Agent |
 | Test Review Sub-Agent | Reviews test quality, boundary coverage, test design | Review Sub-Agent |
