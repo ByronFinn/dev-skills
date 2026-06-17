@@ -4,7 +4,9 @@ Date: 2026-06-12
 
 ## Status
 
-Accepted
+Superseded by [0003 - Gate Modes (Full / Fast / Batch)](0003-gate-modes-full-fast-batch.md)
+
+The two-stage gate defined here remains the **default** behavior (Full mode in ADR 0003). ADR 0003 adds the conditions under which lighter modes (Fast, Batch) are acceptable; it does not overturn this decision for the general case.
 
 ## Context
 
