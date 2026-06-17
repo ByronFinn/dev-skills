@@ -39,7 +39,7 @@ Dispatches three independent review sub-agents in parallel — Test Review, Code
 
 **Step 5 — Authorization gate**: Ask the user what to do next. Options: approve and merge, fix issues then re-review, proceed to release. Local doc updates are allowed when necessary; remote actions require current-turn explicit authorization.
 
-**Step 6 — Execute authorized actions**: Perform only actions the user explicitly requested in the current turn — local file updates, issue sync, release follow-through。如果 review 通过且 Issue 属于某个 PRD 的 Child Issues，更新 PRD 的 `Sliced into` 列表中对应 Issue 的状态标记为 `✅`。如果所有 Child Issues 都标记为 `✅`，将 PRD Status 更新为 `Done`。See [Authorization Boundaries](#authorization-boundaries).
+**Step 6 — Execute authorized actions**: Perform only actions the user explicitly requested in the current turn — local file updates, issue sync, release follow-through。如果 review 通过且 Issue 属于某个 PRD 的 Child Issues，更新 PRD 的 `Sliced into` 列表中对应 Issue 的状态标记为 `— Done`。如果所有 Child Issues 都标记为 `— Done`，将 PRD Status 更新为 `Done`。See [Authorization Boundaries](#authorization-boundaries).
 
 See [REFERENCE.md](REFERENCE.md) for detailed sub-agent instructions, checklists, and report templates.
 

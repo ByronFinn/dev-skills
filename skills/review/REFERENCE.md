@@ -613,8 +613,8 @@ These updates are allowed **only when the review has verified the underlying cha
 **PRD Child Issues Status Sync:** When the review verifies a task is complete:
 1. From the Issue being reviewed, read `Meta → PRD` to locate the PRD
 2. Find the Issue in the PRD's `Sliced into` list
-3. Update the Issue's status marker: `🔄` → `✅`
-4. Check if ALL Child Issues are marked `✅`:
+3. Update the Issue's status marker: `— In Progress` → `— Done`
+4. Check if ALL Child Issues are marked `— Done`:
    - If yes: update PRD `Status` from `InProgress` to `Done`
    - If no: keep PRD `Status` as `InProgress`
 

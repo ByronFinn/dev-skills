@@ -87,7 +87,7 @@ The two-stage Human Review Gate (Scenario Review + Test Code Review) is the **de
 
 **Step 3: Refactor** — After all cycles GREEN, Develop Sub-Agent performs unified refactor: extract duplication, deepen modules, apply SOLID. Run full test suite after each refactor step.
 
-**Step 4: Output** — Produce result summary. If a PRD file exists, fill the `Implemented by` field in its `## Traceability` section with the Issue reference。更新 PRD 的 `Sliced into` 列表中对应 Issue 的状态标记为 `🔄`（正在实现中）。
+**Step 4: Output** — Produce result summary. If a PRD file exists, fill the `Implemented by` field in its `## Traceability` section with the Issue reference。更新 PRD 的 `Sliced into` 列表中对应 Issue 的状态标记为 `— In Progress`（正在实现中）。
 
 See [REFERENCE.md](REFERENCE.md) for detailed sub-agent instructions, checklists, and independence constraints.
 

@@ -139,8 +139,8 @@ Draft → Grilled → Sliced → InProgress → Done
 - **Created by**: `/think` (or `/story` for minimal PRD)
 - **Grilled by**: `/grill` (if run) — decision quality validated
 - **Sliced into**:
-  - #<issue-1> — [PRD-NNNN] <slice title> (AFK) ✅
-  - #<issue-2> — [PRD-NNNN] <slice title> (HITL, blocked by #<issue-1>) 🔄
+  - #<issue-1> — [PRD-NNNN] <slice title> (AFK) — Done
+  - #<issue-2> — [PRD-NNNN] <slice title> (HITL, blocked by #<issue-1>) — In Progress
   - #<issue-3> — [PRD-NNNN] <slice title> (AFK)
 - **Implemented by**: `/tdd` (Issue reference)
 - **Debugged by**: `/debug` (if bug fix touched this feature) — <bug summary + root cause>

@@ -169,14 +169,14 @@ Add created issues to PRD's `## Traceability → Sliced into` section:
 
 ```markdown
 - **Sliced into**:
-  - #<issue-1> — [PRD-NNNN] <slice title> (AFK) ✅
-  - #<issue-2> — [PRD-NNNN] <slice title> (HITL, blocked by #<issue-1>) 🔄
+  - #<issue-1> — [PRD-NNNN] <slice title> (AFK) — Done
+  - #<issue-2> — [PRD-NNNN] <slice title> (HITL, blocked by #<issue-1>) — In Progress
   - #<issue-3> — [PRD-NNNN] <slice title> (AFK)
 ```
 
 **状态标记规则**：
-- `✅` — Issue 已关闭且代码已合并
-- `🔄` — Issue 正在实现中（tdd 进行中）
+- `— Done` — Issue 已关闭且代码已合并
+- `— In Progress` — Issue 正在实现中（tdd 进行中）
 - 无标记 — Issue 尚未开始
 
 Fill the `Sliced by` field in the PRD's `## Traceability` section:
