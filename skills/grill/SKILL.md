@@ -19,12 +19,12 @@ If a question can be answered by exploring the codebase, explore the codebase in
 
 - **Outcome**: Validated PRD aligned with the domain model, CONTEXT.md sharpened, significant decisions recorded as ADRs
 - **Done when**: Every open decision resolved, terminology consistent with CONTEXT.md, ADRs created where the 3 conditions are met
-- **Evidence**: Updated `docs/prd/<feature-name>.md`, updated `CONTEXT.md`, created `docs/adr/<NNNN>-*.md` (where warranted)
+- **Evidence**: Updated `docs/prd/PRD-NNNN-<title>.md` (status → Grilled), updated `CONTEXT.md`, created `docs/adr/<NNNN>-*.md` (where warranted)
 - **Output**: Synced Issue (if parent exists), next step to `/story`
 
 ## Before You Start
 
-Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs and check upstream artifacts. Read the PRD at `docs/prd/<feature-name>.md` and `CONTEXT.md`. If no PRD exists or it's too thin, suggest `/think` first — don't grill vapor.
+Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs and check upstream artifacts. Read the PRD at `docs/prd/PRD-NNNN-<title>.md` and `CONTEXT.md`. If no PRD exists or it's too thin, suggest `/think` first — don't grill vapor.
 
 ## The Work
 
@@ -57,7 +57,7 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 | Created an ADR for a trivial decision | Only when all 3 conditions met |
 | CONTEXT.md gained implementation details | It is a glossary, nothing more |
 | Asked the user something the code could answer | Explore the codebase instead |
-| PRD not updated after interview | Update `docs/prd/<feature-name>.md` before declaring complete |
+| PRD not updated after interview | Update `docs/prd/PRD-NNNN-<title>.md` and set `Status` to `Grilled` before declaring complete |
 | Declared complete without the exhaustiveness gate | Run the 5-point gate first |
 
 ## Output
@@ -71,7 +71,7 @@ Resolved <N> items:
 - <decision>: <ADR created | recorded in PRD>
 
 Updated files:
-- docs/prd/<feature-name>.md — updated
+- docs/prd/PRD-NNNN-<title>.md — updated (Status → Grilled)
 - CONTEXT.md — <count> terms sharpened/added
 - docs/adr/<NNNN>-<title>.md — created (if any)
 

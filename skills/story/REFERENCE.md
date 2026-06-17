@@ -44,7 +44,7 @@ If `repo-map.md` exists and indicates issues should be created in a different re
 
 Check what input the user provided:
 
-1. **Existing PRD** — user mentions a feature name with an existing PRD file at `docs/prd/<feature-name>.md`, or says "break this PRD into issues"
+1. **Existing PRD** — user mentions a feature name with an existing PRD file at `docs/prd/PRD-NNNN-<title>.md`, or says "break this PRD into issues"
 2. **Direct description** — user describes a feature verbally: "帮我拆分用户订阅功能的 issues", "break down the payment integration", or provides a rough spec
 3. **Existing issue** — user references an existing issue number as the parent
 
@@ -81,7 +81,7 @@ If multiple signals are present (no CONTEXT.md + no ADRs + unresolved PRD), sugg
 
 **When input is an existing PRD:**
 
-Read `docs/prd/<feature-name>.md` file, understand complete requirements. After reading, check the `Issue` field for a parent issue number (e.g., `#42`). If present, use it as the parent reference when creating child issues. If absent, no parent reference needed.
+Read `docs/prd/PRD-NNNN-<title>.md` file, understand complete requirements. After reading, check the `Issue` field for a parent issue number (e.g., `#42`). If present, use it as the parent reference when creating child issues. If absent, no parent reference needed.
 
 **Minimal requirements to proceed:**
 - Goal (what this feature does)
@@ -92,7 +92,7 @@ If these cannot be extracted, suggest running `/think` first — the feature is 
 
 ### Step 3: Ensure PRD Exists
 
-If PRD already exists at `docs/prd/<feature-name>.md`: skip this step.
+If PRD already exists at `docs/prd/PRD-NNNN-<title>.md`: skip this step.
 
 If no PRD exists, create a minimal PRD. Include **only** sections where you have real information — do not leave empty headings. Use these sections:
 

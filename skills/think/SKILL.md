@@ -17,7 +17,7 @@ If a question can be answered by exploring the codebase or a quick research pass
 
 - **Outcome**: Decision-complete plan. Optionally persisted as a PRD with clear requirements, acceptance criteria, technical approach, and implementation plan
 - **Done when**: User approves plan and (optionally) PRD is created for `/grill`
-- **Evidence**: Updated `docs/prd/<feature-name>.md` (if user opts to create PRD), or approved design summary
+- **Evidence**: Updated `docs/prd/PRD-NNNN-<title>.md` (if user opts to create PRD), or approved design summary
 - **Output**: Approved design summary with next step to `/grill`
 
 ## Core Principles
@@ -35,7 +35,7 @@ If a question can be answered by exploring the codebase or a quick research pass
 
 **Step 1 — Auto-collect context.** Explore the codebase (affected modules, existing patterns, constraints) and docs (prior PRDs, README, ADRs) before asking anything. Write findings into the PRD's `What I already know` and `Technical Notes`.
 
-**Step 2 — Offer to create a PRD.** Ask whether to persist the plan as `docs/prd/<feature-name>.md`. By now you have enough context to explain what the PRD would contain — the user decides with findings in hand. Don't create one automatically. If declined, work conversationally and produce a summary at the end.
+**Step 2 — Offer to create a PRD.** Ask whether to persist the plan as `docs/prd/PRD-NNNN-<title>.md`. By now you have enough context to explain what the PRD would contain — the user decides with findings in hand. Don't create one automatically. If declined, work conversationally and produce a summary at the end. When creating: scan `docs/prd/` for existing `PRD-NNNN-*.md` files, assign next NNNN (max + 1, starting from 0000).
 
 **Step 3 — Classify complexity.** Simple / Moderate / Complex (see REFERENCE.md). Depth of brainstorming scales with complexity.
 

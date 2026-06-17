@@ -25,6 +25,7 @@ Priority when multiple skills could match:
 | Error, crash, failing test, regression, anomalous behavior, “used to work” | `debug` | Unknown root cause must be diagnosed before fixing. |
 | Diff, staged/unstaged changes, completed work, merge readiness, release readiness | `review` | Parallel three-perspective sub-agent review: Test Review ∥ Code Review ∥ Impact Review. |
 | Periodic health check, design debt scan, architecture review, proactive cleanup candidates | `improve-architecture` | Produce architecture improvement report and deepening opportunities. |
+| Prose editing, polish, remove AI tone, rewrite, proofread, release notes, tweet, document review, localization copy | `write` | Rewrite and polish prose in Chinese or English; remove AI-like wording; review product localization. |
 
 ## Route by Workflow Phase
 
@@ -60,6 +61,14 @@ Priority when multiple skills could match:
 | Trigger | Skill | Description |
 |---------|-------|-------------|
 | 架构 / improve-architecture / 重构候选 / 清理 / 债务 / 架构审查 | `improve-architecture` | Periodic architecture review, scan PRDs for alignment, find design debt and deepening opportunities |
+
+### Writing & Editing (Cross-phase)
+
+| Trigger | Skill | Description |
+|---------|-------|-------------|
+| 润色 / 改稿 / 去AI味 / rewrite / polish / proofread / 帮我写 | `write` | Rewrite prose, remove AI tone, preserve author voice |
+| 审稿 / review document / check this document / 本地化文案 | `write` | Document review with privacy scan, tone check, bilingual validation |
+| release notes / changelog / 发版 / tweet / 推文 / 社交发文 | `write` | Generate release notes from commits, draft social posts |
 
 ## Common Sequences
 
@@ -142,6 +151,7 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 | `review` | — | Parallel three-perspective review: Test Review ∥ Code Review ∥ Impact Review | Merged report + local docs + remote updates only when explicitly authorized |
 | `debug` | — | Root cause → 6-phase fix | Root cause report + code fix |
 | `improve-architecture` | — | Periodic architecture review | Architecture report |
+| `write` | — | Prose editing: rewrite, de-AI, review, release notes, localization | Edited prose only (no change list) |
 
 > **Format Files column**: "—" means the skill's output format is embedded in REFERENCE.md rather than in a separate *-FORMAT.md file. Skills with named format files (PRD-FORMAT.md, STORY-FORMAT.md, etc.) use them as bilingual templates shared with the user.
 
@@ -153,12 +163,13 @@ Each skill may depend on files or configuration produced by earlier skills. Miss
 |-------|---------------------------|----------|---------------------------------------|----------------|-----------------|
 | `setup-project` | — | Git repo | — | — | — (this is the foundation) |
 | `think` | — | — | `CONTEXT.md`, `docs/adr/`, existing PRDs | PRD-FORMAT.md | Creates PRD if user opts in |
-| `grill` | `domain.md` | PRD (`docs/prd/<name>.md`) | `CONTEXT.md`, `docs/adr/` | CONTEXT-FORMAT.md, ADR-FORMAT.md | Creates `CONTEXT.md` and ADRs lazily |
+| `grill` | `domain.md` | PRD (`docs/prd/PRD-NNNN-<title>.md`) | `CONTEXT.md`, `docs/adr/` | CONTEXT-FORMAT.md, ADR-FORMAT.md | Creates `CONTEXT.md` and ADRs lazily |
 | `story` | `domain.md`, `repo-map.md`, `issue-tracker.md`, `triage-labels.md` | — | `CONTEXT.md`, PRD | STORY-FORMAT.md (Issue body), minimal PRD | Creates minimal PRD if none exists |
 | `tdd` | `domain.md`, `repo-map.md` | — | `issue-tracker.md`, PRD, `CONTEXT.md`, ADRs | Issue body = STORY-FORMAT.md | — |
 | `review` | `domain.md`, `repo-map.md` | Code changes (staged or unstaged) | PRD, `CONTEXT.md`, ADRs, CI configs | Issue body = STORY-FORMAT.md | Updates local docs when verified |
 | `debug` | `domain.md`, `repo-map.md` | Reproducible error or symptom | `CONTEXT.md`, ADRs | — | — |
 | `improve-architecture` | `domain.md`, `repo-map.md` | — | `CONTEXT.md`, `docs/adr/`, `docs/prd/*.md` | — | — |
+| `write` | `domain.md` | Text to edit | Project style references, existing releases, `CONTEXT.md` | — | — |
 
 **Config column**: Files under `docs/agents/`. `domain.md` tells consumer skills where domain docs live. `repo-map.md` tells them about multi-repo structure. Both are optional — skills fall back to default paths if missing.
 
@@ -219,6 +230,16 @@ skills/
 ├── improve-architecture/
 │   ├── SKILL.md
 │   └── REFERENCE.md
+├── write/
+│   ├── SKILL.md
+│   ├── REFERENCE.md
+│   └── references/
+│       ├── write-en.md
+│       ├── write-zh.md
+│       ├── write-zh-prose.md
+│       ├── write-zh-bilingual.md
+│       ├── write-zh-release-notes.md
+│       └── write-product-localization.md
 ├── RESOLVER.md
 ├── rules/
 │   ├── anti-patterns.md

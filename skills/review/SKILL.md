@@ -108,7 +108,7 @@ Review complete.
 
 Traceability:
 - Source: <Issue #N / PRD <name>>
-- Feature: <feature name>
+- Feature: <feature name> (PRD-NNNN)
 - Files changed: <count>
 - Tests added: <count>
 
@@ -139,7 +139,7 @@ New decisions (for ADR):
 - <decision summary> (if any)
 
 Updated files:
-- docs/prd/<name>.md — updated
+- docs/prd/PRD-NNNN-<title>.md — updated
 - CONTEXT.md — updated (if any)
 - docs/adr/*.md — updated (if any)
 

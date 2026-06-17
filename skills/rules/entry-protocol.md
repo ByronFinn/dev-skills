@@ -34,7 +34,7 @@ Read domain docs at the paths discovered in Step 1 (or defaults if config missin
 | Document | Default path | Purpose |
 |----------|-------------|---------|
 | CONTEXT.md | `CONTEXT.md` at repo root | Domain glossary — terminology, concepts, relationships |
-| PRDs | `docs/prd/<feature>.md` | Product requirements — what to build, acceptance criteria |
+| PRDs | `docs/prd/PRD-NNNN-<title>.md` | Product requirements — what to build, acceptance criteria |
 | ADRs | `docs/adr/*.md` | Architecture Decision Records — past technical decisions |
 
 **If any document is missing, proceed without it.** Missing context reduces precision but does not block execution. State what's missing so the user knows the limitation.

@@ -24,7 +24,7 @@ Accept any of these, in priority order:
 4. Confirm understanding with user before proceeding
 
 **If input is a PRD:**
-1. Read `docs/prd/<feature-name>.md` (use path from `domain.md` if available)
+1. Read `docs/prd/PRD-NNNN-<title>.md` (use path from `domain.md` if available)
 2. Focus on `Requirements`, `Acceptance Criteria`, and `Technical Approach` sections
 3. Extract each acceptance criterion as a separate cycle target
 
@@ -129,7 +129,7 @@ For one acceptance criterion, design test scenarios as a structured table. This 
 The Test Sub-Agent **must** re-read all shared context files from disk before acting. No cached understanding from the orchestrator, no inherited state from a previous cycle.
 
 **Context re-read checklist:**
-- [ ] PRD file (`docs/prd/<feature>.md`) — re-read from disk
+- [ ] PRD file (`docs/prd/PRD-NNNN-<title>.md`) — re-read from disk
 - [ ] Story/Issue — re-read from disk (fetch latest issue body)
 - [ ] `CONTEXT.md` — re-read from disk (domain glossary and terminology)
 - [ ] ADRs (`docs/adr/`) — re-read relevant ADRs from disk

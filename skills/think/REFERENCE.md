@@ -36,22 +36,24 @@ Step 2 is sequenced after Step 1 so the user can make an informed decision based
 **Ask (for non-Trivial tasks):**
 
 ```
-I'll help you think through this. Would you like me to create a PRD file at `docs/prd/<feature-name>.md` as we work through the design?
+I'll help you think through this. Would you like me to create a PRD file at `docs/prd/PRD-NNNN-<title>.md` as we work through the design?
 
 - **Yes** — I'll create and update a PRD file throughout our discussion
 - **No** — I'll work through the plan conversationally and provide a summary at the end
 ```
 
-**If Yes:** create PRD at `docs/prd/<feature-name>.md` using the template below.
+**If Yes:** scan `docs/prd/` for existing `PRD-NNNN-*.md` files, assign the next NNNN (max + 1, starting from 0000), and create PRD at `docs/prd/PRD-NNNN-<title>.md` using the template below.
 
 **If No:** skip PRD creation. Still follow the brainstorming process (Steps 3-9), but keep notes in your working context and produce a design summary at the end.
 
-**PRD Location:** `docs/prd/<feature-name>.md`
+**PRD Location:** `docs/prd/PRD-NNNN-<title>.md`
 
 If creating, use this template:
 
 ```markdown
 # <Feature Name>
+
+> **Status**: Draft | **PRD**: PRD-NNNN | **Created**: YYYY-MM-DD | **Last updated**: YYYY-MM-DD
 
 ## Goal
 <why + what, one paragraph>

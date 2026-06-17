@@ -20,7 +20,7 @@ Break plan into independently actionable issues using vertical slices (tracer bu
 
 ## Prerequisites
 
-- **Input**: an existing PRD at `docs/prd/<feature-name>.md`, or a direct feature description from the user
+- **Input**: an existing PRD at `docs/prd/PRD-NNNN-<title>.md`, or a direct feature description from the user
 - Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs and issue tracker config
 - `docs/agents/issue-tracker.md` — read for issue creation convention
 - `docs/agents/triage-labels.md` — read for label mapping
@@ -42,7 +42,7 @@ Break plan into independently actionable issues using vertical slices (tracer bu
 
 **Step 6**: Publish issues in dependency order (blockers first)
 
-**Step 7**: Update PRD with child issues
+**Step 7**: Update PRD with child issues; set `Status` to `Sliced` in the PRD metadata line
 
 **Step 8**: Sync Issue (if parent exists)
 
@@ -81,7 +81,7 @@ Created issues:
 * #<issue-2> — <title> (HITL, blocked by #1)
 
 Updated files:
-- docs/prd/<name>.md — child issues updated
+- docs/prd/PRD-NNNN-<title>.md — child issues updated (Status → Sliced)
 
 Next: Run /tdd to start implementing first issue.
 ```
@@ -89,7 +89,7 @@ Next: Run /tdd to start implementing first issue.
 ## Example
 
 ```
-PRD: User subscription functionality
+PRD: User subscription functionality (PRD-0003-subscription)
 
 Proposed:
 1. Create subscription data model (AFK) — schema + API + tests

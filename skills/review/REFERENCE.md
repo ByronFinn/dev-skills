@@ -85,7 +85,7 @@ Collect paths to all domain documents that sub-agents will need to re-read. Use 
 
 | Document | Default path | Purpose |
 |----------|-------------|---------|
-| PRD | `docs/prd/<feature>.md` | Requirements, acceptance criteria |
+| PRD | `docs/prd/PRD-NNNN-<title>.md` | Requirements, acceptance criteria |
 | Story / Issues | Issue tracker or `docs/issues/` | Vertical-slice implementation tickets |
 | CONTEXT.md | `CONTEXT.md` | Domain glossary, terminology definitions |
 | ADRs | `docs/adr/*.md` | Architecture Decision Records |
@@ -118,7 +118,7 @@ This sub-agent independently re-reads all shared context from disk. It must not 
 Before starting the review, re-read all of the following from disk:
 
 - [ ] `docs/agents/domain.md` (if exists) — domain doc layout
-- [ ] PRD (from `docs/prd/` or path from `domain.md`) — requirements and acceptance criteria
+- [ ] PRD (from `docs/prd/` or path from `domain.md`) — requirements and acceptance criteria (PRD-NNNN-<title>.md)
 - [ ] Story / Issue — vertical-slice implementation ticket being reviewed
 - [ ] `CONTEXT.md` — domain glossary and terminology
 - [ ] ADRs (from `docs/adr/` or path from `domain.md`) — relevant architecture decisions
@@ -229,7 +229,7 @@ This sub-agent independently re-reads all shared context from disk. It must not 
 Before starting the review, re-read all of the following from disk:
 
 - [ ] `docs/agents/domain.md` (if exists) — domain doc layout
-- [ ] PRD (from `docs/prd/` or path from `domain.md`) — requirements and acceptance criteria
+- [ ] PRD (from `docs/prd/` or path from `domain.md`) — requirements and acceptance criteria (PRD-NNNN-<title>.md)
 - [ ] Story / Issue — vertical-slice implementation ticket being reviewed
 - [ ] `CONTEXT.md` — domain glossary and terminology
 - [ ] ADRs (from `docs/adr/` or path from `domain.md`) — relevant architecture decisions
@@ -344,7 +344,7 @@ This sub-agent independently re-reads all shared context from disk. It must not 
 Before starting the review, re-read all of the following from disk:
 
 - [ ] `docs/agents/domain.md` (if exists) — domain doc layout
-- [ ] PRD (from `docs/prd/` or path from `domain.md`) — requirements and acceptance criteria
+- [ ] PRD (from `docs/prd/` or path from `domain.md`) — requirements and acceptance criteria (PRD-NNNN-<title>.md)
 - [ ] Story / Issue — vertical-slice implementation ticket being reviewed
 - [ ] `CONTEXT.md` — domain glossary and terminology
 - [ ] ADRs (from `docs/adr/` or path from `domain.md`) — relevant architecture decisions
@@ -567,7 +567,7 @@ New decisions (for ADR):
 - <decision summary> (if any)
 
 Updated files:
-- docs/prd/<name>.md — updated
+- docs/prd/PRD-NNNN-<title>.md — updated
 - CONTEXT.md — updated (if any)
 - docs/adr/*.md — updated (if any)
 

@@ -32,7 +32,7 @@ dispatch_intent: "Test-driven development, feature implementation, bug fix"
 
 Accept any of these, in priority order:
 1. **Issue reference** (e.g., `#42` or a URL) — read the issue body; use its Acceptance Criteria as the cycle list
-2. **PRD file** — read `docs/prd/<feature-name>.md`; extract Requirements and Acceptance Criteria
+2. **PRD file** — read `docs/prd/PRD-NNNN-<title>.md`; extract Requirements and Acceptance Criteria
 3. **Direct description** — user describes the behavior to implement; confirm acceptance criteria in Step 1 before proceeding
 
 ## Anti-Pattern: Horizontal Slicing
@@ -142,7 +142,7 @@ TDD complete.
 
 Traceability:
 - Source: <Issue #N / PRD <name> / direct description>
-- Feature: <feature name>
+- Feature: <feature name> (PRD-NNNN)
 - Criteria implemented: <count>
 
 Cycles:

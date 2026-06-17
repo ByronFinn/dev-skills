@@ -42,9 +42,19 @@ skills/
 ├── debug/                       # Root cause analysis and fix skill
 │   ├── SKILL.md
 │   └── REFERENCE.md
-└── improve-architecture/        # Architecture improvement skill
+├── improve-architecture/        # Architecture improvement skill
+│   ├── SKILL.md
+│   └── REFERENCE.md
+└── write/                       # Prose editing skill (rewrite, de-AI, review, release notes)
     ├── SKILL.md
-    └── REFERENCE.md
+    ├── REFERENCE.md
+    └── references/              # Language-specific pattern catalogs (loaded on demand)
+        ├── write-en.md
+        ├── write-zh.md
+        ├── write-zh-prose.md
+        ├── write-zh-bilingual.md
+        ├── write-zh-release-notes.md
+        └── write-product-localization.md
 ```
 
 ## File Conventions
@@ -56,6 +66,7 @@ Every skill follows the same structure:
 | `SKILL.md` | Entry point. Contains YAML front matter (`name`, `description`, `when_to_use`, `dispatch_intent`), outcome contract, process summary, gotchas table, and output template. For sub-agent orchestrated skills (`tdd`, `review`), this is the orchestrator — it defines sub-agent sequence, human review gates, and merge rules, but does not perform implementation work itself. |
 | `REFERENCE.md` | Detailed process steps, checklists, examples, and templates. Loaded on demand. For sub-agent orchestrated skills, each sub-agent gets its own chapter with: context re-read checklist, responsibilities, checklist, output template, and independence constraint. |
 | `*-FORMAT.md` | Document format templates (PRD, CONTEXT, ADR, STORY) used by the skill. Written bilingually (English headings, Chinese field descriptions). |
+| `references/` | Language-specific or mode-specific reference files loaded on demand by the skill (used by `write` for pattern catalogs in different languages). |
 
 ## Workflow Pipeline
 
@@ -67,6 +78,7 @@ New feature:          think → grill → story → tdd → review → (release)
 Direct breakdown:     story → tdd → review → (release)
 Bug/regression:       debug → review (optional)
 Architecture health:  improve-architecture → grill/story/tdd (if approved)
+Writing & editing:    write → (polished prose, release notes, or review report)
 
 /tdd internals:       Per acceptance criterion: Test Sub-Agent (scenarios) → Scenario Gate → Test Sub-Agent (code) → Code Gate → Develop Sub-Agent (implement)
                       After all cycles: Develop Sub-Agent (refactor)
@@ -91,6 +103,7 @@ Route by the user's **work object** first, then by workflow phase:
 | Error, crash, failing test, regression | `debug` |
 | Diff, staged changes, completed work, release readiness | `review` (parallel sub-agents: Test Review ∥ Code Review ∥ Impact Review) |
 | Periodic health check, architecture review, design debt | `improve-architecture` |
+| Prose editing, polish, de-AI, release notes, tweet, document review, localization | `write` |
 
 Key disambiguation rules:
 - **Bug vs TDD**: Root cause unknown → `debug`. Root cause known + accepted behavior to implement → `tdd`.
@@ -128,14 +141,14 @@ When skills are used in target projects, they create and maintain these files:
 
 | File | Created by | Purpose |
 |---|---|---|
-| `docs/prd/<feature>.md` | `think` or `story` | Product Requirements Document |
+| `docs/prd/PRD-NNNN-<title>.md` | `think` or `story` | Product Requirements Document |
 | `CONTEXT.md` | `grill` | Domain glossary (no implementation details) |
 | `docs/adr/<NNNN>-<title>.md` | `grill` | Architecture Decision Records |
 | Issues | `story` | Vertical-slice implementation tickets |
 
 ## Contributing
 
-- Follow existing file structure: `SKILL.md` (entry) → `REFERENCE.md` (detail) → `*-FORMAT.md` (templates).
+- Follow existing file structure: `SKILL.md` (entry) → `REFERENCE.md` (detail) → `*-FORMAT.md` (templates). Some skills (e.g., `write`) use a `references/` directory for language-specific pattern catalogs loaded on demand.
 - Keep `SKILL.md` concise; move deep detail to `REFERENCE.md`.
 - When a skill uses sub-agent orchestration, structure `REFERENCE.md` as one chapter per sub-agent. Each chapter must include: context re-read checklist, responsibilities, checklist, output template, and independence constraint.
 - Update `RESOLVER.md` when adding or changing skill routing.

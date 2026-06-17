@@ -14,7 +14,7 @@ grill creates and updates domain docs. Where they live depends on the repo shape
 │   │   ├── 0001-event-sourced-orders.md
 │   │   └── 0002-postgres-for-write-model.md
 │   └── prd/
-│       └── <feature>.md
+│       └── PRD-NNNN-<title>.md
 └── src/
 ```
 
@@ -96,7 +96,7 @@ If any box is unchecked, keep going.
 
 ## PRD Traceability Update
 
-Fill the `Grilled by` field in the PRD's `## Traceability` section so downstream skills know the plan was validated:
+Fill the `Grilled by` field in the PRD's `## Traceability` section AND set `Status` to `Grilled` so downstream skills know the plan was validated:
 
 ```markdown
 - **Grilled by**: `/grill` (completed <YYYY-MM-DD>) — <summary: terms sharpened, assumptions resolved, ADRs created>
@@ -107,7 +107,7 @@ Fill the `Grilled by` field in the PRD's `## Traceability` section so downstream
 ```
 User: /grill  (after /think for "user subscription feature")
 
-Agent: [reads docs/prd/subscription.md and CONTEXT.md]
+Agent: [reads docs/prd/PRD-0003-subscription.md and CONTEXT.md]
 
 I've reviewed the PRD and found 6 items to resolve:
 
@@ -148,7 +148,7 @@ All 6 resolved. Exhaustiveness check: ✓ Open Questions, ✓ Assumptions,
 ✓ Terms, ✓ Scope, ✓ Code.
 
 Updated files:
-- docs/prd/subscription.md — updated
+- docs/prd/PRD-0003-subscription.md — updated (Status → Grilled)
 - CONTEXT.md — 3 new terms, 1 sharpened
 - docs/adr/0003-cancellation-eop.md — created
 
