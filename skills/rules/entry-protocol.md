@@ -39,6 +39,14 @@ Read domain docs at the paths discovered in Step 1 (or defaults if config missin
 
 **If any document is missing, proceed without it.** Missing context reduces precision but does not block execution. State what's missing so the user knows the limitation.
 
+**Filing-consistency check.** While scanning for these docs, also flag misplaced files so the drift surfaces early. Report (do not auto-fix — moving files is a destructive op needing explicit authorization):
+
+- PRD content found **outside** `docs/prd/` — e.g. `docs/adr/PRD-*.md`, `docs/prd-*.md` in the docs root, or `PRD-*.md` at repo root.
+- ADR files carrying a `PRD-` prefix, or PRD files carrying no `PRD-` prefix.
+- **Number collisions** — two ADRs sharing the same `NNNN`, or two PRDs sharing the same `PRD-NNNN` (common when multiple sessions run concurrently). Scan the directory and report any duplicate numbers before creating a new file.
+
+Report findings as a note in the skill output: *"Filing inconsistency found: <file> appears misplaced / <NNNN> is used by two files. Want me to relocate?"* Do not silently move or renumber.
+
 ### Step 3a: PRD Conflict Check (when creating a new PRD)
 
 Applies to any skill about to **create** a new PRD file (`/think` Step 2, `/story` Step 3). Skills that only **read** an existing PRD skip this step.

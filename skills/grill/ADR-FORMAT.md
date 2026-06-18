@@ -4,11 +4,17 @@
 
 架构决策记录（Architecture Decision Record）。记录重要的技术决策及其背景和后果。
 
-## 文件位置
+## 文件位置与命名
 
 `docs/adr/<NNNN>-<title>.md`
 
-编号从 0001 开始递增。
+编号从 0001 开始递增（分配下一个号前，先扫描 `docs/adr/` 确认无撞号——多个会话并发时尤其重要）。
+
+### 命名规则（强制）
+
+- **纯四位数字，无前缀**：`<NNNN>` 是零填充的纯数字（如 `0011`），**不带 `ADR-` 前缀，更不带 `PRD-` 前缀**。`ADR-0011-...` 和 `PRD-0011-...` 都是错误命名。
+- **只放在 `docs/adr/`**：ADR 文件只属于 `docs/adr/`（多 context 仓库则在各自的 `docs/adr/`，见 REFERENCE.md）。**绝不放在仓库根、`docs/` 根、或 `docs/prd/`**。
+- **ADR ≠ PRD**：ADR 记录"难逆转的技术决策"，PRD 记录"要做什么"。**不要把 PRD 内容放进 `docs/adr/`**——PRD 的归档见 [PRD-FORMAT](../think/PRD-FORMAT.md)。两者的编号空间相互独立（ADR 的 `0011` 和 PRD 的 `PRD-0011` 天然不冲突，靠前缀和目录区分）。
 
 ## 模板
 
