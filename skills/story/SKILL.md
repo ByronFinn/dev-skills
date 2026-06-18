@@ -63,6 +63,7 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 | Dependencies wrong | Publish in dependency order (blockers first) |
 | PRD/parent issue not updated | Step 7/8: Update PRD and sync Issue |
 | Input too vague for slicing | Suggest `/think` — do not run a full brainstorming session yourself |
+| Same topic got two PRDs (e.g. PRD-0001 + PRD-0002) | Step 3 (Ensure PRD Exists): run Entry Protocol Step 3a conflict check before creating |
 
 ## Vertical Slice Rules
 

@@ -35,7 +35,7 @@ If a question can be answered by exploring the codebase or a quick research pass
 
 **Step 1 — Auto-collect context.** Explore the codebase (affected modules, existing patterns, constraints) and docs (prior PRDs, README, ADRs) before asking anything. Write findings into the PRD's `What I already know` and `Technical Notes`.
 
-**Step 2 — Offer to create a PRD.** Ask whether to persist the plan as `docs/prd/PRD-NNNN-<title>.md`. By now you have enough context to explain what the PRD would contain — the user decides with findings in hand. Don't create one automatically. If declined, work conversationally and produce a summary at the end. When creating: scan `docs/prd/` for existing `PRD-NNNN-*.md` files, assign next NNNN (max + 1, starting from 0000).
+**Step 2 — Offer to create a PRD.** Ask whether to persist the plan as `docs/prd/PRD-NNNN-<title>.md`. By now you have enough context to explain what the PRD would contain — the user decides with findings in hand. Don't create one automatically. If declined, work conversationally and produce a summary at the end. When creating: run the [Skill Entry Protocol](../rules/entry-protocol.md) **Step 3a (PRD Conflict Check)** — compare the topic against existing PRDs by title slug and Goal; if a candidate collides, ask whether to resume it (reuse its NNNN) or create a new one with a distinct title. Only then assign next NNNN (max + 1, starting from 0000).
 
 **Step 3 — Classify complexity.** Simple / Moderate / Complex (see REFERENCE.md). Depth of brainstorming scales with complexity.
 
@@ -66,6 +66,7 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 | Drifted without updating PRD | Update PRD after every answer |
 | Stayed on initial request without considering edges | Step 6: expansion scan before converging |
 | Domain terms introduced but not recorded for grill | Step 9: record new terms in PRD `## Domain Terms` section |
+| Same topic got two PRDs (e.g. PRD-0001 + PRD-0002) | Step 2: run Entry Protocol Step 3a conflict check before assigning NNNN |
 
 ## Output
 

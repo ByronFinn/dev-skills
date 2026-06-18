@@ -42,7 +42,7 @@ I'll help you think through this. Would you like me to create a PRD file at `doc
 - **No** — I'll work through the plan conversationally and provide a summary at the end
 ```
 
-**If Yes:** scan `docs/prd/` for existing `PRD-NNNN-*.md` files, assign the next NNNN (max + 1, starting from 0000), and create PRD at `docs/prd/PRD-NNNN-<title>.md` using the template below.
+**If Yes:** before assigning a number, run the [Skill Entry Protocol](../rules/entry-protocol.md) **Step 3a (PRD Conflict Check)** — compare the topic against existing `PRD-NNNN-*.md` files by title slug and `## Goal`. If a candidate collides, ask whether to resume it (reuse its NNNN and continue editing) or create a new PRD with a distinct title. Only after that step, scan `docs/prd/` for existing `PRD-NNNN-*.md` files, assign the next NNNN (max + 1, starting from 0000), and create PRD at `docs/prd/PRD-NNNN-<title>.md` using the template below.
 
 **If No:** skip PRD creation. Still follow the brainstorming process (Steps 3-9), but keep notes in your working context and produce a design summary at the end.
 

@@ -94,7 +94,9 @@ If these cannot be extracted, suggest running `/think` first — the feature is 
 
 If PRD already exists at `docs/prd/PRD-NNNN-<title>.md`: skip this step.
 
-If no PRD exists, create a minimal PRD. Include **only** sections where you have real information — do not leave empty headings. Use these sections:
+If no PRD exists, before creating one, run the [Skill Entry Protocol](../rules/entry-protocol.md) **Step 3a (PRD Conflict Check)** — compare the feature topic against existing `PRD-NNNN-*.md` files by title slug and `## Goal`. If a candidate collides, ask whether to resume it (reuse its NNNN and continue editing) or create a new PRD with a distinct title. A different session may have already started a PRD on this topic; this check prevents a silent duplicate.
+
+If no collision (or user chose new), create a minimal PRD. Include **only** sections where you have real information — do not leave empty headings. Use these sections:
 
 | Section | Source |
 |---------|--------|
