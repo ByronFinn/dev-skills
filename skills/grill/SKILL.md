@@ -20,7 +20,7 @@ If a question can be answered by exploring the codebase, explore the codebase in
 - **Outcome**: Validated PRD aligned with the domain model, CONTEXT.md sharpened, significant decisions recorded as ADRs
 - **Done when**: Every open decision resolved, terminology consistent with CONTEXT.md, ADRs created where the 3 conditions are met
 - **Evidence**: Updated `docs/prd/PRD-NNNN-<title>.md` (status → Grilled), updated `CONTEXT.md`, created `docs/adr/<NNNN>-*.md` (where warranted)
-- **Output**: Synced Issue (if parent exists), next step to `/story`
+- **Output**: Parent Issue synced (if created by `/think`), next step to `/story`
 
 ## Before You Start
 
@@ -36,6 +36,7 @@ Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain do
    - **Code can answer it** → grep/read the code instead of asking the user.
 4. **Run the exhaustiveness gate** before declaring complete: every Open Question resolved, every Assumption validated or converted, every term conflict addressed, every scope boundary confirmed, code cross-check done.
 5. **Fill the PRD `## Traceability` `Grilled by` field** so downstream skills (story, tdd, review) know the plan was validated.
+6. **Sync the parent Issue (if it exists).** The PRD `## Issue` field holds the parent Issue number created by `/think` (Step 9a, required). If present, update its body to reflect this grill's scope changes (sharpened terminology, confirmed scope boundaries, new ADRs). Do **not** change its title, do **not** close it. If the field is empty (e.g. minimal PRD from a direct `/story` path that skipped `/think`), skip — this skill does not create parent Issues; creation is `/think`'s responsibility.
 
 ## What Goes Where
 
@@ -59,6 +60,7 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 | Asked the user something the code could answer | Explore the codebase instead |
 | PRD not updated after interview | Update `docs/prd/PRD-NNNN-<title>.md` and set `Status` to `Grilled` before declaring complete |
 | Declared complete without the exhaustiveness gate | Run the 5-point gate first |
+| Parent Issue body stale after grill changed scope | Sync the parent Issue (if `## Issue` field present) — reflect sharpened terms, scope, ADRs; don't change title or close |
 
 ## Output
 
@@ -77,8 +79,9 @@ Updated files:
 
 Exhaustiveness gate: passed (Open Questions / Assumptions / Terms / Scope / Code all checked)
 
-Issue synced:
-- #<issue-number> — updated (if parent exists)
+Parent Issue synced:
+- #<issue-number> — updated (created by /think)
+- (skipped — no parent, direct /story path with minimal PRD)
 
 Next step:
 - If scope changed significantly: /think to re-evaluate the full design

@@ -49,7 +49,7 @@ If a question can be answered by exploring the codebase or a quick research pass
 
 **Step 8 — Propose approaches + record decision.** When requirements are clear, present 2-3 approaches (if not already done via research), ask preference, and record the result in the PRD's `Decision (ADR-lite)` section.
 
-**Step 9 — Final confirmation + implementation plan.** Present the complete requirements (Goal, Requirements, Acceptance Criteria, Definition of Done, Out of Scope, Technical Approach, small-PR implementation plan). Stop after approval. Optionally create a parent Issue and record new domain terms for `/grill` to refine.
+**Step 9 — Final confirmation + implementation plan.** Present the complete requirements (Goal, Requirements, Acceptance Criteria, Definition of Done, Out of Scope, Technical Approach, small-PR implementation plan). Stop after approval, then create the parent Issue (Step 9a, required) and record new domain terms for `/grill` to refine.
 
 See [REFERENCE.md](REFERENCE.md) for the PRD template, complexity classification detail, question-gate rules, and worked message formats.
 

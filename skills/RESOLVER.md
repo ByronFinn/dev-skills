@@ -144,8 +144,8 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 | Skill | Format Files | Core Role | Updates |
 |-------|-------------|-----------|---------|
 | `setup-project` | — | Scaffold or update per-repo skill configuration (idempotent — safe to re-run) | `docs/agents/*.md` + AGENTS.md block |
-| `think` | PRD-FORMAT.md | Diverge → converge to initial PRD | PRD + issue if explicitly confirmed |
-| `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | Challenge plan + update domain knowledge | PRD + CONTEXT.md + ADRs + issue if confirmed |
+| `think` | PRD-FORMAT.md | Diverge → converge to initial PRD | PRD + parent issue (required, Step 9a) |
+| `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | Challenge plan + update domain knowledge | PRD + CONTEXT.md + ADRs + parent issue synced (if created by /think) |
 | `story` | STORY-FORMAT.md | Vertical slices to Issues (accepts PRD or direct description) | PRD (created or updated) + Child Issues + issues if confirmed |
 | `tdd` | — | Sub-agent orchestration: Test Sub-Agent → Human Review Gates → Develop Sub-Agent | Code + tests (via Acceptance Criterion Cycles) |
 | `review` | — | Parallel three-perspective review: Test Review ∥ Code Review ∥ Impact Review | Merged report + local docs + remote updates only when explicitly authorized |

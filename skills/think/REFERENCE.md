@@ -297,9 +297,9 @@ Here is my understanding of complete requirements:
 Does this look correct? If so, I'll finalize the PRD and recommend the next workflow step (`/grill` for plan challenge, or `/story` if already validated).
 ```
 
-## Step 9a: Create Issue (Optional)
+## Step 9a: Create Parent Issue (Required)
 
-If user confirms, create issue as parent task. Read `docs/agents/issue-tracker.md` for the issue creation convention.
+After the user confirms the plan in Step 9, create the parent Issue as a **required** action. This is the single point where the PRD's parent Issue is created — `/grill` and `/story` downstream rely on the PRD's `## Issue` field to attach child issues. Skipping it leaves child issues orphaned (the "PRD has no parent Issue" break in the chain). Read `docs/agents/issue-tracker.md` for the issue creation convention.
 
 Create the issue with a structured body (not the raw PRD dump). Use the same Issue Format as `/story` for consistency:
 

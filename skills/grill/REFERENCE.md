@@ -102,6 +102,23 @@ Fill the `Grilled by` field in the PRD's `## Traceability` section AND set `Stat
 - **Grilled by**: `/grill` (completed <YYYY-MM-DD>) — <summary: terms sharpened, assumptions resolved, ADRs created>
 ```
 
+## Sync Parent Issue
+
+The parent Issue is created by `/think` Step 9a (required) and recorded in the PRD's `## Issue` field (e.g. `#42`). grill's job is to **sync**, not create — creation is `/think`'s responsibility, and this division keeps a single point of ownership so `/story` always finds a parent to attach child issues to.
+
+**3-step logic:**
+
+1. **Read** the PRD `## Issue` field.
+2. **Number present** → update the parent Issue body to reflect this grill's scope changes:
+   - Sharpened terminology (link to updated `CONTEXT.md` entries)
+   - Confirmed scope boundaries (what's in vs deferred)
+   - New ADRs and their key conclusions
+   - **Do not** change the Issue title (it uses the PRD's `<Feature Name>`, set by `/think`)
+   - **Do not** close the parent Issue — it stays open until child issues from `/story` are done
+3. **Field empty or missing** → skip. A minimal PRD from a direct `/story` path (which skipped `/think`) has no parent Issue by design; child issues there stand alone. Do not create one here.
+
+**Boundary:** grill is "validate + sync", not "create". If you find yourself wanting to create a parent Issue, the right fix is upstream — the PRD should have gone through `/think` Step 9a.
+
 ## Worked Example
 
 ```
