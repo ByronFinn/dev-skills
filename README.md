@@ -44,6 +44,7 @@ AI coding agents are powerful but inconsistent. They skip planning, forget domai
 | **review** | `/review` | Code changes (diff) | Merged three-perspective report | Parallel Test Review ∥ Code Review ∥ Impact Review. Contradictions surfaced for human adjudication. Integration Review for multi-slice features. |
 | **debug** | `/debug` | Error, crash, regression | Root cause + fix + regression test | Systematic 6-phase loop. Feedback loop first, then hypothesize-instrument-fix. Environment diff, bisect, and scope scan modes. |
 | **improve-architecture** | `/improve-architecture` | Codebase + PRDs + ADRs | Architecture improvement report | Scan for design debt, ADR compliance, deepening opportunities. Blocking/High/Medium priority with scope estimates. |
+| **write** | `/write` | Prose, draft, or doc to review | Edited prose (no change list) | Strip AI tone, polish, rewrite. Release notes, launch/social copy, localization, document review. |
 
 ## Workflow
 
@@ -87,6 +88,7 @@ Route by your **work object**, not workflow phase:
 | Error, crash, regression | `debug` |
 | Completed work / diff to review | `review` |
 | Architecture health / design debt | `improve-architecture` |
+| Prose editing / polish / de-AI / release notes / localization | `write` |
 
 Full disambiguation rules: [`skills/RESOLVER.md`](skills/RESOLVER.md)
 
@@ -166,25 +168,7 @@ Blocking checkpoint in `/tdd` where a human must approve before the next phase b
 
 ## Repository Structure
 
-```
-skills/
-├── setup-project/               # Project initialization → docs/agents/ config
-├── think/                       # Brainstorming → PRD
-│   └── PRD-FORMAT.md
-├── grill/                       # Plan validation → CONTEXT.md + ADRs
-│   ├── CONTEXT-FORMAT.md
-│   └── ADR-FORMAT.md
-├── story/                       # PRD → vertical-slice Issues
-│   └── STORY-FORMAT.md
-├── tdd/                         # Sub-agent TDD (Test → Gates → Develop)
-├── review/                      # Parallel 3-perspective review
-├── debug/                       # Root cause analysis → systematic fix
-├── improve-architecture/        # Architecture health check → report
-├── RESOLVER.md                  # Skill routing table
-└── rules/
-    ├── anti-patterns.md         # 40 behavioral constraints
-    └── entry-protocol.md        # Shared bootstrap sequence
-```
+The canonical structure tree lives in [`AGENTS.md`](AGENTS.md#repository-structure) (kept current there so it drifts in one place, not three). In short: each skill is a directory under `skills/` with a `SKILL.md` entry point and (optionally) a `REFERENCE.md` for detail and `*-FORMAT.md` templates; shared rules and the routing table sit alongside.
 
 Every skill follows the same internal structure:
 

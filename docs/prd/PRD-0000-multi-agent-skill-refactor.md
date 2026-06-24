@@ -1,5 +1,7 @@
 # Multi-Agent Skill Refactor
 
+> **Status**: InProgress | **PRD**: PRD-0000 | **Created**: 2026-06-12 | **Last updated**: 2026-06-24
+
 ## Goal
 
 重构 TDD 和 Review skill，引入 sub-agent 编排模式：`/tdd` 和 `/review` 命令保持不变，但内部驱动独立的 sub-agent 执行，各自重新读取 PRD/Story 上下文，避免认知耦合。同时引入两阶段 Human Review Gate（场景设计审查 + 测试代码审查），以提升质量保障和问题发现能力。
@@ -141,7 +143,7 @@ skills/
 - **Grilled by**: `/grill` (2026-06-12) — sub-agent 编排模式、两阶段审查门、Acceptance Criterion Cycle 术语确定
 - **Sliced by**: `/story` → Child Issues below
 - **Implemented by**: `/tdd` + `/review` — TDD/Review skill 重构为 sub-agent 编排(#2-#5)
-- **Arch reviewed by**: `/improve-architecture` (2026-06-17) — 发现 ADR 0002 被 Gate Modes 违反(B1,已由 ADR 0003 解决)、Traceability 链路断裂(H1)、CONTEXT.md 概念漂移(H2)
+- **Arch reviewed by**: `/improve-architecture` (2026-06-17) — 发现 ADR 0002 被 Gate Modes 违反(B1,已由 ADR 0003 解决)、Traceability 链路断裂(H1)、CONTEXT.md 概念漂移(H2)；(2026-06-24) — 修复 ADR 0003 在 tdd/REFERENCE.md 的残留漂移、补齐 PRD-0000 命名前缀与状态行
 - **Reviewed by**: `/review` (2026-06-17) — grill/think/tdd/review skill 优化落地
 
 ## Child Issues

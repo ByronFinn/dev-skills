@@ -74,5 +74,5 @@ We adopt three **Gate Modes**, with **Full as the default** and explicit user re
 
 * Supersedes [0002 - Two-Stage Human Review Gate for Test Quality](0002-two-stage-human-review-gate.md) — ADR 0002's reasoning for Full mode remains the default case; this ADR adds the conditions under which lighter modes are acceptable.
 * [0001 - Sub-Agent Orchestration Pattern](0001-sub-agent-orchestration-pattern.md) — Gate Modes are orthogonal to sub-agent independence; all modes retain the re-read-from-disk constraint.
-* CONTEXT.md — "Human Review Gate" definition (to be updated to reflect modes per the improve-architecture finding H2).
+* CONTEXT.md — "Human Review Gate" definition (updated to reflect Gate Modes: Full / Fast / Batch).
 * `skills/tdd/SKILL.md` Gate Modes section — the skill behavior this ADR authorizes.

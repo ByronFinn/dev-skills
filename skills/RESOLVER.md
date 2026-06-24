@@ -198,50 +198,6 @@ Key anti-patterns for sub-agent skills:
 
 ## Project Structure
 
-> **Note:** In `tdd/` and `review/`, REFERENCE.md now contains sub-agent instruction chapters describing each sub-agent’s responsibilities, checklists, and independence constraints.
+> **Note:** In `tdd/` and `review/`, REFERENCE.md contains sub-agent instruction chapters describing each sub-agent's responsibilities, checklists, and independence constraints.
 
-```
-skills/
-├── setup-project/
-│   ├── SKILL.md
-│   └── REFERENCE.md
-├── think/
-│   ├── SKILL.md
-│   ├── REFERENCE.md
-│   └── PRD-FORMAT.md
-├── grill/
-│   ├── SKILL.md
-│   ├── REFERENCE.md
-│   ├── CONTEXT-FORMAT.md
-│   └── ADR-FORMAT.md
-├── story/
-│   ├── SKILL.md
-│   ├── REFERENCE.md
-│   └── STORY-FORMAT.md
-├── tdd/
-│   ├── SKILL.md
-│   └── REFERENCE.md
-├── review/
-│   ├── SKILL.md
-│   └── REFERENCE.md
-├── debug/
-│   ├── SKILL.md
-│   └── REFERENCE.md
-├── improve-architecture/
-│   ├── SKILL.md
-│   └── REFERENCE.md
-├── write/
-│   ├── SKILL.md
-│   ├── REFERENCE.md
-│   └── references/
-│       ├── write-en.md
-│       ├── write-zh.md
-│       ├── write-zh-prose.md
-│       ├── write-zh-bilingual.md
-│       ├── write-zh-release-notes.md
-│       └── write-product-localization.md
-├── RESOLVER.md
-├── rules/
-│   ├── anti-patterns.md
-│   └── entry-protocol.md
-```
+The canonical directory tree lives in `AGENTS.md` (Repository Structure section) so it drifts in one place, not across files. See there for the authoritative layout.

@@ -501,8 +501,8 @@ Each sub-agent must re-read all shared context files from disk before acting. Th
 **9. Batch all scenarios across criteria.**
 One acceptance criterion per cycle, enforced by the gate structure. Batching scenarios across criteria is horizontal slicing — the anti-pattern that motivated the sub-agent design. Each cycle completes one criterion end-to-end before starting the next.
 
-**10. Skipping Scenario Review Gate.**
-The two-stage gate is mandatory. Scenario design is the highest-leverage decision in TDD — it determines what behavior is specified and how thoroughly. Skipping this gate to write test code faster produces poorly designed tests that test the wrong things.
+**10. Skipping the Scenario Review Gate in Full mode.**
+In **Full mode** (the default), the two-stage gate is mandatory — scenario design is the highest-leverage decision in TDD, and skipping the Scenario Review Gate to write test code faster produces poorly designed tests that test the wrong things. In **Fast mode**, the Scenario Review Gate is skipped *by design* (scenario coverage folds into the single Test Code Review Gate); this is not a violation, but it requires an explicit user request. In **Batch mode**, one gate covers a homogeneous group. See ADR 0003 (Gate Modes).
 
 **11. Sub-agents share internal state.**
 Each sub-agent starts fresh — no inherited context or cached understanding from another sub-agent. The Test Sub-Agent's interpretation of a requirement is its own; the Develop Sub-Agent must re-read the PRD and form its own understanding. This independence is what catches misinterpretations.

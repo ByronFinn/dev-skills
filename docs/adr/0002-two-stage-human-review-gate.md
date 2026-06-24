@@ -55,4 +55,4 @@ Test Sub-Agent (scenario design) → Scenario Review Gate → Test Sub-Agent (co
 ## References
 
 * CONTEXT.md — Human Review Gate, Acceptance Criterion Cycle definitions
-* PRD `docs/prd/multi-agent-skill-refactor.md` — TDD skill requirements
+* PRD `docs/prd/PRD-0000-multi-agent-skill-refactor.md` — TDD skill requirements
