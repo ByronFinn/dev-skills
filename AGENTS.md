@@ -24,6 +24,9 @@ skills/
 │   ├── SKILL.md
 │   ├── REFERENCE.md
 │   └── PRD-FORMAT.md
+├── have-a-try/                  # Throwaway prototype to answer one design question (LOGIC terminal app or UI variants)
+│   ├── SKILL.md
+│   └── REFERENCE.md
 ├── grill/                       # Plan validation skill → domain knowledge
 │   ├── SKILL.md
 │   ├── REFERENCE.md
@@ -75,6 +78,7 @@ Skills compose into standard software engineering workflows:
 ```
 First time:           setup-project → (skills configured)
 New feature:          think → grill → story → tdd → review → (release)
+Design doubt:         think → have-a-try → grill → story → tdd → review  (optional branch: prototype when running code beats reasoning)
 Direct breakdown:     story → tdd → review → (release)
 Bug/regression:       debug → review (optional)
 Architecture health:  improve-architecture → grill/story/tdd (if approved)
@@ -97,6 +101,7 @@ Route by the user's **work object** first, then by workflow phase:
 |---|---|
 | New project, configure skills, issue tracker setup | `setup-project` |
 | Rough idea, unclear requirements, design approach | `think` |
+| Design doubt easier to resolve by running code than reasoning (state machine edges, data-model cases, "what should this page look like") | `have-a-try` (throwaway prototype: LOGIC terminal app or UI variants) |
 | Existing PRD/plan, "challenge this plan", terminology questions | `grill` |
 | Completed PRD or clear feature description needing tickets, issue breakdown | `story` |
 | Accepted issue, TDD / red-green-refactor request | `tdd` (sub-agent orchestrated: Test Sub-Agent → Gates → Develop Sub-Agent) |
@@ -109,6 +114,7 @@ Key disambiguation rules:
 - **Bug vs TDD**: Root cause unknown → `debug`. Root cause known + accepted behavior to implement → `tdd`.
 - **Grill vs Review**: PRD/plan/terminology → `grill`. Diff/completed work → `review`.
 - **Story vs Think**: Clear plan → `story`. Rough idea → `think`. Vague "break this down" → suggest `think` first.
+- **Think vs Have-a-try vs TDD**: vague idea / not sure what to build → `think` (no code). Concrete design question cheaper to resolve by running code → `have-a-try` (disposable code). Accepted behavior with known requirements → `tdd` (production code with tests). `think` doesn't write code; `have-a-try` writes disposable code; `tdd` writes production code.
 
 ## Cross-Skill Rules (anti-patterns.md)
 

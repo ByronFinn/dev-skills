@@ -19,6 +19,8 @@ Priority when multiple skills could match:
 |---|---|---|
 | New project, configure skills, issue tracker setup, initialize workflow | `setup-project` | Scaffold `docs/agents/` configuration and AGENTS.md before skills can run. |
 | Rough idea, unclear requirements, feasibility, design approach, “how should we build this?” | `think` | Convert ambiguity into a decision-complete PRD. |
+| Design doubt easier to resolve by *running* code than reasoning on paper — state machine edges, data-model expressiveness, “does this logic feel right?” (→ LOGIC) | `have-a-try` | Build a throwaway terminal prototype that answers one logic/state question. Sits between `/think` and `/grill`. |
+| Design doubt about what a page should *look like* — “try a few layouts”, “see a few options” (→ UI) | `have-a-try` | Build several radically different UI variants on one route, switchable via `?variant=`. |
 | Existing PRD/plan/terminology/domain model/ADR questions, “challenge this plan”, “is this design sound?” | `grill` | Stress-test plan against domain language and decision records. |
 | Completed PRD or clear feature description needing tickets, issue breakdown, implementation tasks, vertical slices | `story` | Convert plan into executable Issues. Accepts PRD or direct description. |
 | Accepted issue, known behavior to implement, explicit TDD/red-green-refactor request | `tdd` | Sub-agent orchestration: Test Sub-Agent → Human Review Gates → Develop Sub-Agent. One acceptance criterion per cycle. |
@@ -40,6 +42,7 @@ Priority when multiple skills could match:
 | Trigger | Skill | Description |
 |---------|-------|-------------|
 | brainstorm / 构思 / 方案 / 出方案 / 深入分析 / 怎么设计 | `think` | Diverge on possibilities, converge to concrete plan, generate initial PRD and issue |
+| prototype / 原型 / 试一下 / spike / 验证设计 / 看看效果 / 跑起来看看 / 状态机对不对 / 数据模型能表达吗 | `have-a-try` | Build a throwaway prototype to answer one design question (LOGIC terminal app or UI variants). Optional branch between `/think` and `/grill` — write disposable code, capture the verdict, delete the shell |
 | 挑战方案 / grill / 细化方案 / 深挖计划 / 术语审查 | `grill` | Challenge plan against domain model, sharpen terminology, update CONTEXT.md, ADRs, issue |
 | 分解 / story / 拆分 / Issues / 任务 / 子任务 | `story` | Break plan into executable Issues (accepts PRD or direct description), update PRD child issues, sync issue tracker |
 | TDD / 测试优先 / 实现已确认行为 / red-green-refactor | `tdd` | Test-driven development, red-green-refactor loop, one vertical slice at a time |
@@ -84,6 +87,12 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 /think → user approves → /grill → /story → /tdd → /review → merge/release
 ```
 
+**New feature with a design doubt worth prototyping:**
+```
+/think → /have-a-try (when a design question is cheaper to run than reason about) → /grill → /story → /tdd → /review
+```
+`/have-a-try` is an optional branch, not a required step. Use it only when the question is concrete enough to resolve by running code (state machine edges, data-model cases, what a page should look like). It writes disposable code; the validated verdict flows into the PRD/ADR, then the prototype shell is deleted or absorbed.
+
 **Bug fix workflow:**
 ```
 /debug → root cause known → fix/regression test → /review (optional)
@@ -113,6 +122,12 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 - Root cause known and user wants test-first implementation of accepted behavior → `/tdd`.
 - During `/debug`, Phase 5 may use TDD discipline locally; do not switch the main skill unless user asks.
 - Note: `/tdd` now uses sub-agent orchestration (Test Sub-Agent → Human Review Gates → Develop Sub-Agent per acceptance criterion). If the user only wants a quick fix without the full cycle structure, `/debug` is more appropriate.
+
+**"验证一下 / try it" conflict (`have-a-try` vs `think` vs `tdd`):**
+- Vague idea, multiple paths, not sure *what* to build → `/think` (pure conversation, no code, produces a PRD).
+- Concrete design question that's cheaper to resolve by *running* code than reasoning on paper (state machine edge, data-model case, what a page looks like) → `/have-a-try` (disposable prototype; LOGIC terminal app or UI variants).
+- Accepted behavior with known requirements, want a proper test-first implementation → `/tdd` (red-green-refactor with human review gates — the opposite of "skip the polish").
+- Rule of thumb: `/think` doesn't write code; `/have-a-try` writes disposable code; `/tdd` writes production code with tests. If the user says "试一下" but the design isn't clear yet, suggest `/think` first.
 
 **“审查” conflict (`grill` vs `review`):**
 - PRD, plan, approach, terminology, domain model, ADR, “方案是否合理” → `/grill`.
@@ -145,6 +160,7 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 |-------|-------------|-----------|---------|
 | `setup-project` | — | Scaffold or update per-repo skill configuration (idempotent — safe to re-run) | `docs/agents/*.md` + AGENTS.md block |
 | `think` | PRD-FORMAT.md | Diverge → converge to initial PRD | PRD + parent issue (required, Step 9a) |
+| `have-a-try` | — | Build a throwaway prototype to answer one design question (LOGIC terminal app or UI variants) | Validated verdict (PRD `Prototyped by` / ADR / commit / NOTES.md); prototype deleted or core absorbed |
 | `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | Challenge plan + update domain knowledge | PRD + CONTEXT.md + ADRs + parent issue synced (if created by /think) |
 | `story` | STORY-FORMAT.md | Vertical slices to Issues (accepts PRD or direct description) | PRD (created or updated) + Child Issues + issues if confirmed |
 | `tdd` | — | Sub-agent orchestration: Test Sub-Agent → Human Review Gates → Develop Sub-Agent | Code + tests (via Acceptance Criterion Cycles) |
@@ -163,6 +179,7 @@ Each skill may depend on files or configuration produced by earlier skills. Miss
 |-------|---------------------------|----------|---------------------------------------|----------------|-----------------|
 | `setup-project` | — | Git repo | — | — | — (this is the foundation) |
 | `think` | — | — | `CONTEXT.md`, `docs/adr/`, existing PRDs | PRD-FORMAT.md | Creates PRD if user opts in |
+| `have-a-try` | `domain.md` | A concrete design question | `CONTEXT.md`, `docs/adr/`, PRD | — | — |
 | `grill` | `domain.md` | PRD (`docs/prd/PRD-NNNN-<title>.md`) | `CONTEXT.md`, `docs/adr/` | CONTEXT-FORMAT.md, ADR-FORMAT.md | Creates `CONTEXT.md` and ADRs lazily |
 | `story` | `domain.md`, `repo-map.md`, `issue-tracker.md`, `triage-labels.md` | — | `CONTEXT.md`, PRD | STORY-FORMAT.md (Issue body), minimal PRD | Creates minimal PRD if none exists |
 | `tdd` | `domain.md`, `repo-map.md` | — | `issue-tracker.md`, PRD, `CONTEXT.md`, ADRs | Issue body = STORY-FORMAT.md | — |
