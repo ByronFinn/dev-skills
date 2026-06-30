@@ -37,7 +37,7 @@ This is not a consumer skill — it is the **foundation** that consumer skills d
 
 ## Outcome Contract
 
-- **Outcome**: `docs/agents/` directory with issue-tracker, triage-labels, domain docs, documentation language, and (for multi-repo) repo-map; `## Agent skills` block in AGENTS.md
+- **Outcome**: `docs/agents/` directory with issue-tracker, triage-labels, domain docs, documentation language, and (for multi-repo) repo-map; `## Agent skills` block in AGENTS.md. On re-run: conformance sweep results — naming, language, and format audit of existing doc files.
 - **Done when**: User confirms configuration, all files written, AGENTS.md updated
 - **Evidence**: `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `docs/agents/domain.md`, `docs/agents/language.md`; `docs/agents/repo-map.md` (multi-repo only)
 - **Output**: Summary of configuration, next step to use engineering skills
@@ -51,6 +51,8 @@ This is not a consumer skill — it is the **foundation** that consumer skills d
 **Step 3: Present findings** — show detected defaults (project structure, issue tracker, triage labels, domain layout, documentation language). If updating, show a diff of what changed vs current config.
 
 **Step 4: Ask for overrides** — present the full detected configuration as a draft; ask if anything needs changing. If the user wants to change something, walk through that section one at a time. Sections: A (Issue Tracker), B (Triage Labels), C (Domain Docs), D (Documentation Language). If everything looks good, proceed.
+
+**Step 4a (Re-run only): Conformance sweep** — After config overrides are confirmed, scan `docs/prd/`, `docs/adr/`, `docs/research/` for files that don't match the new settings. Group findings by naming, language, format, and metadata. For naming violations suggest rename; for language flag and suggest `/write`; for format/metadata report only. Confirm with user before acting. See [REFERENCE.md](REFERENCE.md) Conformance Sweep.
 
 **Step 5: Confirm** — show the complete draft of all files to be written (AGENTS.md block + each `docs/agents/` file). If updating, show only files that changed.
 
@@ -75,6 +77,9 @@ See [REFERENCE.md](REFERENCE.md) for seed templates and detailed steps.
 | Re-run: overwrote unchanged sections / missed drift | Step 1-2: Read existing config, compare structure against `repo-map.md`, only update what changed |
 | Re-run: language change undetected / per-package out of sync | Step 4D / Step 6: Compare existing config against current state on re-run |
 | Re-run: domain.md shows template examples, not actual files | Step 6: scan `docs/prd/` `docs/adr/` `docs/research/` for real filenames before writing domain.md |
+| Re-run: renamed PRDs not updated in referencing files | After renaming, scan `docs/adr/` and `CONTEXT.md` for references to old name; suggest update |
+| Re-run: language change didn't reach existing docs | Language Audit: flag files in wrong language, recommend `/write` — don't auto-translate |
+| Re-run: format drift not detected | Format Audit: compare each file's section structure against its FORMAT spec |
 | Migration: orphaned files after structure change (e.g. single→monorepo) | Step 2: Detect drift, present migration path, clean up with confirmation |
 
 Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
@@ -110,14 +115,19 @@ Next: Start using skills. Run /think to brainstorm a feature, /research for tech
 Config updated.
 
 Changes:
-- <what changed, e.g., "Added frontend repo to repo-map">
 - <what changed, e.g., "Switched issue tracker from GitHub to GitLab">
+- <what changed, e.g., "Language changed from Chinese to English">
 
 Updated files:
 - docs/agents/<file>.md — updated (changed: <sections>)
 - <... other files ...>
 
-Unchanged: docs/agents/<files not touched> — no changes needed
+Conformance sweep:
+- ✅ Naming: all files conform
+- ⚠️ Language: 1 file in wrong language (suggest /write)
+- ✅ Format: all files comply
 
-Next: Re-run affected skills if config change affects their behavior (e.g., after tracker switch, re-run /story for new issues).
+Done with 1 finding, 0 fixed (requires /write).
+
+Next: Re-run affected skills if config change affects their behavior (e.g., after language change, re-run /write on flagged docs).
 ```

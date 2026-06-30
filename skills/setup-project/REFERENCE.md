@@ -9,7 +9,8 @@ When `docs/agents/` already exists, run this drift detection loop **before** any
 | `issue-tracker.md` | `git remote -v` → does the remote match the tracker type in the file? | Remote changed (GitHub→GitLab, or no remote→local) | Present change, confirm, rewrite `issue-tracker.md` |
 | `triage-labels.md` | Check actual labels on 1-2 recent issues → do they still match the file? | Labels renamed, added, or deprecated | Present change, confirm, rewrite `triage-labels.md` |
 | `domain.md` | Does `CONTEXT-MAP.md` exist now when it didn't before? Were domain dirs (`docs/prd/`, `docs/adr/`, `docs/research/`) reorganized? | Context layout changed (single↔multi), dirs moved | Present change, confirm, rewrite `domain.md` |
-| `language.md` | Read existing value. Ask: "Is `<language>` still the right doc language for the team?" | Team's language preference changed since last setup | Confirm, rewrite `language.md` |
+| `language.md` | Read existing value. Ask: "Is `<language>` still the right doc language for the team?" | Language preference changed | Confirm, rewrite `language.md`. If changed, trigger **Conformance Sweep** (Language Audit) |
+| **doc content** | Scan `docs/prd/`, `docs/adr/`, `docs/research/` for naming/language/format drift | Config changed (language, naming, FORMAT) | Trigger **Conformance Sweep** after overrides |
 | `repo-map.md` (if exists) | Has the project structure changed? (Workspace files added/removed? User mentions sibling repos?) | Package count changed, repos added/removed, project type (single↔mono↔multi) changed | Present diff, confirm, rewrite `repo-map.md`. If project type changed → trigger **Migration** path below |
 | (no `repo-map.md` yet) | Detect new multi-repo or monorepo signals: workspace files, user mentions sibling repos, subproject dirs | New structure signals found | Ask if project structure changed, create `repo-map.md` if needed |
 
@@ -40,6 +41,61 @@ When the repo's structure has changed significantly since the last setup-project
 | Any structure | **Reorganized domain dirs** (e.g. `docs/prd/` renamed or split across contexts) | Update `domain.md` with new paths. Check if old paths have stale files and ask about cleanup. |
 
 **Rule:** Migration implies rewriting more files than a normal re-run. Always present the full diff of what will be created, rewritten, and removed. Get explicit approval before removing any files (anti-pattern #17).
+
+## Conformance Sweep (Re-run Only)
+
+After config overrides are confirmed, sweep existing domain docs for drift against the new settings. This runs **after** Step 4 but **before** writing files.
+
+### Naming Audit
+
+Check each file's name against the convention defined in the relevant FORMAT spec:
+
+| Directory | Expected pattern | Example |
+|-----------|-----------------|---------|
+| `docs/prd/` | `PRD-NNNN-<title>.md` | `PRD-0001-user-subscription.md` |
+| `docs/adr/` | `<NNNN>-<title>.md` (no `ADR-` prefix) | `0001-event-sourced-orders.md` |
+| `docs/research/` | `<stack>-<topic>-<major>.md` | `react-concurrent-rendering-18.md` |
+
+For each mismatch: report `<file> does not match convention — expected <pattern>`. Ask before renaming. Batch multiple files into one question.
+
+### Language Audit
+
+Read `docs/agents/language.md` for expected language. Scan each file's first 3 lines of prose:
+
+- If detected language differs from setting → flag the file
+- Do NOT auto-translate → suggest `/write` for translation
+- Report: `"<file> is in <detected>, but language.md requires <expected>. Run /write to translate."`
+
+### Format Audit
+
+Compare each file's section headers against its FORMAT spec:
+
+| Type | Required sections |
+|------|------------------|
+| PRD | `# Title`, `## Goal`, `## Requirements`, `## Acceptance Criteria`, `## Out of Scope`, `## Traceability` |
+| ADR | `# Title`, `## Status`, `## Context`, `## Decision`, `## Consequences` |
+| Research | `# Title`, `## TL;DR`, `## Question`, `## Approach`, `## Findings`, `## Verdict`, `## Boundary Conditions`, `## Sources` |
+
+Report missing or extra sections. Do NOT auto-add placeholder sections.
+
+### Metadata Consistency
+
+Check PRD `## Traceability` fields against lifecycle:
+- `Sliced into` exists but child issues list empty?
+- `Status` says `Grilled` but `Grilled by` empty?
+- Child Issue referenced but `## Issue` field missing?
+- `Status` says `Done` but not all child issues `— Done`?
+
+Informational only — report, don't auto-fix.
+
+### Action Rules
+
+| Category | Action |
+|----------|--------|
+| **Naming** | Ask per file before renaming. Batch into one question. |
+| **Language** | Flag only; suggest `/write`. Never auto-translate. |
+| **Format** | Report deviations only. Never auto-add empty sections. |
+| **Metadata** | Report inconsistencies only. Never auto-fix. |
 
 ## Traceability
 
