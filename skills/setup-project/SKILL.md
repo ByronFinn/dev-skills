@@ -54,7 +54,7 @@ This is not a consumer skill — it is the **foundation** that consumer skills d
 
 **Step 5: Confirm** — show the complete draft of all files to be written (AGENTS.md block + each `docs/agents/` file). If updating, show only files that changed.
 
-**Step 6: Write** — edit AGENTS.md, create or update `docs/agents/*.md` files. Update in-place, never append duplicates.
+**Step 6: Write** — edit AGENTS.md, create or update `docs/agents/*.md` files. When writing `domain.md`, scan `docs/prd/`, `docs/adr/`, `docs/research/` first and use actual filenames in the file tree, not template placeholders (see REFERENCE.md domain.md template note). Update in-place, never append duplicates.
 
 **Step 7: Done** — list skills now configured, suggest next step
 
@@ -74,6 +74,7 @@ See [REFERENCE.md](REFERENCE.md) for seed templates and detailed steps.
 | Wrote files without user confirmation | Step 5: Show full draft before writing |
 | Re-run: overwrote unchanged sections / missed drift | Step 1-2: Read existing config, compare structure against `repo-map.md`, only update what changed |
 | Re-run: language change undetected / per-package out of sync | Step 4D / Step 6: Compare existing config against current state on re-run |
+| Re-run: domain.md shows template examples, not actual files | Step 6: scan `docs/prd/` `docs/adr/` `docs/research/` for real filenames before writing domain.md |
 | Migration: orphaned files after structure change (e.g. single→monorepo) | Step 2: Detect drift, present migration path, clean up with confirmation |
 
 Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.

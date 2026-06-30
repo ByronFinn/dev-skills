@@ -162,6 +162,24 @@ When skills are used in target projects, they create and maintain these files:
 | `docs/research/<stack>-<topic>-<major>.md` + `docs/research/INDEX.md` | `research` | Immutable, versioned technical research records + searchable index (authoritative sources only) |
 | Issues | `story` | Vertical-slice implementation tickets |
 
+## Agent skills
+
+### Issue tracker
+
+本仓库使用 **GitHub Issues** 跟踪任务。详见 `docs/agents/issue-tracker.md`。
+
+### Triage labels
+
+五个标准分诊标签：`needs-triage`、`needs-info`、`ready-for-agent`、`ready-for-human`、`wontfix`。详见 `docs/agents/triage-labels.md`。
+
+### Domain docs
+
+**单上下文（single-context）** 布局：`CONTEXT.md` 位于仓库根目录，PRD 在 `docs/prd/`，ADR 在 `docs/adr/`。详见 `docs/agents/domain.md`。
+
+### Documentation language
+
+所有面向人类读者的文档采用 **简体中文** 书写。详见 `docs/agents/language.md`。
+
 ## Contributing
 
 - Follow existing file structure: `SKILL.md` (entry) → `REFERENCE.md` (detail) → `*-FORMAT.md` (templates). Some skills (e.g., `write`) use a `references/` directory for language-specific pattern catalogs loaded on demand.

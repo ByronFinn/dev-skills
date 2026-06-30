@@ -366,6 +366,10 @@ Edit the right-hand column to match whatever vocabulary you actually use.
 
 ### domain.md
 
+> **Before writing:** scan `docs/prd/`, `docs/adr/`, `docs/research/` for existing files. If any exist, replace the example filenames in the File structure section below with the actual filenames. If a directory is empty or missing, omit that branch. This makes `domain.md` reflect reality, not template placeholders.
+>
+> *On first run* (no docs yet), use the template examples as-is — they demonstrate structure, not specific files.
+
 ```markdown
 # Domain Docs
 
