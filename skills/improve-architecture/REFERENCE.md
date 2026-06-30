@@ -218,6 +218,8 @@ fetch('/api/products').then(/* ... */);
 
 ## Deep Module Examples
 
+> The deep/shallow module concept originates in *A Philosophy of Software Design*; the refactor-phase definition lives in `tdd/REFERENCE.md` §Deep Modules Principle. Below are scan-phase examples for spotting shallow modules during architecture review.
+
 **Shallow (not worth having):**
 ```javascript
 // Complex implementation, equally complex interface
