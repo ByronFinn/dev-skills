@@ -234,4 +234,4 @@ Key anti-patterns for sub-agent skills:
 
 > **Note:** In `tdd/` and `review/`, REFERENCE.md contains sub-agent instruction chapters describing each sub-agent's responsibilities, checklists, and independence constraints.
 
-The canonical directory tree lives in `AGENTS.md` (Repository Structure section) so it drifts in one place, not across files. See there for the authoritative layout.
+The canonical directory tree lives in `AGENTS.md` (Repository Structure section) so it drifts in one place, not across files. See there for the authoritative layout. Likewise, this file (RESOLVER.md) is the single source for the routing table and disambiguation rules — `AGENTS.md` and `README.md` carry only a pointer plus headline summaries, not a verbatim copy.

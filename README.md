@@ -76,12 +76,14 @@ Skills compose into standard engineering workflows. Each skill **stops** after i
 
 ### Routing
 
-Route by your **work object**, not workflow phase:
+Route by your **work object**, not workflow phase (summary — full table and disambiguation rules in [`skills/RESOLVER.md`](skills/RESOLVER.md)):
 
 | You have / want to do | Skill |
 |---|---|
 | New project, need configuration | `setup-project` |
 | Rough idea, unclear requirements | `think` |
+| Stack/version-specific investigation to capture durably | `research` |
+| Design doubt to resolve by running throwaway code | `have-a-try` |
 | PRD/plan to challenge | `grill` |
 | Plan to break into tickets | `story` |
 | Accepted issue to implement | `tdd` |

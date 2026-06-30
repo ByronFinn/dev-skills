@@ -102,28 +102,14 @@ Skills do **not** auto-chain. Each skill stops and waits for the user to trigger
 
 ## Skill Routing (RESOLVER.md)
 
-Route by the user's **work object** first, then by workflow phase:
+The canonical routing table, workflow-phase routing, common sequences, and full disambiguation rules live in [RESOLVER.md](skills/RESOLVER.md) — that file is the single source, edited in one place. Headline disambiguations (full detail in RESOLVER.md):
 
-| User provides / asks about | Route to |
-|---|---|
-| New project, configure skills, issue tracker setup | `setup-project` |
-| Rough idea, unclear requirements, design approach | `think` |
-| Stack/version-specific technical investigation to capture durably (best practice, tech evaluation, "how does X work in version Y") | `research` (authoritative-source investigation → immutable record + INDEX) |
-| Design doubt easier to resolve by running code than reasoning (state machine edges, data-model cases, "what should this page look like") | `have-a-try` (throwaway prototype: LOGIC terminal app or UI variants) |
-| Existing PRD/plan, "challenge this plan", terminology questions | `grill` |
-| Completed PRD or clear feature description needing tickets, issue breakdown | `story` |
-| Accepted issue, TDD / red-green-refactor request | `tdd` (sub-agent orchestrated: Test Sub-Agent → Gates → Develop Sub-Agent) |
-| Error, crash, failing test, regression | `debug` |
-| Diff, staged changes, completed work, release readiness | `review` (parallel sub-agents: Test Review ∥ Code Review ∥ Impact Review) |
-| Periodic health check, architecture review, design debt | `improve-architecture` |
-| Prose editing, polish, de-AI, release notes, tweet, document review, localization | `write` |
+- **Bug vs TDD**: root cause unknown → `debug`; root cause known + accepted behavior to implement → `tdd`.
+- **Grill vs Review**: PRD/plan/terminology → `grill`; diff/completed work → `review`.
+- **Story vs Think**: clear plan → `story`; rough idea → `think`.
+- **Think vs Have-a-try vs TDD**: vague idea → `think` (no code); concrete design question cheaper to resolve by running code → `have-a-try` (disposable code); accepted behavior with known requirements → `tdd` (production code + tests).
+- **Think vs Research**: `think` decides *what* to build (→ PRD); `research` decides *how* a stack×version behaves (→ immutable record + INDEX).
 
-Key disambiguation rules:
-- **Bug vs TDD**: Root cause unknown → `debug`. Root cause known + accepted behavior to implement → `tdd`.
-- **Grill vs Review**: PRD/plan/terminology → `grill`. Diff/completed work → `review`.
-- **Story vs Think**: Clear plan → `story`. Rough idea → `think`. Vague "break this down" → suggest `think` first.
-- **Think vs Have-a-try vs TDD**: vague idea / not sure what to build → `think` (no code). Concrete design question cheaper to resolve by running code → `have-a-try` (disposable code). Accepted behavior with known requirements → `tdd` (production code with tests). `think` doesn't write code; `have-a-try` writes disposable code; `tdd` writes production code.
-- **Think vs Research**: `think` decides *what* to build (converges to a PRD; queries the research INDEX at Step 5 but doesn't itself persist research). `research` decides *how* a specific stack×version behaves (durable, authoritative-sourced record + INDEX). Run `research` standalone to build the knowledge base, or let `think` Step 5 consume it implicitly.
 
 ## Cross-Skill Rules (anti-patterns.md)
 
