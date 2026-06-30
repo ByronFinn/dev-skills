@@ -4,11 +4,11 @@
 
 单条技术研究记录的格式模板。由 `research` skill 生成。每条记录回答「在某个 stack 的某个 major 版本下，某个 topic 的最佳实践是什么」，基于权威信源，且不可变（immutable）。
 
-## File Location & Naming
+## 文件位置与命名
 
 `docs/research/<stack>-<topic>-<major>.md`
 
-### Naming rules (mandatory)
+### 命名规则（强制）
 
 - **Fixed three-segment format with major**: `<stack>-<topic>-<major>.md`. The **major version is always part of the filename** — INDEX reads version from the filename, not by re-reading file contents. Examples: `react-concurrent-rendering-18.md`, `postgres-index-strategy-15.md`.
 - **stack = leaf unit**: a single library/framework/language with its own version number and official source. **No composite slugs** (`react-nextjs` is wrong; decompose into `react` and `nextjs` as separate records).
@@ -23,13 +23,13 @@
 - **Lives only in `docs/research/`**: never at the repo root, `docs/` root, `docs/prd/`, or `docs/adr/`.
 - **Language**: follow the project config `docs/agents/language.md` (written by `/setup-project`). If unconfigured, fall back to the user's input language and ask the team's preference. See [Skill Entry Protocol](../rules/entry-protocol.md).
 
-### Major version and multi-version coexistence
+### 主版本与多版本共存
 
 - **Different majors of the same stack+topic each occupy one file**: `react-concurrent-rendering-17.md` + `react-concurrent-rendering-18.md` + `react-concurrent-rendering-19.md` coexist.
 - **Monorepo multi-major coexistence**: if the project uses React 17 (package A) and React 18 (package B) simultaneously, write one record per major — do not merge.
 - **Minor/patch do not split files**: `18.2` and `18.3` share `-18.md` (the full-version difference is recorded in the record's `stack@version` field, not by splitting files).
 
-## Record Lifecycle Status
+## 记录生命周期状态
 
 每条记录有一个固定纯文本 `Status` 字段（**不使用 emoji**，对齐 PRD/ADR 惯例），取值如下：
 
@@ -45,7 +45,7 @@ verified → stale → (re-researched: new -<newmajor>.md | deprecated)
 
 **Stale threshold**: **only a major difference triggers stale** (`18.2` vs `19.0` → stale; `18.2` vs `18.3` → no trigger). Exception: the record author may explicitly declare "sensitive to minor changes" in `## Boundary Conditions` (e.g. security libraries); then minor differences also trigger stale — the call belongs to the record author, not a global rule.
 
-## Immutability (ADR-0004)
+## 不可变性 (ADR-0004)
 
 **A record is frozen the moment it is written.** This is the core cross-major constraint:
 
@@ -53,7 +53,7 @@ verified → stale → (re-researched: new -<newmajor>.md | deprecated)
 - **DON'T (edit an old record to "update" it)** — even if the old conclusion no longer applies in the new major. The old record faithfully documents that major era's best practice and has historical traceability value.
 - **Intra-major error correction**: if an error is found in an already-written record **within the same major**, do **not** silently rewrite the original. Instead, append a dated, sourced `## Correction` block explaining the fix. Immutability applies across majors; intra-major uses append, not rewrite.
 
-## Template
+## 模板
 
 ```markdown
 # <Stack>: <Topic>
@@ -123,7 +123,7 @@ Based on <Tier 1 source URL>, corrects: <what was wrong, what is right>. Origina
 | Boundary Conditions | 适用边界 + 可选的"对 minor 敏感"声明 |
 | Sources | 强制：Tier 1 必收（至少 1 个），Tier 2 仅补充 |
 
-## Source Tiering Standard (mandatory)
+## 信源分级标准（强制）
 
 **Core rule: every verdict needs at least 1 Tier 1 source as primary evidence; Tier 2 only supplements, never solely supports a verdict.**
 
@@ -133,7 +133,7 @@ Based on <Tier 1 source URL>, corrects: <what was wrong, what is right>. Origina
 | **Tier 2 (supplementary only)** | Official changelogs, **Accepted/Merged only** official RFCs/proposals, maintainer-flagged (pinned/labeled) official comments in official repos | Official but non-normative, needs context |
 | **Excluded** | Personal blogs, tutorial sites, unofficial translations, AI-generated content, Stack Overflow answers (unless they link to an official source), **community-maintained-but-not-official sites** (e.g. cppreference, community-maintained periods of redux.js.org), **unaccepted RFC drafts**, non-maintainer comments | Authority does not derive from the maintainers themselves |
 
-## Example
+## 示例
 
 ```markdown
 # React: Concurrent Rendering
@@ -178,7 +178,7 @@ Applies only to React 18+ (`createRoot`). React 17 and below have no concurrent 
 - [React 18.0 official changelog](https://github.com/facebook/react/blob/main/CHANGELOG.md#1800-march-29-2022) — createRoot becomes default
 ```
 
-## Anti-patterns
+## 反模式
 
 | Anti-pattern | Correct approach |
 |---|---|

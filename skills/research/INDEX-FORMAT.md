@@ -4,13 +4,13 @@
 
 研究知识库的索引与入口文件。位于 `docs/research/INDEX.md`。下游 skill（尤其 `/think` Step 5 的 research-first）**先查这里**：命中则复用 TL;DR，未命中才启动新研究。
 
-## File Location
+## 文件位置
 
 `docs/research/INDEX.md`
 
 **Lazy creation**: created only when the first research record is produced; never scaffolded as an empty file (mirrors the `docs/prd/` and `docs/adr/` convention).
 
-## Dual-View Structure
+## 双视图结构
 
 INDEX provides two views over **the same set of records**, serving two query types:
 
@@ -19,7 +19,7 @@ INDEX provides two views over **the same set of records**, serving two query typ
 
 Both views point to the same `<stack>-<topic>-<major>.md` files; content is not duplicated.
 
-## Template
+## 模板
 
 ```markdown
 # Research Index
@@ -64,7 +64,7 @@ Both views point to the same `<stack>-<topic>-<major>.md` files; content is not 
 | File | Relative link to the record file |
 | Status | **Fixed plain-text enum**: `verified \| stale \| deprecated`. **Carries no data, no emoji** (mirrors PRD's `Status: Draft` and ADR's `Status: Accepted` conventions) |
 
-## Status Field Rules (mandatory)
+## Status 字段规则（强制）
 
 **The Status column is always a pure enum token and carries no data.** All version information belongs in the Version column.
 
@@ -88,7 +88,7 @@ Example:
 
 The re-research hint is written at the end of the verdict or in a note below the table, in the format: `→ suggest /research react suspense-data-fetching-19`. **Do not auto-trigger re-research** — that is the user's explicit call.
 
-## By Topic View Rules
+## By Topic 视图规则
 
 - **Single-stack topics are listed too** (listed when ≥1 stack has researched it). Value: when a future new stack researches the same topic, the existing baseline is immediately visible.
 - **Topics with 0 stacks researched do not appear** (no record to index).
@@ -101,7 +101,7 @@ The re-research hint is written at the end of the verdict or in a note below the
 3. **Do not delete stale rows** — stale records have historical value (immutability principle, ADR-0004); keep and mark them.
 4. **Re-research produces a new row** — when the user explicitly runs `/research <stack> <topic>-<newmajor>`, a new record file is created and a new INDEX row added; the old row stays stale, not deleted.
 
-## Anti-patterns
+## 反模式
 
 | Anti-pattern | Correct approach |
 |---|---|
