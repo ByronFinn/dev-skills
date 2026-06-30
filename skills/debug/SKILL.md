@@ -9,6 +9,8 @@ dispatch_intent: "Bug fix, root cause analysis, performance regression"
 
 🥷 Find root cause before fixing.
 
+> **Terminology note:** debug uses **Stage** (macro: Stage 0 context / Stage 1 quick-locate / Stage 2 systematic-fix) and **Phase** (micro: the 6-phase loop inside Stage 2) deliberately, to distinguish quick-locate from systematic-fix. Other skills use **Step**. This is an intentional divergence, not drift.
+
 ## Outcome Contract
 
 - **Outcome**: Bug fixed with regression test, root cause documented, debug artifacts cleaned
