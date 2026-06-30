@@ -23,11 +23,11 @@ If a question can be answered by exploring the codebase or a quick research pass
 ## Core Principles
 
 1. **Task-first** — capture the idea immediately
-2. **Action-before-asking** — derive from codebase/docs before asking. Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate existing domain docs and prior PRDs
+2. **Action-before-asking** — derive from codebase/docs before asking. Apply the [Skill Entry Protocol](../rules/entry-protocol.md)
 3. **One question at a time** — each with a recommended answer; update the PRD after each
 4. **Prefer concrete options** — present 2-3 viable approaches with trade-offs
-5. **Research-first for technical choices** — study industry conventions before proposing
-6. **Diverge → Converge** — expand on future/edge cases, then converge to MVP
+5. **Research-first** — query INDEX before proposing; study authoritative sources
+6. **Diverge → Converge** — expand on edges, then converge to MVP
 
 ## Process Summary
 
@@ -41,7 +41,15 @@ If a question can be answered by exploring the codebase or a quick research pass
 
 **Step 4 — Gate your questions.** Only ask **Blocking** (can't continue without input) or **Preference** (multiple valid choices) questions. Derivable questions → inspect the code/research instead. Meta questions ("should I search?") → never ask, just act.
 
-**Step 5 — Research-first for technical choices.** When the task involves choosing an approach/library/framework, research 2-4 comparable patterns first, map to codebase constraints, then present 2-3 options with trade-offs and ask one preference question.
+**Step 5 — Research-first for technical choices.** When choosing an approach/library/framework:
+
+1. **Query the research INDEX first.** Read `docs/research/INDEX.md` for matching stack + topic + major records:
+   - **Hit (verified)** → read TL;DR only; reuse verdict. Don't read full record by default.
+   - **Hit (stale)** → read full record's `## Boundary Conditions` to decide if old conclusion applies. Suggest `/research <stack> <topic>-<current-major>` if needed.
+   - **Hit but decision depends on implementation detail** → read full record's Findings/Code Snippet even if verified.
+   - **Miss** → suggest `/research` to persist, or proceed with inline research and create a record afterward if conclusion is reusable.
+2. **Only on a miss**, research 2-4 comparable patterns against **authoritative sources** (official docs/source/spec), map to codebase constraints, present 2-3 options with trade-offs, ask one preference question.
+3. Cite reused research records in PRD's `## Research References`.
 
 **Step 6 — Expansion scan (diverge).** Proactively raise 1-2 points each on future evolution, related scenarios, and failure/edge cases before converging. Let the user pick what enters the MVP vs `Out of Scope`.
 
@@ -62,6 +70,8 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 | Created PRD without asking user first | Step 2: ask before creating PRD |
 | Asked user about code/context that could be derived | Step 1: auto-collect context first |
 | Had user choose approach before presenting options | Step 5: research-first for technical choices |
+| Re-searched a topic a prior task already captured | Step 5: query `docs/research/INDEX.md` first; reuse the TL;DR on a hit |
+| Cited a blog/tutorial as the basis for a technical choice | Step 5: research against authoritative sources (official docs/source/spec) only |
 | Asked meta questions like "should I search?" | Step 4: never ask, take action |
 | Drifted without updating PRD | Update PRD after every answer |
 | Stayed on initial request without considering edges | Step 6: expansion scan before converging |

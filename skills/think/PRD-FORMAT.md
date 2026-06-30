@@ -19,8 +19,9 @@ PRD 文件格式模板。由 `think` 或 `story`（无 PRD 时）生成和维护
 - **NNNN**：四位零填充序号（0000-9999）。由 `/think` 创建时自动分配：扫描 `docs/prd/` 下现有 `PRD-NNNN-*.md` 文件，取最大序号 +1。首次创建从 `0000` 开始。**分配前先确认该号未被占用**——多个会话并发时，扫描后、写入前可能有别的会话抢占了同号，此时取下一个可用号而非覆盖。
 - **创建前去重**：分配编号前，按 title slug 与 `## Goal` 将新主题与现有 PRD 逐个比对。发现疑似重复时询问用户：续写现有 PRD（复用其编号），还是用不同 title 新建。详见入口协议 Step 3a。
 - **title**：语义标题，使用 kebab-case（小写字母 + 连字符）。简明描述 PRD 主题，与 `# <Feature Name>` 标题对应。
-- **语言**：跟随用户输入语言。不确定时询问用户。
 - 示例：`PRD-0000-agent-runtime-evolution.md`、`PRD-0005-minio-storage-switch.md`
+
+**文档语言**: 跟随项目配置 `docs/agents/language.md`（由 `/setup-project` 写入）。若未配置，回退到用户输入语言并询问团队偏好。详见 [Skill Entry Protocol](../rules/entry-protocol.md)。
 
 **为什么用编号**:
 - 稳定短引用：Issue、commit、对话中 `PRD-0005` 比 `minio-storage-switch.md` 精确且不受改名影响
@@ -108,7 +109,13 @@ Draft → Grilled → Sliced → InProgress → Done
 
 ## Research References
 
-* [research topic](docs/research/topic.md) — <one-line takeaway>
+* [research topic](docs/research/<stack>-<topic>-<major>.md) — <one-line takeaway>
+
+**填充规则**：当本 PRD 的技术方案引用了 `/research` skill 产出的研究记录时，在此列出。每条格式：`[主题](docs/research/<stack>-<topic>-<major>.md) — 一句话结论`。
+
+- 仅引用 `/research` 产出的 `docs/research/*.md` 记录（权威信源、版本化、不可变）。
+- 不要在此放临时搜索结果或非权威信源链接——那些属于 `## Technical Notes`。
+- 若本 PRD 的决策被采纳并升格为 ADR，ADR 的 `## References` 也会引用同一研究记录（research 是证据层，PRD/ADR 是决策层，引用不复制）。
 
 ## Feasible Approaches
 
@@ -176,7 +183,7 @@ Draft → Grilled → Sliced → InProgress → Done
 | Definition of Done | 完成定义（团队质量标准） |
 | Out of Scope | 明确不做的事情 |
 | Technical Approach | 技术方案和关键决策 |
-| Research References | 研究参考链接 |
+| Research References | 研究记录引用（仅 `/research` 产出的 `docs/research/*.md`，含一句话结论；临时搜索结果放 Technical Notes） |
 | Feasible Approaches | 可行方法（2-3个选项）|
 | Decision (ADR-lite) | 决策记录（轻量级ADR）|
 | Implementation Plan | 实施计划（拆分成小PR）|

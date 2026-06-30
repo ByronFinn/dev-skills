@@ -1,19 +1,61 @@
 # Setup Project: Detailed Reference
 
+## Re-run Checklist
+
+When `docs/agents/` already exists, run this drift detection loop **before** any user interaction. Each config file is checked against the current repo state:
+
+| Config file | Detection check | Drift signal | Action |
+|---|---|---|---|
+| `issue-tracker.md` | `git remote -v` → does the remote match the tracker type in the file? | Remote changed (GitHub→GitLab, or no remote→local) | Present change, confirm, rewrite `issue-tracker.md` |
+| `triage-labels.md` | Check actual labels on 1-2 recent issues → do they still match the file? | Labels renamed, added, or deprecated | Present change, confirm, rewrite `triage-labels.md` |
+| `domain.md` | Does `CONTEXT-MAP.md` exist now when it didn't before? Were domain dirs (`docs/prd/`, `docs/adr/`, `docs/research/`) reorganized? | Context layout changed (single↔multi), dirs moved | Present change, confirm, rewrite `domain.md` |
+| `language.md` | Read existing value. Ask: "Is `<language>` still the right doc language for the team?" | Team's language preference changed since last setup | Confirm, rewrite `language.md` |
+| `repo-map.md` (if exists) | Has the project structure changed? (Workspace files added/removed? User mentions sibling repos?) | Package count changed, repos added/removed, project type (single↔mono↔multi) changed | Present diff, confirm, rewrite `repo-map.md`. If project type changed → trigger **Migration** path below |
+| (no `repo-map.md` yet) | Detect new multi-repo or monorepo signals: workspace files, user mentions sibling repos, subproject dirs | New structure signals found | Ask if project structure changed, create `repo-map.md` if needed |
+
+**If no drift detected in any section**, tell the user: "All config is current — no changes needed." and stop.
+
 ## Re-run Behavior
 
-This skill can be run multiple times. When `docs/agents/` already exists:
+When re-running, follow this sequence:
 
 1. **Read current config** — load all existing `docs/agents/*.md` files before detecting anything new
-2. **Detect drift** — compare current repo state against existing config:
-   - `git remote -v` vs `issue-tracker.md` — did the tracker change?
-   - Workspace files vs `repo-map.md` — were repos added/removed?
-   - `CONTEXT.md` location vs `domain.md` — were domain docs reorganized?
-   - Label usage vs `triage-labels.md` — did label vocabulary change?
+2. **Run the Re-run Checklist** (above) — detect drift per config file
 3. **Present diff** — show what changed vs what stayed the same. Only ask about changed sections.
 4. **Update selectively** — rewrite only files that need changes. Leave untouched files alone.
 
-If the user says "update repo map" or "switch issue tracker", focus on that section only. Still read everything first to verify nothing else drifted.
+If the user says "update repo map" or "switch issue tracker", focus on that section only. Still run the full checklist first to verify nothing else drifted.
+
+## Migration (Structural Changes)
+
+When the repo's structure has changed significantly since the last setup-project run, additional migration actions are needed beyond the normal re-run update.
+
+| Previous state | Current state | Migration actions |
+|---|---|---|
+| **Single repo** | **Monorepo** (workspace files detected) | Add per-package `docs/agents/` dirs for packages with their own domain scope. Update `domain.md` to mention multi-context option. If `CONTEXT-MAP.md` was created, reference it in `domain.md`. |
+| **Single repo** | **Multi-repo** (user mentions sibling repos) | Create `repo-map.md` listing all repos. Update `issue-tracker.md` to reference the primary tracker. Ask: "Which repo owns the primary issue tracker for cross-repo features?" |
+| **Monorepo** | **Single repo** (workspace removed) | Remove per-package `docs/agents/` dirs (**ask first** — destructive). Simplify `domain.md` back to single-context. If `CONTEXT-MAP.md` was removed, remove references to it. |
+| **Multi-repo** | **Single repo** | Remove `repo-map.md` (**ask first** — destructive). Simplify `issue-tracker.md` to point to this repo's tracker. |
+| **Monorepo** | **Multi-repo** (packages split into separate repos) | Move per-package config to the new repos (`repo-map.md` + per-repo `docs/agents/`). Ask: "Which repo gets the shared domain docs?" |
+| Any structure | **Reorganized domain dirs** (e.g. `docs/prd/` renamed or split across contexts) | Update `domain.md` with new paths. Check if old paths have stale files and ask about cleanup. |
+
+**Rule:** Migration implies rewriting more files than a normal re-run. Always present the full diff of what will be created, rewritten, and removed. Get explicit approval before removing any files (anti-pattern #17).
+
+## Traceability
+
+This skill does not create or modify PRDs, so it does not fill any PRD `## Traceability` field. Instead, its outputs form the **config layer** of the project's traceability chain:
+
+```
+setup-project (config layer)
+    ↓ docs/agents/*.md are read by the Entry Protocol
+    ↓
+think / research / grill / story / tdd / review / debug / improve-architecture / write
+    ↓ each fills its own PRD Traceability fields
+```
+
+Consumer skills reference these config files via the [Skill Entry Protocol](../rules/entry-protocol.md), which reads `docs/agents/` at startup. Without this setup, consumer skills degrade to guesses and defaults (entry protocol "If missing" paths).
+
+When the project structure changes, re-running `/setup-project` updates the config layer so all downstream skills continue to read correct paths.
 
 ## Step 1: Explore
 
@@ -69,6 +111,7 @@ Summarise what's present and what's missing. Show the detected defaults:
 - **Issue tracker**: GitHub (if remote points to github.com), GitLab (if gitlab.com or self-hosted), or Local markdown (if no remote)
 - **Triage labels**: defaults (needs-triage, needs-info, ready-for-agent, ready-for-human, wontfix)
 - **Domain docs**: single-context (one CONTEXT.md + docs/adr/ at root) or multi-context (CONTEXT-MAP.md exists)
+- **Documentation language**: undetected by default — present as "please choose" (see Section D). If existing PRDs/ADRs/CONTEXT.md are consistently in one language, offer that as the recommended default.
 
 ## Step 4: Ask for Overrides
 
@@ -110,6 +153,21 @@ Options:
 
 For **multi-repo**: the domain docs may be split across repos. The `repo-map.md` records which repo owns which docs. Consumer skills check the map first.
 
+### Section D — Documentation Language
+
+> Skills produce a lot of human-facing text: PRDs, ADRs, `CONTEXT.md`, issue bodies and titles, review reports, comments. Writing all of it in one consistent language keeps the docs readable for the whole team — regardless of which member (or agent session) triggered the skill. Without this config, each skill falls back to "follow the user's input language", which drifts whenever a different member runs a skill.
+
+Options:
+- **English** — all human-facing output is written in English.
+- **Chinese (中文)** — all human-facing output is written in Chinese.
+- **Other** — name the language (e.g. 日本語, Deutsch); skills write output in it.
+
+This is a **single language for the whole project** — it applies uniformly to PRDs, ADRs, `CONTEXT.md`, Issues, and comments. It is recorded in `docs/agents/language.md`, and every consumer skill reads it via the Skill Entry Protocol. Code, identifiers, and CLI commands are never affected — only prose.
+
+**Detection heuristic (Step 3):** there is nothing in the repo that reliably reveals the team's preferred doc language, so do **not** guess. Surface this section as "undetected — please choose" and let the user pick. If `CONTEXT.md` or existing PRDs already exist and are consistently in one language, offer that as the recommended default.
+
+**Common pitfall:** the user typing the command is not necessarily the audience. A Chinese-speaking developer may still want English docs for an international team. Ask which language the *team* reads, not which language the conversation is in.
+
 ## Step 5: Confirm
 
 Show the user a draft of all files to be written. Let them edit before writing.
@@ -142,6 +200,10 @@ If an `## Agent skills` block already exists in the chosen file, update its cont
 ### Domain docs
 
 [one-line summary of layout — "single-context" or "multi-context"]. See `docs/agents/domain.md`.
+
+### Documentation language
+
+[one-line summary — e.g. "all docs in English"]. See `docs/agents/language.md`.
 ```
 
 **The `## Agent skills` block (multi-repo):**
@@ -161,6 +223,10 @@ If an `## Agent skills` block already exists in the chosen file, update its cont
 
 [one-line summary of layout]. See `docs/agents/domain.md`.
 
+### Documentation language
+
+[one-line summary — e.g. "all docs in English"]. See `docs/agents/language.md`.
+
 ### Repo map
 
 [one-line summary of multi-repo structure]. See `docs/agents/repo-map.md`.
@@ -179,12 +245,14 @@ This package's domain docs:
 - **`CONTEXT.md`** at the package root (falls back to repo root if missing)
 - **`docs/adr/`** at the package root (falls back to repo root if missing)
 
-For shared conventions, see repo root `docs/agents/`.
+For shared conventions (including documentation language), see repo root `docs/agents/`.
 ```
+
+**On re-run:** check that per-package `docs/agents/` dirs are still in sync with the current package structure. If packages were added, create new per-package configs. If packages were removed/renamed, update or remove the corresponding per-package configs (**ask first** before removing — destructive).
 
 ## Step 7: Done
 
-Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `docs/agents/*.md` directly later — re-running this skill is only necessary if they want to switch issue trackers or restart from scratch.
+	Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `docs/agents/*.md` directly later. Re-run this skill whenever the project structure changes, issue tracker switches, domain docs are reorganized, or documentation language preference changes. Re-running is always safe — it detects what changed and only touches affected files.
 
 ---
 
@@ -201,7 +269,7 @@ Issues and PRDs for this repo live as GitHub issues. Use the `gh` CLI for all op
 
 ## Conventions
 
-- **Create an issue**: `gh issue create --title "..." --body "..."`. Use a heredoc for multi-line bodies. Issue body format follows the Story Format: includes `## What to build`, `## Acceptance Criteria`, `## Blocked by` sections.
+- **Create an issue**: `gh issue create --title "..." --body "..."`. Use a heredoc for multi-line bodies. Issue body format follows the Story Format (see `STORY-FORMAT.md` from dev-skills): includes `## What to build`, `## Acceptance Criteria`, `## Blocked by` sections.
 - **Read an issue**: `gh issue view <number> --comments`, filtering comments by `jq` and also fetching labels.
 - **List issues**: `gh issue list --state open --json number,title,body,labels,comments --jq '[.[] | {number, title, body, labels: [.labels[].name], comments: [.comments[].body]}]'` with appropriate `--label` and `--state` filters.
 - **Comment on an issue**: `gh issue comment <number> --body "..."`
@@ -212,7 +280,7 @@ Infer the repo from `git remote -v` — `gh` does this automatically when run in
 
 ## When a skill says "publish to the issue tracker"
 
-Create a GitHub issue. Use the Story Format body (## What to build, ## Acceptance Criteria, ## Blocked by).
+Create a GitHub issue. Use the Story Format (see `STORY-FORMAT.md` from dev-skills) body (## What to build, ## Acceptance Criteria, ## Blocked by).
 
 ## When a skill says "fetch the relevant ticket"
 
@@ -228,7 +296,7 @@ Issues and PRDs for this repo live as GitLab issues. Use the [`glab`](https://gi
 
 ## Conventions
 
-- **Create an issue**: `glab issue create --title "..." --description "..."`. Use a heredoc for multi-line descriptions. Pass `--description -` to open an editor. Issue body format follows the Story Format: includes `## What to build`, `## Acceptance Criteria`, `## Blocked by` sections.
+- **Create an issue**: `glab issue create --title "..." --description "..."`. Use a heredoc for multi-line descriptions. Pass `--description -` to open an editor. Issue body format follows the Story Format (see `STORY-FORMAT.md` from dev-skills): includes `## What to build`, `## Acceptance Criteria`, `## Blocked by` sections.
 - **Read an issue**: `glab issue view <number> --comments`. Use `-F json` for machine-readable output.
 - **List issues**: `glab issue list -F json` with appropriate `--label` filters.
 - **Comment on an issue**: `glab issue note <number> --message "..."`. GitLab calls comments "notes".
@@ -240,7 +308,7 @@ Infer the repo from `git remote -v` — `glab` does this automatically when run 
 
 ## When a skill says "publish to the issue tracker"
 
-Create a GitLab issue. Use the Story Format body (## What to build, ## Acceptance Criteria, ## Blocked by).
+Create a GitLab issue. Use the Story Format (see `STORY-FORMAT.md` from dev-skills) body (## What to build, ## Acceptance Criteria, ## Blocked by).
 
 ## When a skill says "fetch the relevant ticket"
 
@@ -259,13 +327,13 @@ Issues and PRDs for this repo live as markdown files in `.scratch/`.
 - One feature per directory: `.scratch/<feature-slug>/`
 - The PRD is `.scratch/<feature-slug>/PRD.md`
 - Implementation issues are `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`
-- Issue body follows the Story Format: `## What to build`, `## Acceptance Criteria`, `## Blocked by`
+- Issue body follows the Story Format (see `STORY-FORMAT.md` from dev-skills): `## What to build`, `## Acceptance Criteria`, `## Blocked by`
 - Triage state is recorded as a `Status:` line near the top of each issue file (see `triage-labels.md` for the role strings)
 - Comments and conversation history append to the bottom of the file under a `## Comments` heading
 
 ## When a skill says "publish to the issue tracker"
 
-Create a new file under `.scratch/<feature-slug>/issues/` (creating the directory if needed). Use the Story Format body.
+Create a new file under `.scratch/<feature-slug>/issues/` (creating the directory if needed). Use the Story Format (see `STORY-FORMAT.md` from dev-skills) body.
 
 ## When a skill says "fetch the relevant ticket"
 
@@ -309,6 +377,7 @@ How the engineering skills should consume this repo's domain documentation when 
 - **`CONTEXT-MAP.md`** at the root if it exists — it points at one `CONTEXT.md` per context. Read each one relevant to the topic.
 - **`docs/prd/`** — product requirements documents. Skills like `improve-architecture` and `review` read these for planned features and acceptance criteria.
 - **`docs/adr/`** — architecture decision records. Read ADRs that touch the area you're about to work in. In multi-context repos, also check `src/<context>/docs/adr/` for context-scoped decisions.
+- **`docs/research/INDEX.md`** — searchable index of persisted technical research records (stack × topic × major). `/think` Step 5 queries it before re-searching; `/research` produces records here.
 
 If any of these files don't exist, **proceed silently**. Don't flag their absence; don't suggest creating them upfront. The producer skills (`/grill` for CONTEXT.md and ADRs, `/think` or `/story` for PRDs) create them lazily.
 
@@ -316,7 +385,7 @@ If any of these files don't exist, **proceed silently**. Don't flag their absenc
 
 If `CONTEXT.md` doesn't exist yet, consumer skills should proceed without it. The first run of `/grill` will create it lazily. Do not create an empty `CONTEXT.md` during setup — an empty file is noise.
 
-Same for `docs/prd/` and `docs/adr/` — create them only when there's actual content to write.
+Same for `docs/prd/`, `docs/adr/`, and `docs/research/` — create them only when there's actual content to write.
 
 ## File structure
 
@@ -327,13 +396,23 @@ Single-context repo (most repos):
 ├── CONTEXT.md
 ├── docs/
 │   ├── prd/
-│   │   ├── user-subscription.md
-│   │   └── payment-integration.md
-│   └── adr/
-│       ├── 0001-event-sourced-orders.md
-│       └── 0002-postgres-for-write-model.md
+│   │   ├── PRD-0001-user-subscription.md
+│   │   └── PRD-0002-payment-integration.md
+│   ├── adr/
+│   │   ├── 0001-event-sourced-orders.md
+│   │   └── 0002-postgres-for-write-model.md
+│   └── research/
+│       ├── INDEX.md
+│       ├── react-concurrent-rendering-18.md
+│       └── postgres-index-strategy-15.md
 └── src/
 ```
+
+**File naming conventions** (producer skills define these; consumer skills read them):
+
+- PRD: `PRD-NNNN-<title>.md` — see `PRD-FORMAT.md` (dev-skills /think)
+- ADR: `<NNNN>-<title>.md` (no `ADR-` prefix) — see `ADR-FORMAT.md` (dev-skills /grill)
+- Research: `<stack>-<topic>-<major>.md` — see `RESEARCH-FORMAT.md` (dev-skills /research)
 
 Multi-context repo (presence of `CONTEXT-MAP.md` at the root):
 
@@ -363,6 +442,35 @@ If the concept you need isn't in the glossary yet, that's a signal — either yo
 If your output contradicts an existing ADR, surface it explicitly rather than silently overriding:
 
 > _Contradicts ADR-0007 (event-sourced orders) — but worth reopening because…_
+```
+
+### language.md
+
+```markdown
+# Documentation Language
+
+The language engineering skills should write **human-facing output** in for this repo.
+
+## Language
+
+**<English / 中文 / Other — fill in the team's choice>**
+
+All prose produced by skills — PRDs (`docs/prd/`), ADRs (`docs/adr/`), `CONTEXT.md`, issue titles and bodies, review reports, and comments — is written in this language.
+
+## Scope
+
+- **In scope**: human-facing prose in documents and issues.
+- **Out of scope**: code, identifiers, file names, CLI commands, and configuration values. These follow code conventions, never this setting.
+
+## When a skill says "write the output"
+
+Write the prose in the language above. Do not silently switch to the conversation's language — the team reads the configured language, which may differ from whoever triggered the skill.
+
+If a single artifact genuinely needs a second language (e.g. a bilingual release note), the producing skill may deviate, but the configured language is always the primary one.
+
+## If this file is missing
+
+Fall back to the user's input language, and ask which language the team prefers so it can be recorded here. Don't keep guessing every session.
 ```
 
 ### repo-map.md (multi-repo only)

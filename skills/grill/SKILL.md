@@ -28,15 +28,15 @@ Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain do
 
 ## The Work
 
-1. **Extract everything unresolved.** Read the PRD with hostile eyes and pull out every open decision: Open Questions, unvalidated Assumptions, vague terms, unexplained scope boundaries, shaky technical approach, edge cases, conflicts with `CONTEXT.md`, behavior that contradicts the code. Skip none.
-2. **Work the checklist one item at a time.** For each item: give your recommended answer first, then ask. Questions whose answers depend on each other stay one-at-a-time; if 2-3 items are genuinely independent, you may batch them in one message to save rounds.
-3. **Resolve as you go, not in a batch at the end.** Update files inline the moment a decision lands:
-   - **Terminology resolved** → update `CONTEXT.md` now (see [CONTEXT-FORMAT.md](CONTEXT-FORMAT.md)). CONTEXT.md is a glossary, nothing more — no implementation details.
-   - **Significant decision** → offer an ADR only when all three are true: (1) hard to reverse, (2) surprising without context, (3) the result of a real trade-off. If any is missing, skip the ADR (see [ADR-FORMAT.md](ADR-FORMAT.md)).
+1. **Extract everything unresolved.** Read the PRD with hostile eyes: Open Questions, unvalidated Assumptions, vague terms, unexplained scope boundaries, shaky technical approach, edge cases, conflicts with `CONTEXT.md`. Skip none.
+2. **Work the checklist one item at a time.** Give your recommended answer first, then ask. Dependency-chain questions stay one-at-a-time; independent items may be batched.
+3. **Resolve as you go, not in a batch at the end.** Update files inline:
+   - **Terminology resolved** → update `CONTEXT.md` now (glossary only, no implementation details).
+   - **Significant decision** → offer an ADR when all three are true: (1) hard to reverse, (2) surprising without context, (3) result of a real trade-off. Otherwise skip.
    - **Code can answer it** → grep/read the code instead of asking the user.
-4. **Run the exhaustiveness gate** before declaring complete: every Open Question resolved, every Assumption validated or converted, every term conflict addressed, every scope boundary confirmed, code cross-check done.
-5. **Fill the PRD `## Traceability` `Grilled by` field** so downstream skills (story, tdd, review) know the plan was validated.
-6. **Sync the parent Issue (if it exists).** The PRD `## Issue` field holds the parent Issue number created by `/think` (Step 9a, required). If present, update its body to reflect this grill's scope changes (sharpened terminology, confirmed scope boundaries, new ADRs). Do **not** change its title, do **not** close it. If the field is empty (e.g. minimal PRD from a direct `/story` path that skipped `/think`), skip — this skill does not create parent Issues; creation is `/think`'s responsibility.
+4. **Run the exhaustiveness gate** before declaring complete: Open Questions, Assumptions, terms, scope, code cross-check — all resolved.
+5. **Fill the PRD `## Traceability` `Grilled by` field** so downstream skills know the plan was validated.
+6. **Sync the parent Issue (if it exists).** Update its body to reflect scope changes (sharpened terms, confirmed boundaries, new ADRs). Do **not** change title or close it. If the `## Issue` field is empty (minimal PRD from direct `/story`), skip — creation is `/think`'s responsibility.
 
 ## What Goes Where
 
@@ -72,18 +72,13 @@ Resolved <N> items:
 - <assumption>: <validated/converted>
 - <decision>: <ADR created | recorded in PRD>
 
-Updated files:
-- docs/prd/PRD-NNNN-<title>.md — updated (Status → Grilled)
+Updated:
+- docs/prd/PRD-NNNN-<title>.md — Status → Grilled
 - CONTEXT.md — <count> terms sharpened/added
 - docs/adr/<NNNN>-<title>.md — created (if any)
 
-Exhaustiveness gate: passed (Open Questions / Assumptions / Terms / Scope / Code all checked)
+Exhaustiveness gate: passed
+Parent Issue: #<num> synced | skipped (no parent, direct /story path)
 
-Parent Issue synced:
-- #<issue-number> — updated (created by /think)
-- (skipped — no parent, direct /story path with minimal PRD)
-
-Next step:
-- If scope changed significantly: /think to re-evaluate the full design
-- If plan validated: /story to break PRD into Issues
+Next: /story to break PRD into Issues | /think if scope changed significantly
 ```

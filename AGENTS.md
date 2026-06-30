@@ -27,6 +27,11 @@ skills/
 ├── have-a-try/                  # Throwaway prototype to answer one design question (LOGIC terminal app or UI variants)
 │   ├── SKILL.md
 │   └── REFERENCE.md
+├── research/                    # Technical investigation skill → immutable, versioned research records + INDEX
+│   ├── SKILL.md
+│   ├── REFERENCE.md
+│   ├── RESEARCH-FORMAT.md
+│   └── INDEX-FORMAT.md
 ├── grill/                       # Plan validation skill → domain knowledge
 │   ├── SKILL.md
 │   ├── REFERENCE.md
@@ -68,7 +73,7 @@ Every skill follows the same structure:
 |---|---|
 | `SKILL.md` | Entry point. Contains YAML front matter (`name`, `description`, `when_to_use`, `dispatch_intent`), outcome contract, process summary, gotchas table, and output template. For sub-agent orchestrated skills (`tdd`, `review`), this is the orchestrator — it defines sub-agent sequence, human review gates, and merge rules, but does not perform implementation work itself. |
 | `REFERENCE.md` | Detailed process steps, checklists, examples, and templates. Loaded on demand. For sub-agent orchestrated skills, each sub-agent gets its own chapter with: context re-read checklist, responsibilities, checklist, output template, and independence constraint. |
-| `*-FORMAT.md` | Document format templates (PRD, CONTEXT, ADR, STORY) used by the skill. Written bilingually (English headings, Chinese field descriptions). |
+| `*-FORMAT.md` | Document format templates (PRD, CONTEXT, ADR, STORY, RESEARCH, INDEX) used by the skill. Written bilingually (English headings, Chinese field descriptions). |
 | `references/` | Language-specific or mode-specific reference files loaded on demand by the skill (used by `write` for pattern catalogs in different languages). |
 
 ## Workflow Pipeline
@@ -78,6 +83,8 @@ Skills compose into standard software engineering workflows:
 ```
 First time:           setup-project → (skills configured)
 New feature:          think → grill → story → tdd → review → (release)
+                      (think Step 5 queries research INDEX; on miss may branch to research → think)
+Technical research:   research → (immutable record + INDEX) → think (queries INDEX) or grill (ADR cites research)
 Design doubt:         think → have-a-try → grill → story → tdd → review  (optional branch: prototype when running code beats reasoning)
 Direct breakdown:     story → tdd → review → (release)
 Bug/regression:       debug → review (optional)
@@ -101,6 +108,7 @@ Route by the user's **work object** first, then by workflow phase:
 |---|---|
 | New project, configure skills, issue tracker setup | `setup-project` |
 | Rough idea, unclear requirements, design approach | `think` |
+| Stack/version-specific technical investigation to capture durably (best practice, tech evaluation, "how does X work in version Y") | `research` (authoritative-source investigation → immutable record + INDEX) |
 | Design doubt easier to resolve by running code than reasoning (state machine edges, data-model cases, "what should this page look like") | `have-a-try` (throwaway prototype: LOGIC terminal app or UI variants) |
 | Existing PRD/plan, "challenge this plan", terminology questions | `grill` |
 | Completed PRD or clear feature description needing tickets, issue breakdown | `story` |
@@ -115,6 +123,7 @@ Key disambiguation rules:
 - **Grill vs Review**: PRD/plan/terminology → `grill`. Diff/completed work → `review`.
 - **Story vs Think**: Clear plan → `story`. Rough idea → `think`. Vague "break this down" → suggest `think` first.
 - **Think vs Have-a-try vs TDD**: vague idea / not sure what to build → `think` (no code). Concrete design question cheaper to resolve by running code → `have-a-try` (disposable code). Accepted behavior with known requirements → `tdd` (production code with tests). `think` doesn't write code; `have-a-try` writes disposable code; `tdd` writes production code.
+- **Think vs Research**: `think` decides *what* to build (converges to a PRD; queries the research INDEX at Step 5 but doesn't itself persist research). `research` decides *how* a specific stack×version behaves (durable, authoritative-sourced record + INDEX). Run `research` standalone to build the knowledge base, or let `think` Step 5 consume it implicitly.
 
 ## Cross-Skill Rules (anti-patterns.md)
 
@@ -150,6 +159,7 @@ When skills are used in target projects, they create and maintain these files:
 | `docs/prd/PRD-NNNN-<title>.md` | `think` or `story` | Product Requirements Document |
 | `CONTEXT.md` | `grill` | Domain glossary (no implementation details) |
 | `docs/adr/<NNNN>-<title>.md` | `grill` | Architecture Decision Records |
+| `docs/research/<stack>-<topic>-<major>.md` + `docs/research/INDEX.md` | `research` | Immutable, versioned technical research records + searchable index (authoritative sources only) |
 | Issues | `story` | Vertical-slice implementation tickets |
 
 ## Contributing

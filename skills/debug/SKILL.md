@@ -59,48 +59,34 @@ Fix:           [what changed, file:line]
 Confirmation:  [evidence fix works or test]
 Test:          [pass/fail count, regression test location]
 Regression:    [test file:line] or [none, reason]
+Status:        resolved | resolved with caveats | blocked
 ```
 
-Status: **resolved**, **resolved with caveats**, or **blocked**.
+**Regression guard:** For recurrence, fix not complete until regression test exists (fails on old, passes on new), lives in project suite, and commit message explains prevention.
 
-**Regression guard:** For recurrence, fix not complete until regression test exists (fails on old, passes on new), lives in project suite, and commit message explains why bug recurred and why this fix prevents it.
-
-**PRD Traceability:** If a PRD exists for the affected feature, fill the `Debugged by` field in its `## Traceability` section so downstream skills know a bug fix touched this feature:
-
+**PRD Traceability:** If PRD exists, fill `Debugged by` in its `## Traceability`:
 ```markdown
 - **Debugged by**: `/debug` (<YYYY-MM-DD>) — <one-line root cause + fix summary>
 ```
 
-Next: Run `/review` for code review (recommended for non-trivial fixes). For simple, well-tested fixes with clear regression tests, review is optional.
+Next: Run `/review` for non-trivial fixes. For simple fixes with clear regression tests, review is optional.
 
-## Output (Handoff Format after 3 failed hypotheses)
+## Output (Handoff — after 3 failed hypotheses)
 
 ```
-Symptom: [original error, one sentence]
+Symptom: [original error]
 
 Tested hypotheses:
-1. [hypothesis 1] → [test method] → [result: excluded due to...]
-2. [hypothesis 2] → [test method] → [result: excluded due to...]
-3. [hypothesis 3] → [test method] → [result: excluded due to...]
+1. [h1] → [test] → [result]
+2. [h2] → [test] → [result]
+3. [h3] → [test] → [result]
 
-Collected evidence:
-- [log snippets / stack traces / file contents]
-- [reproduction steps]
-- [environment: version, config, runtime]
+Evidence: [logs, stack traces, repro steps, environment]
+Excluded: [ruled out root causes]
+Unknown:  [what remains unclear]
 
-Excluded:
-- [ruled out root causes]
-
-Unknown:
-- [what remains unclear]
-- [what information is missing]
-
-Suggested next steps:
-1. [next investigation direction]
-2. [possible external tools or permissions needed]
-3. [additional context user should provide]
+Suggested next: [next direction, tools needed, context required]
+Status: blocked
 ```
 
-Status: **blocked**
-
-Next: Share this handoff document with a fresh agent session to continue investigation with clean context, or provide additional information (access to environment, captured artifacts, etc.) and re-run /debug.
+Share this handoff with a fresh agent session, or provide additional info and re-run /debug.

@@ -19,7 +19,7 @@
 - `<垂直切片描述>` — 一句话描述这个切片的范围
 - `—` — 分隔符（en-dash + 空格）
 - `<核心行为>` — 用户可感知的核心行为
-- **语言**：跟随用户输入语言。不确定时询问用户。
+- **文档语言**: 跟随项目配置 `docs/agents/language.md`（由 `/setup-project` 写入）。若未配置，回退到用户输入语言并询问团队偏好。详见 [Skill Entry Protocol](../rules/entry-protocol.md)。
 
 **示例**：
 ```

@@ -37,25 +37,9 @@ Accept any of these, in priority order:
 
 ## Anti-Pattern: Horizontal Slicing
 
-**Don't write all tests then all implementation.** This produces bad tests:
-- Batch tests test **imagined** behavior, not **actual** behavior
-- End up testing **shape** (data structures, function signatures) not user-visible behavior
-- Tests become insensitive to real changes — pass when behavior breaks, fail when behavior correct
+**Don't write all tests then all implementation.** Batch tests test imagined behavior, not actual — they test shape (data structures, function signatures) rather than user-visible behavior, and become insensitive to real changes.
 
-**The Acceptance Criterion Cycle IS vertical slicing.** Each cycle completes one criterion end-to-end: scenario design → human review → test code → human review → implementation. The sub-agent pattern enforces this naturally — the Develop Sub-Agent only sees one approved test at a time, and cannot batch.
-
-```
-WRONG (horizontal):
-  RED:   test1, test2, test3, test4, test5
-  GREEN: impl1, impl2, impl3, impl4, impl5
-
-RIGHT (Acceptance Criterion Cycle):
-  Cycle 1: scenarios→review→test1→review→impl1
-  Cycle 2: scenarios→review→test2→review→impl2
-  Cycle 3: scenarios→review→test3→review→impl3
-  ...
-  Refactor: unified after all cycles GREEN
-```
+**The Acceptance Criterion Cycle IS vertical slicing.** One cycle per criterion (scenarios → review → test code → review → implement). See [REFERENCE.md](REFERENCE.md) for the cycle diagram.
 
 ## Gate Modes
 
@@ -68,15 +52,14 @@ The two-stage Human Review Gate (Scenario Review + Test Code Review) is the **de
 | **Batch** | 1 gate per 2-3 grouped criteria | Homogeneous criteria (e.g., "validate field A", "validate field B"), user says "batch review" |
 
 **Rules:**
-- Default is Full mode. Switch only when the user explicitly requests.
-- In Fast mode, Test Sub-Agent designs scenarios and writes code in one phase. The single gate reviews the test code (which includes scenario coverage as a checklist item).
-- In Batch mode, group only homogeneous criteria. Different-domain criteria must stay in Full mode individually.
-- The user can switch modes mid-skill (e.g., Full for criterion 1-3, then Fast for trivial criterion 4-5).
-- State the active mode at the start of each cycle so the user knows what to expect.
+- Default is Full mode. Switch only when user explicitly requests or when trivial criteria qualify for Fast/Batch.
+- Fast mode: Test Sub-Agent writes scenarios and code in one phase; single gate reviews both.
+- Batch mode: group only homogeneous criteria. Different-domain criteria stay in Full mode individually.
+- State active mode at start of each cycle.
 
 ## Process Summary
 
-**Step 1: Plan** — Apply the [Skill Entry Protocol](../rules/entry-protocol.md). Read input (Issue, PRD, or description)。如果输入是 Issue，从 Issue body 的 `Meta → PRD` 字段读取 PRD 路径并加载对应 PRD 文件。如果 Issue 没有 PRD 引用，尝试从 `docs/prd/` 目录扫描匹配 PRD-NNNN 编号，或向用户确认。Extract acceptance criteria. **PRD quality check:** if PRD Traceability shows `Created by: /story (minimal PRD)`, note that requirements may not be decision-complete — confirm acceptance criteria with user before proceeding. Confirm interface changes with user. Prioritize behaviors. Identify which Issues/criteria to work on.
+**Step 1: Plan** — Apply the [Skill Entry Protocol](../rules/entry-protocol.md). Read input (Issue, PRD, or description). If the input is an Issue, read the PRD path from the Issue body's `Meta → PRD` field and load the corresponding PRD file. If the Issue has no PRD reference, scan `docs/prd/` for a matching PRD-NNNN, or ask the user to confirm.Extract acceptance criteria. **PRD quality check:** if PRD Traceability shows `Created by: /story (minimal PRD)`, note that requirements may not be decision-complete — confirm acceptance criteria with user before proceeding. Confirm interface changes with user. Prioritize behaviors. Identify which Issues/criteria to work on.
 
 **Step 2: Acceptance Criterion Cycle** — For EACH acceptance criterion, run the 5-step loop:
 1. **Test Sub-Agent (scenario design)** — design test scenarios as structured table
@@ -87,7 +70,7 @@ The two-stage Human Review Gate (Scenario Review + Test Code Review) is the **de
 
 **Step 3: Refactor** — After all cycles GREEN, Develop Sub-Agent performs unified refactor: extract duplication, deepen modules, apply SOLID. Run full test suite after each refactor step.
 
-**Step 4: Output** — Produce result summary. If a PRD file exists, fill the `Implemented by` field in its `## Traceability` section with the Issue reference。更新 PRD 的 `Sliced into` 列表中对应 Issue 的状态标记为 `— In Progress`（正在实现中）。
+**Step 4: Output** — Produce result summary. If a PRD file exists, fill the `Implemented by` field in its `## Traceability` section with the Issue reference. Update the corresponding Issue's status in the PRD's `Sliced into` list to `— In Progress`.
 
 See [REFERENCE.md](REFERENCE.md) for detailed sub-agent instructions, checklists, and independence constraints.
 
@@ -103,18 +86,7 @@ Test Sub-Agent writes test code faithful to the approved scenarios (RED by desig
 
 ## Per-Cycle Checklist
 
-```
-[ ] Test Sub-Agent re-read shared context from disk
-[ ] Scenarios cover acceptance criterion completely
-[ ] Scenario Review Gate passed
-[ ] Test code faithful to approved scenarios
-[ ] Test code uses public interface only
-[ ] Test Code Review Gate passed
-[ ] Develop Sub-Agent re-read shared context from disk
-[ ] Implementation is minimal for this test
-[ ] Test turns GREEN
-[ ] No speculative features added
-```
+Each cycle: Test Sub-Agent re-reads context from disk → scenarios cover criterion completely → Scenario Gate passed → test code faithful to approved scenarios, uses public interface only → Code Gate passed → Develop Sub-Agent re-reads context → minimal implementation → test GREEN → no speculative features.
 
 Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
 

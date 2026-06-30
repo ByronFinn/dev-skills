@@ -95,6 +95,23 @@ Acceptance Criteria (ordered):
 5. User session persists across page reloads
 ```
 
+### Acceptance Criterion Cycle (Visual)
+
+```
+WRONG (horizontal slicing):
+  RED:   test1, test2, test3, test4, test5
+  GREEN: impl1, impl2, impl3, impl4, impl5
+
+RIGHT (Acceptance Criterion Cycle — vertical):
+  Cycle 1: scenarios→review→test1→review→impl1
+  Cycle 2: scenarios→review→test2→review→impl2
+  Cycle 3: scenarios→review→test3→review→impl3
+  ...
+  Refactor: unified after all cycles GREEN
+```
+
+Each cycle completes one criterion end-to-end. The Develop Sub-Agent only sees one approved test at a time and cannot batch.
+
 ### Gate Mode Selection
 
 Before starting cycles, confirm the gate mode with the user:

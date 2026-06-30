@@ -18,12 +18,12 @@ dispatch_intent: "Writing, editing prose, polish, release notes, launch/social c
 
 ## Core Stance
 
-This skill is a catalog of smells, not a checklist to run top to bottom. Use it to recognize AI taste, then make judgment calls. The reference files (especially `write-zh.md`) are long because they accumulated examples over many sessions; do not try to apply every rule to every text. Applying more rules is not doing a better job.
+A catalog of smells, not a checklist. Use it to recognize AI taste, then make judgment calls.
 
-- **Over-editing is failure, equal to under-editing.** If a sentence is already natural, clear, and stable, leave it. Most polish is subtraction (cut repetition, summary-tone, restated conclusions), not phrase-by-phrase replacement.
-- **The author's voice wins.** Keep the author's existing colloquial words, cadence, and stance. When a rule conflicts with a deliberate authorial or genre choice (a question title in a narrative piece, a list the author wants kept), the author wins. Rules are defaults, not laws.
-- **Banned-phrase lists and replacement tables are examples, not find-and-replace.** A flagged word that reads naturally in context stays. Match the smell, not the string.
-- **Prefer fewer, stronger edits.** Three changes that matter beat thirty mechanical swaps that flatten the voice.
+- **Over-editing is failure.** If a sentence is natural, leave it. Most polish is subtraction — cut repetition, summary-tone, restated conclusions.
+- **The author's voice wins.** Keep colloquial words, cadence, and stance. When a rule conflicts with authorial or genre choice, the author wins.
+- **Banned-phrase lists are examples, not find-and-replace.** Match the smell, not the string.
+- **Prefer fewer, stronger edits.** Three changes that matter beat thirty mechanical swaps.
 
 ## Pre-flight
 
@@ -46,15 +46,15 @@ Voice and format constraints from durable context are `decision`, `preference`, 
 
 ## Hard Rules
 
-- **Meaning first, style second.** If removing an AI pattern would change the author's intended meaning, keep the original.
-- **No silent restructuring.** Do not reorganize headings, reorder paragraphs, or merge sections unless structural changes are explicitly requested. Edit in place. (Exception: Long-form Article Mode treats structural cuts and merges as in-scope; it proposes them as change-points first instead of doing them silently.)
-- **Artifact-grounded claims.** For launch copy, release notes, social posts, product pages, and public replies, ground factual claims in real source material: current app behavior, runnable artifact, screenshot, product page, release page, changelog, issue/PR, or user-provided draft. Do not present handoffs, plans, old memory, or stale screenshots as current product truth.
-- **No em-dash.** Never produce em-dash (U+2014 `—`) or en-dash (U+2013 `–`) in Chinese or English output. Em-dash is the strongest AI-tone fingerprint. Use commas, periods, colons, semicolons, or parentheses to break clauses. When editing a draft that contains em-dashes, replace every one before returning the text.
-- **Stop after output.** Deliver the rewritten text. Do not append a list of changes, a justification, or a closer. (Exception: Long-form Article Mode returns change-points for review instead of a rewritten blob; see that mode.)
+- **Meaning first, style second.** If removing an AI pattern changes the author's meaning, keep the original.
+- **No silent restructuring.** Edit in place unless structure changes explicitly requested. (Exception: Long-form Article Mode proposes cuts as change-points first.)
+- **Artifact-grounded claims.** For release/social/product copy, ground factual claims in real source material (current app behavior, runnable artifact, screenshot, changelog, issue/PR, user draft). Do not rely on memory or stale screenshots.
+- **No em-dash.** Never produce em-dash (U+2014) or en-dash (U+2013). Replace any found in drafts before returning. Use commas, periods, colons, or parentheses instead.
+- **Stop after output.** Deliver the rewritten text only. No changelog, no commentary. (Exception: Long-form Article Mode returns change-points for review.)
 
 ## Modes
 
-See [REFERENCE.md](REFERENCE.md) for detailed reference files, pattern catalogs, and mode-specific procedures.
+See [REFERENCE.md](REFERENCE.md) for detailed mode procedures (Long-form Article, Bilingual Review, Release Notes, Document Review).
 
 | Mode | Trigger | Reference File(s) |
 |------|---------|-------------------|
@@ -63,87 +63,34 @@ See [REFERENCE.md](REFERENCE.md) for detailed reference files, pattern catalogs,
 | **Bilingual review** | Mixed CN/EN, translation review | `write-zh-bilingual.md` |
 | **Product localization** | "本地化文案", multi-locale review | `write-product-localization.md` |
 | **Release notes** | "release", "changelog", "version" | `write-zh-release-notes.md` |
-| **Long-form article** | Multi-section Markdown, >300 lines | `write-zh.md` (structural rules) |
+| **Long-form article** | Multi-section Markdown, >300 lines | see REFERENCE.md |
 | **Tweet / social post** | "推特", "tweet", "social post" | `write-zh-release-notes.md` |
-| **Public reply** | "回复 issue", "reply to PR" | inline in SKILL.md |
-| **Document review** | "审稿", "check this document" | `write-zh.md` or `write-en.md` |
-| **Paragraph coherence** | "连贯性", "coherence" | inline in SKILL.md |
-
-### Long-form Article Mode
-
-Activate when: editing a Markdown article or file over ~300 lines, or one with multiple `##` sections plus tables and images (technical long-reads, blog posts, deep dives).
-
-1. **Map first, read-only.** Before editing anything, read the whole article and list every `##` section, table, list, and image. Flag three structural problems: cross-section repetition, table re-reading, and whole redundant sections.
-2. **Propose cuts as change-points.** Show before-to-after for each structural cut or merge. Never delete a whole section silently; confirm first.
-3. **Then line-level de-AI**, section by section.
-4. **Output is change-points, not a blob.** Show what changed so the user can review. Only return fully rewritten text when the user says 直接改 / just rewrite.
-
-### Bilingual Review Mode
-
-Activate when: mixed Chinese/English, "Chinese copywriting", "bilingual consistency", "release notes".
-
-- **Chinese rules**: Space between CN and EN characters (CN文字EN → CN 文字 EN); no mixing of punctuation; consistent terminology across all instances.
-- **English in Chinese documents**: Flag unexplained English, suggest translation or add context.
-- **Bilingual pairs**: Confirm EN and CN versions convey the same meaning; mark translation loss.
-
-### Release Note Template Mode
-
-Activate when: "release", "changelog", "version", "release notes".
-
-Generate from commit messages:
-- **Breaking Changes** → **New Features** → **Fixes & Improvements** → **Deprecations**
-
-Before drafting, read the target project's existing release as a style reference. Match the reference release's item count, sentence length, and tone. One sentence per item. Bilingual structure: English block and Chinese block as two parallel sections inside the same release item.
+| **Public reply** | "回复 issue", "reply to PR" | see below |
+| **Document review** | "审稿", "check this document" | see REFERENCE.md |
+| **Paragraph coherence** | "连贯性", "coherence" | see below |
 
 ### Public Reply Mode (GitHub issue / PR)
 
 Activate when: "回复 issue", "reply to PR", "comment on #N".
 
-Five hard rules for the reply body:
-1. Open with `@<reporter>` + one thanks line. Match the reporter's language.
-2. State the cause in one sentence, the impact in one sentence.
-3. State the ship state: already shipped, fixed on main, planned, or not planned.
-4. Two paragraphs maximum. No bullet lists, no section headers.
+1. Open with `@<reporter>` + one thanks line in the reporter's language.
+2. State cause in one sentence, impact in one sentence.
+3. State ship state: already shipped, fixed on main, planned, or not planned.
+4. Two paragraphs max. No bullet lists, no section headers.
 5. No em-dash.
-
 Before posting, re-read the live issue/PR. Do not reply from memory.
-
-### Document Review Mode
-
-Activate when: PDF, document, white paper, "review this document", "check this document", "审稿".
-
-Review checklist:
-- **Privacy scan**: Detect PII (names, companies, employment dates, salary hints).
-- **Tone consistency**: Flag voice shifts, register mismatches, formulaic phrasing.
-- **Bilingual validation**: For CN/EN pairs, confirm translation accuracy and terminology consistency.
-- **Rendering check**: Placeholder text (`Lorem ipsum`, `TODO`, `[TBD]`), broken image links.
-
-Output: append `privacy: clear / N issues found` after the reviewed text.
 
 ### Paragraph Coherence Mode
 
 Activate when: "连贯性", "段落连贯", "可读性", "coherence", "flow check".
 
-Do not rewrite. Instead, work through each paragraph:
-1. Flag transitions that abruptly shift topic without a signal.
-2. Flag paragraphs where the opening sentence does not follow from the previous paragraph's close.
-3. Flag rhythm issues: monotone sentence length.
-4. Suggest the minimal fix for each.
-
-Output: a numbered list of issues, each with paragraph location and one-line fix suggestion.
+Do not rewrite. Instead flag: transitions that shift topic without signal, opening sentences that don't follow from previous paragraph's close, and monotone sentence length. Suggest minimal fix per issue. Output: numbered list with paragraph location and one-line fix suggestion.
 
 ### Tweet / Social Post Mode
 
 Activate when: "推特", "twitter", "X推文", "tweet", "social post", "发文".
 
-Apply five announcement rules for product-engineer projects:
-1. **Lead with community**: open with social anchor (star count, user thanks).
-2. **Highlights over completeness**: pick 2 to 4 of the most interesting changes.
-3. **UX framing**: phrase each point as "你用它的时候..." not "这个工具做了...".
-4. **One stance**: include at least one opinionated sentence.
-5. **Native Chinese rhythm**: use idiomatic phrasing.
-
-Close casually with an invitation, not a CTA.
+Lead with community (star count, user thanks). Pick 2-4 highlights. Frame each point as user benefit ("你用它的时候..."). Include one opinionated sentence. Use native Chinese rhythm. Close casually with invitation, not CTA.
 
 ## Gotchas
 

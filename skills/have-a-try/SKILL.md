@@ -25,30 +25,30 @@ Identify which question is being answered — from the user's prompt, the surrou
 - **"Does this logic / state model feel right?"** → **LOGIC mode** ([REFERENCE.md](REFERENCE.md)). Build a tiny interactive terminal app that pushes the state machine through cases that are hard to reason about on paper.
 - **"What should this look like?"** → **UI mode** ([REFERENCE.md](REFERENCE.md)). Generate several radically different UI variations on a single route, switchable via a URL search param and a floating bottom bar.
 
-The two branches produce very different artifacts — getting this wrong wastes the whole prototype. If the question is genuinely ambiguous and the user isn't reachable, default to whichever branch better matches the surrounding code (a backend module → logic; a page or component → UI) and **state the assumption at the top of the prototype**.
+The two branches produce very different artifacts — picking wrong wastes the whole prototype. If ambiguous and user isn't reachable, default by matching surrounding code (backend module → LOGIC; page/component → UI) and **state the assumption** at the top of the prototype.
 
 ## Rules That Apply to Both Branches
 
-1. **Throwaway from day one, and clearly marked as such.** Locate the prototype code close to where it will actually be used (next to the module or page it's prototyping for) so context is obvious — but name it so a casual reader can see it's a prototype, not production. For throwaway UI routes, obey whatever routing convention the project already uses; don't invent a new top-level structure. *(Honors anti-pattern #14 — tell the user where prototype files are created.)*
-2. **One command to run.** Whatever the project's existing task runner supports — `pnpm <name>`, `python <path>`, `bun <path>`, etc. The user must be able to start it without thinking. *(Run command is the success contract — see anti-pattern #31.)*
-3. **No persistence by default.** State lives in memory. Persistence is the thing the prototype is _checking_, not something it should depend on. If the question explicitly involves a database, hit a scratch DB or a local file with a clear "PROTOTYPE — wipe me" name.
-4. **Skip the polish.** No tests, no error handling beyond what makes the prototype _runnable_, no abstractions. The point is to learn something fast and then delete it. *(This is a prototype-scoped rule. It is the opposite of `/tdd`'s test-first discipline — do not let this mindset leak into production code.)*
-5. **Surface the state.** After every action (logic) or on every variant switch (UI), print or render the full relevant state so the user can see what changed.
-6. **Delete or absorb when done.** When the prototype has answered its question, either delete it or fold the validated decision into the real code — don't leave it rotting in the repo.
+1. **Throwaway from day one.** Locate prototype close to its target code; name it to signal prototype, not production. Follow project routing conventions. *(Honors anti-pattern #14)*
+2. **One command to run.** Use project's existing task runner. *(anti-pattern #31 — run command is the success contract.)*
+3. **No persistence by default.** In-memory state. If persistence IS the question, use a scratch store with a clear "PROTOTYPE" name.
+4. **Skip the polish.** No tests, no error handling beyond runnability, no abstractions. *(Prototype-scoped; opposite of `/tdd` discipline — don't let it leak.)*
+5. **Surface the state.** Print/render full relevant state after every action or variant switch.
+6. **Delete or absorb when done.** Capture the verdict, then delete the shell or fold validated core into real code. Don't leave it rotting.
 
 ## Process Summary
 
-**Step 0 — Bootstrap.** Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs. Read `CONTEXT.md` and `docs/adr/` even when there's no PRD — reuse already-validated domain language and past decisions instead of re-deriving them in the prototype. State what's missing.
+**Step 0 — Bootstrap.** Apply the [Skill Entry Protocol](../rules/entry-protocol.md). Read `CONTEXT.md` and `docs/adr/` — reuse validated domain language and decisions instead of re-deriving. State what's missing.
 
-**Step 1 — State the question.** Before writing code, write down what model/question is being prototyped in one paragraph (top-of-file comment or prototype `README`/`NOTES.md`). A prototype that answers the wrong question is pure waste.
+**Step 1 — State the question.** Write down the model/question being prototyped (top-of-file comment or `NOTES.md`). A prototype answering the wrong question is pure waste.
 
-**Step 2 — Pick the branch.** Logic vs UI (see above). If ambiguous, match surrounding code; state the assumption.
+**Step 2 — Pick the branch.** Logic vs UI. If ambiguous, match surrounding code; state the assumption.
 
-**Step 3 — Build.** Follow the branch's process in [REFERENCE.md](REFERENCE.md). Match the project's existing language, tooling, and conventions — don't add a new package manager, runtime, component library, or routing structure for the prototype. *(Honors anti-pattern #21 — read project conventions at runtime, don't hardcode them into skill behavior.)*
+**Step 3 — Build.** Follow branch process in [REFERENCE.md](REFERENCE.md). Match project's existing language, tooling, conventions — don't add new runtimes or structures. *(anti-pattern #21)*
 
-**Step 4 — Hand it over.** Give the user the one run command (logic) or the URL + `?variant=` keys (UI). They drive it. The interesting moments are "wait, that shouldn't be possible" or "huh, I assumed X would be different" — those are bugs in the _idea_, which is the whole point.
+**Step 4 — Hand it over.** Give the user the run command (logic) or URL + `?variant=` keys (UI). They drive it. The interesting moments are "wait, that shouldn't be possible" — those are bugs in the *idea*, which is the point.
 
-**Step 5 — Capture the answer and dispose.** When the prototype has done its job, capture the verdict durably (PRD `## Traceability` `Prototyped by` field / ADR / commit / `NOTES.md`). Then delete the prototype or absorb its validated core. Don't leave it rotting.
+**Step 5 — Capture the answer and dispose.** Record the verdict (PRD `Prototyped by` / ADR / commit / `NOTES.md`). Then delete the shell or absorb its validated core.
 
 See [REFERENCE.md](REFERENCE.md) for the full LOGIC mode and UI mode processes, anti-patterns, and the floating switcher spec.
 

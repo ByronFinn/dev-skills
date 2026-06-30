@@ -699,3 +699,15 @@ If the session is interrupted during the review process, follow these steps.
 **If interrupted during Authorization (Chapter 6):**
 - Present the merged report again (re-read from disk if any local files were updated)
 - Re-ask the user for authorization — never assume a previous authorization carries over after interruption
+
+## Integration Review
+
+When all vertical slices of a PRD are complete, perform additional checks beyond single-slice review:
+
+- **Cross-slice data flow**: Do the slices integrate correctly when combined?
+- **Shared state consistency**: Do slices agree on data models, state transitions, event payloads?
+- **Full PRD acceptance criteria coverage**: Are ALL acceptance criteria from the PRD met across all child issues?
+- **Integration test coverage**: Are there tests that verify slices working together, not just unit tests per slice?
+- **Dependency order verification**: Were slices implemented in the correct dependency order?
+
+State explicitly: "Integration Review — checking <N> slices for PRD <name>."

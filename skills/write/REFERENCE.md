@@ -30,7 +30,7 @@ See [references/write-en.md](references/write-en.md). Key sections:
 ### Chinese Prose (`write-zh.md`)
 
 See [references/write-zh.md](references/write-zh.md). Key sections:
-- Execution flow (保语义 → 去AI味 → 顺句子 → 调标点)
+- Execution flow (preserve meaning → de-AI → smooth sentences → adjust punctuation)
 - Natural > stylized (don't force colloquialisms)
 - Technical long-form default mode
 - AI-taste patterns (summary-tone sentences, contrast frames, explanation-voice openers)

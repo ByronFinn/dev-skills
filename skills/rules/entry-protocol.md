@@ -20,6 +20,7 @@ Read config files under `docs/agents/` (created by `setup-project`). If the dire
 | `docs/agents/repo-map.md` | Multi-repo structure — which repos exist, which owns the issue tracker | Treat as single-repo |
 | `docs/agents/issue-tracker.md` | Issue tracker type and CLI conventions | Ask user which tracker they use |
 | `docs/agents/triage-labels.md` | Label vocabulary mapping | Use canonical defaults |
+| `docs/agents/language.md` | Language consumer skills should write human-facing output in (PRDs, ADRs, CONTEXT, Issues, comments) | Fall back to the user's input language; ask when unsure |
 
 ### Step 2: Identify Multi-Repo Scope
 
@@ -36,6 +37,7 @@ Read domain docs at the paths discovered in Step 1 (or defaults if config missin
 | CONTEXT.md | `CONTEXT.md` at repo root | Domain glossary — terminology, concepts, relationships |
 | PRDs | `docs/prd/PRD-NNNN-<title>.md` | Product requirements — what to build, acceptance criteria |
 | ADRs | `docs/adr/*.md` | Architecture Decision Records — past technical decisions |
+| Research INDEX | `docs/research/INDEX.md` | Searchable index of persisted technical research records (stack × topic × major). Query before re-searching; see `/research` skill |
 
 **If any document is missing, proceed without it.** Missing context reduces precision but does not block execution. State what's missing so the user knows the limitation.
 
@@ -43,7 +45,9 @@ Read domain docs at the paths discovered in Step 1 (or defaults if config missin
 
 - PRD content found **outside** `docs/prd/` — e.g. `docs/adr/PRD-*.md`, `docs/prd-*.md` in the docs root, or `PRD-*.md` at repo root.
 - ADR files carrying a `PRD-` prefix, or PRD files carrying no `PRD-` prefix.
+- Research records found **outside** `docs/research/` — e.g. `<stack>-<topic>-<major>.md` at repo root or under `docs/`.
 - **Number collisions** — two ADRs sharing the same `NNNN`, or two PRDs sharing the same `PRD-NNNN` (common when multiple sessions run concurrently). Scan the directory and report any duplicate numbers before creating a new file.
+- **Research record collisions** — two records sharing the same `<stack>-<topic>-<major>` filename (a `/research` duplicate; see `/research` Step 2 dedup).
 
 Report findings as a note in the skill output: *"Filing inconsistency found: <file> appears misplaced / <NNNN> is used by two files. Want me to relocate?"* Do not silently move or renumber.
 

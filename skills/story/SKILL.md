@@ -40,15 +40,15 @@ Break plan into independently actionable issues using vertical slices (tracer bu
 
 **Step 5**: Present to user — show title, type (HITL/AFK), blocked-by, user stories
 
-**Step 6**: Publish issues in dependency order (blockers first)。Issue 标题格式：`[PRD-NNNN] <切片描述> — <核心行为>`。Issue body 包含 `Meta` 段（PRD 引用、Type、Siblings）。
+**Step 6**: Publish issues in dependency order (blockers first). Issue title format: `[PRD-NNNN] <slice-description> — <core-behavior>`. Issue body includes a `Meta` section (PRD reference, Type, Siblings).
 
-**Step 7**: Update PRD with child issues; set `Status` to `Sliced` in the PRD metadata line。更新 `## Traceability` 的 `Sliced into` 字段，填入 Child Issues 列表（含编号、标题、类型、状态标记）。
+**Step 7**: Update PRD with child issues; set `Status` to `Sliced` in the PRD metadata line. Update the `## Traceability` `Sliced into` field with the child issues list (number, title, type, status).
 
-**Step 8**: Sync Issue (if parent exists)。更新父 Issue body，追加 Child Issues 列表。
+**Step 8**: Sync Issue (if parent exists). Update the parent Issue body, append child issues list.
 
 **Slice Types:**
-- **HITL**: Human-in-the-loop — this issue requires human judgment at some point (architecture decisions, design reviews, UX choices). Marked for the human's project planning; the implementing agent treats it like any other issue but may pause at decision points to request human input.
-- **AFK**: Away-from-keyboard — implementable end-to-end without human interaction. These issues are suitable for autonomous agent execution.
+- **HITL**: Human-in-the-loop — requires human judgment (architecture, design, UX). Agent pauses at decision points for input.
+- **AFK**: Away-from-keyboard — implementable end-to-end without human interaction.
 
 See [REFERENCE.md](REFERENCE.md) for issue template, input handling, and example.
 
@@ -90,15 +90,12 @@ Next: Run /tdd to start implementing first issue.
 ## Example
 
 ```
-PRD: User subscription functionality (PRD-0003-subscription)
+PRD: User subscription (PRD-0003-subscription)
 
 Proposed:
 1. Create subscription data model (AFK) — schema + API + tests
 2. Payment flow integration (AFK, blocked by #1) — gateway + webhooks + tests
 3. Management UI (HITL, blocked by #2) — design review + components + E2E
 
-User: granularity looks right, proceed
-
-[Create 3 issues]
-[Update PRD]
+User: granularity looks right, proceed → [Create 3 issues, Update PRD]
 ```

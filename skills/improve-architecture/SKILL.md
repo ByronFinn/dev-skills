@@ -26,7 +26,7 @@ Read available domain context before starting. If any are missing, proceed witho
 
 ## Process Summary
 
-**Step 1**: Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs and identify multi-repo architecture scope. Read domain context — CONTEXT.md, ADRs, PRDs. If any file is missing, note it and proceed. The scan will be less precise but still useful — code-level design debt signals (duplication, coupling, long functions) don't require domain context to detect.
+**Step 1**: Apply the [Skill Entry Protocol](../rules/entry-protocol.md). Read CONTEXT.md, ADRs, PRDs. If any are missing, note it and proceed — code-level signals (duplication, coupling, long functions) don't require domain context.
 
 **Step 2**: Analyze current development direction — extract planned features, check compatibility with existing architecture
 
@@ -59,32 +59,16 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 ```
 Improve Architecture complete.
 
-Scan scope:
-- PRDs: <count>
-- Code files: <count>
-- ADRs: <count>
+Scan scope:       [PRDs: N, Code files: N, ADRs: N]
+Alignment:        [✅ N, ⚠️ N, ❌ N]
+Findings:         [Blocking: N, High: N, Medium: N]
 
-Architecture alignment:
-- ✅ Compatible: <count> features
-- ⚠️ Needs improvement: <count> features
-- ❌ Conflicts: <count> features
-
-Findings:
-- Blocking: <count>
-- High priority: <count>
-- Medium priority: <count>
-
-Suggested next steps:
-1. Review blocking issues
-2. Create issues for approved improvements
-3. Use /story to decompose
-4. Use /tdd to implement
+Next: Review blocking issues → /story to decompose → /tdd to implement
 ```
 
-**PRD Traceability:** If findings link to a PRD, fill the `Arch reviewed by` field in that PRD's `## Traceability` section so downstream skills know an architecture review touched it:
-
+**PRD Traceability:** If findings link to a PRD, fill the `Arch reviewed by` field:
 ```markdown
-- **Arch reviewed by**: `/improve-architecture` (<YYYY-MM-DD>) — <one-line finding summary + priority>
+- **Arch reviewed by**: `/improve-architecture` (<YYYY-MM-DD>) — <one-line finding + priority>
 ```
 
 ## Workflow Position

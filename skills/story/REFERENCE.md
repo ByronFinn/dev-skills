@@ -64,7 +64,7 @@ If no PRD exists and the user gave a direct description, proceed to Step 2 to ex
 | `CONTEXT.md` does not exist | No domain glossary | Proceed silently. Note domain terms found during slicing for later `/grill`. |
 | `docs/adr/` is empty or missing | No architecture decisions recorded | Proceed silently. Flag significant design decisions in issue descriptions. |
 
-If multiple signals are present (no CONTEXT.md + no ADRs + unresolved PRD), suggest: "PRD appears未经 grill 验证。建议先跑 `/grill` 再拆分，或直接继续但注意设计中可能有未解决问题。"
+If multiple signals are present (no CONTEXT.md + no ADRs + unresolved PRD), suggest: "PRD appears un-grilled. Recommend running `/grill` first before slicing, or proceed with awareness that the design may have unresolved issues."
 
 **When input is a direct description (no PRD):**
 
@@ -152,7 +152,7 @@ Read `docs/agents/issue-tracker.md` for the issue creation convention (e.g., `gh
 
 **Multi-repo:** If `repo-map.md` indicates issues should be created in a different repo, use that repo's issue tracker. Add `cross-repo` label (if configured) to issues touching multiple repos.
 
-**Issue 标题格式**：`[PRD-NNNN] <垂直切片描述> — <核心行为>`。语言跟随用户输入，不确定时询问用户。
+**Issue title format**: `[PRD-NNNN] <vertical-slice-description> — <core-behavior>`. Use the same language as the user's input language; ask when unsure.
 
 For each approved slice, publish new issue to tracker. Use issue body template above. The `Meta` section must include:
 - **PRD**: Full PRD file path (PRD-NNNN-<title>.md)
@@ -165,7 +165,7 @@ Publish issues in dependency order (blockers first) so you can reference real is
 
 ### Step 8: Update PRD
 
-**Issue 标题格式**：`[PRD-NNNN] <垂直切片描述> — <核心行为>`
+**Issue title format**: `[PRD-NNNN] <vertical-slice-description> — <core-behavior>`
 
 Add created issues to PRD's `## Traceability → Sliced into` section:
 
@@ -176,10 +176,10 @@ Add created issues to PRD's `## Traceability → Sliced into` section:
   - #<issue-3> — [PRD-NNNN] <slice title> (AFK)
 ```
 
-**状态标记规则**：
-- `— Done` — Issue 已关闭且代码已合并
-- `— In Progress` — Issue 正在实现中（tdd 进行中）
-- 无标记 — Issue 尚未开始
+**Status markers**:
+- `— Done` — Issue closed and code merged
+- `— In Progress` — Issue being implemented (tdd in progress)
+- No marker — Issue not started
 
 Fill the `Sliced by` field in the PRD's `## Traceability` section:
 

@@ -19,6 +19,7 @@ Priority when multiple skills could match:
 |---|---|---|
 | New project, configure skills, issue tracker setup, initialize workflow | `setup-project` | Scaffold `docs/agents/` configuration and AGENTS.md before skills can run. |
 | Rough idea, unclear requirements, feasibility, design approach, “how should we build this?” | `think` | Convert ambiguity into a decision-complete PRD. |
+| Technical investigation needing durable capture — “what’s the best practice for X in version Y”, stack/version-specific research, authoritative-source lookup to reuse later | `research` | Persist an immutable, versioned research record into `docs/research/` + INDEX, so the next task queries INDEX instead of re-searching. |
 | Design doubt easier to resolve by *running* code than reasoning on paper — state machine edges, data-model expressiveness, “does this logic feel right?” (→ LOGIC) | `have-a-try` | Build a throwaway terminal prototype that answers one logic/state question. Sits between `/think` and `/grill`. |
 | Design doubt about what a page should *look like* — “try a few layouts”, “see a few options” (→ UI) | `have-a-try` | Build several radically different UI variants on one route, switchable via `?variant=`. |
 | Existing PRD/plan/terminology/domain model/ADR questions, “challenge this plan”, “is this design sound?” | `grill` | Stress-test plan against domain language and decision records. |
@@ -42,6 +43,7 @@ Priority when multiple skills could match:
 | Trigger | Skill | Description |
 |---------|-------|-------------|
 | brainstorm / 构思 / 方案 / 出方案 / 深入分析 / 怎么设计 | `think` | Diverge on possibilities, converge to concrete plan, generate initial PRD and issue |
+| research / 调研 / 最佳实践 / best practice / 技术选型 / tech evaluation / 选哪个库 / 官方文档 / how does X work in version Y / 权威信源 | `research` | Investigate a stack×topic×major against authoritative sources; persist immutable record + INDEX row. Sits beside think — think consumes INDEX at Step 5, or research runs standalone |
 | prototype / 原型 / 试一下 / spike / 验证设计 / 看看效果 / 跑起来看看 / 状态机对不对 / 数据模型能表达吗 | `have-a-try` | Build a throwaway prototype to answer one design question (LOGIC terminal app or UI variants). Optional branch between `/think` and `/grill` — write disposable code, capture the verdict, delete the shell |
 | 挑战方案 / grill / 细化方案 / 深挖计划 / 术语审查 | `grill` | Challenge plan against domain model, sharpen terminology, update CONTEXT.md, ADRs, issue |
 | 分解 / story / 拆分 / Issues / 任务 / 子任务 | `story` | Break plan into executable Issues (accepts PRD or direct description), update PRD child issues, sync issue tracker |
@@ -86,6 +88,13 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 ```
 /think → user approves → /grill → /story → /tdd → /review → merge/release
 ```
+`/think` Step 5 queries `docs/research/INDEX.md` first; on a hit it reuses the TL;DR, on a miss it may suggest `/research` to persist a durable record before committing to an approach.
+
+**Technical investigation (standalone or embedded):**
+```
+/research <stack> <topic>-<major>   →  immutable record + INDEX row  →  /think (queries INDEX) or /grill (records ADR citing the research)
+```
+`/research` runs standalone to build the knowledge base, OR is effectively triggered inside `/think` Step 5 when a technical choice needs grounding. Records are immutable (ADR-0004); a new major creates a new file, never edits the old.
 
 **New feature with a design doubt worth prototyping:**
 ```
@@ -113,7 +122,7 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 /improve-architecture → review report → /grill (if terminology/ADR decisions) → /story (if approved improvements) → /tdd (optional)
 ```
 
-**Note on sub-agent orchestration:** `/tdd` now internally runs Acceptance Criterion Cycles — a 5-step loop per criterion (Test Sub-Agent designs scenarios → Scenario Review Gate → Test Sub-Agent writes tests (RED) → Test Code Review Gate → Develop Sub-Agent implements (GREEN)), followed by a unified Refactor phase after all cycles. `/review` now internally dispatches three parallel sub-agents (Test Review, Code Review, Impact Review), each independently re-reading all shared context, then merges their reports for human adjudication.
+**Note on sub-agent orchestration:** `/tdd` now internally runs Acceptance Criterion Cycles — a 5-step loop per criterion (Test Sub-Agent designs scenarios → Scenario Review Gate → Test Sub-Agent writes tests (RED) → Code Review Gate → Develop Sub-Agent implements (GREEN)), followed by a unified Refactor phase after all cycles. `/review` now internally dispatches three parallel sub-agents (Test Review, Code Review, Impact Review), each independently re-reading all shared context, then merges their reports for human adjudication.
 
 ## Disambiguation
 
@@ -138,6 +147,12 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 - Local change impact, regression risk for current diff, compatibility and release strategy → `/review` (Impact Review sub-agent).
 - Global architecture health, design debt scan, periodic code health check → `/improve-architecture`.
 
+**“调研 / research” conflict (`research` vs `think` vs `have-a-try`):**
+- Vague idea, multiple paths, not sure *what* to build → `/think` (converge to a PRD; it queries INDEX at Step 5 but doesn't itself persist research).
+- Concrete technical question against a specific stack+version, want to capture the best practice durably for reuse → `/research` (authoritative-source investigation → immutable record + INDEX).
+- Design doubt cheaper to resolve by *running* code than reasoning (state machine edge, what a page looks like) → `/have-a-try` (disposable prototype).
+- Rule of thumb: `/think` decides *what* to build (no durable technical record); `/research` decides *how* a specific tech behaves (durable, sourced record); `/have-a-try` validates a design guess (disposable code). `/think` Step 5 internally consumes `/research` output via INDEX — you don't have to run `/research` manually first.
+
 **"拆分任务" conflict (`story` vs `think`):**
 - User has a clear, specific plan in mind and wants it broken into issues → `/story`
 - User has a rough idea, needs help figuring out what to build → `/think`
@@ -160,6 +175,7 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 |-------|-------------|-----------|---------|
 | `setup-project` | — | Scaffold or update per-repo skill configuration (idempotent — safe to re-run) | `docs/agents/*.md` + AGENTS.md block |
 | `think` | PRD-FORMAT.md | Diverge → converge to initial PRD | PRD + parent issue (required, Step 9a) |
+| `research` | RESEARCH-FORMAT.md<br>INDEX-FORMAT.md | Investigate stack×topic×major against authoritative sources → immutable record + INDEX | `docs/research/<stack>-<topic>-<major>.md` + INDEX.md row (lazy-created) |
 | `have-a-try` | — | Build a throwaway prototype to answer one design question (LOGIC terminal app or UI variants) | Validated verdict (PRD `Prototyped by` / ADR / commit / NOTES.md); prototype deleted or core absorbed |
 | `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | Challenge plan + update domain knowledge | PRD + CONTEXT.md + ADRs + parent issue synced (if created by /think) |
 | `story` | STORY-FORMAT.md | Vertical slices to Issues (accepts PRD or direct description) | PRD (created or updated) + Child Issues + issues if confirmed |
@@ -178,7 +194,8 @@ Each skill may depend on files or configuration produced by earlier skills. Miss
 | Skill | Config (always read first) | Required | Optional (enhances output if present) | Format Contract | Auto-created by |
 |-------|---------------------------|----------|---------------------------------------|----------------|-----------------|
 | `setup-project` | — | Git repo | — | — | — (this is the foundation) |
-| `think` | — | — | `CONTEXT.md`, `docs/adr/`, existing PRDs | PRD-FORMAT.md | Creates PRD if user opts in |
+| `think` | — | — | `CONTEXT.md`, `docs/adr/`, existing PRDs, `docs/research/INDEX.md` | PRD-FORMAT.md | Creates PRD if user opts in |
+| `research` | `domain.md` | A concrete stack×topic×major question | `CONTEXT.md`, `docs/adr/`, `docs/research/INDEX.md` (for dedup) | RESEARCH-FORMAT.md, INDEX-FORMAT.md | Creates `docs/research/` + INDEX lazily on first record |
 | `have-a-try` | `domain.md` | A concrete design question | `CONTEXT.md`, `docs/adr/`, PRD | — | — |
 | `grill` | `domain.md` | PRD (`docs/prd/PRD-NNNN-<title>.md`) | `CONTEXT.md`, `docs/adr/` | CONTEXT-FORMAT.md, ADR-FORMAT.md | Creates `CONTEXT.md` and ADRs lazily |
 | `story` | `domain.md`, `repo-map.md`, `issue-tracker.md`, `triage-labels.md` | — | `CONTEXT.md`, PRD | STORY-FORMAT.md (Issue body), minimal PRD | Creates minimal PRD if none exists |
@@ -188,11 +205,11 @@ Each skill may depend on files or configuration produced by earlier skills. Miss
 | `improve-architecture` | `domain.md`, `repo-map.md` | — | `CONTEXT.md`, `docs/adr/`, `docs/prd/*.md` | — | — |
 | `write` | `domain.md` | Text to edit | Project style references, existing releases, `CONTEXT.md` | — | — |
 
-**Config column**: Files under `docs/agents/`. `domain.md` tells consumer skills where domain docs live. `repo-map.md` tells them about multi-repo structure. Both are optional — skills fall back to default paths if missing.
+**Config column**: Files under `docs/agents/`. `domain.md` tells consumer skills where domain docs live. `repo-map.md` tells them about multi-repo structure. `language.md` tells them what language to write human-facing output in (PRDs, ADRs, CONTEXT, Issues). All are optional — skills fall back to default paths (and, for language, the user's input language) if missing.
 
 **Format Contract column**: The output format expected by downstream skills. "Issue body = STORY-FORMAT.md" means issues created by the skill use the Story Format body.
 
-**Config maintenance:** `/setup-project` creates `docs/agents/` configuration that consumer skills read. When project structure changes (repos added/removed, issue tracker switched, domain docs reorganized), re-run `/setup-project` — it reads existing config, detects drift, and updates only what changed. Consumer skills may suggest running `/setup-project` if they detect missing or stale config.
+**Config maintenance:** `/setup-project` creates `docs/agents/` configuration that consumer skills read. When project structure changes (repos added/removed, issue tracker switched, domain docs reorganized, doc language changed), re-run `/setup-project` — it reads existing config, detects drift, and updates only what changed. Consumer skills may suggest running `/setup-project` if they detect missing or stale config.
 
 ## Mid-Skill Switching
 
