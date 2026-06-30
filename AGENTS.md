@@ -15,7 +15,7 @@ npx skills@latest add ByronFinn/dev-skills
 skills/
 ├── RESOLVER.md                  # Skill routing table and disambiguation rules
 ├── rules/
-│   ├── anti-patterns.md         # 40 cross-skill behavioral constraints (always apply)
+│   ├── anti-patterns.md         # cross-skill behavioral constraints (41 rules, always apply)
 │   └── entry-protocol.md        # Shared skill bootstrap sequence (all skills reference)
 ├── setup-project/               # Project initialization skill → AGENTS.md + docs/agents/
 │   ├── SKILL.md
@@ -127,7 +127,7 @@ Key disambiguation rules:
 
 ## Cross-Skill Rules (anti-patterns.md)
 
-40 behavioral constraints apply to **all** skills at all times. Key ones:
+41 behavioral constraints apply to **all** skills at all times. Key ones:
 
 - **Read before acting** — never edit based on first sentence of a request.
 - **Evidence over claims** — run commands, paste output. Never say "should work".

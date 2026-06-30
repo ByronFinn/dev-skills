@@ -127,7 +127,7 @@ Fix what was asked, nothing more. After fixing one instance of a pattern, grep f
 
 | File | Purpose |
 |------|---------|
-| [`skills/rules/anti-patterns.md`](skills/rules/anti-patterns.md) | 40 cross-skill behavioral constraints (always apply). Covers everything from "read before acting" to "sub-agent state independence" to "session recovery". |
+| [`skills/rules/anti-patterns.md`](skills/rules/anti-patterns.md) | Cross-skill behavioral constraints (41 rules, always apply). Covers everything from "read before acting" to "sub-agent state independence" to "session recovery". |
 | [`skills/rules/entry-protocol.md`](skills/rules/entry-protocol.md) | Shared bootstrap sequence all skills apply before starting — locate domain docs, check upstream artifacts, ensure standalone/composable execution. |
 
 ## Key Concepts
