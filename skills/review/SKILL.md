@@ -55,9 +55,9 @@ Each sub-agent is an independent review perspective. They run in parallel, each 
 | **Code Review** | Implementation quality, security, performance, code conventions, error handling, readability |
 | **Impact Review** | Change scope, regression risk, compatibility, architecture health (local to this change), tech debt introduced, release strategy (feature flags, canary, rollback plan). Suggests `/improve-architecture` for global architecture concerns |
 
-### Sub-Agent Independence (anti-pattern #38)
+### Sub-Agent Independence
 
-Every sub-agent must independently re-read all shared context. A sub-agent must not carry over conclusions, file reads, or understanding from another sub-agent or from a previous skill invocation. Each builds its perspective from raw context.
+Every sub-agent independently re-reads all shared context from disk — no conclusions, file reads, or understanding carried over from another sub-agent or a prior skill (anti-patterns #37, #38). See [REFERENCE.md Shared Re-Read Checklist](REFERENCE.md) and each chapter's role-specific addition.
 
 ## Report Merge Rules
 

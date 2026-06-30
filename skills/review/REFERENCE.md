@@ -105,17 +105,9 @@ The orchestrator assembles a context bundle containing:
 
 This bundle is passed to all three sub-agents. Each sub-agent re-reads the actual files from disk independently (anti-patterns #37, #38).
 
----
+### Shared Re-Read Checklist
 
-## Chapter 2: Test Review Sub-Agent
-
-### Independence Constraint
-
-This sub-agent independently re-reads all shared context from disk. It must not carry over conclusions, file reads, or understanding from another sub-agent, the orchestrator's earlier phase, or a previous skill invocation. Re-read every file. Build your perspective from raw context. (anti-patterns #37, #38)
-
-### Context Re-Read Checklist
-
-Before starting the review, re-read all of the following from disk:
+Every sub-agent re-reads these from disk before starting (each chapter lists only its role-specific additions):
 
 - [ ] `docs/agents/domain.md` (if exists) — domain doc layout
 - [ ] PRD (from `docs/prd/` or path from `domain.md`) — requirements and acceptance criteria (PRD-NNNN-<title>.md)
@@ -123,6 +115,19 @@ Before starting the review, re-read all of the following from disk:
 - [ ] `CONTEXT.md` — domain glossary and terminology
 - [ ] ADRs (from `docs/adr/` or path from `domain.md`) — relevant architecture decisions
 - [ ] Full diff (staged + unstaged)
+
+---
+
+## Chapter 2: Test Review Sub-Agent
+
+### Independence Constraint
+
+Independence: re-read all shared context from disk. Do not carry over conclusions, file reads, or understanding from another sub-agent, the orchestrator's earlier phase, or a previous skill invocation (anti-patterns #37, #38). See the **Shared Re-Read Checklist** in Chapter 1; the role-specific addition is below.
+
+### Context Re-Read Checklist (role-specific addition)
+
+In addition to the shared checklist (Chapter 1), re-read from disk:
+
 - [ ] All test files in the diff — read full file content, not just changed lines
 
 If any document is missing, note it. A missing PRD means you cannot verify acceptance criteria coverage — state this explicitly.
@@ -222,18 +227,12 @@ Do NOT review implementation quality, security, performance, or release impact �
 
 ### Independence Constraint
 
-This sub-agent independently re-reads all shared context from disk. It must not carry over conclusions, file reads, or understanding from another sub-agent, the orchestrator's earlier phase, or a previous skill invocation. Re-read every file. Build your perspective from raw context. (anti-patterns #37, #38)
+Independence: re-read all shared context from disk. Do not carry over conclusions, file reads, or understanding from another sub-agent, the orchestrator's earlier phase, or a previous skill invocation (anti-patterns #37, #38). See the **Shared Re-Read Checklist** in Chapter 1; the role-specific addition is below.
 
-### Context Re-Read Checklist
+### Context Re-Read Checklist (role-specific addition)
 
-Before starting the review, re-read all of the following from disk:
+In addition to the shared checklist (Chapter 1), re-read from disk:
 
-- [ ] `docs/agents/domain.md` (if exists) — domain doc layout
-- [ ] PRD (from `docs/prd/` or path from `domain.md`) — requirements and acceptance criteria (PRD-NNNN-<title>.md)
-- [ ] Story / Issue — vertical-slice implementation ticket being reviewed
-- [ ] `CONTEXT.md` — domain glossary and terminology
-- [ ] ADRs (from `docs/adr/` or path from `domain.md`) — relevant architecture decisions
-- [ ] Full diff (staged + unstaged)
 - [ ] All implementation files in the diff — read full file content, not just changed lines
 
 If any document is missing, note it. A missing PRD means you cannot verify requirements alignment — state this explicitly.
@@ -337,18 +336,12 @@ If any security check fails, the verdict must be **Request Changes** with severi
 
 ### Independence Constraint
 
-This sub-agent independently re-reads all shared context from disk. It must not carry over conclusions, file reads, or understanding from another sub-agent, the orchestrator's earlier phase, or a previous skill invocation. Re-read every file. Build your perspective from raw context. (anti-patterns #37, #38)
+Independence: re-read all shared context from disk. Do not carry over conclusions, file reads, or understanding from another sub-agent, the orchestrator's earlier phase, or a previous skill invocation (anti-patterns #37, #38). See the **Shared Re-Read Checklist** in Chapter 1; the role-specific addition is below.
 
-### Context Re-Read Checklist
+### Context Re-Read Checklist (role-specific addition)
 
-Before starting the review, re-read all of the following from disk:
+In addition to the shared checklist (Chapter 1), re-read from disk:
 
-- [ ] `docs/agents/domain.md` (if exists) — domain doc layout
-- [ ] PRD (from `docs/prd/` or path from `domain.md`) — requirements and acceptance criteria (PRD-NNNN-<title>.md)
-- [ ] Story / Issue — vertical-slice implementation ticket being reviewed
-- [ ] `CONTEXT.md` — domain glossary and terminology
-- [ ] ADRs (from `docs/adr/` or path from `domain.md`) — relevant architecture decisions
-- [ ] Full diff (staged + unstaged)
 - [ ] CI configs (`.github/workflows/*`, `.gitlab-ci.yml`, etc.) — pipeline stages and checks
 - [ ] Release configs (`CHANGELOG.md`, version files, deployment configs) — release process
 - [ ] Dependency files (`package.json`, `go.mod`, `requirements.txt`, etc.) — dependency changes
@@ -533,56 +526,7 @@ Never drop or merge away a sub-agent's finding to avoid presenting a contradicti
 
 ### Merged Report Template
 
-```markdown
-Review complete.
-
-Summary: <one-line summary>
-
-Files changed: <count>
-
-── Test Review ──
-<Test Review Sub-Agent report>
-
-── Code Review ──
-<Code Review Sub-Agent report>
-
-── Impact Review ──
-<Impact Review Sub-Agent report>
-
-── Contradictions ──
-<If any sub-agents disagreed, list each with both sides' reasoning>
-<If none: "No contradictions between perspectives.">
-
-── Verification ──
-- Tests: <pass/fail>
-- Lint: <pass/fail>
-- Typecheck: <pass/fail>
-- Build: <pass/fail>
-
-── Findings ──
-New domain terms (for CONTEXT.md):
-- <term>: <definition> (if any)
-
-New decisions (for ADR):
-- <decision summary> (if any)
-
-Updated files:
-- docs/prd/PRD-NNNN-<title>.md — updated
-- CONTEXT.md — updated (if any)
-- docs/adr/*.md — updated (if any)
-
-Synced:
-- Issues: <count> closed
-- Comments: <count> added
-
-Recommendation: Approve / Request Changes / Comments
-
-Next steps:
-- If Approve: Can merge or release
-- If Request Changes (minor): Fix issues → /review again
-- If Request Changes (scope change): Re-evaluate with /think or /grill if requirements changed, then /tdd → /review
-- If global architecture concerns surfaced: Run /improve-architecture
-```
+The merged report template (Traceability, per-perspective sections, Contradictions block, Verification, Findings, Recommendation, Next steps) is defined once in [SKILL.md §Output](SKILL.md). Follow that structure when assembling the merged report.
 
 ---
 
@@ -700,7 +644,9 @@ If the session is interrupted during the review process, follow these steps.
 - Present the merged report again (re-read from disk if any local files were updated)
 - Re-ask the user for authorization — never assume a previous authorization carries over after interruption
 
-## Integration Review
+---
+
+## Chapter 8: Integration Review
 
 When all vertical slices of a PRD are complete, perform additional checks beyond single-slice review:
 
