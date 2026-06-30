@@ -240,7 +240,7 @@ Never create `AGENTS.md` when `CLAUDE.md` already exists (or vice versa) — alw
 
 If an `## Agent skills` block already exists in the chosen file, update its contents in-place rather than appending a duplicate. Don't overwrite user edits to the surrounding sections.
 
-**The `## Agent skills` block (single repo / monorepo):**
+**The `## Agent skills` block** (single-repo / monorepo baseline; multi-repo adds the Repo map section):
 
 ```markdown
 ## Agent skills
@@ -260,35 +260,14 @@ If an `## Agent skills` block already exists in the chosen file, update its cont
 ### Documentation language
 
 [one-line summary — e.g. "all docs in English"]. See `docs/agents/language.md`.
-```
 
-**The `## Agent skills` block (multi-repo):**
-
-```markdown
-## Agent skills
-
-### Issue tracker
-
-[one-line summary of where issues are tracked]. See `docs/agents/issue-tracker.md`.
-
-### Triage labels
-
-[one-line summary of the label vocabulary]. See `docs/agents/triage-labels.md`.
-
-### Domain docs
-
-[one-line summary of layout]. See `docs/agents/domain.md`.
-
-### Documentation language
-
-[one-line summary — e.g. "all docs in English"]. See `docs/agents/language.md`.
-
+<!-- Multi-repo only: include this section -->
 ### Repo map
 
 [one-line summary of multi-repo structure]. See `docs/agents/repo-map.md`.
 ```
 
-Then write the docs files using the seed templates below.
+Then write the docs files using the seed templates in [templates/](templates/).
 
 ### Monorepo: Per-Package Config
 
@@ -314,254 +293,17 @@ For shared conventions (including documentation language), see repo root `docs/a
 
 ## Seed Templates
 
-Below are the seed templates for each `docs/agents/` file. Use these as a starting point, customising based on the user's choices in Step 3.
+Each `docs/agents/` file is generated from a seed template, customised based on the user's choices in Step 3-4. The templates live as separate files so they can be maintained independently and read on demand:
+
+| Output file | Seed template | When used |
+|---|---|---|
+| `docs/agents/issue-tracker.md` | [templates/issue-tracker-github.md](templates/issue-tracker-github.md) | Remote points to github.com |
+| | [templates/issue-tracker-gitlab.md](templates/issue-tracker-gitlab.md) | Remote points to gitlab.com or self-hosted GitLab |
+| | [templates/issue-tracker-local.md](templates/issue-tracker-local.md) | No remote (local markdown in `.scratch/`) |
+| `docs/agents/triage-labels.md` | [templates/triage-labels.md](templates/triage-labels.md) | Always (edit right-hand column to match the tracker's vocabulary) |
+| `docs/agents/domain.md` | [templates/domain.md](templates/domain.md) | Always. **Before writing:** scan `docs/prd/`, `docs/adr/`, `docs/research/` for existing files; replace the example filenames in the template's File structure section with the actual filenames, and omit empty/missing branches. On first run (no docs yet), use the template examples as-is. |
+| `docs/agents/language.md` | [templates/language.md](templates/language.md) | Always (fill in the team's chosen language) |
+| `docs/agents/repo-map.md` | [templates/repo-map.md](templates/repo-map.md) | Multi-repo only |
+
+Read the relevant template file, apply the user's Step 4 overrides, and write the customised result to the target path.
 
-### issue-tracker-github.md
-
-```markdown
-# Issue tracker: GitHub
-
-Issues and PRDs for this repo live as GitHub issues. Use the `gh` CLI for all operations.
-
-## Conventions
-
-- **Create an issue**: `gh issue create --title "..." --body "..."`. Use a heredoc for multi-line bodies. Issue body format follows the Story Format (see `STORY-FORMAT.md` from dev-skills): includes `## What to build`, `## Acceptance Criteria`, `## Blocked by` sections.
-- **Read an issue**: `gh issue view <number> --comments`, filtering comments by `jq` and also fetching labels.
-- **List issues**: `gh issue list --state open --json number,title,body,labels,comments --jq '[.[] | {number, title, body, labels: [.labels[].name], comments: [.comments[].body]}]'` with appropriate `--label` and `--state` filters.
-- **Comment on an issue**: `gh issue comment <number> --body "..."`
-- **Apply / remove labels**: `gh issue edit <number> --add-label "..."` / `--remove-label "..."`
-- **Close**: `gh issue close <number> --comment "..."`
-
-Infer the repo from `git remote -v` — `gh` does this automatically when run inside a clone.
-
-## When a skill says "publish to the issue tracker"
-
-Create a GitHub issue. Use the Story Format (see `STORY-FORMAT.md` from dev-skills) body (## What to build, ## Acceptance Criteria, ## Blocked by).
-
-## When a skill says "fetch the relevant ticket"
-
-Run `gh issue view <number> --comments`.
-```
-
-### issue-tracker-gitlab.md
-
-```markdown
-# Issue tracker: GitLab
-
-Issues and PRDs for this repo live as GitLab issues. Use the [`glab`](https://gitlab.com/gitlab-org/cli) CLI for all operations.
-
-## Conventions
-
-- **Create an issue**: `glab issue create --title "..." --description "..."`. Use a heredoc for multi-line descriptions. Pass `--description -` to open an editor. Issue body format follows the Story Format (see `STORY-FORMAT.md` from dev-skills): includes `## What to build`, `## Acceptance Criteria`, `## Blocked by` sections.
-- **Read an issue**: `glab issue view <number> --comments`. Use `-F json` for machine-readable output.
-- **List issues**: `glab issue list -F json` with appropriate `--label` filters.
-- **Comment on an issue**: `glab issue note <number> --message "..."`. GitLab calls comments "notes".
-- **Apply / remove labels**: `glab issue update <number> --label "..."` / `--unlabel "..."`. Multiple labels can be comma-separated or by repeating the flag.
-- **Close**: `glab issue close <number>`. `glab issue close` does not accept a closing comment, so post the explanation first with `glab issue note <number> --message "..."`, then close.
-- **Merge requests**: GitLab calls PRs "merge requests". Use `glab mr create`, `glab mr view`, `glab mr note`, etc. — the same shape as `gh pr ...` with `mr` in place of `pr` and `note`/`--message` in place of `comment`/`--body`.
-
-Infer the repo from `git remote -v` — `glab` does this automatically when run inside a clone.
-
-## When a skill says "publish to the issue tracker"
-
-Create a GitLab issue. Use the Story Format (see `STORY-FORMAT.md` from dev-skills) body (## What to build, ## Acceptance Criteria, ## Blocked by).
-
-## When a skill says "fetch the relevant ticket"
-
-Run `glab issue view <number> --comments`.
-```
-
-### issue-tracker-local.md
-
-```markdown
-# Issue tracker: Local Markdown
-
-Issues and PRDs for this repo live as markdown files in `.scratch/`.
-
-## Conventions
-
-- One feature per directory: `.scratch/<feature-slug>/`
-- The PRD is `.scratch/<feature-slug>/PRD.md`
-- Implementation issues are `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`
-- Issue body follows the Story Format (see `STORY-FORMAT.md` from dev-skills): `## What to build`, `## Acceptance Criteria`, `## Blocked by`
-- Triage state is recorded as a `Status:` line near the top of each issue file (see `triage-labels.md` for the role strings)
-- Comments and conversation history append to the bottom of the file under a `## Comments` heading
-
-## When a skill says "publish to the issue tracker"
-
-Create a new file under `.scratch/<feature-slug>/issues/` (creating the directory if needed). Use the Story Format (see `STORY-FORMAT.md` from dev-skills) body.
-
-## When a skill says "fetch the relevant ticket"
-
-Read the file at the referenced path. The user will normally pass the path or the issue number directly.
-```
-
-### triage-labels.md
-
-```markdown
-# Triage Labels
-
-The skills speak in terms of five canonical triage roles. This file maps those roles to the actual label strings used in this repo's issue tracker.
-
-| Canonical role | Label in our tracker | Meaning                                  |
-| -------------- | -------------------- | ---------------------------------------- |
-| `needs-triage`             | `needs-triage`       | Maintainer needs to evaluate this issue  |
-| `needs-info`               | `needs-info`         | Waiting on reporter for more information |
-| `ready-for-agent`          | `ready-for-agent`    | Fully specified, ready for an AFK agent  |
-| `ready-for-human`          | `ready-for-human`    | Requires human implementation            |
-| `wontfix`                  | `wontfix`            | Will not be actioned                     |
-
-When a skill mentions a role (e.g. "apply the AFK-ready triage label"), use the corresponding label string from this table.
-
-Edit the right-hand column to match whatever vocabulary you actually use.
-
-<!-- For multi-repo projects, add cross-repo labels:
-| `cross-repo`         | `cross-repo`         | Touches multiple repositories            |
--->
-```
-
-### domain.md
-
-> **Before writing:** scan `docs/prd/`, `docs/adr/`, `docs/research/` for existing files. If any exist, replace the example filenames in the File structure section below with the actual filenames. If a directory is empty or missing, omit that branch. This makes `domain.md` reflect reality, not template placeholders.
->
-> *On first run* (no docs yet), use the template examples as-is — they demonstrate structure, not specific files.
-
-```markdown
-# Domain Docs
-
-How the engineering skills should consume this repo's domain documentation when exploring the codebase.
-
-## Before exploring, read these
-
-- **`CONTEXT.md`** at the repo root — domain glossary (core concepts, terminology, relationships)
-- **`CONTEXT-MAP.md`** at the root if it exists — it points at one `CONTEXT.md` per context. Read each one relevant to the topic.
-- **`docs/prd/`** — product requirements documents. Skills like `improve-architecture` and `review` read these for planned features and acceptance criteria.
-- **`docs/adr/`** — architecture decision records. Read ADRs that touch the area you're about to work in. In multi-context repos, also check `src/<context>/docs/adr/` for context-scoped decisions.
-- **`docs/research/INDEX.md`** — searchable index of persisted technical research records (stack × topic × major). `/think` Step 5 queries it before re-searching; `/research` produces records here.
-
-If any of these files don't exist, **proceed silently**. Don't flag their absence; don't suggest creating them upfront. The producer skills (`/grill` for CONTEXT.md and ADRs, `/think` or `/story` for PRDs) create them lazily.
-
-## What to do if files are missing
-
-If `CONTEXT.md` doesn't exist yet, consumer skills should proceed without it. The first run of `/grill` will create it lazily. Do not create an empty `CONTEXT.md` during setup — an empty file is noise.
-
-Same for `docs/prd/`, `docs/adr/`, and `docs/research/` — create them only when there's actual content to write.
-
-## File structure
-
-Single-context repo (most repos):
-
-```
-/
-├── CONTEXT.md
-├── docs/
-│   ├── prd/
-│   │   ├── PRD-0001-user-subscription.md
-│   │   └── PRD-0002-payment-integration.md
-│   ├── adr/
-│   │   ├── 0001-event-sourced-orders.md
-│   │   └── 0002-postgres-for-write-model.md
-│   └── research/
-│       ├── INDEX.md
-│       ├── react-concurrent-rendering-18.md
-│       └── postgres-index-strategy-15.md
-└── src/
-```
-
-**File naming conventions** (producer skills define these; consumer skills read them):
-
-- PRD: `PRD-NNNN-<title>.md` — see `PRD-FORMAT.md` (dev-skills /think)
-- ADR: `<NNNN>-<title>.md` (no `ADR-` prefix) — see `ADR-FORMAT.md` (dev-skills /grill)
-- Research: `<stack>-<topic>-<major>.md` — see `RESEARCH-FORMAT.md` (dev-skills /research)
-
-Multi-context repo (presence of `CONTEXT-MAP.md` at the root):
-
-```
-/
-├── CONTEXT-MAP.md
-├── docs/
-│   ├── prd/                           ← shared PRDs
-│   └── adr/                           ← system-wide decisions
-└── src/
-    ├── ordering/
-    │   ├── CONTEXT.md
-    │   └── docs/adr/                  ← context-specific decisions
-    └── billing/
-        ├── CONTEXT.md
-        └── docs/adr/
-```
-
-## Use the glossary's vocabulary
-
-When your output names a domain concept (in an issue title, a refactor proposal, a hypothesis, a test name), use the term as defined in `CONTEXT.md`. Don't drift to synonyms the glossary explicitly avoids.
-
-If the concept you need isn't in the glossary yet, that's a signal — either you're inventing language the project doesn't use (reconsider) or there's a real gap (note it for `/grill`).
-
-## Flag ADR conflicts
-
-If your output contradicts an existing ADR, surface it explicitly rather than silently overriding:
-
-> _Contradicts ADR-0007 (event-sourced orders) — but worth reopening because…_
-```
-
-### language.md
-
-```markdown
-# Documentation Language
-
-The language engineering skills should write **human-facing output** in for this repo.
-
-## Language
-
-**<English / 中文 / Other — fill in the team's choice>**
-
-All prose produced by skills — PRDs (`docs/prd/`), ADRs (`docs/adr/`), `CONTEXT.md`, issue titles and bodies, review reports, and comments — is written in this language.
-
-## Scope
-
-- **In scope**: human-facing prose in documents and issues.
-- **Out of scope**: code, identifiers, file names, CLI commands, and configuration values. These follow code conventions, never this setting.
-
-## When a skill says "write the output"
-
-Write the prose in the language above. Do not silently switch to the conversation's language — the team reads the configured language, which may differ from whoever triggered the skill.
-
-If a single artifact genuinely needs a second language (e.g. a bilingual release note), the producing skill may deviate, but the configured language is always the primary one.
-
-## If this file is missing
-
-Fall back to the user's input language, and ask which language the team prefers so it can be recorded here. Don't keep guessing every session.
-```
-
-### repo-map.md (multi-repo only)
-
-```markdown
-# Repo Map
-
-This project spans multiple repositories. This file records which repo does what and where skills should read/write.
-
-## Repositories
-
-| Repo | URL | Role | Issue Tracker | Domain Docs |
-|------|-----|------|---------------|-------------|
-| `<name>` | `<clone-url>` | `<role: API server / web app / shared lib / infra>` | `<GitHub / GitLab / Local / Shared>` | `<single-context / multi-context>` |
-
-## Primary issue tracker
-
-Issues for cross-repo features live in **`<primary-repo-name>`**. When skills like `story` need to create or read issues, use that repo's tracker.
-
-## Domain doc ownership
-
-- **Shared domain terms** live in `<repo>/CONTEXT.md`
-- **Per-repo domain terms** live in each repo's own `CONTEXT.md`
-- **Cross-repo ADRs** live in `<repo>/docs/adr/`
-- **Per-repo ADRs** live in each repo's `docs/adr/`
-
-## Skill behavior across repos
-
-When working on a feature that spans multiple repos:
-1. Read all relevant `CONTEXT.md` files first
-2. Read shared ADRs from the primary repo, then per-repo ADRs
-3. Create issues in the primary repo's tracker
-4. Label cross-repo issues with `<cross-repo-label>` (if configured)
-```
