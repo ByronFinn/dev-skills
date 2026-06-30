@@ -42,51 +42,13 @@ I'll help you think through this. Would you like me to create a PRD file at `doc
 - **No** — I'll work through the plan conversationally and provide a summary at the end
 ```
 
-**If Yes:** before assigning a number, run the [Skill Entry Protocol](../rules/entry-protocol.md) **Step 3a (PRD Conflict Check)** — compare the topic against existing `PRD-NNNN-*.md` files by title slug and `## Goal`. If a candidate collides, ask whether to resume it (reuse its NNNN and continue editing) or create a new PRD with a distinct title. Only after that step, scan `docs/prd/` for existing `PRD-NNNN-*.md` files, assign the next NNNN (max + 1, starting from 0000), and create PRD at `docs/prd/PRD-NNNN-<title>.md` using the template below.
+**If Yes:** first apply [Skill Entry Protocol](../rules/entry-protocol.md) **Step 3a (PRD Conflict Check)** to catch topic collisions against existing `PRD-NNNN-*.md` (resume vs create-new). Only after Step 3a passes, scan `docs/prd/` for existing `PRD-NNNN-*.md` files, assign the next NNNN (max + 1, starting from 0000), and create the PRD at `docs/prd/PRD-NNNN-<title>.md`.
 
 **If No:** skip PRD creation. Still follow the brainstorming process (Steps 3-9), but keep notes in your working context and produce a design summary at the end.
 
 **PRD Location:** `docs/prd/PRD-NNNN-<title>.md`
 
-If creating, use this template:
-
-```markdown
-# <Feature Name>
-
-> **Status**: Draft | **PRD**: PRD-NNNN | **Created**: YYYY-MM-DD | **Last updated**: YYYY-MM-DD
-
-## Goal
-<why + what, one paragraph>
-
-## What I already know
-* <facts from user message>
-* <facts discovered from code/docs>
-
-## Assumptions (temporary)
-* <assumptions to validate>
-
-## Open Questions
-* <only blocking/preference questions; keep brief>
-
-## Requirements (evolving)
-* <what is known>
-
-## Acceptance Criteria (evolving)
-* [ ] <testable criteria>
-
-## Definition of Done (team quality standards)
-* Add/update tests (unit/integration where appropriate)
-* Lint/typecheck/CI passes
-* Update docs/notes on behavior changes
-* Consider release/rollback when risky
-
-## Out of Scope (explicit)
-* <what will not be done>
-
-## Technical Notes
-* <files checked, constraints, links, references>
-* <summary of research notes (if applicable)>
-```
+If creating, use the template and field rules in [PRD-FORMAT.md](PRD-FORMAT.md). Do not retype the template here — PRD-FORMAT.md is the single source.
 
 ## Step 3: Classify Complexity
 
@@ -141,25 +103,7 @@ Examples:
 3. Map conventions to our codebase constraints
 4. Write to PRD's `Research References` section
 
-Then present **2-3 viable approaches** in PRD:
-
-```markdown
-## Research References
-* [Research Topic A](docs/research/topic-a.md) — <one-sentence summary>
-* [Research Topic B](docs/research/topic-b.md) — <one-sentence summary>
-
-## Feasible Approaches
-
-**Approach A: <name>** (Recommended)
-- How it works:
-- Pros:
-- Cons:
-
-**Approach B: <name>**
-- How it works:
-- Pros:
-- Cons:
-```
+Then present **2-3 viable approaches** in the PRD. Fill the `## Research References` and `## Feasible Approaches` sections per [PRD-FORMAT.md](PRD-FORMAT.md) — that file is the single source for the exact field shape.
 
 Then ask **one** preference question:
 - "Which approach do you prefer: A / B / C (or other)?"
@@ -253,14 +197,7 @@ Based on current information, here are 2-3 viable approaches:
 Which direction do you prefer?
 ```
 
-Record result in PRD as ADR-lite section:
-
-```markdown
-## Decision (ADR-lite)
-**Context**: Why this decision was needed
-**Decision**: Which approach was chosen
-**Consequences**: Trade-offs, risks, potential future improvements
-```
+Record the result in the PRD's `## Decision (ADR-lite)` section, using the field shape defined in [PRD-FORMAT.md](PRD-FORMAT.md) (Context / Decision / Consequences).
 
 ## Step 9: Final Confirmation + Implementation Plan
 
