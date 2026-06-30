@@ -2,31 +2,7 @@
 
 ## Issue Template
 
-This is the shared Issue body format used by both `/think` (parent issues) and `/story` (child issues). All issue-tracker templates reference this format.
-
-```markdown
-## Parent
-
-#<parent-issue-number> (only include this section if there is a parent issue; omit entirely for standalone or parent issues)
-
-## What to build
-
-Concise description of this vertical slice. Describe end-to-end behavior, not layer-by-layer implementation.
-
-Avoid specific file paths or code snippets — they become stale quickly. Exception: if prototype-generated snippets encode decisions more precisely than prose (state machines, reducers, schemas, type shapes), inline here and briefly note it came from prototype. Trim to decision-rich parts — not working demo, just important bits.
-
-## Acceptance Criteria
-
-* [ ] Criterion 1
-* [ ] Criterion 2
-* [ ] Criterion 3
-
-## Blocked by
-
-* Reference to blocking tickets (if any)
-
-Or "None - can start immediately" (if no blockers)
-```
+The Issue body format (title, Meta, Parent, What to build, Acceptance Criteria, Blocked by, field rules) is defined once in [STORY-FORMAT.md](STORY-FORMAT.md) — that file is the single source, used by both `/think` (parent issues) and `/story` (child issues). Do not retype it here.
 
 **Do not close or modify any parent issue.**
 
@@ -94,7 +70,7 @@ If these cannot be extracted, suggest running `/think` first — the feature is 
 
 If PRD already exists at `docs/prd/PRD-NNNN-<title>.md`: skip this step.
 
-If no PRD exists, before creating one, run the [Skill Entry Protocol](../rules/entry-protocol.md) **Step 3a (PRD Conflict Check)** — compare the feature topic against existing `PRD-NNNN-*.md` files by title slug and `## Goal`. If a candidate collides, ask whether to resume it (reuse its NNNN and continue editing) or create a new PRD with a distinct title. A different session may have already started a PRD on this topic; this check prevents a silent duplicate.
+If no PRD exists, before creating one, apply [Skill Entry Protocol](../rules/entry-protocol.md) **Step 3a (PRD Conflict Check)** to catch topic collisions against existing `PRD-NNNN-*.md` (resume vs create-new). Step 3a defines the full comparison and collision-resolution procedure.
 
 If no collision (or user chose new), create a minimal PRD. Include **only** sections where you have real information — do not leave empty headings. Use these sections:
 
