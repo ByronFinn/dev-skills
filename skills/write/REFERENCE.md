@@ -4,6 +4,29 @@ Detailed pattern catalogs, mode procedures, and reference files loaded by the Wr
 
 > **How to use**: Reference files are a catalog of smells, not a checklist to run top to bottom. The principles in `SKILL.md` Core Stance apply: over-editing is failure, the author's voice wins, and lists are examples not find-and-replace. A sentence that already reads natural stays. Match the smell, not the word.
 
+## Pre-flight
+
+The three checks from `SKILL.md` §Pre-flight expand here into the language-routing logic.
+
+1. **Text present?** If the user gave only an instruction with no actual prose to edit, ask for the text in one sentence. Do not proceed.
+2. **Audience locked?** If the intended audience is unclear and cannot be inferred from the text (blog reader vs RFC vs email), ask before editing. Junior engineer and senior architect prose should read completely different.
+3. **Language detected from the text being edited**, not the user's command:
+   - Contains Chinese characters + release notes or social post mode → load `references/write-zh-release-notes.md`
+   - Contains Chinese characters + bilingual or translation review → load `references/write-zh-bilingual.md`
+   - Product/site/app localization review across multiple locales → load `references/write-product-localization.md`; also load `references/write-zh-bilingual.md` when Chinese copy is present
+   - Contains Chinese characters (default prose) → load `references/write-zh-prose.md` (quick rules); load `references/write-zh.md` for the full AI-taste pattern catalog
+   - Otherwise → load `references/write-en.md`
+
+Read the loaded reference file. Then edit. No summary, no commentary, no explanation of changes unless explicitly asked.
+
+## Hard Rules
+
+- **Meaning first, style second.** If removing an AI pattern changes the author's meaning, keep the original.
+- **No silent restructuring.** Edit in place unless structure changes explicitly requested. (Exception: Long-form Article Mode proposes cuts as change-points first.)
+- **Artifact-grounded claims.** For release/social/product copy, ground factual claims in real source material (current app behavior, runnable artifact, screenshot, changelog, issue/PR, user draft). Do not rely on memory or stale screenshots.
+- **No em-dash.** Never produce em-dash (U+2014) or en-dash (U+2013). Replace any found in drafts before returning. Use commas, periods, colons, or parentheses instead.
+- **Stop after output.** Deliver the rewritten text only. No changelog, no commentary. (Exception: Long-form Article Mode returns change-points for review.)
+
 ## File Index
 
 | File | Purpose | Loaded when |

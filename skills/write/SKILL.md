@@ -20,21 +20,18 @@ dispatch_intent: "Writing, editing prose, polish, release notes, launch/social c
 
 A catalog of smells, not a checklist. Use it to recognize AI taste, then make judgment calls.
 
-- **Over-editing is failure.** If a sentence is natural, leave it. Most polish is subtraction — cut repetition, summary-tone, restated conclusions.
+- **Over-editing is failure.** If a sentence is natural, leave it. Most polish is subtraction, cutting repetition, summary-tone, restated conclusions.
 - **The author's voice wins.** Keep colloquial words, cadence, and stance. When a rule conflicts with authorial or genre choice, the author wins.
 - **Banned-phrase lists are examples, not find-and-replace.** Match the smell, not the string.
 - **Prefer fewer, stronger edits.** Three changes that matter beat thirty mechanical swaps.
 
 ## Pre-flight
 
+Three checks before editing. Detailed language-routing logic (which reference file to load per detected language/mode) is in [REFERENCE.md §Pre-flight](REFERENCE.md).
+
 1. **Text present?** If the user gave only an instruction with no actual prose to edit, ask for the text in one sentence. Do not proceed.
-2. **Audience locked?** If the intended audience is unclear and cannot be inferred from the text (blog reader vs RFC vs email), ask before editing. Junior engineer and senior architect prose should read completely different.
-3. **Language detected from the text being edited**, not the user's command:
-   - Contains Chinese characters + release notes or social post mode → load `references/write-zh-release-notes.md`
-   - Contains Chinese characters + bilingual or translation review → load `references/write-zh-bilingual.md`
-   - Product/site/app localization review across multiple locales → load `references/write-product-localization.md`; also load `references/write-zh-bilingual.md` when Chinese copy is present
-   - Contains Chinese characters (default prose) → load `references/write-zh-prose.md` (quick rules); load `references/write-zh.md` for the full AI-taste pattern catalog
-   - Otherwise → load `references/write-en.md`
+2. **Audience locked?** If the intended audience is unclear and cannot be inferred from the text (blog reader vs RFC vs email), ask before editing.
+3. **Language detected from the text being edited**, not the user's command. Follow the routing table in REFERENCE.md §Pre-flight to load the right reference file, then edit.
 
 Read the loaded reference file. Then edit. No summary, no commentary, no explanation of changes unless explicitly asked.
 
@@ -46,11 +43,7 @@ Voice and format constraints from durable context are `decision`, `preference`, 
 
 ## Hard Rules
 
-- **Meaning first, style second.** If removing an AI pattern changes the author's meaning, keep the original.
-- **No silent restructuring.** Edit in place unless structure changes explicitly requested. (Exception: Long-form Article Mode proposes cuts as change-points first.)
-- **Artifact-grounded claims.** For release/social/product copy, ground factual claims in real source material (current app behavior, runnable artifact, screenshot, changelog, issue/PR, user draft). Do not rely on memory or stale screenshots.
-- **No em-dash.** Never produce em-dash (U+2014) or en-dash (U+2013). Replace any found in drafts before returning. Use commas, periods, colons, or parentheses instead.
-- **Stop after output.** Deliver the rewritten text only. No changelog, no commentary. (Exception: Long-form Article Mode returns change-points for review.)
+Apply the hard rules in [REFERENCE.md §Hard Rules](REFERENCE.md). Headline: meaning first, no silent restructuring, artifact-grounded claims, **no em-dash (U+2014) or en-dash (U+2013)** in output, stop after output.
 
 ## Modes
 
@@ -65,32 +58,11 @@ See [REFERENCE.md](REFERENCE.md) for detailed mode procedures (Long-form Article
 | **Release notes** | "release", "changelog", "version" | `write-zh-release-notes.md` |
 | **Long-form article** | Multi-section Markdown, >300 lines | see REFERENCE.md |
 | **Tweet / social post** | "推特", "tweet", "social post" | `write-zh-release-notes.md` |
-| **Public reply** | "回复 issue", "reply to PR" | see below |
+| **Public reply** | "回复 issue", "reply to PR" | see REFERENCE.md |
 | **Document review** | "审稿", "check this document" | see REFERENCE.md |
-| **Paragraph coherence** | "连贯性", "coherence" | see below |
+| **Paragraph coherence** | "连贯性", "coherence" | see REFERENCE.md |
 
-### Public Reply Mode (GitHub issue / PR)
-
-Activate when: "回复 issue", "reply to PR", "comment on #N".
-
-1. Open with `@<reporter>` + one thanks line in the reporter's language.
-2. State cause in one sentence, impact in one sentence.
-3. State ship state: already shipped, fixed on main, planned, or not planned.
-4. Two paragraphs max. No bullet lists, no section headers.
-5. No em-dash.
-Before posting, re-read the live issue/PR. Do not reply from memory.
-
-### Paragraph Coherence Mode
-
-Activate when: "连贯性", "段落连贯", "可读性", "coherence", "flow check".
-
-Do not rewrite. Instead flag: transitions that shift topic without signal, opening sentences that don't follow from previous paragraph's close, and monotone sentence length. Suggest minimal fix per issue. Output: numbered list with paragraph location and one-line fix suggestion.
-
-### Tweet / Social Post Mode
-
-Activate when: "推特", "twitter", "X推文", "tweet", "social post", "发文".
-
-Lead with community (star count, user thanks). Pick 2-4 highlights. Frame each point as user benefit ("你用它的时候..."). Include one opinionated sentence. Use native Chinese rhythm. Close casually with invitation, not CTA.
+All mode procedures live in [REFERENCE.md §Mode Procedures](REFERENCE.md).
 
 ## Gotchas
 
