@@ -64,13 +64,7 @@ Lower-priority items can be deferred to a later cycle. Focus test work where it 
 
 ### Identifying Deep Module Opportunities
 
-From "A Philosophy of Software Design":
-
-- **Shallow module**: Small interface, shallow implementation — not worth the abstraction
-- **Deep module**: Small interface, deep implementation — ideal
-- **Avoid**: Large interface, shallow implementation — complexity leak
-
-During planning, note opportunities for deep modules. These inform the refactor phase (Chapter 5) but should not drive premature design during cycles.
+Note opportunities for deep modules (small interface, deep implementation) during planning. The definition and principle live in Chapter 5 §Deep Modules Principle (single source). These notes inform the refactor phase (Chapter 5) but should not drive premature design during cycles.
 
 ### Planning Checklist
 
@@ -512,8 +506,8 @@ These mistakes are specific to the sub-agent orchestrated flow.
 **7. Develop Sub-Agent modifies tests.**
 The Develop Sub-Agent must NEVER modify test code. If the test has a design problem, stop and report to the human. The human decides whether to send the test back to the Test Sub-Agent. This separation preserves the independence of perspectives.
 
-**8. Sub-agent uses cached context.**
-Each sub-agent must re-read all shared context files from disk before acting. The PRD may have been updated, the issue may have new comments, CONTEXT.md may have new entries. Stale context produces incorrect implementations. See anti-patterns.md #38.
+**8. Sub-agent uses cached context / shares internal state.**
+Each sub-agent must re-read all shared context files from disk before acting and must not carry over conclusions or cached understanding from another sub-agent or a prior cycle. The PRD may have been updated, the issue may have new comments, CONTEXT.md may have new entries. Stale or shared context produces incorrect implementations and defeats the independence that catches misinterpretations. See anti-patterns.md #38.
 
 **9. Batch all scenarios across criteria.**
 One acceptance criterion per cycle, enforced by the gate structure. Batching scenarios across criteria is horizontal slicing — the anti-pattern that motivated the sub-agent design. Each cycle completes one criterion end-to-end before starting the next.
@@ -521,18 +515,15 @@ One acceptance criterion per cycle, enforced by the gate structure. Batching sce
 **10. Skipping the Scenario Review Gate in Full mode.**
 In **Full mode** (the default), the two-stage gate is mandatory — scenario design is the highest-leverage decision in TDD, and skipping the Scenario Review Gate to write test code faster produces poorly designed tests that test the wrong things. In **Fast mode**, the Scenario Review Gate is skipped *by design* (scenario coverage folds into the single Test Code Review Gate); this is not a violation, but it requires an explicit user request. In **Batch mode**, one gate covers a homogeneous group. See ADR 0003 (Gate Modes).
 
-**11. Sub-agents share internal state.**
-Each sub-agent starts fresh — no inherited context or cached understanding from another sub-agent. The Test Sub-Agent's interpretation of a requirement is its own; the Develop Sub-Agent must re-read the PRD and form its own understanding. This independence is what catches misinterpretations.
-
-**12. Treating "looks fine" as approval.**
+**11. Treating "looks fine" as approval.**
 Human review gates use explicit checklists. A vague "looks fine" or "ok" is not a proper review — prompt the human to confirm each checklist item. Approval means checklist confirmation, not casual acknowledgment.
 
 ### General Testing Anti-Patterns
 
-**13. Horizontal slicing.**
+**12. Horizontal slicing.**
 Writing all tests then all implementation. This produces tests based on imagined behavior rather than actual behavior. Tests end up verifying data shapes and function signatures rather than user-visible outcomes. The Acceptance Criterion Cycle structure enforces vertical slicing — one criterion at a time, end to end.
 
-**14. Test naming that describes implementation.**
+**13. Test naming that describes implementation.**
 ```javascript
 // Bad — describes implementation detail
 test("userService calls bcrypt.compare", () => { ... });
@@ -541,7 +532,7 @@ test("userService calls bcrypt.compare", () => { ... });
 test("login fails with wrong password", () => { ... });
 ```
 
-**15. Assertions on mock call counts.**
+**14. Assertions on mock call counts.**
 ```javascript
 // Bad — coupled to implementation
 expect(emailService.send).toHaveBeenCalledTimes(1);
@@ -556,15 +547,7 @@ If the implementation changes to send two emails (one welcome, one verification)
 
 ## Chapter 7: Session Recovery
 
-If the session is interrupted (crash, context compression, manual resume) during the TDD process, follow these steps before continuing.
-
-### General Recovery Steps
-
-1. **Re-read the latest user message** — determine what was being worked on
-2. **Re-read shared context from disk** — PRD, Story/Issue, CONTEXT.md, ADRs (anti-pattern #39)
-3. **Verify artifacts on disk** — check that test files and implementation files created in previous cycles still exist
-4. **Determine progress** — which acceptance criterion cycles completed, which was in progress, what phase of that cycle
-5. **State recovery summary** — tell the user what was recovered and where you'll resume from. Confirm before continuing
+If the session is interrupted, apply the general recovery procedure (re-read latest user message, re-read shared context from disk, verify on-disk artifacts, state recovery summary, confirm before continuing) from [anti-patterns.md #39](../rules/anti-patterns.md). What follows is the TDD-specific recovery logic #39 does not cover.
 
 ### Recovery by Phase
 
