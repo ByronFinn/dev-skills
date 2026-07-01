@@ -33,6 +33,7 @@ Scan in this order — not random full-repo reads:
 
 **Skip entirely:**
 - Generated code, build output, vendored dependencies
+- Test fixtures, mock data
 - Files not tracked by version control
 
 ### 3.2 Design Debt Signals
@@ -51,6 +52,8 @@ For each signal, a concrete heuristic is provided to make detection objective:
 | **God objects** | Single class/file handles >3 unrelated responsibilities | Class name contains "Manager", "Handler", "Service" + >500 lines |
 
 **These thresholds are guidelines, not hard cutoffs.** Use judgment — a 55-line function doing one clear thing is fine; a 40-line function juggling three responsibilities is not. The heuristic identifies *candidates*; human judgment confirms.
+
+When a signal fires, the improvement direction follows from its category: duplication → extract shared utility; long functions/classes → split into focused units; tight coupling → depend on abstractions / inject dependencies; global state → pass state explicitly; leaked/missing abstractions → hide behind an interface or add a shared adapter; shallow modules → deepen (hide complexity behind a smaller interface).
 
 ### 3.3 ADR Compliance Check
 
@@ -93,19 +96,17 @@ Each finding must include:
 - [ ] **Impact**: why this matters — performance, maintainability, onboarding cost, or blocked PRD
 - [ ] **PRD link** (if applicable): which planned feature is affected
 
-Findings without evidence are not actionable — do not include vague observations.
-
 ## Step 5: Propose Improvements
 
-For each finding, propose:
-- Current problem (why it's a problem)
-- Suggested improvement (how to improve)
-- Expected benefit (what improvement brings)
-- **Scope estimate**: rough level with rationale
-  - **Low**: isolated change, 1-3 files, no cross-module impact
-  - **Medium**: multi-file change within one module, some cross-cutting concerns
-  - **High**: cross-module refactor, affects multiple packages/services, requires coordinated rollout
-- **Linked PRD** (if applicable)
+For each approved finding, propose:
+
+| Field | Content |
+|-------|---------|
+| **Problem** | What design debt exists |
+| **Suggestion** | Specific improvement |
+| **Benefit** | What improves (maintainability, clarity, PRD unblock) |
+| **Effort** | Low / Medium / High — with rationale |
+| **Linked PRD** | Which PRD this improvement supports |
 
 ## Step 6: Generate Report
 
@@ -238,7 +239,7 @@ function process(data) {
   return processedData;
 }
 ```
-
+ aeb650f (refactor: cleanup and refine skill documents)
 ## Trigger Timing
 
 - **Regular check:** Every 2-4 weeks proactively

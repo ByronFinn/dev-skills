@@ -14,6 +14,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 - **Environment-dependent bug guidance** in `/debug` — structured approach for "works on my machine" class bugs (version diff, lockfile comparison, OS-specific behavior).
 - **Anti-pattern #3a** — explicit rule for when serial questioning is correct (dependency chains), complementing #3's batch-independent-questions rule.
 - `Debugged by` and `Arch reviewed by` fields in PRD Traceability — completes the lifecycle tracking chain.
+- `Prototyped by` field in PRD Traceability — captures verdict from `/have-a-try` prototype runs.
+- `## Meta` section in shared Issue template — downstream skills (`/tdd`, `/review`) read `Meta → PRD` to locate the source PRD.
 - `CHANGELOG.md` — this file.
 
 ### Changed
@@ -21,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 - **Grill "send back to think" criteria** — replaced unmeasurable "30% of requirements changed" with qualitative criteria (goal statement change, fundamental approach invalidation, new domain area).
 - **Improve-architecture effort estimates** — replaced human-time-based ("1-3 days") with scope-and-impact-based ("Low: 1-3 files isolated", "Medium: multi-file one module", "High: cross-module coordinated").
 - **Think Step 0.5 timing** — moved PRD-creation question to after auto-context collection (Step 1), so user decides with actual findings in hand.
+- **PRD status normalized** — `InProgress` (one word) unified to `In Progress` (two words) across all skill instructions and lifecycle documentation.
 
 ### Fixed
 - **Broken reference** — `scripts/hitl-loop.template.sh` in debug/REFERENCE.md was referenced but did not exist. Replaced with inline script template.
@@ -29,8 +32,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 ## [0.1.0] - 2026-06-12
 
 ### Added
-- Sub-agent orchestration pattern for TDD and Review skills (ADR-0001)
-- Two-stage Human Review Gate for test quality (ADR-0002)
+- Sub-agent orchestration pattern for TDD and Review skills (ADR 0001)
+- Two-stage Human Review Gate for test quality (ADR 0002)
 - Anti-patterns #37 (skill-to-skill state drift), #38 (sub-agent state leakage), #39 (session recovery)
 - Acceptance Criterion Cycle in TDD — 5-step loop per criterion
 - Parallel three-perspective review (Test ∥ Code ∥ Impact)

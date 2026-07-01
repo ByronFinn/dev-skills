@@ -17,7 +17,7 @@ PRD 文件格式模板。由 `think` 或 `story`（无 PRD 时）生成和维护
 **命名规则**:
 
 - **NNNN**：四位零填充序号（0000-9999）。由 `/think` 创建时自动分配：扫描 `docs/prd/` 下现有 `PRD-NNNN-*.md` 文件，取最大序号 +1。首次创建从 `0000` 开始。**分配前先确认该号未被占用**——多个会话并发时，扫描后、写入前可能有别的会话抢占了同号，此时取下一个可用号而非覆盖。
-- **创建前去重**：分配编号前，按 title slug 与 `## Goal` 将新主题与现有 PRD 逐个比对。发现疑似重复时询问用户：续写现有 PRD（复用其编号），还是用不同 title 新建。详见入口协议 Step 3a。
+- **创建前去重**：分配编号前先按入口协议 Step 3a 做冲突检查（按 title slug 与 `## Goal` 比对现有 PRD），发现疑似重复时询问用户。完整流程见 [entry-protocol Step 3a](../rules/entry-protocol.md#step-3a-prd-conflict-check-when-creating-a-new-prd)。
 - **title**：语义标题，使用 kebab-case（小写字母 + 连字符）。简明描述 PRD 主题，与 `# <Feature Name>` 标题对应。
 - 示例：`PRD-0000-agent-runtime-evolution.md`、`PRD-0005-minio-storage-switch.md`
 
@@ -33,7 +33,7 @@ PRD 文件格式模板。由 `think` 或 `story`（无 PRD 时）生成和维护
 PRD 在其生命周期内经历以下状态，每个状态的进入由可验证证据驱动：
 
 ```
-Draft → Grilled → Sliced → InProgress → Done
+Draft → Grilled → Sliced → In Progress → Done
   └─────────────────────────────────→ Deprecated
 ```
 
@@ -42,7 +42,7 @@ Draft → Grilled → Sliced → InProgress → Done
 | **Draft** | PRD 文件创建，`Open Questions` 尚未全部解决 | `/think` |
 | **Grilled** | 所有 Open Questions 已解决，Assumptions 已验证，Exhaustiveness Gate 通过 | `/grill` |
 | **Sliced** | PRD 已拆分为 Issues，`Child Issues` 已填充 | `/story` |
-| **InProgress** | 至少一个 Child Issue 开始实现 | `/tdd` 首次执行 |
+| **In Progress** | 至少一个 Child Issue 开始实现 | `/tdd` 首次执行 |
 | **Done** | 所有 Child Issues 关闭，所有 Acceptance Criteria 满足，代码已合并 | `/review` 或人工 |
 | **Deprecated** | PRD 被放弃或替代（从任意前置状态可达） | 人工标记 |
 
@@ -151,6 +151,7 @@ Draft → Grilled → Sliced → InProgress → Done
 ## Traceability
 
 - **Created by**: `/think` (or `/story` for minimal PRD)
+- **Prototyped by**: `/have-a-try` (<YYYY-MM-DD>) — if a prototype validated/invalidated a design assumption — <one-line question + verdict>
 - **Grilled by**: `/grill` (if run) — decision quality validated
 - **Sliced into**:
   - #<issue-1> — [PRD-NNNN] <slice title> (AFK) — Done
@@ -172,7 +173,7 @@ Draft → Grilled → Sliced → InProgress → Done
 
 | 字段 | 说明 |
 |------|------|
-| Status | PRD 生命周期状态（Draft / Grilled / Sliced / InProgress / Done / Deprecated） |
+| Status | PRD 生命周期状态（Draft / Grilled / Sliced / In Progress / Done / Deprecated） |
 | PRD | PRD 编号（四位零填充，如 PRD-0000） |
 | Goal | 一句话描述为什么和做什么 |
 | What I already know | 已知事实（来自用户和代码库） |

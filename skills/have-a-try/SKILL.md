@@ -80,7 +80,7 @@ Run:       <the one command, or URL + ?variant= keys>
 Verdict:   <what the prototype taught us — the validated answer>
            e.g. "The state machine does NOT handle X→Y; needs an explicit guard."
 
-Captured at: <PRD-NNNN ## Traceability Prototyped by | ADR-NNNN | commit | NOTES.md>
+Captured at: <PRD-NNNN ## Traceability Prototyped by | ADR <NNNN> (see docs/adr/) | commit | NOTES.md>
 
 Prototype disposition:
 - Deleted (shell only, nothing worth keeping) | Absorbed core into <real module/route> (shell deleted)

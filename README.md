@@ -101,16 +101,16 @@ Full disambiguation rules: [`skills/RESOLVER.md`](skills/RESOLVER.md)
 Every skill works **on its own** — no hard dependencies on prior skills. Missing prerequisites trigger graceful degradation, not errors. When chained, skills read prior outputs through the **PRD Traceability chain**:
 
 ```
-Created by → Grilled by → Sliced by → Implemented by → Reviewed by
-                                ↑                    ↑
-                          Debugged by        Arch reviewed by
+Created by → (Prototyped by) → Grilled by → Sliced by → Implemented by → Reviewed by
+                                                    ↑                    ↑
+                                              Debugged by        Arch reviewed by
 ```
 
 The [`Entry Protocol`](skills/rules/entry-protocol.md) standardizes this bootstrap: locate domain docs → check upstream artifacts → proceed with or without them.
 
 ### Sub-Agent Orchestration
 
-TDD and Review skills use a **sub-agent pattern** — each sub-agent independently re-reads all shared context from disk before acting, with no shared memory or cached understanding ([ADR-0001](docs/adr/0001-sub-agent-orchestration-pattern.md)):
+TDD and Review skills use a **sub-agent pattern** — each sub-agent independently re-reads all shared context from disk before acting, with no shared memory or cached understanding ([ADR 0001](docs/adr/0001-sub-agent-orchestration-pattern.md)):
 
 - **TDD**: Test Sub-Agent (design scenarios → write tests) → Human Review Gates → Develop Sub-Agent (implement → refactor)
 - **Review**: Test Review ∥ Code Review ∥ Impact Review → merge with contradiction highlighting
@@ -164,7 +164,7 @@ Records hard-to-reverse, surprising, real-trade-off decisions. Created sparingly
 <details>
 <summary><b>Human Review Gate</b></summary>
 
-Blocking checkpoint in `/tdd` where a human must approve before the next phase begins. Two stages per acceptance criterion (default Full mode): **Scenario Review Gate** (test design quality) and **Test Code Review Gate** (code quality + fidelity). See [ADR-0002](docs/adr/0002-two-stage-human-review-gate.md). Fast and Batch modes available for experienced users.
+Blocking checkpoint in `/tdd` where a human must approve before the next phase begins. Two stages per acceptance criterion (default Full mode): **Scenario Review Gate** (test design quality) and **Test Code Review Gate** (code quality + fidelity). See [ADR 0002](docs/adr/0002-two-stage-human-review-gate.md). Fast and Batch modes available for experienced users.
 
 </details>
 

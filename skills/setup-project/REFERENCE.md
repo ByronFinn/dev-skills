@@ -303,7 +303,8 @@ Each `docs/agents/` file is generated from a seed template, customised based on 
 | `docs/agents/triage-labels.md` | [templates/triage-labels.md](templates/triage-labels.md) | Always (edit right-hand column to match the tracker's vocabulary) |
 | `docs/agents/domain.md` | [templates/domain.md](templates/domain.md) | Always. **Before writing:** scan `docs/prd/`, `docs/adr/`, `docs/research/` for existing files; replace the example filenames in the template's File structure section with the actual filenames, and omit empty/missing branches. On first run (no docs yet), use the template examples as-is. |
 | `docs/agents/language.md` | [templates/language.md](templates/language.md) | Always (fill in the team's chosen language) |
-| `docs/agents/repo-map.md` | [templates/repo-map.md](templates/repo-map.md) | Multi-repo only |
+| `docs/agents/repo-map.md` | [templates/repo-map.md](templates/repo-map.md) | Multi-repo only | aeb650f (refactor: cleanup and refine skill documents)
 
 Read the relevant template file, apply the user's Step 4 overrides, and write the customised result to the target path.
 
+ aeb650f (refactor: cleanup and refine skill documents)

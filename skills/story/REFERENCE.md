@@ -2,7 +2,7 @@
 
 ## Issue Template
 
-The Issue body format (title, Meta, Parent, What to build, Acceptance Criteria, Blocked by, field rules) is defined once in [STORY-FORMAT.md](STORY-FORMAT.md) — that file is the single source, used by both `/think` (parent issues) and `/story` (child issues). Do not retype it here.
+The Issue body format (title, Meta, Parent, What to build, Acceptance Criteria, Blocked by, field rules) is defined once in [STORY-FORMAT.md](STORY-FORMAT.md) — that file is the single source, used by both `/think` (parent issues) and `/story` (child issues). Do not retype it here. aeb650f (refactor: cleanup and refine skill documents)
 
 **Do not close or modify any parent issue.**
 
@@ -70,7 +70,7 @@ If these cannot be extracted, suggest running `/think` first — the feature is 
 
 If PRD already exists at `docs/prd/PRD-NNNN-<title>.md`: skip this step.
 
-If no PRD exists, before creating one, apply [Skill Entry Protocol](../rules/entry-protocol.md) **Step 3a (PRD Conflict Check)** to catch topic collisions against existing `PRD-NNNN-*.md` (resume vs create-new). Step 3a defines the full comparison and collision-resolution procedure.
+If no PRD exists, before creating one, apply [Skill Entry Protocol](../rules/entry-protocol.md) **Step 3a (PRD Conflict Check)** to catch topic collisions against existing `PRD-NNNN-*.md` (resume vs create-new). Step 3a defines the full comparison and collision-resolution procedure. aeb650f (refactor: cleanup and refine skill documents)
 
 If no collision (or user chose new), create a minimal PRD. Include **only** sections where you have real information — do not leave empty headings. Use these sections:
 

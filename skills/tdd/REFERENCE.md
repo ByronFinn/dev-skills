@@ -108,24 +108,30 @@ Each cycle completes one criterion end-to-end. The Develop Sub-Agent only sees o
 
 ### Gate Mode Selection
 
-Before starting cycles, confirm the gate mode with the user:
+The authoritative Gate Modes table (Full / Fast / Batch) and their switching rules live in [SKILL.md → Gate Modes](SKILL.md#gate-modes). Before starting cycles, confirm the mode with the user (default is Full). Recap of how each mode reshapes the chapters below:
 
-- **Full** (default): two gates per criterion. Use unless user requests otherwise.
-- **Fast**: one gate per criterion (test code review only, scenarios written inline). User must explicitly request (e.g., "use fast mode", "skip scenario gates").
-- **Batch**: one gate per 2-3 homogeneous criteria. User must explicitly request.
+- **Fast mode**: Chapters 2 and 3 merge — Test Sub-Agent designs scenarios and writes code in one phase; the single Test Code Review Gate folds in scenario coverage.
+- **Batch mode**: group homogeneous criteria; one Scenario Review Gate and one Test Code Review Gate cover the whole group; Develop Sub-Agent implements each criterion in the group sequentially.
 
-If the user doesn't specify, use Full mode and mention the lighter alternatives are available.
+---
 
-When switching to Fast mode:
-- Test Sub-Agent combines scenario design + test code into one phase (Chapter 2 and Chapter 3 merge)
-- The single gate review checklist includes both scenario coverage AND code quality items
-- The Scenario Review Gate is skipped; Test Code Review Gate covers both concerns
+## Sub-Agent Common (applies to Chapters 2, 3, 4)
 
-When switching to Batch mode:
-- Group homogeneous criteria (same domain, similar testing patterns)
-- Present all scenarios for the group at one Scenario Review Gate
-- Present all test code for the group at one Test Code Review Gate
-- After gate approval, Develop Sub-Agent implements each criterion in the group sequentially
+### Independence (anti-patterns.md #38)
+
+Each sub-agent (Test Sub-Agent in Ch 2/3, Develop Sub-Agent in Ch 4) **must** re-read all shared context files from disk before acting. No cached understanding from the orchestrator, no inherited state from a previous cycle or phase. Read the raw files yourself.
+
+### Shared Context Re-Read Checklist
+
+Every sub-agent re-reads all of the following from disk before starting its phase:
+
+- [ ] PRD file (`docs/prd/PRD-NNNN-<title>.md`) — requirements and acceptance criteria
+- [ ] Story/Issue — fetch the latest issue body
+- [ ] `CONTEXT.md` — domain glossary and terminology
+- [ ] ADRs (`docs/adr/`) — relevant architecture decisions
+- [ ] Existing codebase — scan relevant source to understand current interfaces
+
+Each chapter adds **phase-specific** items (the approved artifact from the prior phase, which the human may have edited at a gate).
 
 ---
 
@@ -135,18 +141,9 @@ When switching to Batch mode:
 
 For one acceptance criterion, design test scenarios as a structured table. This phase produces the scenario table for the Scenario Review Gate — the first human checkpoint. The quality of scenario design determines the quality of everything that follows.
 
-### Independence Constraint (anti-patterns.md #38)
+### Phase-Specific Context
 
-The Test Sub-Agent **must** re-read all shared context files from disk before acting. No cached understanding from the orchestrator, no inherited state from a previous cycle.
-
-**Context re-read checklist:**
-- [ ] PRD file (`docs/prd/PRD-NNNN-<title>.md`) — re-read from disk
-- [ ] Story/Issue — re-read from disk (fetch latest issue body)
-- [ ] `CONTEXT.md` — re-read from disk (domain glossary and terminology)
-- [ ] ADRs (`docs/adr/`) — re-read relevant ADRs from disk
-- [ ] Existing codebase — scan relevant source files to understand current interfaces
-
-Do NOT rely on any summary, paraphrase, or cached understanding from the orchestrator's planning phase. Read the raw files yourself.
+Apply the [Sub-Agent Common](#sub-agent-common-applies-to-chapters-2-3-4) independence + shared re-read before designing scenarios. This is the first phase — no approved artifact exists yet for this cycle.
 
 ### Responsibilities
 
@@ -222,16 +219,11 @@ Approved scenario table for this acceptance criterion. This table becomes the in
 
 Write test code from the approved scenario table. Tests must be RED — they describe required behavior that does not yet exist. This phase produces test code for the Test Code Review Gate — the second human checkpoint.
 
-### Independence Constraint (anti-patterns.md #38)
+### Phase-Specific Context
 
-The Test Sub-Agent **must** re-read all shared context files from disk before writing test code. No cached understanding from the scenario design phase, no assumptions carried over.
+Apply the [Sub-Agent Common](#sub-agent-common-applies-to-chapters-2-3-4) independence + shared re-read. Additionally re-read from disk:
 
-**Context re-read checklist:**
-- [ ] All shared context (PRD, Story/Issue, CONTEXT.md, ADRs) — re-read from disk
-- [ ] Approved scenario table — re-read the approved version (human may have edited during gate)
-- [ ] Existing codebase — scan current source to understand available interfaces
-
-Even though the same sub-agent (Test Sub-Agent) designed the scenarios, this is a **new phase** with a fresh context read. The approved scenario table may differ from what was originally designed — human edits during the gate are authoritative.
+- [ ] Approved scenario table — the human may have edited it during the Scenario Review Gate (human edits are authoritative)
 
 ### Responsibilities
 
@@ -318,16 +310,11 @@ Approved test code, RED by design. This code becomes the input for the Develop S
 
 Write minimal code to make the approved test turn GREEN. The Develop Sub-Agent is strictly forbidden from modifying tests — it only writes implementation code.
 
-### Independence Constraint (anti-patterns.md #38)
+### Phase-Specific Context
 
-The Develop Sub-Agent **must** re-read all shared context files from disk before acting. No shared memory with the Test Sub-Agent, no assumptions from the orchestrator's planning phase.
+Apply the [Sub-Agent Common](#sub-agent-common-applies-to-chapters-2-3-4) independence + shared re-read. Additionally re-read from disk:
 
-**Context re-read checklist:**
-- [ ] All shared context (PRD, Story/Issue, CONTEXT.md, ADRs) — re-read from disk
-- [ ] Approved test code — re-read the approved version from disk (human may have edited during Test Code Review Gate)
-- [ ] Existing codebase — scan current source to understand what already exists
-
-The test code is the authoritative contract. It may have been human-edited during the Test Code Review Gate — always read the latest version from disk.
+- [ ] Approved test code — the human may have edited it during the Test Code Review Gate; always read the latest version
 
 ### Responsibilities
 
@@ -435,28 +422,17 @@ Look for these improvement opportunities:
 
 ### Deep Modules Principle
 
-From "A Philosophy of Software Design":
+See the [Deep Module definitions in Chapter 1](#identifying-deep-module-opportunities). When refactoring, look for opportunities to create deep modules — hide complexity behind simple interfaces. This is the main structural improvement to seek.
 
-- **Shallow module**: Small interface, shallow implementation — not worth the abstraction layer
-- **Deep module**: Small interface, deep implementation — ideal. Users see a simple API; complexity is hidden inside
-- **Avoid**: Large interface, shallow implementation — complexity leaks through the surface
+### Refactor Rules and Step Sequence
 
-When refactoring, look for opportunities to create deep modules. Hide complexity behind simple interfaces. This is the main structural improvement to seek.
+Refactoring changes **structure, not behavior**. No new features; if you find yourself adding functionality, stop and note it as a future acceptance criterion. Run the full test suite after **each** step; tests must stay GREEN (a refactor that breaks a test is wrong, or the test was implementation-coupled — see Chapter 3).
 
-### Refactor Rules
-
-- [ ] **Run full test suite after each refactor step** — every small change, every extraction, every rename
-- [ ] **Tests must stay GREEN** — if a refactor breaks a test, the refactor is wrong (or the test was coupled to implementation — see Chapter 3)
-- [ ] **No new features during refactor** — refactoring changes structure, not behavior. If you find yourself adding new functionality, stop and note it as a future acceptance criterion
-- [ ] **One refactor step at a time** — do not batch renames, extractions, and reorganizations into one step. Each step should be independently verifiable
-
-### Refactor Step Sequence
-
+Per step:
 1. Identify one refactor candidate (duplication, shallow module, SOLID violation)
 2. Make the structural change
 3. Run full test suite
-4. If GREEN → commit the step, find next candidate
-5. If RED → revert the change, the refactor is not safe (tests may be implementation-coupled, or the refactor changed behavior)
+4. GREEN → commit the step, find next candidate. RED → revert, the refactor is not safe.
 
 ### Refactor Checklist
 
@@ -475,35 +451,23 @@ Refactored codebase with full test suite GREEN. Report what was refactored and w
 
 ---
 
-## Chapter 6: Common Errors and Anti-Patterns
+## Chapter 6: TDD-Specific Mistakes
 
-### TDD-Specific Mistakes
+Mistakes specific to this TDD flow. For the general per-skill gotchas (testing private methods, fragile/implementation-coupled tests, batching across criteria, sub-agent cached context, skipping gates), see [SKILL.md → Gotchas](SKILL.md) and [anti-patterns.md #38](../rules/anti-patterns.md). Those are not repeated here.
 
-These mistakes apply regardless of sub-agent structure. Watch for them in every phase.
-
-**1. Testing private methods.**
-If a method is worth testing, it should be public or tested through the public interface. Private methods are implementation details — they can be refactored away without changing behavior. Tests that target them are fragile.
-
-**2. Mocking internal collaborators.**
+**1. Mocking internal collaborators.**
 Tests become coupled to implementation details. If you mock `userRepository.save` in an account creation test, the test breaks when you rename the method or switch to a different persistence strategy. Test real integrations where possible; mock only external boundaries (HTTP APIs, file system, time) behind thin adapters.
 
-**3. Writing tests after code.**
+**2. Writing tests after code.**
 This is not TDD — it is just testing. The test-first constraint is what drives good interface design and ensures tests describe intent rather than implementation. If code already exists, the test will unconsciously confirm the implementation rather than specify the behavior.
 
-**4. Skipping the refactor phase.**
+**3. Skipping the refactor phase.**
 Without refactoring, code quality degrades with each cycle. The incremental nature of TDD means each cycle adds minimal code — duplication and shallow abstractions accumulate. The refactor phase is where you pay down that debt.
 
-**5. Testing everything.**
+**4. Testing everything.**
 Not all behaviors need tests. Focus on high-value areas: critical paths, complex logic, important edge cases. Trivial getters, simple data pass-through, and one-line delegations rarely justify dedicated tests.
 
-**6. Fragile tests.**
-Tests that break on refactoring indicate implementation coupling. If renaming a private method or restructuring internal logic breaks a test, the test was wrong — it was testing how, not what. See Chapter 3 for good test vs bad test examples.
-
-### Sub-Agent Specific Anti-Patterns
-
-These mistakes are specific to the sub-agent orchestrated flow.
-
-**7. Develop Sub-Agent modifies tests.**
+**5. Develop Sub-Agent modifies tests.**
 The Develop Sub-Agent must NEVER modify test code. If the test has a design problem, stop and report to the human. The human decides whether to send the test back to the Test Sub-Agent. This separation preserves the independence of perspectives.
 
 **8. Sub-agent uses cached context / shares internal state.**
@@ -541,8 +505,7 @@ expect(emailService.send).toHaveBeenCalledTimes(1);
 expect(result.emailSent).toBe(true);
 ```
 
-If the implementation changes to send two emails (one welcome, one verification) instead of one, the mock count test breaks even though the behavior of "send an email" is still correct.
-
+If the implementation changes to send two emails (one welcome, one verification) instead of one, the mock count test breaks even though the behavior of "send an email" is still correct. aeb650f (refactor: cleanup and refine skill documents)
 ---
 
 ## Chapter 7: Session Recovery

@@ -1,6 +1,6 @@
 # Multi-Agent Skill Refactor
 
-> **Status**: InProgress | **PRD**: PRD-0000 | **Created**: 2026-06-12 | **Last updated**: 2026-06-24
+> **Status**: In Progress | **PRD**: PRD-0000 | **Created**: 2026-06-12 | **Last updated**: 2026-06-24
 
 ## Goal
 

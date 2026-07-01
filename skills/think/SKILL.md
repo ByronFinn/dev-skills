@@ -51,7 +51,7 @@ If a question can be answered by exploring the codebase or a quick research pass
 2. **Only on a miss**, research 2-4 comparable patterns against **authoritative sources** (official docs/source/spec), map to codebase constraints, present 2-3 options with trade-offs, ask one preference question.
 3. Cite reused research records in PRD's `## Research References`.
 
-**Step 6 — Expansion scan (diverge).** Proactively raise 1-2 points each on future evolution, related scenarios, and failure/edge cases before converging. Let the user pick what enters the MVP vs `Out of Scope`.
+**Step 6 — Expansion scan (diverge).** Proactively raise 1-2 points each on future evolution, related scenarios, and failure/edge cases before converging. **Scale to complexity** (Step 3): Simple tasks skip this step; Moderate does failure/edge only; Complex does all three. Let the user pick what enters the MVP vs `Out of Scope`.
 
 **Step 7 — Q&A loop (converge).** One question at a time. After each answer, immediately update the PRD: move resolved items from `Open Questions` to `Requirements`, sharpen `Acceptance Criteria`, clarify `Out of Scope`.
 

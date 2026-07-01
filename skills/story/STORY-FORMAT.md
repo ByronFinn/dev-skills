@@ -35,7 +35,7 @@
 
 - **PRD**: PRD-NNNN-<title>.md
 - **Type**: AFK | HITL
-- **Siblings**: #<issue-2>, #<issue-3> (如有)
+- **Siblings**: #<issue-2>, #<issue-3> (其他 Child Issues；advisory，非承重；/story 在 Publish Issues 时填充)
 
 ## Parent
 
@@ -66,7 +66,7 @@
 |------|------|
 | Meta → PRD | 所属 PRD 文件路径（PRD-NNNN-<title>.md）|
 | Meta → Type | AFK（可自动完成）或 HITL（需人工交互）|
-| Meta → Siblings | 同一 PRD 的其他 Child Issues（用于交叉引用）|
+| Meta → Siblings | 同一 PRD 的其他 Child Issues（advisory，/story 填充）|
 | Parent | 父 Issue 引用（如有）|
 | What to build | 端到端行为描述 |
 | Acceptance Criteria | 可测试的验收标准 |

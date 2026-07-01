@@ -107,30 +107,73 @@ This bundle is passed to all three sub-agents. Each sub-agent re-reads the actua
 
 ### Shared Re-Read Checklist
 
-Every sub-agent re-reads these from disk before starting (each chapter lists only its role-specific additions):
+## Sub-Agent Common (applies to Chapters 2, 3, 4)
+
+The three review sub-agents (Test / Code / Impact) share these rules. Each chapter below states only what is **unique** to that perspective — responsibilities, its specific checklist focus, and its output's extra fields.
+
+### Independence (anti-patterns #37, #38)
+
+Each sub-agent independently re-reads all shared context from disk. It must not carry over conclusions, file reads, or understanding from another sub-agent, the orchestrator's earlier phase, or a previous skill invocation. Build your perspective from raw context.
+
+### Shared Context Re-Read Checklist
+
+Every sub-agent re-reads all of the following from disk before starting: aeb650f (refactor: cleanup and refine skill documents)
 
 - [ ] `docs/agents/domain.md` (if exists) — domain doc layout
-- [ ] PRD (from `docs/prd/` or path from `domain.md`) — requirements and acceptance criteria (PRD-NNNN-<title>.md)
+- [ ] PRD (from `docs/prd/` or path from `domain.md`) — requirements and acceptance criteria
 - [ ] Story / Issue — vertical-slice implementation ticket being reviewed
 - [ ] `CONTEXT.md` — domain glossary and terminology
 - [ ] ADRs (from `docs/adr/` or path from `domain.md`) — relevant architecture decisions
 - [ ] Full diff (staged + unstaged)
 
+Each chapter adds **one more bullet** for the files its perspective cares about. If any document is missing, note it and state how it limits the review.
+
 ---
 
 ## Chapter 2: Test Review Sub-Agent
 
-### Independence Constraint
+### Extra Context Re-Read
 
-Independence: re-read all shared context from disk. Do not carry over conclusions, file reads, or understanding from another sub-agent, the orchestrator's earlier phase, or a previous skill invocation (anti-patterns #37, #38). See the **Shared Re-Read Checklist** in Chapter 1; the role-specific addition is below.
+- [ ] All test files in the diff — read full file content, not just changed lines aeb650f (refactor: cleanup and refine skill documents)
 
-### Context Re-Read Checklist (role-specific addition)
+Each chapter adds **one more bullet** for the files its perspective cares about. If any document is missing, note it and state how it limits the review.
 
-In addition to the shared checklist (Chapter 1), re-read from disk:
+### Output Scaffold (shared shape)
 
-- [ ] All test files in the diff — read full file content, not just changed lines
+Every sub-agent report uses this structure:
 
-If any document is missing, note it. A missing PRD means you cannot verify acceptance criteria coverage — state this explicitly.
+```markdown
+## <Perspective> Review
+
+**<status fields specific to the perspective>**
+
+### Issues
+- **[<severity: blocker | major | minor>]** <description>
+  - File: `<path>` (omit for Impact Review)
+  - Line: <line number or range> (omit for Impact Review)
+  - Evidence: <what you observed>
+  - Suggestion: <how to fix or mitigate>
+
+### Positives
+- <description of good practice observed>
+
+### Verdict
+<Approve | Request Changes> — <one-line justification>
+
+**Verdict reasoning**: <2-3 sentences explaining the key factors that determined this verdict. What tipped the balance? If Request Changes, what must be fixed? This reasoning helps the orchestrator identify contradictions between sub-agents.>
+```
+
+### Severity Levels (shared definition)
+
+- **blocker**: critical defects specific to the perspective (see each chapter for examples)
+- **major**: significant gaps requiring attention before merge
+- **minor**: improvements, non-critical
+
+Each chapter notes what counts as a blocker for its perspective.
+
+---
+
+## Chapter 2: Test Review Sub-Agent
 
 ### Responsibilities
 
@@ -177,65 +220,29 @@ Do NOT review implementation quality, security, performance, or release impact �
 
 #### Naming
 
-- [ ] Test names describe the scenario: `<unit> <condition> <expected result>`
-- [ ] A reader can understand what a test verifies from its name alone
-- [ ] Naming convention is consistent across the test suite
+- [ ] Test names describe the scenario (`<unit> <condition> <expected result>`) and are consistent across the suite
 
 #### Isolation
 
-- [ ] Tests can run in any order
-- [ ] Tests do not depend on shared mutable state
-- [ ] Each test sets up its own fixtures
-- [ ] Tests clean up after themselves (no side effects on other tests)
+- [ ] Tests are independent — order-independent, self-contained fixtures, no shared mutable state, clean up after themselves
 
 ### Output Template
 
-```markdown
-## Test Review
+Use the [shared Output Scaffold](#output-scaffold-shared-shape) with status field **Coverage assessment**: `<assessment of overall test coverage>`.
 
-**Coverage assessment**: <assessment of overall test coverage>
+**Test Review blockers** (specific to this perspective): missing tests for critical acceptance criteria, tests that mask real bugs.
 
-### Issues
+### Extra Context Re-Read
 
-<For each issue found:>
-- **[<severity: blocker | major | minor>]** <description>
-  - File: `<path>`
-  - Line: <line number or range>
-  - Evidence: <what you observed>
-  - Suggestion: <how to fix>
-
-### Positives
-
-<For each strength worth noting:>
-- <description of good practice observed>
-
-### Verdict
-
-<Approve | Request Changes> — <one-line justification>
-
-**Verdict reasoning**: <2-3 sentences explaining the key factors that determined this verdict. What tipped the balance? If Request Changes, what must be fixed? This reasoning helps the orchestrator identify contradictions between sub-agents.>
-```
-
-**Severity levels:**
-- **blocker**: missing tests for critical acceptance criteria, tests that mask real bugs
-- **major**: missing boundary coverage, poor test design that makes tests brittle
-- **minor**: naming issues, minor isolation concerns
+- [ ] All test files in the diff — read full file content, not just changed lines
 
 ---
 
 ## Chapter 3: Code Review Sub-Agent
 
-### Independence Constraint
-
-Independence: re-read all shared context from disk. Do not carry over conclusions, file reads, or understanding from another sub-agent, the orchestrator's earlier phase, or a previous skill invocation (anti-patterns #37, #38). See the **Shared Re-Read Checklist** in Chapter 1; the role-specific addition is below.
-
-### Context Re-Read Checklist (role-specific addition)
-
-In addition to the shared checklist (Chapter 1), re-read from disk:
+### Extra Context Re-Read
 
 - [ ] All implementation files in the diff — read full file content, not just changed lines
-
-If any document is missing, note it. A missing PRD means you cannot verify requirements alignment — state this explicitly.
 
 ### Responsibilities
 
@@ -297,56 +304,23 @@ If any security check fails, the verdict must be **Request Changes** with severi
 
 ### Output Template
 
-```markdown
-## Code Review
+Use the [shared Output Scaffold](#output-scaffold-shared-shape) with status fields **Security status**: `<clean | issues found>`, **Performance status**: `<clean | issues found>`, **Overall quality assessment**: `<assessment>`.
 
-**Security status**: <clean | issues found>
-**Performance status**: <clean | issues found>
-**Overall quality assessment**: <assessment>
+**Code Review blockers** (specific to this perspective): security vulnerabilities, data loss risk, breaking bugs. If any security checklist item fails, verdict must be **Request Changes** with severity **blocker**.
 
-### Issues
+### Extra Context Re-Read
 
-<For each issue found:>
-- **[<severity: blocker | major | minor>]** <description>
-  - File: `<path>`
-  - Line: <line number or range>
-  - Evidence: <what you observed>
-  - Suggestion: <how to fix>
-
-### Positives
-
-<For each strength worth noting:>
-- <description of good practice observed>
-
-### Verdict
-
-<Approve | Request Changes> — <one-line justification>
-
-**Verdict reasoning**: <2-3 sentences explaining the key factors that determined this verdict. What tipped the balance? If Request Changes, what must be fixed? This reasoning helps the orchestrator identify contradictions between sub-agents.>
-```
-
-**Severity levels:**
-- **blocker**: security vulnerabilities, data loss risk, breaking bugs
-- **major**: error handling gaps, significant readability problems, convention violations that affect maintainability
-- **minor**: naming improvements, minor style issues, non-critical cleanup
+- [ ] All implementation files in the diff — read full file content, not just changed lines
 
 ---
 
 ## Chapter 4: Impact Review Sub-Agent
 
-### Independence Constraint
-
-Independence: re-read all shared context from disk. Do not carry over conclusions, file reads, or understanding from another sub-agent, the orchestrator's earlier phase, or a previous skill invocation (anti-patterns #37, #38). See the **Shared Re-Read Checklist** in Chapter 1; the role-specific addition is below.
-
-### Context Re-Read Checklist (role-specific addition)
-
-In addition to the shared checklist (Chapter 1), re-read from disk:
+### Extra Context Re-Read
 
 - [ ] CI configs (`.github/workflows/*`, `.gitlab-ci.yml`, etc.) — pipeline stages and checks
 - [ ] Release configs (`CHANGELOG.md`, version files, deployment configs) — release process
 - [ ] Dependency files (`package.json`, `go.mod`, `requirements.txt`, etc.) — dependency changes
-
-If any document is missing, note it. A missing CI config means you cannot verify pipeline impact — state this explicitly.
 
 ### Responsibilities
 
@@ -423,48 +397,23 @@ For **global** architecture concerns — overall system design health, cross-cut
 
 ### Output Template
 
-```markdown
-## Impact Review
+Use the [shared Output Scaffold](#output-scaffold-shared-shape) with these status fields and extra sections:
 
+```markdown
 **Change scope**: <summary of affected areas>
 **Regression risk**: <low | medium | high> — <justification>
 **Compatibility**: <backward-compatible | breaking changes found>
-
-### Issues
-
-<For each issue found:>
-- **[<severity: blocker | major | minor>]** <description>
-  - Evidence: <what you observed>
-  - Impact: <what could go wrong>
-  - Suggestion: <how to mitigate>
-
-### Positives
-
-<For each strength worth noting:>
-- <description of good practice observed>
-
-### Architecture Note
-
-<If local architecture concerns exist, describe them here. If global concerns exist, note them and suggest `/improve-architecture`.>
-
-### Release Readiness
-
-- Feature flags: <needed / not needed>
-- Canary deployment: <recommended / not needed>
-- Rollback plan: <description or "standard rollback applies">
-- Data migration: <needed / not needed>
-
-### Verdict
-
-<Approve | Request Changes> — <one-line justification>
-
-**Verdict reasoning**: <2-3 sentences explaining the key factors that determined this verdict. What tipped the balance? If Request Changes, what must be fixed? This reasoning helps the orchestrator identify contradictions between sub-agents.>
 ```
 
-**Severity levels:**
-- **blocker**: breaking changes without migration path, high regression risk without mitigation
-- **major**: compatibility issues, missing rollback plan for risky changes, documentation gaps for user-facing changes
-- **minor**: non-critical tech debt, optional documentation improvements
+Plus an **Architecture Note** section (local concerns here; global concerns → suggest `/improve-architecture`) and a **Release Readiness** section (feature flags / canary / rollback plan / data migration).
+
+**Impact Review blockers** (specific to this perspective): breaking changes without migration path, high regression risk without mitigation.
+
+### Extra Context Re-Read
+
+- [ ] CI configs (`.github/workflows/*`, `.gitlab-ci.yml`, etc.) — pipeline stages and checks
+- [ ] Release configs (`CHANGELOG.md`, version files, deployment configs) — release process
+- [ ] Dependency files (`package.json`, `go.mod`, `requirements.txt`, etc.) — dependency changes
 
 ---
 
@@ -559,8 +508,8 @@ These updates are allowed **only when the review has verified the underlying cha
 2. Find the Issue in the PRD's `Sliced into` list
 3. Update the Issue's status marker: `— In Progress` → `— Done`
 4. Check if ALL Child Issues are marked `— Done`:
-   - If yes: update PRD `Status` from `InProgress` to `Done`
-   - If no: keep PRD `Status` as `InProgress`
+   - If yes: update PRD `Status` from `In Progress` to `Done`
+   - If no: keep PRD `Status` as `In Progress`
 
 Perform these updates as part of the review when applicable. List what was updated in the report.
 

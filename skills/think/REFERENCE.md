@@ -108,9 +108,13 @@ Then present **2-3 viable approaches** in the PRD. Fill the `## Research Referen
 Then ask **one** preference question:
 - "Which approach do you prefer: A / B / C (or other)?"
 
-## Step 6: Expansion Scan (DIVERGE) — Required After Initial Understanding
+## Step 6: Expansion Scan (DIVERGE)
 
-Once you can summarize the goal, proactively expand your thinking before converging.
+Once you can summarize the goal, proactively expand your thinking before converging. **Scale to complexity** (from Step 3):
+
+- **Simple** — skip this step entirely. Simple tasks have a clear goal and 1-2 files; forcing future-evolution/related-scenario divergence on them is over-ceremony. Go straight to Step 7.
+- **Moderate** — do only category 3 (Failure & edge cases). One round.
+- **Complex** — do all three categories below, 1-2 points each.
 
 **Expansion Categories (1-2 points each):**
 
@@ -177,7 +181,7 @@ For <topic>, which approach do you prefer?
 4. **Other** — describe your preference
 ```
 
-## Step 8: Propose Approaches + Record Decision (Complex Tasks)
+## Step 8: Propose Approaches + Record Decision
 
 When requirements are clear enough, propose 2-3 approaches (if not already done via research-first):
 
@@ -197,7 +201,7 @@ Based on current information, here are 2-3 viable approaches:
 Which direction do you prefer?
 ```
 
-Record the result in the PRD's `## Decision (ADR-lite)` section, using the field shape defined in [PRD-FORMAT.md](PRD-FORMAT.md) (Context / Decision / Consequences).
+Record the result in the PRD's `## Decision (ADR-lite)` section, using the field shape defined in [PRD-FORMAT.md](PRD-FORMAT.md) (Context / Decision / Consequences). aeb650f (refactor: cleanup and refine skill documents)
 
 ## Step 9: Final Confirmation + Implementation Plan
 
@@ -290,18 +294,9 @@ Record Issue number in PRD:
 
 ## Step 9b: Record Domain Terms
 
-Throughout the brainstorming process, new domain concepts may emerge. Capture these so `/grill` can sharpen and promote them into `CONTEXT.md`.
+If new domain concepts emerged during brainstorming (a named concept, an agreed working definition for an ambiguous term, or an entity/relationship not yet in `CONTEXT.md`), capture them so `/grill` can sharpen and promote them. These are **draft** terms — they do NOT go into `CONTEXT.md` during `/think`; that is `/grill`'s job.
 
-**When to record:**
-- A new concept was named or defined during discussion (not just code-level variables)
-- A term was used in an ambiguous or overloaded way and a working definition was agreed
-- An entity, relationship, or lifecycle was introduced that does not yet exist in `CONTEXT.md`
-
-**Where to record:**
-- If PRD was created: add a `## Domain Terms` section at the bottom of the PRD
-- If no PRD: include the terms in the approved design summary under a `## Domain Terms` heading
-
-**Format:**
+Add a `## Domain Terms` section (to the PRD, or to the approved design summary if no PRD):
 
 ```markdown
 ## Domain Terms (draft — for /grill to refine)
@@ -311,12 +306,7 @@ Throughout the brainstorming process, new domain concepts may emerge. Capture th
 | <term> | <one-sentence working definition> | new / needs sharpening / conflicts with existing |
 ```
 
-These are **draft** terms — they do NOT go into `CONTEXT.md` during `/think`. The `/grill` skill is responsible for sharpening terminology and updating `CONTEXT.md`. Recording them here ensures `/grill` knows what was discussed without re-discovering the same concepts.
-
-**Rules:**
-- Record only terms that are genuinely new or ambiguous — don't duplicate what's already clearly defined in `CONTEXT.md`
-- If a term conflicts with an existing `CONTEXT.md` entry, flag it explicitly (`Status: conflicts with existing`) so `/grill` knows to resolve the conflict
-- This step is lightweight — don't turn it into a full glossary exercise. 3-7 terms is typical; if you have more, consider whether the scope is too broad
+Keep this lightweight — record only genuinely new or ambiguous terms (don't duplicate `CONTEXT.md`), flag conflicts explicitly, and 3-7 terms is typical. If you have notably more, the scope may be too broad.
 
 ## Complexity Classification Detail
 

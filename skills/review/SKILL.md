@@ -65,7 +65,7 @@ Concatenate the three sub-agent reports as distinct sections. If two or more rea
 
 ## Authorization Boundaries
 
-Default review is local inspection only. Local docs/PRD/CONTEXT/ADR updates are allowed **only when the review verified the underlying change** — never speculatively. Issue close / status / label changes, and all release actions (tag, push, publish), require explicit user authorization **in the current turn** — a prior "ok" on the draft does not carry over. See [REFERENCE.md Chapter 6](REFERENCE.md) for the full boundary table and execution guidance.
+Default review is local inspection only. Local doc/PRD/CONTEXT/ADR updates are allowed **only when the review verified the underlying change**. Issue close/status/label changes and all release actions require explicit user authorization **in the current turn**. See [REFERENCE.md Chapter 6](REFERENCE.md) for the full boundary table.
 
 ## Hard Rules
 
@@ -98,52 +98,13 @@ When all vertical slices of a PRD are complete, perform extra checks beyond sing
 ```
 Review complete.
 
-Traceability:
-- Source: <Issue #N / PRD <name>>
-- Feature: <feature name> (PRD-NNNN)
-- Files changed: <count>
-- Tests added: <count>
-
-── Test Review ──
-<Test Review Sub-Agent report>
-
-── Code Review ──
-<Code Review Sub-Agent report>
-
-── Impact Review ──
-<Impact Review Sub-Agent report>
-
-── Contradictions ──
-<If any sub-agents disagreed, list each with both sides' reasoning>
-<If none: "No contradictions between perspectives.">
-
-── Verification ──
-- Tests: <pass/fail>
-- Lint: <pass/fail>
-- Typecheck: <pass/fail>
-- Build: <pass/fail>
-
-── Findings ──
-New domain terms (for CONTEXT.md):
-- <term>: <definition> (if any)
-
-New decisions (for ADR):
-- <decision summary> (if any)
-
-Updated files:
-- docs/prd/PRD-NNNN-<title>.md — updated
-- CONTEXT.md — updated (if any)
-- docs/adr/*.md — updated (if any)
-
-Synced:
-- Issues: <count> closed
-- Comments: <count> added
-
+── Test Review ──      <Test Review Sub-Agent report>
+── Code Review ──      <Code Review Sub-Agent report>
+── Impact Review ──    <Impact Review Sub-Agent report>
+── Contradictions ──   <both sides, or "No contradictions">
+── Verification ──     Tests / Lint / Typecheck / Build: <pass/fail>
+── Findings ──         new terms, new decisions, updated files, synced issues
 Recommendation: Approve / Request Changes / Comments
-
-Next steps:
-- If Approve: Can merge or release
-- If Request Changes (minor): Fix issues → /review again
-- If Request Changes (scope change): Re-evaluate with /think or /grill if requirements changed, then /tdd → /review
-- If global architecture concerns surfaced: Run /improve-architecture
 ```
+
+The full merged-report template (with all fields and next-step branches) is in [REFERENCE.md Chapter 5](REFERENCE.md).

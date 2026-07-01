@@ -34,9 +34,9 @@
 | <term1> | <definition> | <related-term> |
 | <term2> | <definition> | <related-term> |
 
-## Key Relationships
+## Key Relationships (optional)
 
-<diagram or description of key relationships>
+<diagram or description of key relationships — only fill if relationships are non-obvious and a glossary row's "Related" column isn't enough. CONTEXT.md is primarily a glossary; most context does not need this section.>
 ```
 
 ## 示例
