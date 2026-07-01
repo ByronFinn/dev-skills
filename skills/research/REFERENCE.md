@@ -45,7 +45,7 @@ A **topic** is right-sized when its answer is a **single one-line verdict**. If 
 
 ## 2. Dedup: Query INDEX Before Writing
 
-Before creating a new record, **always** scan `docs/research/INDEX.md` for an existing record matching `stack + topic + major`. This mirrors Entry Protocol Step 3a (PRD conflict check) and anti-pattern #40 (silent duplicate).
+Before creating a new record, **always** scan `docs/research/INDEX.md` for an existing record matching `stack + topic + major`. This mirrors Entry Protocol Step 3a (PRD conflict check) and anti-pattern #37 (silent duplicate).
 
 ### Match signals (any one = candidate collision)
 

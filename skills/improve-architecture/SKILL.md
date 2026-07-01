@@ -26,7 +26,7 @@ Read available domain context before starting. If any are missing, proceed witho
 
 ## Process Summary
 
-**Step 1**: Apply the [Skill Entry Protocol](../rules/entry-protocol.md). Read CONTEXT.md, ADRs, PRDs. If any are missing, note it and proceed — code-level signals (duplication, coupling, long functions) don't require domain context.
+**Step 1**: Apply the [Skill Entry Protocol](../rules/entry-protocol.md) — it reads CONTEXT.md, ADRs, and PRDs. Code-level signals (duplication, coupling, long functions) don't strictly require domain context, so proceed even if docs are missing.
 
 **Step 2**: Analyze current development direction — extract planned features, check compatibility with existing architecture
 
@@ -39,8 +39,6 @@ Read available domain context before starting. If any are missing, proceed witho
 **Step 6**: Generate report — structured findings with next steps
 
 See [REFERENCE.md](REFERENCE.md) for scanning strategy, detection heuristics, ADR compliance procedure, and extended examples.
-
-Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
 
 ## Gotchas
 

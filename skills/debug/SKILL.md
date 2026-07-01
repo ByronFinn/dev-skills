@@ -20,7 +20,7 @@ dispatch_intent: "Bug fix, root cause analysis, performance regression"
 
 ## Process Summary
 
-**Stage 0 (Context Setup)**: Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs and identify multi-repo scope. Read `CONTEXT.md` for domain vocabulary that helps form accurate hypotheses.
+**Stage 0 (Context Setup)**: Apply the [Skill Entry Protocol](../rules/entry-protocol.md) — it locates and reads `CONTEXT.md`, ADRs, and PRDs for you. Domain vocabulary helps form accurate hypotheses.
 
 **Stage 1 (Quick Locate)**: Root cause analysis — form 1-2 hypotheses, validate, output one-sentence root cause
 
@@ -33,8 +33,6 @@ dispatch_intent: "Bug fix, root cause analysis, performance regression"
 - Phase 6: Cleanup + retrospective — remove debug logs, document proof
 
 See [REFERENCE.md](REFERENCE.md) for detailed phases, optional modes (bisect, scope scan), and quality gates.
-
-Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
 
 ## Optional Modes
 

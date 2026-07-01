@@ -11,7 +11,7 @@ dispatch_intent: "Plan validation, domain model consistency, terminology sharpen
 
 Interview me relentlessly about every aspect of this plan until we reach shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one. For each question, provide your recommended answer.
 
-Ask the questions one at a time — a question's answer often changes how you frame the next one (this is a dependency chain, not serial interrogation; see anti-pattern #3 and #3a).
+Ask the questions one at a time — a question's answer often changes how you frame the next one (this is a dependency chain, not serial interrogation; see anti-pattern #3 and #4).
 
 If a question can be answered by exploring the codebase, explore the codebase instead.
 
@@ -24,7 +24,7 @@ If a question can be answered by exploring the codebase, explore the codebase in
 
 ## Before You Start
 
-Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs and check upstream artifacts. Read the PRD at `docs/prd/PRD-NNNN-<title>.md` and `CONTEXT.md`. If no PRD exists or it's too thin, suggest `/think` first — don't grill vapor.
+Apply the [Skill Entry Protocol](../rules/entry-protocol.md) — it locates the PRD and `CONTEXT.md` and checks upstream artifacts. If no PRD exists or it's too thin, suggest `/think` first — don't grill vapor.
 
 ## The Work
 
@@ -46,8 +46,6 @@ Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain do
 | Only terminology sharpened, scope confirmed, approach validated with refinements | Proceed to `/story` |
 
 For the challenge types (terminology conflict, fuzzy language, scope boundary, edge case, code cross-check), the file layout (single vs multi-context via `CONTEXT-MAP.md`), and a worked example, see [REFERENCE.md](REFERENCE.md).
-
-Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
 
 ## Gotchas
 

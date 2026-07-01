@@ -37,7 +37,7 @@ Read the loaded reference file. Then edit. No summary, no commentary, no explana
 
 ## Context Setup
 
-Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs and identify project scope. Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
+Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs and identify project scope.
 
 Voice and format constraints from durable context are `decision`, `preference`, and `principle` entries; editing checks are `pattern` and `learning`. The supplied text, audience, project docs, current release state, and source material override memory.
 

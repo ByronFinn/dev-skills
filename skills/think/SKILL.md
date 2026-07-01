@@ -61,8 +61,6 @@ If a question can be answered by exploring the codebase or a quick research pass
 
 See [REFERENCE.md](REFERENCE.md) for the PRD template, complexity classification detail, question-gate rules, and worked message formats.
 
-Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
-
 ## Gotchas
 
 | What happened | Rule |

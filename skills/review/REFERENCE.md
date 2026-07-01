@@ -103,21 +103,19 @@ The orchestrator assembles a context bundle containing:
 5. **Shared context paths** — available PRD, Story/Issue, CONTEXT.md, ADR paths
 6. **Project metadata** — language, framework, package manager (derived from config files)
 
-This bundle is passed to all three sub-agents. Each sub-agent re-reads the actual files from disk independently (anti-patterns #37, #38).
-
-### Shared Re-Read Checklist
+This bundle is passed to all three sub-agents. Each sub-agent re-reads the actual files from disk independently (anti-patterns #34, #35).
 
 ## Sub-Agent Common (applies to Chapters 2, 3, 4)
 
 The three review sub-agents (Test / Code / Impact) share these rules. Each chapter below states only what is **unique** to that perspective — responsibilities, its specific checklist focus, and its output's extra fields.
 
-### Independence (anti-patterns #37, #38)
+### Independence
 
-Each sub-agent independently re-reads all shared context from disk. It must not carry over conclusions, file reads, or understanding from another sub-agent, the orchestrator's earlier phase, or a previous skill invocation. Build your perspective from raw context.
+Sub-agents share no state and re-read all shared context from disk — see [anti-patterns.md #34, #35](../rules/anti-patterns.md). The operational consequence is the re-read checklist below.
 
 ### Shared Context Re-Read Checklist
 
-Every sub-agent re-reads all of the following from disk before starting: aeb650f (refactor: cleanup and refine skill documents)
+Every sub-agent re-reads all of the following from disk before starting:
 
 - [ ] `docs/agents/domain.md` (if exists) — domain doc layout
 - [ ] PRD (from `docs/prd/` or path from `domain.md`) — requirements and acceptance criteria
@@ -125,16 +123,6 @@ Every sub-agent re-reads all of the following from disk before starting: aeb650f
 - [ ] `CONTEXT.md` — domain glossary and terminology
 - [ ] ADRs (from `docs/adr/` or path from `domain.md`) — relevant architecture decisions
 - [ ] Full diff (staged + unstaged)
-
-Each chapter adds **one more bullet** for the files its perspective cares about. If any document is missing, note it and state how it limits the review.
-
----
-
-## Chapter 2: Test Review Sub-Agent
-
-### Extra Context Re-Read
-
-- [ ] All test files in the diff — read full file content, not just changed lines aeb650f (refactor: cleanup and refine skill documents)
 
 Each chapter adds **one more bullet** for the files its perspective cares about. If any document is missing, note it and state how it limits the review.
 
@@ -544,7 +532,7 @@ When the user explicitly authorizes an action:
 
 1. **Issue operations**: Read `docs/agents/issue-tracker.md` for the project's convention on close, comment, and update operations.
 2. **Release operations**: Follow the project's release process as documented in CI configs, Makefile, or README.
-3. **Commit message**: Never add AI attribution (anti-pattern #16). The user is the author.
+3. **Commit message**: Never add AI attribution (anti-pattern #15). The user is the author.
 
 ### Request Changes Guidance
 
@@ -569,7 +557,7 @@ If the session is interrupted during the review process, follow these steps.
 ### General Recovery Steps
 
 1. **Re-read the latest user message** — determine what triggered the review
-2. **Re-read shared context from disk** — PRD, Story/Issue, CONTEXT.md, ADRs (anti-pattern #39)
+2. **Re-read shared context from disk** — PRD, Story/Issue, CONTEXT.md, ADRs (anti-pattern #36)
 3. **Re-read the diff** — run `git diff HEAD` again; the code may have changed since the interruption
 4. **Determine progress** — which sub-agents completed, which was in progress
 5. **State recovery summary** — tell the user what was recovered and where you'll resume from. Confirm before continuing

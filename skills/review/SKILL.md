@@ -25,13 +25,13 @@ Dispatches three independent review sub-agents in parallel — Test Review, Code
 
 ## Runtime Note
 
-"Parallel sub-agents" means each review perspective independently re-reads all shared context from disk (anti-patterns #37, #38). If your runtime supports true parallel dispatch, dispatch all three simultaneously. If not, execute sequentially — the independence guarantee comes from re-reading shared context from disk, not from concurrent execution timing.
+"Parallel sub-agents" refers to independent re-reading of shared context (anti-patterns #34, #35), not concurrent execution. If your runtime supports true parallel dispatch, dispatch all three simultaneously. If not, execute sequentially — the independence guarantee comes from re-reading shared context from disk, not from execution timing.
 
 ## Process Summary
 
-**Step 1 — Collect context**: Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs, identify multi-repo scope, and check upstream artifacts. Read diff (staged + unstaged), README, package.json, Makefile, CI configs. If the diff contains an Issue reference, read the PRD path from the Issue body's `Meta → PRD` field and load it.Gather available shared context paths (PRD, Story, Issues, CONTEXT.md, ADRs). **PRD quality check:** if PRD Traceability shows `Created by: /story (minimal PRD)`, note that requirements may not be decision-complete — review acceptance criteria coverage with extra care.
+**Step 1 — Collect context**: Apply the [Skill Entry Protocol](../rules/entry-protocol.md). Read diff (staged + unstaged), README, package.json, Makefile, CI configs. If the diff contains an Issue reference, read the PRD path from the Issue body's `Meta → PRD` field and load it. Gather available shared context paths (PRD, Story, Issues, CONTEXT.md, ADRs). **PRD quality check:** if PRD Traceability shows `Created by: /story (minimal PRD)`, note that requirements may not be decision-complete — review acceptance criteria coverage with extra care.
 
-**Step 2 — Dispatch three parallel review sub-agents**: Each sub-agent independently re-reads all shared context files. No shared internal state between sub-agents. See [Three Sub-Agents](#three-sub-agents) below.
+**Step 2 — Dispatch three parallel review sub-agents**: Dispatch all three (see [Runtime Note](#runtime-note) and [Three Sub-Agents](#three-sub-agents) below).
 
 **Step 3 — Merge reports**: Concatenate the three reports. Do not auto-resolve contradictions — flag them explicitly for human adjudication. See [Report Merge Rules](#report-merge-rules).
 
@@ -42,8 +42,6 @@ Dispatches three independent review sub-agents in parallel — Test Review, Code
 **Step 6 — Execute authorized actions**: Perform only actions the user explicitly requested in the current turn — local file updates, issue sync, release follow-through. If the review passes and the Issue belongs to a PRD's Child Issues, update the Issue's status in the PRD's `Sliced into` list to `— Done`. If all Child Issues are `— Done`, update the PRD Status to `Done`.See [Authorization Boundaries](#authorization-boundaries).
 
 See [REFERENCE.md](REFERENCE.md) for detailed sub-agent instructions, checklists, and report templates.
-
-Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
 
 ## Three Sub-Agents
 
@@ -57,7 +55,7 @@ Each sub-agent is an independent review perspective. They run in parallel, each 
 
 ### Sub-Agent Independence
 
-Every sub-agent independently re-reads all shared context from disk — no conclusions, file reads, or understanding carried over from another sub-agent or a prior skill (anti-patterns #37, #38). See [REFERENCE.md Shared Re-Read Checklist](REFERENCE.md) and each chapter's role-specific addition.
+Every sub-agent shares no state and re-reads all shared context from disk — see [anti-patterns.md #34, #35](../rules/anti-patterns.md). The re-read checklist is in [REFERENCE.md Sub-Agent Common](REFERENCE.md), plus each chapter's role-specific addition.
 
 ## Report Merge Rules
 
@@ -82,7 +80,7 @@ When all vertical slices of a PRD are complete, perform extra checks beyond sing
 
 | What happened | Rule |
 |---|---|
-| Sub-agent reused context from another sub-agent | Independence rule: each sub-agent re-reads all shared context from scratch (anti-pattern #38) |
+| Sub-agent reused context from another sub-agent | Independence rule: each sub-agent re-reads all shared context from scratch (anti-pattern #35) |
 | Contradictions silently resolved in merge | Report Merge Rules: extract to Contradictions block, present both sides |
 | Said "should work" without verification | Hard Rules: run verification commands |
 | Assumed project commands | Step 1: extract from config |
@@ -91,7 +89,7 @@ When all vertical slices of a PRD are complete, perform extra checks beyond sing
 | Sub-agents run sequentially when parallel is possible | Runtime Note: dispatch in parallel if runtime supports it; sequential is acceptable fallback |
 | PRD not updated after review | Step 6: update local files when authorized |
 | Issues closed without authorization | Authorization Boundaries: close/status/label requires current-turn authorization |
-| Sub-agent skipped re-reading shared context | Independence rule: never cache file reads from previous skill or sub-agent (anti-pattern #37, #38) |
+| Sub-agent skipped re-reading shared context | Independence rule: never cache file reads from previous skill or sub-agent (anti-pattern #34, #35) |
 
 ## Output
 

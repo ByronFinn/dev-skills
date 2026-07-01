@@ -15,7 +15,7 @@ npx skills@latest add ByronFinn/dev-skills
 skills/
 ├── RESOLVER.md                  # Skill routing table and disambiguation rules
 ├── rules/
-│   ├── anti-patterns.md         # cross-skill behavioral constraints (41 rules, always apply)
+│   ├── anti-patterns.md         # cross-skill behavioral constraints (always apply; see file for current count)
 │   └── entry-protocol.md        # Shared skill bootstrap sequence (all skills reference)
 ├── setup-project/               # Project initialization skill → AGENTS.md + docs/agents/
 │   ├── SKILL.md
@@ -78,7 +78,7 @@ Every skill follows the same structure:
 
 ## Workflow Pipeline
 
-Skills compose into standard software engineering workflows:
+Skills compose into standard software engineering workflows. The canonical sequences (by phase and work object), the full disambiguation rules, and a skill inventory all live in [RESOLVER.md](skills/RESOLVER.md) — that file is the single source. A headline map:
 
 ```
 First time:           setup-project → (skills configured)
@@ -90,30 +90,20 @@ Direct breakdown:     story → tdd → review → (release)
 Bug/regression:       debug → review (optional)
 Architecture health:  improve-architecture → grill/story/tdd (if approved)
 Writing & editing:    write → (polished prose, release notes, or review report)
-
-/tdd internals:       Per acceptance criterion: Test Sub-Agent (scenarios) → Scenario Gate → Test Sub-Agent (code) → Code Gate → Develop Sub-Agent (implement)
-                      After all cycles: Develop Sub-Agent (refactor)
-
-/review internals:    Test Review Sub-Agent ∥ Code Review Sub-Agent ∥ Impact Review Sub-Agent
-                      → Report merge + contradiction highlighting → Human adjudication
 ```
+
+For sub-agent internals (`/tdd` cycle, `/review` three-perspective dispatch) and all routing disambiguations (Bug vs TDD, Grill vs Review, Story vs Think, Think vs Have-a-try vs TDD, Think vs Research), see RESOLVER.md.
 
 Skills do **not** auto-chain. Each skill stops and waits for the user to trigger the next step. Sub-agents within a skill do not share state. Each sub-agent re-reads shared context independently.
 
 ## Skill Routing (RESOLVER.md)
 
-The canonical routing table, workflow-phase routing, common sequences, and full disambiguation rules live in [RESOLVER.md](skills/RESOLVER.md) — that file is the single source, edited in one place. Headline disambiguations (full detail in RESOLVER.md):
-
-- **Bug vs TDD**: root cause unknown → `debug`; root cause known + accepted behavior to implement → `tdd`.
-- **Grill vs Review**: PRD/plan/terminology → `grill`; diff/completed work → `review`.
-- **Story vs Think**: clear plan → `story`; rough idea → `think`.
-- **Think vs Have-a-try vs TDD**: vague idea → `think` (no code); concrete design question cheaper to resolve by running code → `have-a-try` (disposable code); accepted behavior with known requirements → `tdd` (production code + tests).
-- **Think vs Research**: `think` decides *what* to build (→ PRD); `research` decides *how* a stack×version behaves (→ immutable record + INDEX).
+The canonical routing table, workflow-phase routing, common sequences, and full disambiguation rules live in [RESOLVER.md](skills/RESOLVER.md) — that file is the single source, edited in one place.
 
 
 ## Cross-Skill Rules (anti-patterns.md)
 
-41 behavioral constraints apply to **all** skills at all times. Key ones:
+Cross-skill behavioral constraints in `anti-patterns.md` apply to **all** skills at all times. Key ones:
 
 - **Read before acting** — never edit based on first sentence of a request.
 - **Evidence over claims** — run commands, paste output. Never say "should work".

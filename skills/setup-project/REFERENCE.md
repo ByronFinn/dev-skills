@@ -40,7 +40,7 @@ When the repo's structure has changed significantly since the last setup-project
 | **Monorepo** | **Multi-repo** (packages split into separate repos) | Move per-package config to the new repos (`repo-map.md` + per-repo `docs/agents/`). Ask: "Which repo gets the shared domain docs?" |
 | Any structure | **Reorganized domain dirs** (e.g. `docs/prd/` renamed or split across contexts) | Update `domain.md` with new paths. Check if old paths have stale files and ask about cleanup. |
 
-**Rule:** Migration implies rewriting more files than a normal re-run. Always present the full diff of what will be created, rewritten, and removed. Get explicit approval before removing any files (anti-pattern #17).
+**Rule:** Migration implies rewriting more files than a normal re-run. Always present the full diff of what will be created, rewritten, and removed. Get explicit approval before removing any files (anti-pattern #16).
 
 ## Conformance Sweep (Re-run Only)
 
@@ -303,8 +303,6 @@ Each `docs/agents/` file is generated from a seed template, customised based on 
 | `docs/agents/triage-labels.md` | [templates/triage-labels.md](templates/triage-labels.md) | Always (edit right-hand column to match the tracker's vocabulary) |
 | `docs/agents/domain.md` | [templates/domain.md](templates/domain.md) | Always. **Before writing:** scan `docs/prd/`, `docs/adr/`, `docs/research/` for existing files; replace the example filenames in the template's File structure section with the actual filenames, and omit empty/missing branches. On first run (no docs yet), use the template examples as-is. |
 | `docs/agents/language.md` | [templates/language.md](templates/language.md) | Always (fill in the team's chosen language) |
-| `docs/agents/repo-map.md` | [templates/repo-map.md](templates/repo-map.md) | Multi-repo only | aeb650f (refactor: cleanup and refine skill documents)
+| `docs/agents/repo-map.md` | [templates/repo-map.md](templates/repo-map.md) | Multi-repo only |
 
 Read the relevant template file, apply the user's Step 4 overrides, and write the customised result to the target path.
-
- aeb650f (refactor: cleanup and refine skill documents)

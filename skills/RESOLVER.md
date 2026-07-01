@@ -227,8 +227,8 @@ Cross-skill behavioral constraints live in `rules/anti-patterns.md`. Skills shou
 The shared bootstrap sequence lives in `rules/entry-protocol.md`. All skills reference this protocol instead of duplicating context-read instructions. It ensures skills work standalone (graceful degradation) and composable (reads prior skill outputs via Traceability chain).
 
 Key anti-patterns for sub-agent skills:
-- **#37 Skill-to-skill state drift** — re-read latest shared files when entering a skill
-- **#38 Sub-agent state leakage** — each sub-agent independently re-reads all shared context from disk; no shared memory, no cached understanding
+- **#34 Skill-to-skill state drift** — re-read latest shared files when entering a skill
+- **#35 Sub-agent state leakage** — each sub-agent independently re-reads all shared context from disk; no shared memory, no cached understanding
 
 ## Project Structure
 

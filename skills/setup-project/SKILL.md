@@ -82,8 +82,6 @@ See [REFERENCE.md](REFERENCE.md) for seed templates and detailed steps.
 | Re-run: format drift not detected | Format Audit: compare each file's section structure against its FORMAT spec |
 | Migration: orphaned files after structure change (e.g. single→monorepo) | Step 2: Detect drift, present migration path, clean up with confirmation |
 
-Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
-
 ## Output
 
 **First run:**

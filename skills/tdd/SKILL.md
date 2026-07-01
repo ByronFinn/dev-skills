@@ -20,11 +20,11 @@ dispatch_intent: "Test-driven development, feature implementation, bug fix"
 
 **Behavior testing through public interfaces.** Tests verify what the system does, not how. Code can change completely; tests should not.
 
-**Sub-agent independence.** Test Sub-Agent and Develop Sub-Agent each re-read shared context (PRD, Story, Issue, CONTEXT.md, ADRs) from disk before acting. They never share internal state or cached understanding. See anti-patterns.md #38.
+**Sub-agent independence.** Test Sub-Agent and Develop Sub-Agent share no state and each re-reads shared context from disk before acting — see [anti-patterns.md #35](../rules/anti-patterns.md). The re-read checklist is in [REFERENCE.md Sub-Agent Common](REFERENCE.md).
 
 **Two-stage human review (default).** Each acceptance criterion passes through two synchronous gates — Scenario Review Gate (scenario design quality) and Test Code Review Gate (code quality and fidelity). Both gates are blocking; execution halts until the human responds. See [Gate Modes](#gate-modes) for Fast and Batch alternatives.
 
-**Runtime Note:** "Sub-agent" is a logical concept — each phase re-reads all shared context from disk independently (anti-patterns #37, #38). If your runtime supports true parallel sub-agent dispatch, use it. If not, execute phases sequentially — the independence guarantee comes from re-reading shared context from disk, not from concurrent execution timing.
+**Runtime Note:** "Sub-agent" is a logical concept — each phase re-reads all shared context from disk independently (anti-patterns #34, #35). If your runtime supports true parallel sub-agent dispatch, use it. If not, execute phases sequentially — the independence guarantee comes from re-reading shared context from disk, not from concurrent execution timing.
 
 **Vertical slicing.** One acceptance criterion = one independent cycle (design → review → test code → review → implement). The cycle structure enforces vertical slicing naturally — there is no way to batch all tests then implement.
 
@@ -87,8 +87,6 @@ Test Sub-Agent writes test code faithful to the approved scenarios (RED by desig
 ## Per-Cycle Checklist
 
 Each cycle: Test Sub-Agent re-reads context from disk → scenarios cover criterion completely → Scenario Gate passed → test code faithful to approved scenarios, uses public interface only → Code Gate passed → Develop Sub-Agent re-reads context → minimal implementation → test GREEN → no speculative features.
-
-Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
 
 ## Gotchas
 

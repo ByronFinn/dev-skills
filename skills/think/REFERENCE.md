@@ -201,7 +201,7 @@ Based on current information, here are 2-3 viable approaches:
 Which direction do you prefer?
 ```
 
-Record the result in the PRD's `## Decision (ADR-lite)` section, using the field shape defined in [PRD-FORMAT.md](PRD-FORMAT.md) (Context / Decision / Consequences). aeb650f (refactor: cleanup and refine skill documents)
+Record the result in the PRD's `## Decision (ADR-lite)` section, using the field shape defined in [PRD-FORMAT.md](PRD-FORMAT.md) (Context / Decision / Consequences).
 
 ## Step 9: Final Confirmation + Implementation Plan
 

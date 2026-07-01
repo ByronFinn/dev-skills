@@ -28,11 +28,11 @@ A research record is a **durable note capturing best practice for one stack × t
 
 ## Process Summary
 
-**Step 0 — Bootstrap.** Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs and read `CONTEXT.md` + `docs/adr/` (reuse validated terminology and decisions; don't re-derive). Also read `docs/research/INDEX.md` if it exists. State what's missing.
+**Step 0 — Bootstrap.** Apply the [Skill Entry Protocol](../rules/entry-protocol.md) — it locates domain docs and reads `CONTEXT.md`, ADRs, and `docs/research/INDEX.md`.
 
 **Step 1 — State the question.** Write down the one question being answered (stack + topic + target major) in one sentence. Confirm the **stack** is a leaf unit (not a composite like `react-nextjs`) and the **topic** is narrow enough for a single one-line verdict (if its answer needs a branching matrix, split it). See [REFERENCE.md](REFERENCE.md) for the granularity test.
 
-**Step 2 — Query INDEX first (dedup).** Before researching, scan `docs/research/INDEX.md` for an existing record matching `stack + topic + major`. If found, this is a candidate collision — ask the user whether to **resume/reuse** the existing record or create a new one with a distinct topic. Mirrors Entry Protocol Step 3a and anti-pattern #40. On a hit at a *different* major, treat as reuse of that sibling, not a duplicate.
+**Step 2 — Query INDEX first (dedup).** Before researching, scan `docs/research/INDEX.md` for an existing record matching `stack + topic + major`. If found, this is a candidate collision — ask the user whether to **resume/reuse** the existing record or create a new one with a distinct topic. Mirrors Entry Protocol Step 3a and anti-pattern #37. On a hit at a *different* major, treat as reuse of that sibling, not a duplicate.
 
 **Step 3 — Detect current version.** Read the project's dependency manifest (`package.json` / `go.mod` / `Cargo.toml` / `requirements.txt` / `pom.xml` etc.) to find the stack's current version. If multiple majors coexist (monorepo), each major gets its own record. If no manifest is readable, set `stack@version=unknown` and skip stale checks.
 
@@ -46,15 +46,13 @@ A research record is a **durable note capturing best practice for one stack × t
 
 See [REFERENCE.md](REFERENCE.md) for the source-tier decision tree, version-detection edge cases, the granularity test with examples, and the authoritative-source identification checklist.
 
-Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
-
 ## Gotchas
 
 | What happened | Rule |
 |---|---|
 | Cited a blog/tutorial/SO answer as decision evidence | Principle 1: Tier 1 primary source required; non-authoritative sources are excluded, not demoted |
 | Edited an existing record to "update" it for a new major | Principle 2 / Step 5: records are immutable — create a new `-<newmajor>.md` file; the old stays frozen as historical truth (ADR-0004) |
-| Created a record without checking INDEX first | Step 2: query INDEX for `stack+topic+major` collision before writing; reuse on hit (anti-pattern #40) |
+| Created a record without checking INDEX first | Step 2: query INDEX for `stack+topic+major` collision before writing; reuse on hit (anti-pattern #37) |
 | Built a composite stack slug (`react-nextjs`) | Step 1: stack must be a leaf unit; decompose composites into separate leaf stacks |
 | Wrote a topic whose verdict needs a branching matrix | Step 1: too broad — split into narrower topics each answerable by one verdict |
 | Dropped the major from the filename (`react-concurrent-rendering.md`) | Step 5: filename is `<stack>-<topic>-<major>.md`; INDEX reads version from the filename |

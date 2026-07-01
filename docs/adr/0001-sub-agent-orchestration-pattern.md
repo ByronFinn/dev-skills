@@ -50,4 +50,4 @@ The key insight: "sub-agent" is a logical concept implemented through instructio
 ## References
 
 * CONTEXT.md — Sub-Agent, Orchestrator, Acceptance Criterion Cycle definitions
-* anti-patterns.md #37 (Skill-to-skill state drift) — existing cross-skill re-read rule
+* anti-patterns.md #34 (Skill-to-skill state drift) — existing cross-skill re-read rule

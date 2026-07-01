@@ -117,9 +117,9 @@ The authoritative Gate Modes table (Full / Fast / Batch) and their switching rul
 
 ## Sub-Agent Common (applies to Chapters 2, 3, 4)
 
-### Independence (anti-patterns.md #38)
+### Independence
 
-Each sub-agent (Test Sub-Agent in Ch 2/3, Develop Sub-Agent in Ch 4) **must** re-read all shared context files from disk before acting. No cached understanding from the orchestrator, no inherited state from a previous cycle or phase. Read the raw files yourself.
+Sub-agents share no state and re-read all shared context from disk — see [anti-patterns.md #35](../rules/anti-patterns.md). The operational consequence is the re-read checklist below.
 
 ### Shared Context Re-Read Checklist
 
@@ -453,7 +453,7 @@ Refactored codebase with full test suite GREEN. Report what was refactored and w
 
 ## Chapter 6: TDD-Specific Mistakes
 
-Mistakes specific to this TDD flow. For the general per-skill gotchas (testing private methods, fragile/implementation-coupled tests, batching across criteria, sub-agent cached context, skipping gates), see [SKILL.md → Gotchas](SKILL.md) and [anti-patterns.md #38](../rules/anti-patterns.md). Those are not repeated here.
+Mistakes specific to this TDD flow. For the general per-skill gotchas (testing private methods, fragile/implementation-coupled tests, batching across criteria, sub-agent cached context, skipping gates), see [SKILL.md → Gotchas](SKILL.md) and [anti-patterns.md #35](../rules/anti-patterns.md). Those are not repeated here.
 
 **1. Mocking internal collaborators.**
 Tests become coupled to implementation details. If you mock `userRepository.save` in an account creation test, the test breaks when you rename the method or switch to a different persistence strategy. Test real integrations where possible; mock only external boundaries (HTTP APIs, file system, time) behind thin adapters.
@@ -471,7 +471,7 @@ Not all behaviors need tests. Focus on high-value areas: critical paths, complex
 The Develop Sub-Agent must NEVER modify test code. If the test has a design problem, stop and report to the human. The human decides whether to send the test back to the Test Sub-Agent. This separation preserves the independence of perspectives.
 
 **8. Sub-agent uses cached context / shares internal state.**
-Each sub-agent must re-read all shared context files from disk before acting and must not carry over conclusions or cached understanding from another sub-agent or a prior cycle. The PRD may have been updated, the issue may have new comments, CONTEXT.md may have new entries. Stale or shared context produces incorrect implementations and defeats the independence that catches misinterpretations. See anti-patterns.md #38.
+Stale or shared context produces incorrect implementations and defeats the independence that catches misinterpretations — the PRD may have been updated, the issue may have new comments, CONTEXT.md may have new entries. This is [anti-patterns.md #35](../rules/anti-patterns.md); the re-read procedure is in [Sub-Agent Common](#sub-agent-common-applies-to-chapters-2-3-4).
 
 **9. Batch all scenarios across criteria.**
 One acceptance criterion per cycle, enforced by the gate structure. Batching scenarios across criteria is horizontal slicing — the anti-pattern that motivated the sub-agent design. Each cycle completes one criterion end-to-end before starting the next.
@@ -505,12 +505,12 @@ expect(emailService.send).toHaveBeenCalledTimes(1);
 expect(result.emailSent).toBe(true);
 ```
 
-If the implementation changes to send two emails (one welcome, one verification) instead of one, the mock count test breaks even though the behavior of "send an email" is still correct. aeb650f (refactor: cleanup and refine skill documents)
+If the implementation changes to send two emails (one welcome, one verification) instead of one, the mock count test breaks even though the behavior of "send an email" is still correct.
 ---
 
 ## Chapter 7: Session Recovery
 
-If the session is interrupted, apply the general recovery procedure (re-read latest user message, re-read shared context from disk, verify on-disk artifacts, state recovery summary, confirm before continuing) from [anti-patterns.md #39](../rules/anti-patterns.md). What follows is the TDD-specific recovery logic #39 does not cover.
+If the session is interrupted, apply the general recovery procedure (re-read latest user message, re-read shared context from disk, verify on-disk artifacts, state recovery summary, confirm before continuing) from [anti-patterns.md #36](../rules/anti-patterns.md). What follows is the TDD-specific recovery logic #36 does not cover.
 
 ### Recovery by Phase
 

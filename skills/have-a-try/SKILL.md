@@ -29,8 +29,8 @@ The two branches produce very different artifacts — picking wrong wastes the w
 
 ## Rules That Apply to Both Branches
 
-1. **Throwaway from day one.** Locate prototype close to its target code; name it to signal prototype, not production. Follow project routing conventions. *(Honors anti-pattern #14)*
-2. **One command to run.** Use project's existing task runner. *(anti-pattern #31 — run command is the success contract.)*
+1. **Throwaway from day one.** Locate prototype close to its target code; name it to signal prototype, not production. Follow project routing conventions. *(Honors anti-pattern #13)*
+2. **One command to run.** Use project's existing task runner. *(anti-pattern #29 — run command is the success contract.)*
 3. **No persistence by default.** In-memory state. If persistence IS the question, use a scratch store with a clear "PROTOTYPE" name.
 4. **Skip the polish.** No tests, no error handling beyond runnability, no abstractions. *(Prototype-scoped; opposite of `/tdd` discipline — don't let it leak.)*
 5. **Surface the state.** Print/render full relevant state after every action or variant switch.
@@ -38,21 +38,19 @@ The two branches produce very different artifacts — picking wrong wastes the w
 
 ## Process Summary
 
-**Step 0 — Bootstrap.** Apply the [Skill Entry Protocol](../rules/entry-protocol.md). Read `CONTEXT.md` and `docs/adr/` — reuse validated domain language and decisions instead of re-deriving. State what's missing.
+**Step 0 — Bootstrap.** Apply the [Skill Entry Protocol](../rules/entry-protocol.md) — it reads `CONTEXT.md` and `docs/adr/` and reports what's missing.
 
 **Step 1 — State the question.** Write down the model/question being prototyped (top-of-file comment or `NOTES.md`). A prototype answering the wrong question is pure waste.
 
 **Step 2 — Pick the branch.** Logic vs UI. If ambiguous, match surrounding code; state the assumption.
 
-**Step 3 — Build.** Follow branch process in [REFERENCE.md](REFERENCE.md). Match project's existing language, tooling, conventions — don't add new runtimes or structures. *(anti-pattern #21)*
+**Step 3 — Build.** Follow branch process in [REFERENCE.md](REFERENCE.md). Match project's existing language, tooling, conventions — don't add new runtimes or structures. *(anti-pattern #19)*
 
 **Step 4 — Hand it over.** Give the user the run command (logic) or URL + `?variant=` keys (UI). They drive it. The interesting moments are "wait, that shouldn't be possible" — those are bugs in the *idea*, which is the point.
 
 **Step 5 — Capture the answer and dispose.** Record the verdict (PRD `Prototyped by` / ADR / commit / `NOTES.md`). Then delete the shell or absorb its validated core.
 
 See [REFERENCE.md](REFERENCE.md) for the full LOGIC mode and UI mode processes, anti-patterns, and the floating switcher spec.
-
-Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
 
 ## Gotchas
 
@@ -64,8 +62,8 @@ Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-p
 | Variants differ only in colour or copy | UI mode: that's a tweak, not a prototype. Real variants disagree about structure (layout, hierarchy, primary affordance) |
 | Prototype left rotting in repo after the question was answered | Step 5: capture the verdict, then delete the shell or absorb the validated core into real code |
 | Added tests / error handling / abstractions to the prototype | Rule 4: skip the polish — the point is to learn fast then delete. (Prototype-scoped; do NOT carry this into `/tdd`) |
-| Hardcoded the project's component library / routing convention into behavior | Honor anti-pattern #21: read conventions at runtime, don't bake repo-specific facts into skill rules |
-| Prototype created files without telling the user where | Honor anti-pattern #14: state the prototype file location explicitly |
+| Hardcoded the project's component library / routing convention into behavior | Honor anti-pattern #19: read conventions at runtime, don't bake repo-specific facts into skill rules |
+| Prototype created files without telling the user where | Honor anti-pattern #13: state the prototype file location explicitly |
 | Tried to wire the prototype to the real database by default | Rule 3: in-memory by default; only touch a scratch store if persistence IS the question |
 
 ## Output

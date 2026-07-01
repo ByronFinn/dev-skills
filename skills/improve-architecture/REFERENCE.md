@@ -239,7 +239,6 @@ function process(data) {
   return processedData;
 }
 ```
- aeb650f (refactor: cleanup and refine skill documents)
 ## Trigger Timing
 
 - **Regular check:** Every 2-4 weeks proactively

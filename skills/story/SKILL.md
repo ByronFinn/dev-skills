@@ -52,8 +52,6 @@ Break plan into independently actionable issues using vertical slices (tracer bu
 
 See [REFERENCE.md](REFERENCE.md) for issue template, input handling, and example.
 
-Shared behavioral constraints: apply [../rules/anti-patterns.md](../rules/anti-patterns.md) when a global anti-pattern is relevant.
-
 ## Gotchas
 
 | What happened | Rule |

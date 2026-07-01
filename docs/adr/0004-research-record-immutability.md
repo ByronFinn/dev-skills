@@ -48,11 +48,11 @@ Concretely:
 
 * **Edit-in-place with a `## History` appendix**: Single file, history preserved as appended sections. Compromise, but the file becomes long and the "current verdict" is ambiguous (which section is canonical?). Also still allows silent edits to past sections. Rejected: filename-as-version is a stronger, more legible invariant than section headers.
 
-* **Mutable records, separate `archive/` for old majors**: Move old records to `docs/research/archive/` when superseded. Adds a directory convention and a move operation (destructive, needs explicit authorization per anti-pattern #17). Rejected: unnecessary complexity when the filename already encodes the major.
+* **Mutable records, separate `archive/` for old majors**: Move old records to `docs/research/archive/` when superseded. Adds a directory convention and a move operation (destructive, needs explicit authorization per anti-pattern #16). Rejected: unnecessary complexity when the filename already encodes the major.
 
 ## References
 
 * PRD-0001 — Research Skill (R11 immutability requirement)
 * CONTEXT.md — Research Record definition (immutability clause)
 * ADR-0001 — Sub-Agent Orchestration Pattern (analogue: append-only archival discipline)
-* anti-patterns.md #17 — Implicit authorization escalation (why moving files is avoided)
+* anti-patterns.md #16 — Implicit authorization escalation (why moving files is avoided)
