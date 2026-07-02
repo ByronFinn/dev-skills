@@ -203,11 +203,11 @@ Which direction do you prefer?
 
 Record the result in the PRD's `## Decision (ADR-lite)` section, using the field shape defined in [PRD-FORMAT.md](PRD-FORMAT.md) (Context / Decision / Consequences).
 
-## Step 9: Final Confirmation + Implementation Plan
+## Step 9: Submit Plan for Approval
 
-When open questions are resolved, confirm complete requirements with structured summary:
+When open questions are resolved, confirm complete requirements with structured summary. This is the approval step — after the user confirms, **do not wrap up yet**. Proceed to Step 10 to create the parent Issue and finalize the PRD.
 
-**Final confirmation format:**
+**Approval format:**
 
 ```markdown
 Here is my understanding of complete requirements:
@@ -235,12 +235,23 @@ Here is my understanding of complete requirements:
 * PR2: <core behavior>
 * PR3: <edge cases + docs + cleanup>
 
-Does this look correct? If so, I'll finalize the PRD and recommend the next workflow step (`/grill` for plan challenge, or `/story` if already validated).
+Does this look correct? If confirmed, I will:
+1. Create the parent Issue in the issue tracker (for child issue tracking downstream)
+2. Record new domain terms for `/grill` to refine
+3. Finalize the PRD and recommend the next step
+
+→ Then proceed to Step 10 (Create Parent Issue & Finalize PRD)
 ```
 
-## Step 9a: Create Parent Issue (Required)
+## Step 10: Create Parent Issue & Finalize PRD
 
-After the user confirms the plan in Step 9, create the parent Issue as a **required** action. This is the single point where the PRD's parent Issue is created — `/grill` and `/story` downstream rely on the PRD's `## Issue` field to attach child issues. Skipping it leaves child issues orphaned (the "PRD has no parent Issue" break in the chain). Read `docs/agents/issue-tracker.md` for the issue creation convention.
+After the user confirms the plan in Step 9, do **not** output the final message yet. First create the parent Issue, then record domain terms, then finalize.
+
+### 10a: Create Parent Issue (Required)
+
+Create the parent Issue as a **required** action. This is the single point where the PRD's parent Issue is created — `/grill` and `/story` downstream rely on the PRD's `## Issue` field to attach child issues. Skipping it leaves child issues orphaned (the "PRD has no parent Issue" break in the chain). Read `docs/agents/issue-tracker.md` for the issue creation convention.
+
+**If no PRD exists** (user declined PRD in Step 2): skip parent Issue creation — there is no `## Issue` field to record it in. Output the approved design summary without a parent Issue reference.
 
 Create the issue with a structured body (not the raw PRD dump). Use the same Issue Format as `/story` for consistency:
 
@@ -292,7 +303,7 @@ Record Issue number in PRD:
 #<issue-number>
 ```
 
-## Step 9b: Record Domain Terms
+### 10b: Record Domain Terms
 
 If new domain concepts emerged during brainstorming (a named concept, an agreed working definition for an ambiguous term, or an entity/relationship not yet in `CONTEXT.md`), capture them so `/grill` can sharpen and promote them. These are **draft** terms — they do NOT go into `CONTEXT.md` during `/think`; that is `/grill`'s job.
 
@@ -307,6 +318,22 @@ Add a `## Domain Terms` section (to the PRD, or to the approved design summary i
 ```
 
 Keep this lightweight — record only genuinely new or ambiguous terms (don't duplicate `CONTEXT.md`), flag conflicts explicitly, and 3-7 terms is typical. If you have notably more, the scope may be too broad.
+
+### 10c: Output Approved Plan
+
+After parent Issue creation and domain terms recorded, output the approved plan:
+
+```markdown
+Plan approved. Next: Run /grill to challenge and refine this approach.
+
+**Approved design summary:**
+- **Building**: What this is (1 paragraph)
+- **Not building**: Explicit exclusion list
+- **Approach**: Chosen option + rationale
+- **Key decisions**: 3-5 items with rationale
+- **Unknowns**: Only explicitly deferred items with reason and owner
+- **Parent Issue**: #<num> created | (no PRD, skipped)
+```
 
 ## Complexity Classification Detail
 

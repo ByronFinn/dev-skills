@@ -57,7 +57,7 @@ If a question can be answered by exploring the codebase or a quick research pass
 
 **Step 8 — Propose approaches + record decision.** When requirements are clear, present 2-3 approaches (if not already done via research), ask preference, and record the result in the PRD's `Decision (ADR-lite)` section.
 
-**Step 9 — Final confirmation + implementation plan.** Present the complete requirements (Goal, Requirements, Acceptance Criteria, Definition of Done, Out of Scope, Technical Approach, small-PR implementation plan). Stop after approval, then create the parent Issue (Step 9a, required) and record new domain terms for `/grill` to refine.
+**Step 9 — Submit plan for approval.** Present the complete requirements (Goal, Requirements, Acceptance Criteria, Definition of Done, Out of Scope, Technical Approach, small-PR implementation plan). After user approval, proceed to Step 10 (Create Parent Issue & Finalize PRD) — do not wrap up yet.
 
 See [REFERENCE.md](REFERENCE.md) for the PRD template, complexity classification detail, question-gate rules, and worked message formats.
 
@@ -75,14 +75,14 @@ See [REFERENCE.md](REFERENCE.md) for the PRD template, complexity classification
 | Stayed on initial request without considering edges | Step 6: expansion scan before converging |
 | Domain terms introduced but not recorded for grill | Step 9: record new terms in PRD `## Domain Terms` section |
 | Same topic got two PRDs (e.g. PRD-0001 + PRD-0002) | Step 2: run Entry Protocol Step 3a conflict check before assigning NNNN |
+| Parent Issue not created after plan approval | Step 10: parent issue creation is required; always create it before finalizing — `/grill` and `/story` rely on it |
 
 ## Output
 
-When plan is approved, output:
+When plan is approved and parent Issue is created, output:
 
 ```
 Plan approved. Next: Run /grill to challenge and refine this approach.
-```
 
 **Approved design summary:**
 - **Building**: What this is (1 paragraph)
@@ -90,5 +90,7 @@ Plan approved. Next: Run /grill to challenge and refine this approach.
 - **Approach**: Chosen option + rationale
 - **Key decisions**: 3-5 items with rationale
 - **Unknowns**: Only explicitly deferred items with reason and owner
+- **Parent Issue**: #<num> created | (no PRD, skipped)
+```
 
-Stop after approval. Implementation only starts on request.
+Stop after output. Implementation only starts on request.

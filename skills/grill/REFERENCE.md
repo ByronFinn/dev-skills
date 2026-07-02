@@ -104,7 +104,7 @@ Fill the `Grilled by` field in the PRD's `## Traceability` section AND set `Stat
 
 ## Sync Parent Issue
 
-The parent Issue is created by `/think` Step 9a (required) and recorded in the PRD's `## Issue` field (e.g. `#42`). grill's job is to **sync**, not create — creation is `/think`'s responsibility, and this division keeps a single point of ownership so `/story` always finds a parent to attach child issues to.
+The parent Issue is created by `/think` Step 10 (required) and recorded in the PRD's `## Issue` field (e.g. `#42`). grill's job is to **sync**, not create — creation is `/think`'s responsibility, and this division keeps a single point of ownership so `/story` always finds a parent to attach child issues to.
 
 **3-step logic:**
 
@@ -115,9 +115,11 @@ The parent Issue is created by `/think` Step 9a (required) and recorded in the P
    - New ADRs and their key conclusions
    - **Do not** change the Issue title (it uses the PRD's `<Feature Name>`, set by `/think`)
    - **Do not** close the parent Issue — it stays open until child issues from `/story` are done
-3. **Field empty or missing** → skip. A minimal PRD from a direct `/story` path (which skipped `/think`) has no parent Issue by design; child issues there stand alone. Do not create one here.
+3. **Field empty or missing** → check the PRD's `## Traceability` → `Created by` field to determine the source:
+   - **PRD created by `/story`** (minimal PRD, no `/think` session) → skip silently. Child issues stand alone by design. Do not create a parent Issue here.
+   - **PRD created by `/think`** → warn: *"⚠️ 父 Issue 缺失 —— /think Step 10 应已创建了一个。该 PRD 的子 Issue 将无法关联到父 Issue。可选方案：(a) 通过 `gh issue create` 手动创建父 Issue，(b) 重新运行 /think 重新创建 PRD（将同步创建父 Issue），或 (c) 跳过父 Issue 继续（子 Issue 将成为独立 Issue）。"*
 
-**Boundary:** grill is "validate + sync", not "create". If you find yourself wanting to create a parent Issue, the right fix is upstream — the PRD should have gone through `/think` Step 9a.
+**Boundary:** grill is "validate + sync", not "create". If you find yourself wanting to create a parent Issue, the right fix is upstream — the PRD should have gone through `/think` Step 10.
 
 ## Worked Example
 

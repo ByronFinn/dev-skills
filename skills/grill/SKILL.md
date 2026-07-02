@@ -36,7 +36,7 @@ Apply the [Skill Entry Protocol](../rules/entry-protocol.md) — it locates the 
    - **Code can answer it** → grep/read the code instead of asking the user.
 4. **Run the exhaustiveness gate** before declaring complete: Open Questions, Assumptions, terms, scope, code cross-check — all resolved.
 5. **Fill the PRD `## Traceability` `Grilled by` field** so downstream skills know the plan was validated.
-6. **Sync the parent Issue (if it exists).** Update its body to reflect scope changes (sharpened terms, confirmed boundaries, new ADRs). Do **not** change title or close it. If the `## Issue` field is empty (minimal PRD from direct `/story`), skip — creation is `/think`'s responsibility.
+6. **Sync the parent Issue (if it exists).** Update its body to reflect scope changes (sharpened terms, confirmed boundaries, new ADRs). Do **not** change title or close it. If the `## Issue` field is empty, check the PRD's `Created by` field — if `/story`, skip (expected); if `/think`, warn the user that the parent Issue was not created (see REFERENCE.md for exact message).
 
 ## What Goes Where
 
@@ -76,7 +76,7 @@ Updated:
 - docs/adr/<NNNN>-<title>.md — created (if any)
 
 Exhaustiveness gate: passed
-Parent Issue: #<num> synced | skipped (no parent, direct /story path)
+Parent Issue: #<num> synced | ⚠️ missing (/think didn't create one) | skipped (no parent, direct /story path)
 
 Next: /story to break PRD into Issues | /think if scope changed significantly
 ```
