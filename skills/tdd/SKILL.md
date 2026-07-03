@@ -1,8 +1,6 @@
 ---
 name: tdd
-description: "Sub-agent orchestrated test-driven development. For each acceptance criterion, Test Sub-Agent designs scenarios and writes tests (RED), human reviews at two gates, Develop Sub-Agent implements (GREEN). After all cycles, unified Refactor. Use when user wants TDD for feature building or bug fixing, mentions red-green-refactor, or wants test-first development."
-when_to_use: "TDD,测试,实现,red-green-refactor,test-driven,测试驱动"
-dispatch_intent: "Test-driven development, feature implementation, bug fix"
+description: "Sub-agent orchestrated test-driven development. For each acceptance criterion, Test Sub-Agent designs scenarios and writes tests (RED), human reviews at two gates, Develop Sub-Agent implements (GREEN). After all cycles, unified Refactor. Use when the user wants TDD for feature building or bug fixing, mentions red-green-refactor, or wants test-first development. Trigger words: TDD, 测试, 实现, red-green-refactor, test-driven, 测试驱动."
 ---
 
 # TDD: Test-Driven Development
@@ -22,7 +20,7 @@ dispatch_intent: "Test-driven development, feature implementation, bug fix"
 
 **Sub-agent independence.** Test Sub-Agent and Develop Sub-Agent share no state and each re-reads shared context from disk before acting — see [anti-patterns.md #35](../rules/anti-patterns.md). The re-read checklist is in [REFERENCE.md Sub-Agent Common](REFERENCE.md).
 
-**Two-stage human review (default).** Each acceptance criterion passes through two synchronous gates — Scenario Review Gate (scenario design quality) and Test Code Review Gate (code quality and fidelity). Both gates are blocking; execution halts until the human responds. See [Gate Modes](#gate-modes) for Fast and Batch alternatives.
+**Two-stage human review (recommended default).** Each acceptance criterion passes through two synchronous gates — Scenario Review Gate (scenario design quality) and Test Code Review Gate (code quality and fidelity). Both gates are blocking; execution halts until the human responds. See [Gate Modes](#gate-modes) — Fast and Batch are offered per-cycle, not hidden behind a user request.
 
 **Runtime Note:** "Sub-agent" is a logical concept — each phase re-reads all shared context from disk independently (anti-patterns #34, #35). If your runtime supports true parallel sub-agent dispatch, use it. If not, execute phases sequentially — the independence guarantee comes from re-reading shared context from disk, not from concurrent execution timing.
 
@@ -43,19 +41,23 @@ Accept any of these, in priority order:
 
 ## Gate Modes
 
-The two-stage Human Review Gate (Scenario Review + Test Code Review) is the **default** for maximum quality control. However, not every feature needs full ceremony. The user may request a lighter mode at any time:
+The two-stage Human Review Gate (Scenario Review + Test Code Review) is the recommended mode for maximum quality control. However, not every feature needs full ceremony — the skill **offers** the mode at the start of each cycle rather than waiting for the user to discover that lighter modes exist:
 
 | Mode | Gates per criterion | When to use |
 |------|-------------------|-------------|
-| **Full** (default) | 2 gates (Scenario + Code) | New features, complex logic, first time implementing this domain |
+| **Full** (recommended default) | 2 gates (Scenario + Code) | New features, complex logic, first time implementing this domain |
 | **Fast** | 1 gate (Code only — scenarios and code written together) | Experienced user, well-defined criteria, bug-fix TDD, user says "quick tdd" or "skip scenario gate" |
 | **Batch** | 1 gate per 2-3 grouped criteria | Homogeneous criteria (e.g., "validate field A", "validate field B"), user says "batch review" |
 
 **Rules:**
-- Default is Full mode. Switch only when user explicitly requests or when trivial criteria qualify for Fast/Batch.
+- **At the start of each cycle, offer the gate mode** — present Full / Fast / (Batch when applicable) with a recommendation based on the criterion's shape, and let the user pick. Do not silently default the user into 10 gates across 5 criteria when they don't know Fast exists. Recommended default per criterion:
+  - Complex logic / new domain / first implementation → recommend **Full**
+  - Well-defined criterion / bug-fix TDD / experienced user signal → recommend **Fast**
+  - One of a homogeneous group of near-identical criteria → recommend **Batch** (covering the group)
+- Once the user picks a mode for a criterion, that choice stands unless they say otherwise — don't re-ask the same shape of criterion. The offer is per-criterion-shape, not per-cycle-mechanically.
 - Fast mode: Test Sub-Agent writes scenarios and code in one phase; single gate reviews both.
 - Batch mode: group only homogeneous criteria. Different-domain criteria stay in Full mode individually.
-- State active mode at start of each cycle.
+- State the active mode at the start of each cycle so the user knows what to expect.
 
 ## Process Summary
 
@@ -102,7 +104,7 @@ Each cycle: Test Sub-Agent re-reads context from disk → scenarios cover criter
 | Scenario review skipped in Full mode | Full mode requires two-stage gate — scenario design is the highest-leverage decision. (Fast mode skips scenario gate by design) |
 | Sub-agents share internal state | Each sub-agent starts fresh — no inherited context or cached understanding |
 | Human says "looks fine" at gate | Use explicit checklist; treat approval as checklist confirmation |
-| All criteria use Full mode when trivial ones could use Fast | Gate Modes: ask user if they want to switch to Fast/Batch for simpler criteria |
+| User silently stuck in Full mode on trivial criteria | Gate Modes rules: offer Full/Fast/Batch at the start of each cycle with a recommendation — don't make the user discover Fast exists |
 | Ran TDD on minimal PRD without confirming criteria | PRD quality check: if minimal PRD, confirm acceptance criteria with user first |
 
 ## Output

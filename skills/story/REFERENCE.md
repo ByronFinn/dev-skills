@@ -24,7 +24,11 @@ Check what input the user provided:
 2. **Direct description** — user describes a feature verbally: "帮我拆分用户订阅功能的 issues", "break down the payment integration", or provides a rough spec
 3. **Existing issue** — user references an existing issue number as the parent
 
-**PRD Issue field detection:** When an existing PRD is found, read its `## Issue` section (e.g., `#42`). If present, this is the parent issue — use it as the parent reference when creating child issues in Step 6, and update it in Step 8. Do not ask the user for the parent if it's already recorded in the PRD.
+**PRD Issue field detection:** When an existing PRD is found, read its `## Issue` section. Three cases:
+
+- **`#<number>` present** → this is the parent issue — use it as the parent reference when creating child issues in Step 6, and update it in Step 8. Do not ask the user for the parent if it's already recorded in the PRD.
+- **`N/A — no issue tracker configured`** → `/think` Step 9a waived the parent (repo has no tracker). Create child issues with no parent reference; skip Step 8.
+- **Field empty/missing** → no parent reference needed; treat as standalone child issues.
 
 If a PRD exists, skip to Step 4 (Draft Vertical Slices).
 
@@ -70,7 +74,7 @@ If these cannot be extracted, suggest running `/think` first — the feature is 
 
 If PRD already exists at `docs/prd/PRD-NNNN-<title>.md`: skip this step.
 
-If no PRD exists, before creating one, apply [Skill Entry Protocol](../rules/entry-protocol.md) **Step 3a (PRD Conflict Check)** to catch topic collisions against existing `PRD-NNNN-*.md` (resume vs create-new). Step 3a defines the full comparison and collision-resolution procedure.
+If no PRD exists, before creating one, run the **PRD Conflict Check** to catch topic collisions against existing `PRD-NNNN-*.md` (resume vs create-new). The full procedure lives in [think/REFERENCE.md §PRD Conflict Check](../think/REFERENCE.md#prd-conflict-check-before-assigning-nnnn) — `/think` owns it as the primary PRD-creator skill; `/story` follows the same steps when it creates a minimal PRD.
 
 If no collision (or user chose new), create a minimal PRD. Include **only** sections where you have real information — do not leave empty headings. Use these sections:
 

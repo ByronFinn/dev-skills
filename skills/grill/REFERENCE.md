@@ -115,7 +115,7 @@ The parent Issue is created by `/think` Step 10 (required) and recorded in the P
    - New ADRs and their key conclusions
    - **Do not** change the Issue title (it uses the PRD's `<Feature Name>`, set by `/think`)
    - **Do not** close the parent Issue — it stays open until child issues from `/story` are done
-3. **Field empty or missing** → check the PRD's `## Traceability` → `Created by` field to determine the source:
+3. **Field empty or missing** → first check the value: if it reads `N/A — no issue tracker configured` (from `/think` Step 10 no-tracker waiver), skip — the repo has no tracker. Otherwise, check the PRD's `## Traceability` → `Created by` field to determine the source:
    - **PRD created by `/story`** (minimal PRD, no `/think` session) → skip silently. Child issues stand alone by design. Do not create a parent Issue here.
    - **PRD created by `/think`** → warn: *"⚠️ 父 Issue 缺失 —— /think Step 10 应已创建了一个。该 PRD 的子 Issue 将无法关联到父 Issue。可选方案：(a) 通过 `gh issue create` 手动创建父 Issue，(b) 重新运行 /think 重新创建 PRD（将同步创建父 Issue），或 (c) 跳过父 Issue 继续（子 Issue 将成为独立 Issue）。"*
 

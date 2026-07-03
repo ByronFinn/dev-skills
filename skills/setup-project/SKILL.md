@@ -1,8 +1,6 @@
 ---
 name: setup-project
-description: "Scaffold or update per-repo configuration for engineering skills: issue tracker convention, triage label vocabulary, domain doc layout, and multi-repo coordination. Run before first use of story, review, or any skill that creates issues or reads domain docs. Re-run when project structure changes (new repo added, tracker switched, docs reorganized)."
-when_to_use: "setup,initialize,initialise,configure skills,issue tracker setup,new project,update config,project changed,添加仓库,配置变更"
-dispatch_intent: "Project initialization, skill configuration, AGENTS.md setup, config update"
+description: "Scaffold or update per-repo configuration for engineering skills: issue tracker convention, triage label vocabulary, domain doc layout, and multi-repo coordination. Run before first use of story, review, or any skill that creates issues or reads domain docs. Re-run when project structure changes (new repo added, tracker switched, docs reorganized). Trigger words: setup, initialize, initialise, configure skills, issue tracker setup, new project, update config, project changed, 添加仓库, 配置变更."
 ---
 
 # Setup Project

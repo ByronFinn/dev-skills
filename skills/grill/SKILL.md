@@ -1,8 +1,6 @@
 ---
 name: grill
-description: "Challenge plans by extracting every open decision from the PRD and resolving them one by one — skip none. Interview relentlessly about every aspect of the plan, walking down each branch of the design tree until shared understanding is reached. Use after think to validate plan against existing domain model, sharpen terminology, update CONTEXT.md and ADRs."
-when_to_use: "challenge,细化和验证,deep dive,question the plan,grill,validate plan,这个方案行不行,审查设计,find holes,stress test"
-dispatch_intent: "Plan validation, domain model consistency, terminology sharpening"
+description: "Challenge plans by extracting every open decision from the PRD and resolving them one by one — skip none. Interview relentlessly about every aspect of the plan, walking down each branch of the design tree until shared understanding is reached. Use after think to validate the plan against the existing domain model, sharpen terminology, update CONTEXT.md and ADRs. Trigger words: challenge, 细化和验证, deep dive, question the plan, grill, validate plan, 这个方案行不行, 审查设计, find holes, stress test."
 ---
 
 # Grill: Challenge Plans and Update Domain Knowledge

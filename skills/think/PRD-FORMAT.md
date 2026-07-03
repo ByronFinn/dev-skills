@@ -17,7 +17,7 @@ PRD 文件格式模板。由 `think` 或 `story`（无 PRD 时）生成和维护
 **命名规则**:
 
 - **NNNN**：四位零填充序号（0000-9999）。由 `/think` 创建时自动分配：扫描 `docs/prd/` 下现有 `PRD-NNNN-*.md` 文件，取最大序号 +1。首次创建从 `0000` 开始。**分配前先确认该号未被占用**——多个会话并发时，扫描后、写入前可能有别的会话抢占了同号，此时取下一个可用号而非覆盖。
-- **创建前去重**：分配编号前先按入口协议 Step 3a 做冲突检查（按 title slug 与 `## Goal` 比对现有 PRD），发现疑似重复时询问用户。完整流程见 [entry-protocol Step 3a](../rules/entry-protocol.md#step-3a-prd-conflict-check-when-creating-a-new-prd)。
+- **创建前去重**：分配编号前先做 PRD 冲突检查（按 title slug 与 `## Goal` 比对现有 PRD），发现疑似重复时询问用户。完整流程见 [think/REFERENCE.md §PRD Conflict Check](REFERENCE.md#prd-conflict-check-before-assigning-nnnn)。
 - **title**：语义标题，使用 kebab-case（小写字母 + 连字符）。简明描述 PRD 主题，与 `# <Feature Name>` 标题对应。
 - 示例：`PRD-0000-agent-runtime-evolution.md`、`PRD-0005-minio-storage-switch.md`
 

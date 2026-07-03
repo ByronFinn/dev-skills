@@ -1,8 +1,6 @@
 ---
 name: debug
-description: "Root cause analysis and systematic fix. Quick root cause location, then 6-phase systematic loop for bug fixes. Use when errors, crashes, regressions, test failures, anomalous behavior, or user says 'used to work'."
-when_to_use: "debug,排查,报错,崩溃,不工作,regression,以前是好的,broken after update"
-dispatch_intent: "Bug fix, root cause analysis, performance regression"
+description: "Root cause analysis and systematic fix. Quick root cause location, then 6-phase systematic loop for bug fixes. Use when errors, crashes, regressions, test failures, anomalous behavior, or the user says 'used to work'. Trigger words: debug, 排查, 报错, 崩溃, 不工作, regression, 以前是好的, broken after update."
 ---
 
 # Debug: Root Cause Analysis and Systematic Fix
@@ -45,7 +43,7 @@ See [REFERENCE.md](REFERENCE.md) for detailed phases, optional modes (bisect, sc
 | What happened | Rule |
 |---|---|
 | Fix client pane instead of local pane | Trace execution path before touching files |
-| Say "try again" or "I'm confident" | Write hypothesis; run instrumentation to prove |
+| Say "try again" or "I'm confident" | Write hypothesis; run instrumentation to prove (anti-pattern #32 — fix without instrumentation) |
 | MCP not loading, switch tools instead of diagnose | Check server status, API key, config first |
 | Compile passes but UI looks wrong | Move up Runtime Evidence Ladder, verify rendered surface |
 | Fix one instance, ignore siblings | After fix, grep pattern and fix or report each instance |

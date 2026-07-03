@@ -557,7 +557,7 @@ If the session is interrupted during the review process, follow these steps.
 ### General Recovery Steps
 
 1. **Re-read the latest user message** — determine what triggered the review
-2. **Re-read shared context from disk** — PRD, Story/Issue, CONTEXT.md, ADRs (anti-pattern #36)
+2. **Re-read shared context from disk** — PRD, Story/Issue, CONTEXT.md, ADRs (anti-pattern #34)
 3. **Re-read the diff** — run `git diff HEAD` again; the code may have changed since the interruption
 4. **Determine progress** — which sub-agents completed, which was in progress
 5. **State recovery summary** — tell the user what was recovered and where you'll resume from. Confirm before continuing

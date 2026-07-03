@@ -1,8 +1,6 @@
 ---
 name: have-a-try
-description: "Build a throwaway prototype to answer one design question with disposable code. Two branches: a tiny interactive terminal app for logic/state-model questions, or several radically different UI variations toggleable from one route. Use when a design doubt is easier to resolve by running code than by reasoning on paper — state machine edges, data-model expressiveness, or what a page should look like."
-when_to_use: "prototype,原型,试一下,spike,验证一下,看看效果,跑起来看看,有没有更简单的方式,这个状态机对不对,这个数据模型能表达吗"
-dispatch_intent: "Design validation via throwaway prototype code"
+description: "Build a throwaway prototype to answer one design question with disposable code. Two branches: a tiny interactive terminal app for logic/state-model questions, or several radically different UI variations toggleable from one route. Use when a design doubt is easier to resolve by running code than by reasoning on paper — state machine edges, data-model expressiveness, or what a page should look like. Trigger words: prototype, 原型, 试一下, spike, 验证一下, 看看效果, 跑起来看看, 有没有更简单的方式, 这个状态机对不对, 这个数据模型能表达吗."
 ---
 
 # Have-a-Try: Throwaway Prototype to Answer a Design Question

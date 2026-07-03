@@ -51,37 +51,11 @@ Read domain docs at the paths discovered in Step 1 (or defaults if config missin
 
 Report findings as a note in the skill output: *"Filing inconsistency found: <file> appears misplaced / <NNNN> is used by two files. Want me to relocate?"* Do not silently move or renumber.
 
-### Step 3a: PRD Conflict Check (when creating a new PRD)
+### Step 3a: PRD Conflict Check (only for PRD-creating skills)
 
-Applies to any skill about to **create** a new PRD file (`/think` Step 2, `/story` Step 3). Skills that only **read** an existing PRD skip this step.
+Applies **only** to skills about to create a new PRD file (`/think` Step 2, `/story` Step 3). Skills that only read an existing PRD — and all non-PRD skills (`/write`, `/debug`, `/review`, etc.) — skip this entirely.
 
-Different sessions do not share memory, so a later session has no way to know an earlier one already started a PRD on the same topic — it would silently auto-assign the next NNNN and write a duplicate file. This step prevents that.
-
-**Before assigning a new NNNN, scan `docs/prd/` and compare against the new topic:**
-
-1. List existing `PRD-NNNN-*.md` files.
-2. For each, compare to the topic being created:
-   - **Title slug match** — the kebab-case title in the filename equals the new topic's intended slug (e.g. two `*-block-ui.md`). This is the strongest signal.
-   - **Header/Goal similarity** — the PRD's `# <Feature Name>` line or `## Goal` first paragraph names the same subject as the new request.
-3. A match on either is a candidate collision.
-
-**If a candidate is found, ask one question (Preference type, with a recommended answer):**
-
-```
-Found a possible existing PRD on this topic:
-- PRD-0001-block-ui.md — <one-line Goal summary>
-
-Is this the same design, or a different topic?
-1. Resume PRD-0001 (Recommended) — reuse its number, continue editing it
-2. New PRD — different topic, create with a distinct title
-```
-
-- **Resume** → reuse that NNNN, load and continue editing the existing file. Do not create a new file.
-- **New PRD** → assign next NNNN (max + 1) and create a new file with a clearly distinct title.
-
-**If no candidate is found** → proceed to assign next NNNN (max + 1) as before.
-
-This check is non-blocking: it never silently merges or silently duplicates. When in doubt, it asks. The intent is to surface the collision, not to make a perfect semantic match — a cheap one-time confirmation is preferable to a stray duplicate PRD.
+The full procedure lives with the primary PRD-creator: see [think/REFERENCE.md §PRD Conflict Check](../think/REFERENCE.md#prd-conflict-check-before-assigning-nnnn). It is owned there rather than in this shared protocol so that non-PRD skills don't carry PRD-management ceremony they never use. `/story` follows the same procedure when it creates a minimal PRD.
 
 ### Step 4: Check Upstream Artifacts (Composability)
 

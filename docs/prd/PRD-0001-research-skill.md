@@ -1,6 +1,6 @@
 # Research Skill
 
-> **Status**: Grilled | **PRD**: PRD-0001 | **Created**: 2026-06-30 | **Last updated**: 2026-06-30
+> **Status**: Done | **PRD**: PRD-0001 | **Created**: 2026-06-30 | **Last updated**: 2026-07-04
 
 ## Goal
 
@@ -46,24 +46,24 @@
 
 ## Acceptance Criteria
 
-* [ ] AC1 `skills/research/SKILL.md` 存在，含 YAML front matter（name/description/when_to_use/dispatch_intent）+ Outcome Contract + Process Summary + Gotchas + Output
-* [ ] AC2 `skills/research/RESEARCH-FORMAT.md` 存在，含模板（含强制 `## Sources` 分级字段、`stack@version`、TL;DR、6 块结构）+ 命名规则 + 状态流转定义
-* [ ] AC3 `skills/research/INDEX-FORMAT.md` 存在，含 By Stack + By Topic 双视图模板 + emoji 状态标记规则
-* [ ] AC4 `skills/research/REFERENCE.md` 存在，含详细 process steps、信源分级标准、版本探测方法、权威信源识别 checklist
-* [ ] AC5 `RESOLVER.md` 新增 research 路由行（work object + workflow phase 两处）+ think/research 冲突消解规则
-* [ ] AC6 `rules/entry-protocol.md` Step 3 增读 `docs/research/INDEX.md` 作为可选上下文
-* [ ] AC7 `think/SKILL.md` Step 5 增「先查 INDEX」前置步骤，命中时引用已有研究而非重新搜索
-* [ ] AC8 `think/PRD-FORMAT.md` 的 `## Research References` 字段补充填充规则说明（引用 docs/research/*.md）
-* [ ] AC9 `setup-project/SKILL.md` + `docs/agents/domain.md` 模板登记 `docs/research/` 路径
-* [ ] AC10 `AGENTS.md` 的 Repository Structure + Documents Produced by Skills 两表新增 research 行
-* [ ] AC11 RESEARCH-FORMAT.md 的 Sources 字段示例展示一级/二级信源区分，Gotchas 表含「引用了二手博客」反模式
-* [ ] AC12 所有 research 产物的引用链接必须是可直接访问的权威 URL（官网/源码/GitHub 官方仓库）
-* [ ] AC13 命名规则：文件名格式为 `<stack>-<topic>-<major>.md`，含 major 版本；slug 化规则（C++→cpp 等）写入 RESEARCH-FORMAT.md
-* [ ] AC14 RESEARCH-FORMAT.md 明确记录不可变原则（immutability）：新 major 新建文件，不改旧记录；Gotchas 含「编辑旧记录而非新建」反模式
-* [ ] AC15 REFERENCE.md 信源分级章节明确：Tier 2 仅含 Accepted/Merged 的 RFC；社区维护非官方站（cppreference 等）明确排除
-* [ ] AC16 research SKILL.md process 含「新建前查 INDEX 去重」步骤（对齐 anti-pattern #40）
-* [ ] AC17 INDEX-FORMAT.md 含固定 Status 字段（取值纯枚举 `verified | stale | deprecated`，不带数据）与 Version 列版本对比规则（stale 行显示 `研究版本 → 当前版本`，如 `react@18.2 → 19`；verified/deprecated 行显示单一研究版本）；**不使用 emoji**（对齐 PRD/ADR 纯文本 Status 惯例）
-* [ ] AC18 think/SKILL.md Step 5 含「例外读全文」规则（stale 或依赖实现细节时）
+* [x] AC1 `skills/research/SKILL.md` 存在，含 YAML front matter（**实际仅 `name + description`——2026-07-04 全仓 frontmatter 合规修复超越原约定的 `name/description/when_to_use/dispatch_intent` 四字段**）+ Outcome Contract + Process Summary + Gotchas + Output
+* [x] AC2 `skills/research/RESEARCH-FORMAT.md` 存在，含模板（含强制 `## Sources` 分级字段、`stack@version`、TL;DR、6 块结构）+ 命名规则 + 状态流转定义
+* [x] AC3 `skills/research/INDEX-FORMAT.md` 存在，含 By Stack + By Topic 双视图模板 + 状态标记规则（**实际为纯文本 token `verified|stale|deprecated`，非 emoji——见 AC17**）
+* [x] AC4 `skills/research/REFERENCE.md` 存在，含详细 process steps、信源分级标准、版本探测方法、权威信源识别 checklist
+* [x] AC5 `RESOLVER.md` 新增 research 路由行（work object + workflow phase 两处）+ think/research 冲突消解规则
+* [x] AC6 `rules/entry-protocol.md` Step 3 增读 `docs/research/INDEX.md` 作为可选上下文
+* [x] AC7 `think/SKILL.md` Step 5 增「先查 INDEX」前置步骤，命中时引用已有研究而非重新搜索
+* [x] AC8 `think/PRD-FORMAT.md` 的 `## Research References` 字段补充填充规则说明（引用 docs/research/*.md）
+* [x] AC9 `setup-project/SKILL.md` + `docs/agents/domain.md` 模板登记 `docs/research/` 路径
+* [x] AC10 `AGENTS.md` 的 Repository Structure + Documents Produced by Skills 两表新增 research 行
+* [x] AC11 RESEARCH-FORMAT.md 的 Sources 字段示例展示一级/二级信源区分，Gotchas 表含「引用了二手博客」反模式
+* [x] AC12 所有 research 产物的引用链接必须是可直接访问的权威 URL（官网/源码/GitHub 官方仓库）
+* [x] AC13 命名规则：文件名格式为 `<stack>-<topic>-<major>.md`，含 major 版本；slug 化规则（C++→cpp 等）写入 RESEARCH-FORMAT.md
+* [x] AC14 RESEARCH-FORMAT.md 明确记录不可变原则（immutability）：新 major 新建文件，不改旧记录；Gotchas 含「编辑旧记录而非新建」反模式
+* [x] AC15 REFERENCE.md 信源分级章节明确：Tier 2 仅含 Accepted/Merged 的 RFC；社区维护非官方站（cppreference 等）明确排除
+* [x] AC16 research SKILL.md process 含「新建前查 INDEX 去重」步骤（对齐 anti-pattern #37）
+* [x] AC17 INDEX-FORMAT.md 含固定 Status 字段（取值纯枚举 `verified | stale | deprecated`，不带数据）与 Version 列版本对比规则（stale 行显示 `研究版本 → 当前版本`，如 `react@18.2 → 19`；verified/deprecated 行显示单一研究版本）；**不使用 emoji**（对齐 PRD/ADR 纯文本 Status 惯例）
+* [x] AC18 think/SKILL.md Step 5 含「例外读全文」规则（stale 或依赖实现细节时）
 
 ## Definition of Done
 
@@ -181,11 +181,12 @@
 
 - **Created by**: `/think` (2026-06-30)
 - **Grilled by**: `/grill` (2026-06-30) — 13 项边界决策全部收敛，CONTEXT.md 7 个术语已收录，ADR-0004 创建
-- **Sliced into**: *(待 /story)*
-- **Implemented by**: *(待 /tdd)*
-- **Reviewed by**: *(待 /review)*
+- **Sliced into**: 未走 `/story`——本 PRD 为 dogfood meta-repo（无 git remote、无 issue tracker、无 `docs/agents/` 配置），按当时约定 PRD 自身充当跟踪产物，未拆分 Child Issues（见 ## Issue 段说明）。AC1-18 由后续手工实现逐条落地
+- **Implemented by**: 手工实现（非 `/tdd`——meta-repo 无应用代码、无测试套件，产物是 Markdown skill 文档本身）。AC1-18 全部满足，对账证据见 2026-07-04 脚本核验
+- **Reviewed by**: `/improve-architecture` (2026-07-04) — 全仓审计中核验 18 条 AC 全部满足，状态推至 Done
 - **New terms**: Research Record, Stack, Topic, INDEX, TL;DR, Authoritative Source — *已收录进 CONTEXT.md*
 - **New decisions**: immutability 原则（ADR-0004）；其余 12 项边界决策记入 Grill Resolved 节
+- **Arch reviewed by**: `/improve-architecture` (2026-07-03) — anti-pattern citation 审计 + 编号修复（`review/REFERENCE.md:560` #36→#34）；(2026-07-04) — AC1 frontmatter 字段约定被全仓合规修复超越（按 agentskills.io 规范只保留 `name + description`）、AC1-18 全部满足状态推至 Done、Step 9a 无-tracker 降级路径补齐、PRD Conflict Check 从 entry-protocol 抽离至 think/REFERENCE
 
 ## Issue
 

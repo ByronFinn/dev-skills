@@ -1,6 +1,8 @@
 # Skills Resolver
 
-Skill routing table. Claude Code auto-matches via each SKILL.md's `description`. This doc is a human-readable central index and conflict resolver.
+Skill routing table for human reading and disambiguation.
+
+> **Source of truth for routing is each skill's `description` field.** Per the [agentskills.io spec](https://agentskills.io/specification), loaders match on `name + description` — there is no central catalog at runtime. This file is a **derived index**: it restates the routing for humans and adds the disambiguation rules that `description` fields alone cannot express. When this file and a skill's `description` disagree, **the `description` wins** — fix this file, not the field.
 
 ## Routing Principle
 
@@ -234,4 +236,4 @@ Key anti-patterns for sub-agent skills:
 
 > **Note:** In `tdd/` and `review/`, REFERENCE.md contains sub-agent instruction chapters describing each sub-agent's responsibilities, checklists, and independence constraints.
 
-The canonical directory tree lives in `AGENTS.md` (Repository Structure section) so it drifts in one place, not across files. See there for the authoritative layout. Likewise, this file (RESOLVER.md) is the single source for the routing table and disambiguation rules — `AGENTS.md` and `README.md` carry only a pointer plus headline summaries, not a verbatim copy.
+The canonical directory tree lives in `AGENTS.md` (Repository Structure section) so it drifts in one place, not across files. See there for the authoritative layout. The routing table and disambiguation rules in this file are the **human-readable reference**; the runtime source of truth for routing is each skill's `description` field (see the header note above). `AGENTS.md` and `README.md` carry only a pointer plus headline summaries, not a verbatim copy.

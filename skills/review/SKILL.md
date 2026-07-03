@@ -1,8 +1,6 @@
 ---
 name: review
-description: "Parallel three-perspective code review via sub-agent orchestration. Dispatches Test Review, Code Review, and Impact Review sub-agents in parallel — each independently re-reads all shared context. Merges reports, highlights contradictions for human adjudication. Use after task completion, before merge, or before release."
-when_to_use: "review,check,把关,发布前,完成开发,验收,code review"
-dispatch_intent: "Code review via parallel sub-agents, doc sync, release check, completion workflow"
+description: "Parallel three-perspective code review via sub-agent orchestration. Dispatches Test Review, Code Review, and Impact Review sub-agents in parallel — each independently re-reads all shared context. Merges reports, highlights contradictions for human adjudication. Use after task completion, before merge, or before release. Trigger words: review, check, 把关, 发布前, 完成开发, 验收, code review."
 ---
 
 # Review: Parallel Three-Perspective Review
@@ -69,8 +67,9 @@ Default review is local inspection only. Local doc/PRD/CONTEXT/ADR updates are a
 
 - **Security first**: Block immediately on any security issue. Code Review Sub-Agent runs the full Security Checklist in REFERENCE.md before approving any diff.
 - **Test coverage**: New code must have tests. Test Review Sub-Agent verifies this independently.
-- **Evidence first**: Every conclusion needs evidence. Run actual commands — never say "should work".
+- **Evidence first**: Every conclusion needs evidence. Run actual commands — never say "should work" (anti-pattern #6).
 - **Don't assume**: Derive from code/config, don't guess.
+- **Verify the artifact, not just the source**: "tests pass, code looks right" is not done. Report each layer's status separately — source tests, build/package, CI, runtime — a missing layer is an explicit gap, not passing evidence (anti-pattern #17).
 
 ## Integration Review
 

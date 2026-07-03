@@ -1,8 +1,6 @@
 ---
 name: story
-description: "Break a plan into executable Issues using vertical slices. Accepts an existing PRD or a direct feature description. Use when user wants to convert a plan to Issues, create implementation tickets, or breakdown work."
-when_to_use: "breakdown,story,拆分,Issues,tasks,subtasks,decompose"
-dispatch_intent: "Convert plan to Issues, create implementation tickets"
+description: "Break a plan into executable Issues using vertical slices. Accepts an existing PRD or a direct feature description. Use when the user wants to convert a plan to Issues, create implementation tickets, or decompose work into subtasks. Trigger words: breakdown, story, 拆分, Issues, tasks, subtasks, decompose."
 ---
 
 # Story: Break Plan Into Issues
@@ -61,7 +59,7 @@ See [REFERENCE.md](REFERENCE.md) for issue template, input handling, and example
 | Dependencies wrong | Publish in dependency order (blockers first) |
 | PRD/parent issue not updated | Step 7/8: Update PRD and sync Issue |
 | Input too vague for slicing | Suggest `/think` — do not run a full brainstorming session yourself |
-| Same topic got two PRDs (e.g. PRD-0001 + PRD-0002) | Step 3 (Ensure PRD Exists): run Entry Protocol Step 3a conflict check before creating |
+| Same topic got two PRDs (e.g. PRD-0001 + PRD-0002) | Step 3 (Ensure PRD Exists): run PRD Conflict Check (see think/REFERENCE.md) before creating |
 
 ## Vertical Slice Rules
 

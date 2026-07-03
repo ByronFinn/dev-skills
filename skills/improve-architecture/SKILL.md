@@ -1,8 +1,6 @@
 ---
 name: improve-architecture
-description: "Periodically review and improve code architecture. Scan existing PRDs, find deepening opportunities and design debt based on domain language and decision records. Use for regular code health checks or proactive design debt cleanup."
-when_to_use: "architecture,improve-architecture,重构,清理,债务,架构审查"
-dispatch_intent: "Architecture improvement, design debt cleanup, module deepening, architecture assessment"
+description: "Periodically review and improve code architecture. Scan existing PRDs, find deepening opportunities and design debt based on domain language and decision records. Use for regular code health checks or proactive design debt cleanup. Trigger words: architecture, improve-architecture, 重构, 清理, 债务, 架构审查."
 ---
 
 # Improve Architecture: Review and Improve Code Architecture

@@ -42,13 +42,47 @@ I'll help you think through this. Would you like me to create a PRD file at `doc
 - **No** — I'll work through the plan conversationally and provide a summary at the end
 ```
 
-**If Yes:** first apply [Skill Entry Protocol](../rules/entry-protocol.md) **Step 3a (PRD Conflict Check)** to catch topic collisions against existing `PRD-NNNN-*.md` (resume vs create-new). Only after Step 3a passes, scan `docs/prd/` for existing `PRD-NNNN-*.md` files, assign the next NNNN (max + 1, starting from 0000), and create the PRD at `docs/prd/PRD-NNNN-<title>.md`.
+**If Yes:** first run the [PRD Conflict Check](#prd-conflict-check-before-assigning-nnnn) (below) to catch topic collisions against existing `PRD-NNNN-*.md` (resume vs create-new). Only after the check passes, scan `docs/prd/` for existing `PRD-NNNN-*.md` files, assign the next NNNN (max + 1, starting from 0000), and create the PRD at `docs/prd/PRD-NNNN-<title>.md`.
 
 **If No:** skip PRD creation. Still follow the brainstorming process (Steps 3-9), but keep notes in your working context and produce a design summary at the end.
 
 **PRD Location:** `docs/prd/PRD-NNNN-<title>.md`
 
 If creating, use the template and field rules in [PRD-FORMAT.md](PRD-FORMAT.md). Do not retype the template here — PRD-FORMAT.md is the single source.
+
+### PRD Conflict Check (before assigning NNNN)
+
+> This check lives here (the primary PRD-creator skill) rather than in the shared Entry Protocol, because only PRD-creating skills (`/think`, `/story`) need it — every other skill that "applies the Entry Protocol" would otherwise carry PRD-management ceremony it never uses. `/story` references this same procedure (see [story/REFERENCE.md §PRD Conflict Check](../story/REFERENCE.md)).
+
+Applies when about to **create** a new PRD file. Skills that only **read** an existing PRD skip this check.
+
+Different sessions do not share memory, so a later session has no way to know an earlier one already started a PRD on the same topic — it would silently auto-assign the next NNNN and write a duplicate file. This check prevents that.
+
+**Before assigning a new NNNN, scan `docs/prd/` and compare against the new topic:**
+
+1. List existing `PRD-NNNN-*.md` files.
+2. For each, compare to the topic being created:
+   - **Title slug match** — the kebab-case title in the filename equals the new topic's intended slug (e.g. two `*-block-ui.md`). This is the strongest signal.
+   - **Header/Goal similarity** — the PRD's `# <Feature Name>` line or `## Goal` first paragraph names the same subject as the new request.
+3. A match on either is a candidate collision.
+
+**If a candidate is found, ask one question (Preference type, with a recommended answer):**
+
+```
+Found a possible existing PRD on this topic:
+- PRD-0001-block-ui.md — <one-line Goal summary>
+
+Is this the same design, or a different topic?
+1. Resume PRD-0001 (Recommended) — reuse its number, continue editing it
+2. New PRD — different topic, create with a distinct title
+```
+
+- **Resume** → reuse that NNNN, load and continue editing the existing file. Do not create a new file.
+- **New PRD** → assign next NNNN (max + 1) and create a new file with a clearly distinct title.
+
+**If no candidate is found** → proceed to assign next NNNN (max + 1) as before.
+
+This check is non-blocking: it never silently merges or silently duplicates. When in doubt, it asks. The intent is to surface the collision, not to make a perfect semantic match — a cheap one-time confirmation is preferable to a stray duplicate PRD.
 
 ## Step 3: Classify Complexity
 
@@ -302,6 +336,18 @@ Record Issue number in PRD:
 ## Issue
 #<issue-number>
 ```
+
+### No-tracker degradation
+
+Step 10 assumes an issue tracker exists. If `docs/agents/issue-tracker.md` is absent **and** the user confirms the repo has no tracker (e.g. a local-only meta-repo, a docs-only project), the parent Issue step is **waived** — do not block the workflow and do not invent a tracker. Record the waiver explicitly so downstream skills (`/grill`, `/story`) know the `## Issue` field is intentionally empty rather than missing:
+
+```markdown
+## Issue
+
+N/A — no issue tracker configured for this repo (confirmed with user <YYYY-MM-DD>). PRD serves as the tracking artifact.
+```
+
+Downstream skills check this field's content: an `N/A —` line means "deliberately no tracker" (proceed without parent-issue sync); an empty/missing field during `/grill` or `/story` means "/think didn't run" (suggest running it). This single convention keeps the degradation legible across skills.
 
 ### 10b: Record Domain Terms
 

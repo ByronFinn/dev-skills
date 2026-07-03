@@ -1,8 +1,6 @@
 ---
 name: think
-description: "Brainstorm and converge on solutions. Diverge on possibilities, converge to concrete plan, generate initial PRD. Use when requirements unclear, multiple implementation paths, or user describes new feature or complex task."
-when_to_use: "brainstorm,构思,plan,how should I,design approach,feasibility,技术方案"
-dispatch_intent: "New feature, architecture decision, requirements discovery, executable plan"
+description: "Brainstorm and converge on solutions — diverge on possibilities, converge to a decision-complete plan, generate an initial PRD. Use when requirements are unclear, multiple implementation paths exist, or the user describes a new feature, architecture decision, or complex task. Trigger words: brainstorm, 构思, plan, how should I, design approach, feasibility, 技术方案."
 ---
 
 # Think: Brainstorm and Solution Convergence
@@ -35,7 +33,7 @@ If a question can be answered by exploring the codebase or a quick research pass
 
 **Step 1 — Auto-collect context.** Explore the codebase (affected modules, existing patterns, constraints) and docs (prior PRDs, README, ADRs) before asking anything. Write findings into the PRD's `What I already know` and `Technical Notes`.
 
-**Step 2 — Offer to create a PRD.** Ask whether to persist the plan as `docs/prd/PRD-NNNN-<title>.md`. By now you have enough context to explain what the PRD would contain — the user decides with findings in hand. Don't create one automatically. If declined, work conversationally and produce a summary at the end. When creating: run the [Skill Entry Protocol](../rules/entry-protocol.md) **Step 3a (PRD Conflict Check)** — compare the topic against existing PRDs by title slug and Goal; if a candidate collides, ask whether to resume it (reuse its NNNN) or create a new one with a distinct title. Only then assign next NNNN (max + 1, starting from 0000).
+**Step 2 — Offer to create a PRD.** Ask whether to persist the plan as `docs/prd/PRD-NNNN-<title>.md`. By now you have enough context to explain what the PRD would contain — the user decides with findings in hand. Don't create one automatically. If declined, work conversationally and produce a summary at the end. When creating: run the **PRD Conflict Check** (see REFERENCE.md §PRD Conflict Check) — compare the topic against existing PRDs by title slug and Goal; if a candidate collides, ask whether to resume it (reuse its NNNN) or create a new one with a distinct title. Only then assign next NNNN (max + 1, starting from 0000).
 
 **Step 3 — Classify complexity.** Simple / Moderate / Complex (see REFERENCE.md). Depth of brainstorming scales with complexity.
 
@@ -74,7 +72,7 @@ See [REFERENCE.md](REFERENCE.md) for the PRD template, complexity classification
 | Drifted without updating PRD | Update PRD after every answer |
 | Stayed on initial request without considering edges | Step 6: expansion scan before converging |
 | Domain terms introduced but not recorded for grill | Step 9: record new terms in PRD `## Domain Terms` section |
-| Same topic got two PRDs (e.g. PRD-0001 + PRD-0002) | Step 2: run Entry Protocol Step 3a conflict check before assigning NNNN |
+| Same topic got two PRDs (e.g. PRD-0001 + PRD-0002) | Step 2: run PRD Conflict Check (REFERENCE.md) before assigning NNNN |
 | Parent Issue not created after plan approval | Step 10: parent issue creation is required; always create it before finalizing — `/grill` and `/story` rely on it |
 
 ## Output

@@ -71,7 +71,7 @@ Every skill follows the same structure:
 
 | File | Purpose |
 |---|---|
-| `SKILL.md` | Entry point. Contains YAML front matter (`name`, `description`, `when_to_use`, `dispatch_intent`), outcome contract, process summary, gotchas table, and output template. For sub-agent orchestrated skills (`tdd`, `review`), this is the orchestrator — it defines sub-agent sequence, human review gates, and merge rules, but does not perform implementation work itself. |
+| `SKILL.md` | Entry point. Contains YAML front matter (`name`, `description` only — per [agentskills.io spec](https://agentskills.io/specification); trigger keywords go inside `description`), outcome contract, process summary, gotchas table, and output template. For sub-agent orchestrated skills (`tdd`, `review`), this is the orchestrator — it defines sub-agent sequence, human review gates, and merge rules, but does not perform implementation work itself. |
 | `REFERENCE.md` | Detailed process steps, checklists, examples, and templates. Loaded on demand. For sub-agent orchestrated skills, each sub-agent gets its own chapter with: context re-read checklist, responsibilities, checklist, output template, and independence constraint. |
 | `*-FORMAT.md` | Document format templates (PRD, CONTEXT, ADR, STORY, RESEARCH, INDEX) used by the skill. Written bilingually (English headings, Chinese field descriptions). |
 | `references/` | Language-specific or mode-specific reference files loaded on demand by the skill (used by `write` for pattern catalogs in different languages). |
@@ -98,7 +98,7 @@ Skills do **not** auto-chain. Each skill stops and waits for the user to trigger
 
 ## Skill Routing (RESOLVER.md)
 
-The canonical routing table, workflow-phase routing, common sequences, and full disambiguation rules live in [RESOLVER.md](skills/RESOLVER.md) — that file is the single source, edited in one place.
+The canonical routing table, workflow-phase routing, common sequences, and full disambiguation rules live in [RESOLVER.md](skills/RESOLVER.md) — edited in one place. Note: runtime routing is driven by each skill's `description` field (per [agentskills.io spec](https://agentskills.io/specification)); RESOLVER.md is the human-readable derived index and disambiguation reference, not the runtime matcher.
 
 
 ## Cross-Skill Rules (anti-patterns.md)

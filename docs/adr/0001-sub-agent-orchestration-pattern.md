@@ -24,6 +24,16 @@ We adopt a **sub-agent orchestration pattern** within existing skill directories
 
 The key insight: "sub-agent" is a logical concept implemented through instruction-level isolation in Markdown. The AI agent reading the skill instructions follows each sub-agent chapter as if starting fresh.
 
+### Implementation Note (clarification added 2026-07-04)
+
+"Sub-agent" here is **not** a runtime scheduler concept. dev-skills has no runtime — it produces Markdown only. Concretely:
+
+- **Independence comes from the re-read-from-disk discipline**, not from concurrent execution. A sub-agent phase is a sequential instruction segment that begins by re-reading all shared context files (PRD, Story, Issues, CONTEXT.md, ADRs) before acting.
+- **If the host runtime supports true parallel sub-agent dispatch** (e.g. Claude Code's Agent tool), dispatch phases in parallel — it strengthens the guarantee.
+- **If not** (single-context execution), execute phases sequentially — the independence guarantee still holds *as far as the re-read discipline is followed faithfully*. This is a softer guarantee than a runtime-enforced process boundary, and it is the basis of the Negative Consequence noted below ("depends on the AI agent faithfully following the instruction to re-read from disk").
+
+This clarification does not change the Decision; it makes explicit what the original wording left implicit. The term "sub-agent" is retained for continuity with `/tdd`, `/review`, CONTEXT.md, and anti-patterns #34/#35 — renaming would break more than it clarifies.
+
 ## Consequences
 
 ### Positive
