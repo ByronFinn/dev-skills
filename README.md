@@ -39,6 +39,7 @@ AI coding agents are powerful but inconsistent. They skip planning, forget domai
 |---|---|---|
 | **Think** before code | `/think` | Brainstorm and converge before writing anything |
 | **Challenge** before implement | `/grill` | Stress-test plans against domain model |
+| **Orchestrate** before coding | `/implement` | Sequence /tdd, typecheck, test, review, commit per seam |
 | **Test** before implement | `/tdd` | Red-green-refactor with independent perspectives |
 | **Review** before merge | `/review` | Parallel three-perspective review |
 | **Root cause** before fix | `/debug` | Systematic debugging with reproducible feedback loops |
@@ -81,7 +82,7 @@ That's it. Each skill is triggered by a **slash command** and stops when done �
 
 ## 🧰 Skills Overview
 
-> **11 skills** covering the full engineering lifecycle: planning → research → validation → breakdown → implementation → review → debugging → maintenance → writing.
+> **12 skills** covering the full engineering lifecycle: planning → research → validation → breakdown → implementation → review → debugging → maintenance → writing.
 
 | Skill | Command | Input → Output | Description |
 |---|---|---|---|
@@ -91,6 +92,7 @@ That's it. Each skill is triggered by a **slash command** and stops when done �
 | **have-a-try** | `/have-a-try` | Design question → Answer (prototype → delete) | Build a throwaway prototype to answer one design question. LOGIC mode (terminal app) or UI mode (variant switcher). Delete when done. |
 | **grill** | `/grill` | PRD → Validated PRD + CONTEXT.md + ADRs | Read the PRD with "hostile eyes". Extract every open question, assumption, and vague term — resolve them one at a time until exhaustion. |
 | **story** | `/story` | PRD or description → Vertical-slice Issues | Break a plan into independently executable issues (tracer bullets through all layers). Publish in dependency order. |
+| **implement** | `/implement` | Issues / PRD → Implemented code + commits | Orchestrate /tdd at pre-agreed seams, implement non-TDD items directly, run typechecking and tests per item, dispatch /review, commit per seam. |
 | **tdd** | `/tdd` | Issue / PRD → GREEN code + tests | Sub-agent orchestrated TDD: Test Sub-Agent → Human Review Gates → Develop Sub-Agent. One acceptance criterion per cycle. |
 | **review** | `/review` | Diff → Merged 3-perspective report | Parallel sub-agents: Test Review ∥ Code Review ∥ Impact Review. Merge with contradiction highlighting for human adjudication. |
 | **debug** | `/debug` | Error/crash/regression → Fix + regression test | 6-phase systematic loop: reproduce → hypothesize → instrument → fix → test → cleanup. Bisect and scope-scan modes. |
@@ -106,57 +108,55 @@ Skills compose into standard engineering workflows. Each skill **stops** after i
 ### New Feature — Full Pipeline
 
 ```
-/setup-project → /think → /grill → /story → /tdd → /review → 🚀 merge/release
-                        ↗                        ↗
+/setup-project → /think → /grill → /story → /implement → /review → 🚀 merge/release
+                        ↗                            ↗
               /research (on INDEX miss)    /have-a-try (design doubt)
 ```
+
+`/implement` handles per-seam orchestration: delegates to `/tdd` where suitable, implements directly otherwise, runs typechecking and tests after each item, commits per seam, then dispatches `/review`.
 
 ### Common Sequences
 
 | Scenario | Pipeline | When to use |
 |---|---|---|
-| **New feature** | `/think` → `/grill` → `/story` → `/tdd` → `/review` | Full pipeline, from rough idea to reviewed code |
-| **Direct breakdown** | `/story` → `/tdd` → `/review` | You already have a clear plan, skip brainstorming |
+| **New feature** | `/think` → `/grill` → `/story` → `/implement` → `/review` | Full pipeline, from rough idea to reviewed code |
+| **Direct breakdown** | `/story` → `/implement` → `/review` | You already have a clear plan, skip brainstorming, automated implementation |
 | **Bug fix** | `/debug` → `/review` (optional) | Error, crash, regression — find root cause first |
 | **Technical investigation** | `/research` → `/think` (consumes INDEX) | Persist best-practice knowledge for reuse |
-| **Architecture health** | `/improve-architecture` → `/grill` → `/story` → `/tdd` | Periodic design debt scan |
+| **Architecture health** | `/improve-architecture` → `/grill` → `/story` → `/implement` | Periodic design debt scan |
 
 ### Pipeline Diagram
 
-```
-                    ┌─────────────────────────────────────────────────────┐
-                    │                 New Feature Pipeline                 │
-                    └─────────────────────────────────────────────────────┘
+	```
+	                    ┌─────────────────────────────────────────────────────┐
+	                    │                 New Feature Pipeline                 │
+	                    └─────────────────────────────────────────────────────┘
 
-  ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
-  │  /think  │───▶│ /research│───▶│ /grill   │───▶│ /story   │───▶│  /tdd    │
-  │  idea→PRD│    │  rec→INDEX│   │  PRD→valid│   │  →Issues │   │  →GREEN  │
-  └──────────┘    └──────────┘    └──────────┘    └──────────┘    └──────────┘
-       │               ▲               │                              ▲
-       │               │               │                              │
-       │     ┌─────────┴─────────┐     │                              │
-       │     │ /think Step 5     │     │                              │
-       │     │ queries INDEX     │     │                              │
-       │     └───────────────────┘     │                              │
-       │                               │                              │
-       │     ┌───────────────────┐     │                              │
-       └────▶│  /have-a-try      │     │                              │
-             │  (design doubt)   │◀────┘                              │
-             └───────────────────┘                                    │
-                                                                      │
-               ┌──────────┐                                           │
-               │ /debug   │◀──────────────────────────────────────────┘
-               └──────────┘
+	  ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+	  │  /think  │───▶│ /grill   │───▶│ /story   │───▶│/implement│───▶│ /review  │
+	  │  idea→PRD│    │  PRD→valid│   │  →Issues │   │  →orchest│   │  →merge   │
+	  └──────────┘    └──────────┘    └──────────┘    └────┬─────┘    └──────────┘
+	       │               ▲               │               │
+	       │               │               │               │
+	       │     ┌─────────┴─────────┐     │     ┌─────────┴─────────┐
+	       │     │ /research         │     │     │  /tdd (sub-proc   │
+	       │     │ (on INDEX miss)   │     │     │  of /implement)   │
+	       │     └───────────────────┘     │     └───────────────────┘
+	       │                               │
+	       │     ┌───────────────────┐     │
+	       └────▶│  /have-a-try      │     │
+	             │  (design doubt)   │◀────┘
+	             └───────────────────┘
 
-  ┌──────────┐    ┌──────────┐    ┌──────────┐
-  │/setup-   │    │/review   │    │/improve- │
-  │project   │    │          │    │architecture│
-  └──────────┘    └──────────┘    └──────────┘
+	  ┌──────────┐    ┌───────────────────┐    ┌──────────┐
+	  │/setup-   │    │ /improve-         │    │ /debug   │
+	  │project   │    │ architecture      │    │          │
+	  └──────────┘    └───────────────────┘    └──────────┘
 
-  ┌──────────┐
-  │  /write  │
-  └──────────┘
-```
+	  ┌──────────┐
+	  │  /write  │
+	  └──────────┘
+	```
 
 ---
 
@@ -172,7 +172,8 @@ Route by your **work object** — what you have determines which skill to use:
 | 🧪 Design doubt to resolve by running code | `/have-a-try` |
 | 🔥 PRD/plan to challenge | `/grill` |
 | 📋 Plan to break into tickets | `/story` |
-| ✅ Accepted issue to implement | `/tdd` |
+| ⚙️ Issues / PRD to implement with orchestration | `/implement` |
+| ✅ Accepted issue to implement (single) | `/tdd` |
 | 🐛 Error, crash, regression | `/debug` |
 | 👀 Completed work / diff to review | `/review` |
 | 🏗️ Architecture health / design debt | `/improve-architecture` |
@@ -373,10 +374,11 @@ dev-skills/
 │   ├── think/                     # Brainstorming skill
 │   ├── research/                  # Technical investigation skill
 │   ├── have-a-try/                # Prototyping skill
-│   ├── grill/                     # Plan validation skill
-│   ├── story/                     # Plan-to-issues skill
-│   ├── tdd/                       # TDD implementation skill
-│   ├── review/                    # Code review skill
+	│   ├── grill/                     # Plan validation skill
+	│   ├── story/                     # Plan-to-issues skill
+	│   ├── implement/                 # Workflow orchestration skill
+	│   ├── tdd/                       # TDD implementation skill
+	│   ├── review/                    # Code review skill
 │   ├── debug/                     # Debugging skill
 │   ├── improve-architecture/      # Architecture improvement
 │   └── write/                     # Prose editing skill

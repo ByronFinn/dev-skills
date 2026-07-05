@@ -46,7 +46,7 @@ See [REFERENCE.md](REFERENCE.md) for detailed phases, optional modes (bisect, sc
 | Say "try again" or "I'm confident" | Write hypothesis; run instrumentation to prove (anti-pattern #32 — fix without instrumentation) |
 | MCP not loading, switch tools instead of diagnose | Check server status, API key, config first |
 | Compile passes but UI looks wrong | Move up Runtime Evidence Ladder, verify rendered surface |
-| Fix one instance, ignore siblings | After fix, grep pattern and fix or report each instance |
+| Fix one instance, ignore siblings | After fix, grep pattern and fix or report each instance (anti-pattern #21) |
 | Fix needs >5 files | Pause and confirm scope with user |
 
 ## Output (Success)

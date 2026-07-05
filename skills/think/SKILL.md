@@ -23,7 +23,7 @@ If a question can be answered by exploring the codebase or a quick research pass
 1. **Task-first** — capture the idea immediately
 2. **Action-before-asking** — derive from codebase/docs before asking. Apply the [Skill Entry Protocol](../rules/entry-protocol.md)
 3. **One question at a time** — each with a recommended answer; update the PRD after each
-4. **Prefer concrete options** — present 2-3 viable approaches with trade-offs
+4. **Prefer concrete options** — present 2-3 viable approaches with trade-offs; never silently assume a single path (anti-pattern #28)
 5. **Research-first** — query INDEX before proposing; study authoritative sources
 6. **Diverge → Converge** — expand on edges, then converge to MVP
 
@@ -37,7 +37,7 @@ If a question can be answered by exploring the codebase or a quick research pass
 
 **Step 3 — Classify complexity.** Simple / Moderate / Complex (see REFERENCE.md). Depth of brainstorming scales with complexity.
 
-**Step 4 — Gate your questions.** Only ask **Blocking** (can't continue without input) or **Preference** (multiple valid choices) questions. Derivable questions → inspect the code/research instead. Meta questions ("should I search?") → never ask, just act.
+**Step 4 — Gate your questions.** Only ask **Blocking** (can't continue without input) or **Preference** (multiple valid choices) questions. Derivable questions → inspect the code/research instead. Meta questions ("should I search?") → never ask, just act. If the user packs multiple requests, enumerate and address each one (anti-pattern #20).
 
 **Step 5 — Research-first for technical choices.** When choosing an approach/library/framework:
 
@@ -56,6 +56,12 @@ If a question can be answered by exploring the codebase or a quick research pass
 **Step 8 — Propose approaches + record decision.** When requirements are clear, present 2-3 approaches (if not already done via research), ask preference, and record the result in the PRD's `Decision (ADR-lite)` section.
 
 **Step 9 — Submit plan for approval.** Present the complete requirements (Goal, Requirements, Acceptance Criteria, Definition of Done, Out of Scope, Technical Approach, small-PR implementation plan). After user approval, proceed to Step 10 (Create Parent Issue & Finalize PRD) — do not wrap up yet.
+
+**Step 10 — Create Parent Issue & Finalize PRD.** After plan approval:
+1. **Create the parent Issue** in the issue tracker (required — `/grill` and `/story` downstream rely on the PRD's `## Issue` field)
+2. **Record new domain terms** found during brainstorming for `/grill` to refine
+3. **Finalize the PRD** — set Status to `Draft`, fill `Created by`, set `Last updated`, ensure all sections are populated
+4. Output the approved design summary with next step to `/grill`
 
 See [REFERENCE.md](REFERENCE.md) for the PRD template, complexity classification detail, question-gate rules, and worked message formats.
 

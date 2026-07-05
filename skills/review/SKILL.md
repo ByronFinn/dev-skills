@@ -65,7 +65,7 @@ Default review is local inspection only. Local doc/PRD/CONTEXT/ADR updates are a
 
 ## Hard Rules
 
-- **Security first**: Block immediately on any security issue. Code Review Sub-Agent runs the full Security Checklist in REFERENCE.md before approving any diff.
+- **Security first**: Block immediately on any security issue. Code Review Sub-Agent runs the full Security Checklist in REFERENCE.md before approving any diff. Security-sensitive changes must include rollback path, audit trail, and regression test (anti-pattern #18).
 - **Test coverage**: New code must have tests. Test Review Sub-Agent verifies this independently.
 - **Evidence first**: Every conclusion needs evidence. Run actual commands — never say "should work" (anti-pattern #6).
 - **Don't assume**: Derive from code/config, don't guess.
@@ -99,9 +99,11 @@ Review complete.
 ── Code Review ──      <Code Review Sub-Agent report>
 ── Impact Review ──    <Impact Review Sub-Agent report>
 ── Contradictions ──   <both sides, or "No contradictions">
-── Verification ──     Tests / Lint / Typecheck / Build: <pass/fail>
-── Findings ──         new terms, new decisions, updated files, synced issues
-Recommendation: Approve / Request Changes / Comments
-```
+	── Verification ──     Tests / Lint / Typecheck / Build: <pass/fail>
+	── Findings ──         new terms, new decisions, updated files, synced issues
+	Recommendation: Approve / Request Changes / Comments
+
+	Next: User decides — merge/release, or fix issues and re-review.
+	```
 
 The full merged-report template (with all fields and next-step branches) is in [REFERENCE.md Chapter 5](REFERENCE.md).

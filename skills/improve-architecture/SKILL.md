@@ -59,7 +59,7 @@ Scan scope:       [PRDs: N, Code files: N, ADRs: N]
 Alignment:        [✅ N, ⚠️ N, ❌ N]
 Findings:         [Blocking: N, High: N, Medium: N]
 
-Next: Review blocking issues → /story to decompose → /tdd to implement
+Next: Review blocking issues → /story to decompose → /implement to orchestrate implementation
 ```
 
 **PRD Traceability:** If findings link to a PRD, fill the `Arch reviewed by` field:

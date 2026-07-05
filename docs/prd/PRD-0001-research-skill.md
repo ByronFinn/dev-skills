@@ -10,7 +10,7 @@
 
 * 现有 skill 生态的命名规范已成熟：PRD 用 `PRD-NNNN-<title>.md`（4位+前缀），ADR 用 `<NNNN>-<title>.md`（4位无前缀），CONTEXT.md 单文件位于 repo 根
 * 目录创建遵循「setup-project 脚手架 `docs/agents/` 配置；其余 skill 惰性创建产物目录」的惯例
-* PRD 状态流转是 5 态：`Draft→Grilled→Sliced→InProgress→Done`（+`Deprecated`），代码为唯一事实源
+* PRD 状态流转是 5 态：`Draft→Grilled→Sliced→In Progress→Done`（+`Deprecated`），代码为唯一事实源
 * **核心缺口**：PRD-FORMAT.md 第 110 行有 `## Research References` 字段指向 `docs/research/topic.md`，但全仓库没有任何 skill 创建或维护它——这是「幽灵字段」，格式层承诺了能力但没有 skill 兜底
 * `think` skill 的 Step 5 已经写了「Research-first for technical choices」，但研究结果只在对话中消散或埋进单个 PRD 的 Technical Notes，无跨任务复用机制
 * 现有最接近的同类是 `have-a-try`（一次性产出+丢弃过程）和 `grill`（持续维护 CONTEXT.md 知识库）；research 形态最接近 grill，但维护的是「技术最佳实践」而非「领域语言」

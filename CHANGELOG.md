@@ -7,7 +7,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 ## [Unreleased]
 
 ### Added
-- **Skill Entry Protocol** (`skills/rules/entry-protocol.md`) — shared bootstrap sequence for all skills. Replaces duplicated context-read instructions across 8 skills. Ensures standalone execution (graceful degradation) and composable execution (reads prior skill outputs via Traceability chain).
+- **`/implement` skill** (`skills/implement/`) — workflow orchestration skill that sequences /tdd at pre-agreed seams, implements non-TDD items directly, runs typechecking and tests per item, dispatches /review at the end, and commits per completed seam. `disable-model-invocation: true` — only invoked by explicit `/implement` command. See RESOLVER.md, AGENTS.md, README.md for routing, pipeline position, and disambiguation updates.
+- **Anti-pattern citations added** — `implement` (#5, #6, #12, #17), `think` (#20, #28), `debug` (#12, #21), `review` (#18). Reduces uncited anti-pattern rules from 23 to 19.
+
+### Fixed
+- **Pipeline diagram in README.md/README_ZH.md** — `/research` moved from mandatory main chain to optional side branch; `/review` moved from disconnected standalone box to main pipeline terminal; `/tdd` shown as sub-process of `/implement` rather than sequential step.
+- **`think/SKILL.md` missing Step 10** — Process Summary now includes Create Parent Issue & Finalize PRD step (was only in REFERENCE.md and Gotchas, creating a gap where Step 10 existed in the contract but not in the listed workflow).
+- **`think/REFERENCE.md` broken cross-reference** — PRD Conflict Check note incorrectly pointed to `story/REFERENCE.md §PRD Conflict Check` which doesn't exist. Now correctly states "the same procedure defined here."
+- **PRD-0001 `InProgress` typo** — lifecycle comment used single-word `InProgress` instead of standardized two-word `In Progress`.
+- **Project structure tree indentation** — `story/`, `implement/`, `tdd/` entries in README.md and README_ZH.md used tabs instead of spaces, breaking tree alignment.
+- **RESOLVER.md duplicate "Direct breakdown" headings** — consolidated two entries with identical headings into one, with note that `/tdd → /review` remains available for single-issue manual TDD.
+- **`review/SKILL.md` Output missing Next step** — added `Next: User decides — merge/release, or fix issues and re-review` for pipeline consistency.
+
+### Changed
+- **`disable-model-invocation: true` documented** — added to AGENTS.md File Conventions and Language Convention table as an allowed YAML frontmatter extension for explicit-invocation-only skills.
+- **AGENTS.md Documents Produced table** — added `have-a-try` row (NOTES.md + PRD Traceability update).
+- **Upstream/downstream skill references updated** — `story`, `have-a-try`, `improve-architecture` now point to `/implement` instead of `/tdd` as next step; `story` offers both `/implement` (orchestration) and `/tdd` (single-issue).
 - **TDD Gate Modes** — Full (default, 2 gates per criterion), Fast (1 gate, scenarios + code together), Batch (1 gate per 2-3 homogeneous criteria). User can switch modes mid-skill and per-criterion.
 - **Integration Review Mode** in `/review` — additional checks when all vertical slices of a PRD are complete (cross-slice data flow, shared state consistency, full acceptance criteria coverage).
 - **Large diff handling** in `/review` — chunking strategy for diffs >30 files (group by module, prioritize high-risk files for full reads).

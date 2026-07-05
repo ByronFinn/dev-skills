@@ -52,7 +52,7 @@ If creating, use the template and field rules in [PRD-FORMAT.md](PRD-FORMAT.md).
 
 ### PRD Conflict Check (before assigning NNNN)
 
-> This check lives here (the primary PRD-creator skill) rather than in the shared Entry Protocol, because only PRD-creating skills (`/think`, `/story`) need it — every other skill that "applies the Entry Protocol" would otherwise carry PRD-management ceremony it never uses. `/story` references this same procedure (see [story/REFERENCE.md §PRD Conflict Check](../story/REFERENCE.md)).
+> This check lives here (the primary PRD-creator skill) rather than in the shared Entry Protocol, because only PRD-creating skills (`/think`, `/story`) need it — every other skill that "applies the Entry Protocol" would otherwise carry PRD-management ceremony it never uses. `/story` references the same procedure defined here.
 
 Applies when about to **create** a new PRD file. Skills that only **read** an existing PRD skip this check.
 

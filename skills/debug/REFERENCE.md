@@ -84,7 +84,7 @@ Goal is finding the environment variable that differs. Don't stare at code — d
 6. If possible, containerize one environment and diff behavior, or use Docker/devcontainer to match the failing environment
 
 **When you truly cannot build loop:**
-Stop and state explicitly. List what you tried. Request user provide: (a) access to environment reproducing it, (b) captured artifacts (HAR file, log dump, core dump, timestamped screen recording), or (c) permission to add temporary production instrumentation. **Don't proceed without loop.**
+Stop and state explicitly. List what you tried. Request user provide: (a) access to environment reproducing it, (b) captured artifacts (HAR file, log dump, core dump, timestamped screen recording), or (c) permission to add temporary production instrumentation. **Don't proceed without loop** — reading and acting on error output is mandatory (anti-pattern #12).
 
 Don't enter Phase 2 until you believe a loop.
 

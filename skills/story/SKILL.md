@@ -14,7 +14,7 @@ Break plan into independently actionable issues using vertical slices (tracer bu
 - **Outcome**: Set of Issues, each executable independently, covering the full plan
 - **Done when**: All issues created with dependencies mapped; PRD created or updated with child issues
 - **Evidence**: Created Issues with proper acceptance criteria, PRD (created or updated) with child issue links
-- **Output**: Issue count list, PRD created/updated, next step to `/tdd`
+- **Output**: Issue count list, PRD created/updated, next step to `/implement` (for automated orchestration) or `/tdd` (for per-issue TDD)
 
 ## Prerequisites
 
@@ -80,7 +80,7 @@ Created issues:
 Updated files:
 - docs/prd/PRD-NNNN-<title>.md — child issues updated (Status → Sliced)
 
-Next: Run /tdd to start implementing first issue.
+Next: Run `/implement` to orchestrate implementation across all issues, or `/tdd` to implement a single issue.
 ```
 
 ## Example

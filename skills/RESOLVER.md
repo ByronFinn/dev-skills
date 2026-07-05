@@ -26,6 +26,7 @@ Priority when multiple skills could match:
 | Design doubt about what a page should *look like* — “try a few layouts”, “see a few options” (→ UI) | `have-a-try` | Build several radically different UI variants on one route, switchable via `?variant=`. |
 | Existing PRD/plan/terminology/domain model/ADR questions, “challenge this plan”, “is this design sound?” | `grill` | Stress-test plan against domain language and decision records. |
 | Completed PRD or clear feature description needing tickets, issue breakdown, implementation tasks, vertical slices | `story` | Convert plan into executable Issues. Accepts PRD or direct description. |
+| Issues or PRD ready for implementation, "implement this", orchestrate /tdd at seams / 实现 / 编码实现 / 开发 / 开始写代码 | `implement` | Orchestrate /tdd at pre-agreed seams, implement non-TDD items directly, typecheck + test per item, dispatch /review, commit per seam. |
 | Accepted issue, known behavior to implement, explicit TDD/red-green-refactor request | `tdd` | Sub-agent orchestration: Test Sub-Agent → Human Review Gates → Develop Sub-Agent. One acceptance criterion per cycle. |
 | Error, crash, failing test, regression, anomalous behavior, “used to work” | `debug` | Unknown root cause must be diagnosed before fixing. |
 | Diff, staged/unstaged changes, completed work, merge readiness, release readiness | `review` | Parallel three-perspective sub-agent review: Test Review ∥ Code Review ∥ Impact Review. |
@@ -49,6 +50,7 @@ Priority when multiple skills could match:
 | prototype / 原型 / 试一下 / spike / 验证设计 / 看看效果 / 跑起来看看 / 状态机对不对 / 数据模型能表达吗 | `have-a-try` | Build a throwaway prototype to answer one design question (LOGIC terminal app or UI variants). Optional branch between `/think` and `/grill` — write disposable code, capture the verdict, delete the shell |
 | 挑战方案 / grill / 细化方案 / 深挖计划 / 术语审查 | `grill` | Challenge plan against domain model, sharpen terminology, update CONTEXT.md, ADRs, issue |
 | 分解 / story / 拆分 / Issues / 任务 / 子任务 | `story` | Break plan into executable Issues (accepts PRD or direct description), update PRD child issues, sync issue tracker |
+| implement / 实现 / 编码实现 / 开发实现 / 开始写代码 / 自动实现 | `implement` | Orchestrate /tdd at pre-agreed seams, implement non-TDD items directly, typecheck + test per item, dispatch /review, commit per seam |
 | TDD / 测试优先 / 实现已确认行为 / red-green-refactor | `tdd` | Test-driven development, red-green-refactor loop, one vertical slice at a time |
 
 ### Completion & Finish (Post-build)
@@ -88,8 +90,14 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 
 **New feature complete workflow:**
 ```
-/think → user approves → /grill → /story → /tdd → /review → merge/release
+/think → user approves → /grill → /story → /implement → /review → merge/release
 ```
+`/implement` handles per-seam orchestration: delegates to `/tdd` where suitable, implements directly otherwise, runs typechecking and tests after each item, commits per seam, then dispatches `/review` at the end.
+
+```
+/implement → per-seam [/tdd|direct → typecheck → test → commit] → full test suite → /review
+```
+
 `/think` Step 5 queries `docs/research/INDEX.md` first; on a hit it reuses the TL;DR, on a miss it may suggest `/research` to persist a durable record before committing to an approach.
 
 **Technical investigation (standalone or embedded):**
@@ -98,9 +106,15 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 ```
 `/research` runs standalone to build the knowledge base, OR is effectively triggered inside `/think` Step 5 when a technical choice needs grounding. Records are immutable (ADR-0004); a new major creates a new file, never edits the old.
 
+**Direct breakdown (user has a clear plan):**
+```
+/story → /implement → /review → merge/release
+```
+The `/tdd → /review` path remains available for single-issue manual TDD.
+
 **New feature with a design doubt worth prototyping:**
 ```
-/think → /have-a-try (when a design question is cheaper to run than reason about) → /grill → /story → /tdd → /review
+/think → /have-a-try (when a design question is cheaper to run than reason about) → /grill → /story → /implement → /review
 ```
 `/have-a-try` is an optional branch, not a required step. Use it only when the question is concrete enough to resolve by running code (state machine edges, data-model cases, what a page should look like). It writes disposable code; the validated verdict flows into the PRD/ADR, then the prototype shell is deleted or absorbed.
 
@@ -113,20 +127,22 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 ```
 /tdd → /review
 ```
-
-**Direct breakdown (user has a clear plan):**
-```
-/story → /tdd → /review → merge/release
-```
+Direct single-issue TDD without the `/implement` orchestration layer.
 
 **Periodic maintenance:**
 ```
-/improve-architecture → review report → /grill (if terminology/ADR decisions) → /story (if approved improvements) → /tdd (optional)
+/improve-architecture → review report → /grill (if terminology/ADR decisions) → /story (if approved improvements) → /implement (optional)
 ```
 
 **Note on sub-agent orchestration:** `/tdd` now internally runs Acceptance Criterion Cycles — a 5-step loop per criterion (Test Sub-Agent designs scenarios → Scenario Review Gate → Test Sub-Agent writes tests (RED) → Code Review Gate → Develop Sub-Agent implements (GREEN)), followed by a unified Refactor phase after all cycles. `/review` now internally dispatches three parallel sub-agents (Test Review, Code Review, Impact Review), each independently re-reading all shared context, then merges their reports for human adjudication.
 
 ## Disambiguation
+
+**"实现 / implement" conflict (`implement` vs `tdd` vs `story`):**
+- User has multiple issues/seams from `/story`, wants end-to-end orchestration (typecheck, test, commit, review) → `/implement`.
+- User has one well-defined acceptance criterion and wants focused TDD (red-green-refactor with human review gates) → `/tdd`.
+- User has an idea that still needs breaking into tickets → `/story`.
+- Rule of thumb: `/story` splits the work, `/implement` orchestrates the execution, `/tdd` executes a single unit. If you have tickets, use `/implement`; if you have one ticket, use `/tdd`.
 
 **Bug/test failure conflict (`debug` vs `tdd`):**
 - Root cause unknown, failing test unexplained, regression, crash, or anomaly → `/debug`.
@@ -181,6 +197,7 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 | `have-a-try` | — | Build a throwaway prototype to answer one design question (LOGIC terminal app or UI variants) | Validated verdict (PRD `Prototyped by` / ADR / commit / NOTES.md); prototype deleted or core absorbed |
 | `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | Challenge plan + update domain knowledge | PRD + CONTEXT.md + ADRs + parent issue synced (if created by /think) |
 | `story` | STORY-FORMAT.md | Vertical slices to Issues (accepts PRD or direct description) | PRD (created or updated) + Child Issues + issues if confirmed |
+| `implement` | — | Orchestrate /tdd at seams, implement non-TDD items directly, typecheck+test per item, /review dispatch, commit per seam | Code + commits + PRD and issue status updates |
 | `tdd` | — | Sub-agent orchestration: Test Sub-Agent → Human Review Gates → Develop Sub-Agent | Code + tests (via Acceptance Criterion Cycles) |
 | `review` | — | Parallel three-perspective review: Test Review ∥ Code Review ∥ Impact Review | Merged report + local docs + remote updates only when explicitly authorized |
 | `debug` | — | Root cause → 6-phase fix | Root cause report + code fix |
@@ -201,6 +218,7 @@ Each skill may depend on files or configuration produced by earlier skills. Miss
 | `have-a-try` | `domain.md` | A concrete design question | `CONTEXT.md`, `docs/adr/`, PRD | — | — |
 | `grill` | `domain.md` | PRD (`docs/prd/PRD-NNNN-<title>.md`) | `CONTEXT.md`, `docs/adr/` | CONTEXT-FORMAT.md, ADR-FORMAT.md | Creates `CONTEXT.md` and ADRs lazily |
 | `story` | `domain.md`, `repo-map.md`, `issue-tracker.md`, `triage-labels.md` | — | `CONTEXT.md`, PRD | STORY-FORMAT.md (Issue body), minimal PRD | Creates minimal PRD if none exists |
+| `implement` | `domain.md`, `repo-map.md`, `issue-tracker.md` | Issues from `/story` or PRD with Acceptance Criteria | `CONTEXT.md`, ADRs, `docs/research/INDEX.md`, `triage-labels.md` | Issues from `/story`; expects `/tdd` output | PRD Status update (→ `In Progress`), issue status update (→ `Done`), commits |
 | `tdd` | `domain.md`, `repo-map.md` | — | `issue-tracker.md`, PRD, `CONTEXT.md`, ADRs | Issue body = STORY-FORMAT.md | — |
 | `review` | `domain.md`, `repo-map.md` | Code changes (staged or unstaged) | PRD, `CONTEXT.md`, ADRs, CI configs | Issue body = STORY-FORMAT.md | Updates local docs when verified |
 | `debug` | `domain.md`, `repo-map.md` | Reproducible error or symptom | `CONTEXT.md`, ADRs | — | — |

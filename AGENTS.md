@@ -41,6 +41,9 @@ skills/
 │   ├── SKILL.md
 │   ├── REFERENCE.md
 │   └── STORY-FORMAT.md
+├── implement/                   # Workflow orchestration skill → code + commits (orchestrates /tdd + /review)
+│   ├── SKILL.md
+│   └── REFERENCE.md
 ├── tdd/                         # Sub-agent orchestrated TDD (Test Sub-Agent → Gates → Develop Sub-Agent)
 │   ├── SKILL.md               # Orchestrator entry point
 │   └── REFERENCE.md           # Sub-agent instruction chapters
@@ -71,7 +74,7 @@ Every skill follows the same structure:
 
 | File | Purpose |
 |---|---|
-| `SKILL.md` | Entry point. Contains YAML front matter (`name`, `description` only — per [agentskills.io spec](https://agentskills.io/specification); trigger keywords go inside `description`), outcome contract, process summary, gotchas table, and output template. For sub-agent orchestrated skills (`tdd`, `review`), this is the orchestrator — it defines sub-agent sequence, human review gates, and merge rules, but does not perform implementation work itself. |
+| `SKILL.md` | Entry point. Contains YAML front matter (`name`, `description` only — per [agentskills.io spec](https://agentskills.io/specification); trigger keywords go inside `description`). Skills that should never be auto-invoked by the model may additionally include `disable-model-invocation: true` — this signals the skill must only be triggered by explicit slash-command (`/skillname`). Contains outcome contract, process summary, gotchas table, and output template. For sub-agent orchestrated skills (`tdd`, `review`), this is the orchestrator — it defines sub-agent sequence, human review gates, and merge rules, but does not perform implementation work itself. |
 | `REFERENCE.md` | Detailed process steps, checklists, examples, and templates. Loaded on demand. For sub-agent orchestrated skills, each sub-agent gets its own chapter with: context re-read checklist, responsibilities, checklist, output template, and independence constraint. |
 | `*-FORMAT.md` | Document format templates (PRD, CONTEXT, ADR, STORY, RESEARCH, INDEX) used by the skill. Written bilingually (English headings, Chinese field descriptions). |
 | `references/` | Language-specific or mode-specific reference files loaded on demand by the skill (used by `write` for pattern catalogs in different languages). |
@@ -82,13 +85,14 @@ Skills compose into standard software engineering workflows. The canonical seque
 
 ```
 First time:           setup-project → (skills configured)
-New feature:          think → grill → story → tdd → review → (release)
+New feature:          think → grill → story → implement → review → (release)
+                      (implement: per-seam /tdd|direct → typecheck → test → commit)
                       (think Step 5 queries research INDEX; on miss may branch to research → think)
 Technical research:   research → (immutable record + INDEX) → think (queries INDEX) or grill (ADR cites research)
-Design doubt:         think → have-a-try → grill → story → tdd → review  (optional branch: prototype when running code beats reasoning)
-Direct breakdown:     story → tdd → review → (release)
+Design doubt:         think → have-a-try → grill → story → implement → review  (optional branch: prototype when running code beats reasoning)
+Direct breakdown:     story → implement → review → (release)
 Bug/regression:       debug → review (optional)
-Architecture health:  improve-architecture → grill/story/tdd (if approved)
+Architecture health:  improve-architecture → grill/story/implement (if approved)
 Writing & editing:    write → (polished prose, release notes, or review report)
 ```
 
@@ -122,6 +126,7 @@ When adding new rules to `anti-patterns.md`: check for existing similar rules fi
 |---|---|---|
 | SKILL.md, REFERENCE.md | English | Agent instruction layer — English for consistency and broad compatibility |
 | FORMAT files (*-FORMAT.md) | English templates + Chinese (中文) field descriptions & examples | User-facing templates — bilingual for Chinese-reading users |
+| SKILL.md YAML frontmatter | English | `name` + `description` per agentskills.io spec. Optionally `disable-model-invocation: true` for explicit-invocation-only skills |
 | RESOLVER.md trigger words | English + Chinese | Route matching needs both languages |
 | Gotchas tables, anti-patterns.md | English | Behavioral rules — precision matters, avoid translation ambiguity |
 | PRD/CONTEXT/ADR files produced in target repos | User's choice | These belong to the user's project, not to dev-skills |
@@ -136,7 +141,9 @@ When skills are used in target projects, they create and maintain these files:
 | `CONTEXT.md` | `grill` | Domain glossary (no implementation details) |
 | `docs/adr/<NNNN>-<title>.md` | `grill` | Architecture Decision Records |
 | `docs/research/<stack>-<topic>-<major>.md` + `docs/research/INDEX.md` | `research` | Immutable, versioned technical research records + searchable index (authoritative sources only) |
+| `NOTES.md` + PRD `Prototyped by` field | `have-a-try` | Prototype verdict — design assumption validated or invalidated; prototype shell deleted or core absorbed |
 | Issues | `story` | Vertical-slice implementation tickets |
+| Code + commits + PRD/issue status updates | `implement` | Implemented work items via /tdd or direct implementation, with typechecking, testing, and per-seam commits |
 
 ## Agent skills
 

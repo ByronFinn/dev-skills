@@ -83,7 +83,7 @@ Prototype disposition:
 
 Next:
 - If the verdict changes the design: /think to re-evaluate, or /grill to update the PRD
-- If the design is now decision-complete: /grill → /story → /tdd
+- If the design is now decision-complete: /grill → /story → /implement
 ```
 
 **PRD Traceability:** If a PRD exists for the feature, fill the `Prototyped by` field in its `## Traceability` section so downstream skills know a prototype validated (or invalidated) a design assumption:
