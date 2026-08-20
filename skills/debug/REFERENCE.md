@@ -97,6 +97,18 @@ Confirm:
 - [ ] Failure reproducible across multiple runs (or, for non-deterministic bugs, at sufficient rate to be debuggable)
 - [ ] You captured exact symptom (error message, wrong output, slow timing) so later phases can verify fix actually solved it
 
+**HITL reproduction — a standard branch, not a fallback.** When the loop can't be run autonomously (human must click, env is manual, production-only trigger), reproduction is still a structured checkpoint: stop, output a reproduction guide, and wait for the user's report. Do not skip Phase 2 or slip silently into hypothesizing. The guide should be explicit about expected vs actual behavior and suggest multiple runs for timing/race bugs:
+
+```markdown
+**Reproduce (please run):**
+1. Steps: [precise click/input sequence or command]
+2. Expected: [what should happen]   Actual: [what you observe instead — paste exact error/stack]
+3. Runs: repeat 1-2 times if the failure is intermittent; report whether it happens every time
+4. Extra context if relevant: [version, env vars, OS, what changed recently]
+```
+
+Once you receive the report, treat it as the Phase 1 loop output: a captured symptom for later verification, exact failure mode confirmed. When the human cannot reproduce it on demand, that finding itself (lower repro rate) feeds back into Phase 1 to raise the rate before any hypothesis.
+
 Don't proceed until you reproduce bug.
 
 ### Phase 3 — Hypothesize
@@ -119,9 +131,11 @@ Tool preference:
 2. **Targeted logging** at boundaries distinguishing hypotheses.
 3. Never "log everything and grep."
 
+**Persist probes to a session log, not just stdout.** Streaming to stdout forces a full loop re-run every time you want to inspect evidence, and throws away ordering. Instead, write each probe to `DEBUG/<session>-<n>.log` (one line per probe) so you can `grep`/`tail` the file after the loop finishes, across runs, without re-running. Each probe line carries **monotonic sequence + timestamp + async/fiber context** — for race conditions the *order* of the lines is itself root-cause evidence. This is a pure convention (zero runtime, no debug server); the log is a disposable artifact, not project output. Every feature of a Cursor-style centralized debug log (aggregation, ordering, replay) is captured by the file; the server is not.
+
 **Perf branch.** For performance regression, logs often wrong. Instead: establish baseline measurement (timing harness, `performance.now()`, profiler, query plan), then bisect. Measure first, fix second.
 
-**Mark each debug log** with unique prefix, e.g., `[DEBUG-a4f2]`. Cleanup becomes single grep at end. Unmarked logs survive; marked logs die.
+**Mark each debug log** with unique prefix, e.g., `[DEBUG-a4f2]`. Cleanup becomes single grep at end. Unmarked logs survive; marked logs die. The `DEBUG/` directory is covered by the same cleanup — see Phase 6.
 
 ### Phase 5 — Fix + Regression Test
 
@@ -157,6 +171,7 @@ Required before done:
 - [ ] Original repro no longer reproduces (re-run Phase 1 loop)
 - [ ] Regression test passes (or seam doesn't exist, noted)
 - [ ] All `[DEBUG-...]` instrumentation removed (`grep` prefix)
+- [ ] `DEBUG/` session-log directory deleted (probe persistence from Phase 4)
 - [ ] One-time prototypes deleted (or moved to clearly marked debug location)
 - [ ] Proven hypothesis stated in commit / PR message — so next debugger learns
 

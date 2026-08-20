@@ -24,11 +24,11 @@ description: "Root cause analysis and systematic fix. Quick root cause location,
 
 **Stage 2 (Systematic Fix)**: 6-phase loop
 - Phase 1: Build feedback loop — construct deterministic repro (the critical skill)
-- Phase 2: Reproduce — run loop, confirm bug appears
+- Phase 2: Reproduce — run loop, confirm bug appears (or output a HITL repro guide when the loop can't run autonomously)
 - Phase 3: Hypothesize — generate 3-5 ranked falsifiable predictions
-- Phase 4: Instrument — add targeted logging for each prediction
+- Phase 4: Instrument — add targeted logging with persistence + ordering for each prediction
 - Phase 5: Fix + regression test — write test first if correct seam exists
-- Phase 6: Cleanup + retrospective — remove debug logs, document proof
+- Phase 6: Cleanup + retrospective — remove debug logs + `DEBUG/` artifacts, document proof
 
 See [REFERENCE.md](REFERENCE.md) for detailed phases, optional modes (bisect, scope scan), and quality gates.
 
@@ -44,6 +44,8 @@ See [REFERENCE.md](REFERENCE.md) for detailed phases, optional modes (bisect, sc
 |---|---|
 | Fix client pane instead of local pane | Trace execution path before touching files |
 | Say "try again" or "I'm confident" | Write hypothesis; run instrumentation to prove (anti-pattern #32 — fix without instrumentation) |
+| Instrumentation only to stdout, lost after loop | Persist probes to `DEBUG/<session>-<n>.log` with sequence+timestamp so evidence survives and ordering is analysable (race bugs) |
+| Can't reproduce autonomously, skip repro | Stop and output a HITL repro guide; wait for the user's report before hypothesizing |
 | MCP not loading, switch tools instead of diagnose | Check server status, API key, config first |
 | Compile passes but UI looks wrong | Move up Runtime Evidence Ladder, verify rendered surface |
 | Fix one instance, ignore siblings | After fix, grep pattern and fix or report each instance (anti-pattern #21) |
