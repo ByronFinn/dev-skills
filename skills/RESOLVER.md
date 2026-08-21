@@ -35,49 +35,51 @@ Priority when multiple skills could match:
 
 ## Route by Workflow Phase
 
+Trigger-word index only — the work-object routing rationale lives in the table above; the runtime source of truth is each skill's `description` field.
+
 ### Project Setup (First time)
 
-| Trigger | Skill | Description |
-|---------|-------|-------------|
-| setup / 初始化 / 配置技能 / issue tracker setup / new project | `setup-project` | Scaffold `docs/agents/` configuration and AGENTS.md block |
+| Trigger | Skill |
+|---------|-------|
+| setup / 初始化 / 配置技能 / issue tracker setup / new project | `setup-project` |
 
 ### New Feature Development (Pre-build)
 
-| Trigger | Skill | Description |
-|---------|-------|-------------|
-| brainstorm / 构思 / 方案 / 出方案 / 深入分析 / 怎么设计 | `think` | Diverge on possibilities, converge to concrete plan, generate initial PRD and issue |
-| research / 调研 / 最佳实践 / best practice / 技术选型 / tech evaluation / 选哪个库 / 官方文档 / how does X work in version Y / 权威信源 | `research` | Investigate a stack×topic×major against authoritative sources; persist immutable record + INDEX row. Sits beside think — think consumes INDEX at Step 5, or research runs standalone |
-| prototype / 原型 / 试一下 / spike / 验证设计 / 看看效果 / 跑起来看看 / 状态机对不对 / 数据模型能表达吗 | `have-a-try` | Build a throwaway prototype to answer one design question (LOGIC terminal app or UI variants). Optional branch between `/think` and `/grill` — write disposable code, capture the verdict, delete the shell |
-| 挑战方案 / grill / 细化方案 / 深挖计划 / 术语审查 | `grill` | Challenge plan against domain model, sharpen terminology, update CONTEXT.md, ADRs, issue |
-| 分解 / story / 拆分 / Issues / 任务 / 子任务 | `story` | Break plan into executable Issues (accepts PRD or direct description), update PRD child issues, sync issue tracker |
-| implement / 实现 / 编码实现 / 开发实现 / 开始写代码 / 自动实现 | `implement` | Orchestrate /tdd at pre-agreed seams, implement non-TDD items directly, typecheck + test per item, dispatch /review, commit per seam |
-| TDD / 测试优先 / 实现已确认行为 / red-green-refactor | `tdd` | Test-driven development, red-green-refactor loop, one vertical slice at a time |
+| Trigger | Skill |
+|---------|-------|
+| brainstorm / 构思 / 方案 / 出方案 / 深入分析 / 怎么设计 | `think` |
+| research / 调研 / 最佳实践 / best practice / 技术选型 / tech evaluation / 选哪个库 / 官方文档 / how does X work in version Y / 权威信源 | `research` |
+| prototype / 原型 / 试一下 / spike / 验证设计 / 看看效果 / 跑起来看看 / 状态机对不对 / 数据模型能表达吗 | `have-a-try` |
+| 挑战方案 / grill / 细化方案 / 深挖计划 / 术语审查 | `grill` |
+| 分解 / story / 拆分 / Issues / 任务 / 子任务 | `story` |
+| implement / 实现 / 编码实现 / 开发实现 / 开始写代码 / 自动实现 | `implement` |
+| TDD / 测试优先 / 实现已确认行为 / red-green-refactor | `tdd` |
 
 ### Completion & Finish (Post-build)
 
-| Trigger | Skill | Description |
-|---------|-------|-------------|
-| 代码审查 / review / check / 把关 / 发布前 / 完成 / 验收 | `review` | Code review, verification, documentation sync, issue sync/release follow-through when explicitly authorized |
+| Trigger | Skill |
+|---------|-------|
+| 代码审查 / review / check / 把关 / 发布前 / 完成 / 验收 | `review` |
 
 ### Bug Fix (Diagnostic)
 
-| Trigger | Skill | Description |
-|---------|-------|-------------|
-| 调试 / debug / 排查 / 报错 / 崩溃 / 不工作 / 回归 / 以前是好的 / 测试失败 | `debug` | Root cause analysis and systematic fix, quick locate then 6-phase loop |
+| Trigger | Skill |
+|---------|-------|
+| 调试 / debug / 排查 / 报错 / 崩溃 / 不工作 / 回归 / 以前是好的 / 测试失败 | `debug` |
 
 ### Architecture Improvement (Maintenance)
 
-| Trigger | Skill | Description |
-|---------|-------|-------------|
-| 架构 / improve-architecture / 重构候选 / 清理 / 债务 / 架构审查 | `improve-architecture` | Periodic architecture review, scan PRDs for alignment, find design debt and deepening opportunities |
+| Trigger | Skill |
+|---------|-------|
+| 架构 / improve-architecture / 重构候选 / 清理 / 债务 / 架构审查 | `improve-architecture` |
 
 ### Writing & Editing (Cross-phase)
 
-| Trigger | Skill | Description |
-|---------|-------|-------------|
-| 润色 / 改稿 / 去AI味 / rewrite / polish / proofread / 帮我写 | `write` | Rewrite prose, remove AI tone, preserve author voice |
-| 审稿 / review document / check this document / 本地化文案 | `write` | Document review with privacy scan, tone check, bilingual validation |
-| release notes / changelog / 发版 / tweet / 推文 / 社交发文 | `write` | Generate release notes from commits, draft social posts |
+| Trigger | Skill |
+|---------|-------|
+| 润色 / 改稿 / 去AI味 / rewrite / polish / proofread / 帮我写 | `write` |
+| 审稿 / review document / check this document / 本地化文案 | `write` |
+| release notes / changelog / 发版 / tweet / 推文 / 社交发文 | `write` |
 
 ## Common Sequences
 
@@ -189,20 +191,22 @@ Direct single-issue TDD without the `/implement` orchestration layer.
 
 ## Skill Inventory
 
-| Skill | Format Files | Core Role | Updates |
-|-------|-------------|-----------|---------|
-| `setup-project` | — | Scaffold or update per-repo skill configuration (idempotent — safe to re-run) | `docs/agents/*.md` + AGENTS.md block |
-| `think` | PRD-FORMAT.md | Diverge → converge to initial PRD | PRD + parent issue (required, Step 9a) |
-| `research` | RESEARCH-FORMAT.md<br>INDEX-FORMAT.md | Investigate stack×topic×major against authoritative sources → immutable record + INDEX | `docs/research/<stack>-<topic>-<major>.md` + INDEX.md row (lazy-created) |
-| `have-a-try` | — | Build a throwaway prototype to answer one design question (LOGIC terminal app or UI variants) | Validated verdict (PRD `Prototyped by` / ADR / commit / NOTES.md); prototype deleted or core absorbed |
-| `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | Challenge plan + update domain knowledge | PRD + CONTEXT.md + ADRs + parent issue synced (if created by /think) |
-| `story` | STORY-FORMAT.md | Vertical slices to Issues (accepts PRD or direct description) | PRD (created or updated) + Child Issues + issues if confirmed |
-| `implement` | — | Orchestrate /tdd at seams, implement non-TDD items directly, typecheck+test per item, /review dispatch, commit per seam | Code + commits + PRD and issue status updates |
-| `tdd` | — | Sub-agent orchestration: Test Sub-Agent → Human Review Gates → Develop Sub-Agent | Code + tests (via Acceptance Criterion Cycles) |
-| `review` | — | Parallel three-perspective review: Test Review ∥ Code Review ∥ Impact Review | Merged report + local docs + remote updates only when explicitly authorized |
-| `debug` | — | Root cause → 6-phase fix | Root cause report + code fix |
-| `improve-architecture` | — | Periodic architecture review | Architecture report |
-| `write` | — | Prose editing: rewrite, de-AI, review, release notes, localization | Edited prose only (no change list) |
+Format files and update targets per skill. (Role and routing: see "Route by Work Object" above — restating them here is how the table drifts.)
+
+| Skill | Format Files | Updates |
+|-------|-------------|---------|
+| `setup-project` | — | `docs/agents/*.md` + AGENTS.md block |
+| `think` | PRD-FORMAT.md | PRD + parent issue (required, Step 10a) |
+| `research` | RESEARCH-FORMAT.md<br>INDEX-FORMAT.md | `docs/research/<stack>-<topic>-<major>.md` + INDEX.md row (lazy-created) |
+| `have-a-try` | — | Validated verdict (PRD `Prototyped by` / ADR / commit / NOTES.md); prototype deleted or core absorbed |
+| `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | PRD + CONTEXT.md + ADRs + parent issue synced (if created by /think) |
+| `story` | STORY-FORMAT.md | PRD (created or updated) + child issues + issues if confirmed |
+| `implement` | — | Code + commits + PRD and issue status updates |
+| `tdd` | — | Code + tests (via Acceptance Criterion Cycles) |
+| `review` | — | Merged report + local docs + remote updates only when explicitly authorized |
+| `debug` | — | Root cause report + code fix |
+| `improve-architecture` | — | Architecture report |
+| `write` | — | Edited prose only (no change list) |
 
 > **Format Files column**: "—" means the skill's output format is embedded in REFERENCE.md rather than in a separate *-FORMAT.md file. Skills with named format files (PRD-FORMAT.md, STORY-FORMAT.md, etc.) use them as bilingual templates shared with the user.
 
@@ -247,8 +251,9 @@ Cross-skill behavioral constraints live in `rules/anti-patterns.md`. Skills shou
 The shared bootstrap sequence lives in `rules/entry-protocol.md`. All skills reference this protocol instead of duplicating context-read instructions. It ensures skills work standalone (graceful degradation) and composable (reads prior skill outputs via Traceability chain).
 
 Key anti-patterns for sub-agent skills:
-- **#34 Skill-to-skill state drift** — re-read latest shared files when entering a skill
-- **#35 Sub-agent state leakage** — each sub-agent independently re-reads all shared context from disk; no shared memory, no cached understanding
+- **#30 Procedural front-loading** (anti-pattern #30) — every SKILL.md opens with its outcome contract before any procedure; workflow detail stays in REFERENCE.md
+- **#34 Skill-to-skill state drift** (anti-pattern #34) — re-read latest shared files when entering a skill
+- **#35 Sub-agent state leakage** (anti-pattern #35) — each sub-agent independently re-reads all shared context from disk; no shared memory, no cached understanding
 
 ## Project Structure
 

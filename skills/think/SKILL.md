@@ -63,7 +63,7 @@ If a question can be answered by exploring the codebase or a quick research pass
 3. **Finalize the PRD** — set Status to `Draft`, fill `Created by`, set `Last updated`, ensure all sections are populated
 4. Output the approved design summary with next step to `/grill`
 
-See [REFERENCE.md](REFERENCE.md) for the PRD template, complexity classification detail, question-gate rules, and worked message formats.
+See [REFERENCE.md](REFERENCE.md) for complexity classification detail, question-gate rules, and worked message formats. The PRD template and field rules live in [PRD-FORMAT.md](PRD-FORMAT.md) — that file is the single source.
 
 ## Gotchas
 
@@ -77,7 +77,7 @@ See [REFERENCE.md](REFERENCE.md) for the PRD template, complexity classification
 | Asked meta questions like "should I search?" | Step 4: never ask, take action |
 | Drifted without updating PRD | Update PRD after every answer |
 | Stayed on initial request without considering edges | Step 6: expansion scan before converging |
-| Domain terms introduced but not recorded for grill | Step 9: record new terms in PRD `## Domain Terms` section |
+| Domain terms introduced but not recorded for grill | Step 10: record new terms in PRD `## Domain Terms` section |
 | Same topic got two PRDs (e.g. PRD-0001 + PRD-0002) | Step 2: run PRD Conflict Check (REFERENCE.md) before assigning NNNN |
 | Parent Issue not created after plan approval | Step 10: parent issue creation is required; always create it before finalizing — `/grill` and `/story` rely on it |
 

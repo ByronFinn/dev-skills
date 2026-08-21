@@ -18,16 +18,16 @@ Dispatches three independent review sub-agents in parallel — Test Review, Code
 
 ## Prerequisites
 
-- Code is complete (by `tdd` or manual)
-- Uncommitted changes exist (staged or unstaged)
+- Code is complete (by `tdd`, `implement`, or manual)
+- Reviewable changes exist — uncommitted (staged or unstaged) **or** already committed on the current branch (e.g., per-seam commits from `/implement`)
 
 ## Runtime Note
 
-"Parallel sub-agents" refers to independent re-reading of shared context (anti-patterns #34, #35), not concurrent execution. If your runtime supports true parallel dispatch, dispatch all three simultaneously. If not, execute sequentially — the independence guarantee comes from re-reading shared context from disk, not from execution timing.
+"Sub-agent" is a logical concept — see [Sub-Agent Runtime Semantics](../rules/sub-agent-runtime.md). Independence comes from re-reading shared context from disk, not from execution timing; parallel dispatch when the runtime supports it, sequential otherwise.
 
 ## Process Summary
 
-**Step 1 — Collect context**: Apply the [Skill Entry Protocol](../rules/entry-protocol.md). Read diff (staged + unstaged), README, package.json, Makefile, CI configs. If the diff contains an Issue reference, read the PRD path from the Issue body's `Meta → PRD` field and load it. Gather available shared context paths (PRD, Story, Issues, CONTEXT.md, ADRs). **PRD quality check:** if PRD Traceability shows `Created by: /story (minimal PRD)`, note that requirements may not be decision-complete — review acceptance criteria coverage with extra care.
+**Step 1 — Collect context**: Apply the [Skill Entry Protocol](../rules/entry-protocol.md). Read the diff — staged + unstaged if the working tree is dirty, otherwise the branch range since the default branch (or the PR diff) when the work is already committed (see [REFERENCE.md Chapter 1](REFERENCE.md)). Read README, package.json, Makefile, CI configs. If the diff contains an Issue reference, read the PRD path from the Issue body's `Meta → PRD` field and load it. Gather available shared context paths (PRD, Story, Issues, CONTEXT.md, ADRs). **PRD quality check:** if PRD Traceability shows `Created by: /story (minimal PRD)`, note that requirements may not be decision-complete — review acceptance criteria coverage with extra care.
 
 **Step 2 — Dispatch three parallel review sub-agents**: Dispatch all three (see [Runtime Note](#runtime-note) and [Three Sub-Agents](#three-sub-agents) below).
 
@@ -37,7 +37,7 @@ Dispatches three independent review sub-agents in parallel — Test Review, Code
 
 **Step 5 — Authorization gate**: Ask the user what to do next. Options: approve and merge, fix issues then re-review, proceed to release. Local doc updates are allowed when necessary; remote actions require current-turn explicit authorization.
 
-**Step 6 — Execute authorized actions**: Perform only actions the user explicitly requested in the current turn — local file updates, issue sync, release follow-through. If the review passes and the Issue belongs to a PRD's Child Issues, update the Issue's status in the PRD's `Sliced into` list to `— Done`. If all Child Issues are `— Done`, update the PRD Status to `Done`.See [Authorization Boundaries](#authorization-boundaries).
+**Step 6 — Execute authorized actions**: Perform only actions the user explicitly requested in the current turn — local file updates, issue sync, release follow-through. If the review passes and the Issue belongs to a PRD's `Sliced into` list, update the Issue's status there to `— Done`. If all entries in `Sliced into` are `— Done`, update the PRD Status to `Done`. See [Authorization Boundaries](#authorization-boundaries).
 
 See [REFERENCE.md](REFERENCE.md) for detailed sub-agent instructions, checklists, and report templates.
 
@@ -99,11 +99,11 @@ Review complete.
 ── Code Review ──      <Code Review Sub-Agent report>
 ── Impact Review ──    <Impact Review Sub-Agent report>
 ── Contradictions ──   <both sides, or "No contradictions">
-	── Verification ──     Tests / Lint / Typecheck / Build: <pass/fail>
-	── Findings ──         new terms, new decisions, updated files, synced issues
-	Recommendation: Approve / Request Changes / Comments
+── Verification ──     Tests / Lint / Typecheck / Build: <pass/fail>
+── Findings ──         new terms, new decisions, updated files, synced issues
+Recommendation: Approve / Request Changes / Comments
 
-	Next: User decides — merge/release, or fix issues and re-review.
-	```
+Next: User decides — merge/release, or fix issues and re-review.
+```
 
 The full merged-report template (with all fields and next-step branches) is in [REFERENCE.md Chapter 5](REFERENCE.md).

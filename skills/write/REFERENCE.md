@@ -11,13 +11,16 @@ The three checks from `SKILL.md` §Pre-flight expand here into the language-rout
 1. **Text present?** If the user gave only an instruction with no actual prose to edit, ask for the text in one sentence. Do not proceed.
 2. **Audience locked?** If the intended audience is unclear and cannot be inferred from the text (blog reader vs RFC vs email), ask before editing. Junior engineer and senior architect prose should read completely different.
 3. **Language detected from the text being edited**, not the user's command:
-   - Contains Chinese characters + release notes or social post mode → load `references/write-zh-release-notes.md`
+   - Release notes or social post mode: Chinese text → load `references/write-zh-release-notes.md`; English text → load `references/write-en.md` (§Release Notes & Social Posts)
    - Contains Chinese characters + bilingual or translation review → load `references/write-zh-bilingual.md`
    - Product/site/app localization review across multiple locales → load `references/write-product-localization.md`; also load `references/write-zh-bilingual.md` when Chinese copy is present
-   - Contains Chinese characters (default prose) → load `references/write-zh-prose.md` (quick rules); load `references/write-zh.md` for the full AI-taste pattern catalog
+   - Contains Chinese characters, mixed with English prose (not a translation) → load `references/write-zh-prose.md` **and** the spacing/punctuation block of `references/write-zh-bilingual.md`
+   - Contains Chinese characters (default prose) → load `references/write-zh-prose.md` (quick rules); load `references/write-zh.md` only for deep rewrite or long-form work — see Loading Policy below
    - Otherwise → load `references/write-en.md`
 
 Read the loaded reference file. Then edit. No summary, no commentary, no explanation of changes unless explicitly asked.
+
+**Loading policy (Chinese prose).** `write-zh-prose.md` is the quick card: top-10 high-frequency patterns, loaded for every Chinese edit. `write-zh.md` is the full 700-line catalog — load it **only** when the job is a deep rewrite, de-AI-ing heavily generated text, or a long-form article (>300 lines). For light polish, the quick card alone is enough; loading both defeats the point of having a quick card.
 
 ## Hard Rules
 
@@ -141,7 +144,7 @@ See [references/write-product-localization.md](references/write-product-localiza
 2. Tone consistency: flag voice shifts, register mismatches, formulaic phrasing.
 3. Bilingual validation: confirm CN/EN translation accuracy.
 4. Rendering check: placeholder text, broken image links.
-5. Durable-doc scan: if the document is a review report or snapshot, flag dated claims and stale references.
+5. Durable-doc scan: if the document is a review report or snapshot, flag dated claims and stale references — and prescribe the remedy: keep snapshots explicitly labeled as snapshots (title/date), or distill them into stable rules; delete what is neither.
 6. Output: reviewed text + `privacy: clear / N issues found`.
 
 ### Paragraph Coherence Mode

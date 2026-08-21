@@ -72,7 +72,7 @@ Next: Review blocking issues → /story to decompose → /implement to orchestra
 **Independent periodic activity**, not in main development flow:
 
 ```
-New feature dev: think → grill → story → tdd → review
-Bug fix: debug
+New feature dev: think → grill → story → implement → review
+Bug fix: debug → review (optional)
 Independent periodic: improve-architecture (every 2-4 weeks)
 ```

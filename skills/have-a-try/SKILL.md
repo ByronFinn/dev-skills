@@ -7,7 +7,7 @@ description: "Build a throwaway prototype to answer one design question with dis
 
 🥷 Write disposable code to answer one question. The question decides the shape.
 
-A prototype is **throwaway code that answers a question**. The validated answer is the only thing worth keeping — the code itself is deleted or absorbed. This sits between `/think` (pure conversation, no code) and `/tdd` (serious red-green-refactor with gates). Use it when a design doubt is cheaper to resolve by *running* code than by *reasoning* about it.
+A prototype is **throwaway code that answers a question**. The validated answer is the only thing worth keeping — the code itself is deleted or absorbed. This sits between `/think` (pure conversation, no code) and `/grill` (plan validation): when a design doubt is cheaper to resolve by *running* code than by *reasoning* about it, prototype before grilling. (For production code with tests, that's `/tdd` — the opposite end.)
 
 ## Outcome Contract
 
@@ -23,11 +23,13 @@ Identify which question is being answered — from the user's prompt, the surrou
 - **"Does this logic / state model feel right?"** → **LOGIC mode** ([REFERENCE.md](REFERENCE.md)). Build a tiny interactive terminal app that pushes the state machine through cases that are hard to reason about on paper.
 - **"What should this look like?"** → **UI mode** ([REFERENCE.md](REFERENCE.md)). Generate several radically different UI variations on a single route, switchable via a URL search param and a floating bottom bar.
 
+If the question fits neither branch (performance tuning, library comparison, "how does X behave in version Y" — questions answered by measurement or documentation, not by a throwaway app), this is the wrong skill: suggest `/research` (documentation-backed verdict) or `/think` (decision framing) instead.
+
 The two branches produce very different artifacts — picking wrong wastes the whole prototype. If ambiguous and user isn't reachable, default by matching surrounding code (backend module → LOGIC; page/component → UI) and **state the assumption** at the top of the prototype.
 
 ## Rules That Apply to Both Branches
 
-1. **Throwaway from day one.** Locate prototype close to its target code; name it to signal prototype, not production. Follow project routing conventions. *(Honors anti-pattern #13)*
+1. **Throwaway from day one.** Locate prototype close to its target code; name it to signal prototype, not production. Follow project routing conventions. State the prototype's file location explicitly (anti-pattern #13 — no unsolicited or unannounced files).
 2. **One command to run.** Use project's existing task runner. *(anti-pattern #29 — run command is the success contract.)*
 3. **No persistence by default.** In-memory state. If persistence IS the question, use a scratch store with a clear "PROTOTYPE" name.
 4. **Skip the polish.** No tests, no error handling beyond runnability, no abstractions. *(Prototype-scoped; opposite of `/tdd` discipline — don't let it leak.)*
@@ -61,7 +63,7 @@ See [REFERENCE.md](REFERENCE.md) for the full LOGIC mode and UI mode processes, 
 | Prototype left rotting in repo after the question was answered | Step 5: capture the verdict, then delete the shell or absorb the validated core into real code |
 | Added tests / error handling / abstractions to the prototype | Rule 4: skip the polish — the point is to learn fast then delete. (Prototype-scoped; do NOT carry this into `/tdd`) |
 | Hardcoded the project's component library / routing convention into behavior | Honor anti-pattern #19: read conventions at runtime, don't bake repo-specific facts into skill rules |
-| Prototype created files without telling the user where | Honor anti-pattern #13: state the prototype file location explicitly |
+| Prototype created files without telling the user where | Rule 1: state the prototype file location explicitly (anti-pattern #13) |
 | Tried to wire the prototype to the real database by default | Rule 3: in-memory by default; only touch a scratch store if persistence IS the question |
 
 ## Output

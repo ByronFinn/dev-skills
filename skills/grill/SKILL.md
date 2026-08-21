@@ -30,7 +30,7 @@ Apply the [Skill Entry Protocol](../rules/entry-protocol.md) — it locates the 
 2. **Work the checklist one item at a time.** Give your recommended answer first, then ask. Dependency-chain questions stay one-at-a-time; independent items may be batched.
 3. **Resolve as you go, not in a batch at the end.** Update files inline:
    - **Terminology resolved** → update `CONTEXT.md` now (glossary only, no implementation details).
-   - **Significant decision** → offer an ADR when all three are true: (1) hard to reverse, (2) surprising without context, (3) result of a real trade-off. Otherwise skip.
+   - **Significant decision** → offer an ADR when the three conditions in [ADR-FORMAT.md §创建条件](ADR-FORMAT.md) are all met (hard to reverse, surprising without context, result of a real trade-off — full definitions live there, single source). Otherwise skip.
    - **Code can answer it** → grep/read the code instead of asking the user.
 4. **Run the exhaustiveness gate** before declaring complete: Open Questions, Assumptions, terms, scope, code cross-check — all resolved.
 5. **Fill the PRD `## Traceability` `Grilled by` field** so downstream skills know the plan was validated.

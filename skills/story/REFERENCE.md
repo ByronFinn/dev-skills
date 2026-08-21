@@ -26,11 +26,11 @@ Check what input the user provided:
 
 **PRD Issue field detection:** When an existing PRD is found, read its `## Issue` section. Three cases:
 
-- **`#<number>` present** → this is the parent issue — use it as the parent reference when creating child issues in Step 6, and update it in Step 8. Do not ask the user for the parent if it's already recorded in the PRD.
-- **`N/A — no issue tracker configured`** → `/think` Step 9a waived the parent (repo has no tracker). Create child issues with no parent reference; skip Step 8.
+- **`#<number>` present** → this is the parent issue — use it as the parent reference when creating child issues in Step 7 (Publish Issues), and update it in Step 9 (Sync Issue). Do not ask the user for the parent if it's already recorded in the PRD.
+- **`N/A — no issue tracker configured`** → `/think` Step 10a waived the parent (repo has no tracker). Create child issues with no parent reference; skip Step 9.
 - **Field empty/missing** → no parent reference needed; treat as standalone child issues.
 
-If a PRD exists, skip to Step 4 (Draft Vertical Slices).
+If a PRD exists, skip to Step 5 (Draft Vertical Slices).
 
 If no PRD exists and the user gave a direct description, proceed to Step 2 to extract requirements.
 

@@ -10,7 +10,9 @@ The orchestrator collects all context before dispatching sub-agents. Every sub-a
 
 ### Step 1: Collect the Diff
 
-Gather the full code change under review:
+Reviewable work arrives in two states — pick the branch that matches:
+
+**A. Working tree has changes (staged and/or unstaged):**
 
 ```bash
 # Staged changes
@@ -28,6 +30,20 @@ If there are untracked files relevant to the review, include them:
 ```bash
 git ls-files --others --exclude-standard
 ```
+
+**B. Work already committed (e.g., after `/implement`, which commits each seam before dispatching /review).** The tree is clean, so `git diff HEAD` is empty — diff the branch instead:
+
+```bash
+# Everything on this branch since it diverged from the default branch
+git diff $(git merge-base <default-branch> HEAD)..HEAD
+
+# Or, when reviewing a PR, the PR diff directly
+gh pr diff <number>
+```
+
+Determine `<default-branch>` from `git remote show origin` (HEAD branch) or `main`/`master` by convention. State which range was reviewed in the merged report ("Reviewed: merge-base main..HEAD, <N> commits").
+
+**Empty on both branches?** There is nothing to review — stop and ask the user what to review. Never proceed with an empty diff bundle.
 
 Read each changed file's full content (not just the diff) for complete context.
 
@@ -228,10 +244,6 @@ Use the [shared Output Scaffold](#output-scaffold-shared-shape) with status fiel
 
 ## Chapter 3: Code Review Sub-Agent
 
-### Extra Context Re-Read
-
-- [ ] All implementation files in the diff — read full file content, not just changed lines
-
 ### Responsibilities
 
 Review implementation quality for the changes in the diff. Focus exclusively on code quality concerns:
@@ -303,12 +315,6 @@ Use the [shared Output Scaffold](#output-scaffold-shared-shape) with status fiel
 ---
 
 ## Chapter 4: Impact Review Sub-Agent
-
-### Extra Context Re-Read
-
-- [ ] CI configs (`.github/workflows/*`, `.gitlab-ci.yml`, etc.) — pipeline stages and checks
-- [ ] Release configs (`CHANGELOG.md`, version files, deployment configs) — release process
-- [ ] Dependency files (`package.json`, `go.mod`, `requirements.txt`, etc.) — dependency changes
 
 ### Responsibilities
 
@@ -463,7 +469,39 @@ Never drop or merge away a sub-agent's finding to avoid presenting a contradicti
 
 ### Merged Report Template
 
-The merged report template (Traceability, per-perspective sections, Contradictions block, Verification, Findings, Recommendation, Next steps) is defined once in [SKILL.md §Output](SKILL.md). Follow that structure when assembling the merged report.
+This is the single home of the full merged-report template. SKILL.md §Output shows a compact sample of the same shape.
+
+```markdown
+Review complete.
+
+Reviewed: <working tree (staged + unstaged) | branch range merge-base <default>..HEAD | PR #<n>>
+
+── Test Review ──
+<Test Review Sub-Agent report, verbatim>
+
+── Code Review ──
+<Code Review Sub-Agent report, verbatim>
+
+── Impact Review ──
+<Impact Review Sub-Agent report, verbatim>
+
+── Contradictions ──
+<both sides per the Contradiction Format, or "No contradictions">
+
+── Verification ──
+Tests: <pass/fail, counts>   Lint: <pass/fail/N-A>   Typecheck: <pass/fail/N-A>   Build: <pass/fail/N-A>
+
+── Findings ──
+New terms: <for CONTEXT.md, or none>
+New decisions: <for ADRs, or none>
+Updated files: <PRD / CONTEXT.md / ADR updates made>
+
+Recommendation: Approve | Request Changes | Comments
+
+Next: User decides — merge/release, or fix issues and re-review.
+```
+
+When all vertical slices of a PRD are complete, prepend "Integration Review — checking <N> slices for PRD <name>" and add the integration findings as their own section before Contradictions.
 
 ---
 
@@ -552,15 +590,7 @@ When the recommendation is **Request Changes**, guide the user based on severity
 
 ## Chapter 7: Session Recovery
 
-If the session is interrupted during the review process, follow these steps.
-
-### General Recovery Steps
-
-1. **Re-read the latest user message** — determine what triggered the review
-2. **Re-read shared context from disk** — PRD, Story/Issue, CONTEXT.md, ADRs (anti-pattern #34)
-3. **Re-read the diff** — run `git diff HEAD` again; the code may have changed since the interruption
-4. **Determine progress** — which sub-agents completed, which was in progress
-5. **State recovery summary** — tell the user what was recovered and where you'll resume from. Confirm before continuing
+If the session is interrupted during the review process, apply the general recovery procedure (re-read latest user message, re-read shared context from disk, verify on-disk artifacts, state recovery summary, confirm before continuing) from [anti-patterns.md #36](../rules/anti-patterns.md). What follows is the review-specific recovery logic #36 does not cover.
 
 ### Recovery by Phase
 

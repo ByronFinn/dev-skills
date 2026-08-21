@@ -52,12 +52,12 @@ See [REFERENCE.md](REFERENCE.md) for detailed step instructions, TDD suitability
 
 | What happened | Rule |
 |---|---|
-| /tdd was run on an item that had unclear requirements | Step 3a: assess TDD suitability first — /tdd requires clear, testable acceptance criteria |
-| Tests failed after direct implementation | Step 3e: run tests per item immediately — don't batch all changes before testing |
-| Typechecker not configured for the project | Step 3d: detect typechecker from project config (tsconfig, pyproject.toml, etc.); if none, skip and note the gap |
+| /tdd was run on an item that had unclear requirements | REFERENCE §3a: assess TDD suitability first — /tdd requires clear, testable acceptance criteria |
+| Tests failed after direct implementation | Step 3.5: run tests per item immediately — don't batch all changes before testing |
+| Typechecker not configured for the project | Step 3.4: detect typechecker from project config (tsconfig, pyproject.toml, etc.); if none, skip and note the gap |
 | Work items had hidden dependency on incomplete items | Step 2: read blocked-by relationships from `/story` issues; implement in dependency order |
-| /tdd was cancelled mid-cycle by the user | Step 3b: resume from last completed /tdd phase; if no completed phases, move item to direct implementation |
-| Commit conflicts with uncommitted work not from this session | Step 3f: warn user about existing dirty state; ask how to handle before committing |
+| /tdd was cancelled mid-cycle by the user | REFERENCE §3b: resume from last completed /tdd phase; if no completed phases, move item to direct implementation |
+| Commit conflicts with uncommitted work not from this session | Step 3.6: warn user about existing dirty state; ask how to handle before committing |
 | PRD Traceability shows ungrilled or unsliced state | Step 1: flag the gap in output but proceed — implement is not blocked by missing upstream steps |
 | User expected /review to run automatically | Step 5: dispatch /review as a recommendation (per no-auto-chain convention); do not auto-run it |
 

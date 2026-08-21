@@ -106,7 +106,7 @@ This skill does not create or modify PRDs, so it does not fill any PRD `## Trace
 setup-project (config layer)
     ↓ docs/agents/*.md are read by the Entry Protocol
     ↓
-think / research / grill / story / tdd / review / debug / improve-architecture / write
+think / research / have-a-try / grill / story / implement / tdd / review / debug / improve-architecture / write
     ↓ each fills its own PRD Traceability fields
 ```
 
@@ -294,7 +294,7 @@ For shared conventions (including documentation language), see repo root `docs/a
 
 ## Step 7: Done
 
-	Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `docs/agents/*.md` directly later. Re-run this skill whenever the project structure changes, issue tracker switches, domain docs are reorganized, or documentation language preference changes. Re-running is always safe — it detects what changed and only touches affected files.
+Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `docs/agents/*.md` directly later. Re-run this skill whenever the project structure changes, issue tracker switches, domain docs are reorganized, or documentation language preference changes. Re-running is always safe — it detects what changed and only touches affected files.
 
 ---
 

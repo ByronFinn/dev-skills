@@ -19,7 +19,7 @@ Eliminate predictable AI writing patterns. Write like a human: varied, imperfect
 
 ### Word Choice
 
-Examples, not exhaustive -- any word used to signal importance rather than to say something is suspect.
+Examples, not exhaustive. Any word used to signal importance rather than to say something is suspect.
 
 **Overused emphasis adverbs (cut these when they only signal importance, not every adverb):**
 "quietly", "deeply", "fundamentally", "remarkably", "arguably", "certainly", "really", "just", "literally", "genuinely", "honestly", "simply", "actually"
@@ -54,7 +54,7 @@ Examples, not exhaustive -- any word used to signal importance rather than to sa
 
 ### Sentence Structures to Avoid
 
-Examples, not exhaustive -- any construction that performs insight rather than delivers it belongs here.
+Examples, not exhaustive. Any construction that performs insight rather than delivers it belongs here.
 
 **Negative parallelism**: the single most common AI tell:
 > NO: "It's not bold. It's backwards." / "Not because X, but because Y." / "The question isn't X. The question is Y."
@@ -197,3 +197,23 @@ After removing table re-reads and structural repetition, scan the remaining pros
 ---
 
 **Bottom line: varied, imperfect, specific. Any single trope used once may be fine. The problem is when multiple appear together or one repeats.**
+
+---
+
+## Release Notes & Social Posts (English)
+
+Mirror of `write-zh-release-notes.md` for English output.
+
+**Release notes format:** Breaking Changes → New Features → Fixes & Improvements → Deprecations. Prefer matching the target project's most recent release; with no reference available, use a numbered list, bold labels, and one sentence per item stating what the user feels, not internal mechanics. Default to English-only unless the project already ships bilingual notes. Match the previous release's entry count, sentence length, and density. Release notes and the social announcement are two artifacts: notes explain what users will experience (skip CI, registry, API names, fallback paths); the announcement picks 2-4 highlights.
+
+**Social post rules:**
+
+1. **Community first**: open with a social anchor (stars, thanks, whose feedback drove the fix); the change list follows, never leads.
+2. **Curate, don't dump**: pick 2-4 of the most interesting changes. Readers want a story, not a changelog.
+3. **User-feeling frame**: write "when you..." phrasing, not "this tool now...".
+4. **One stance** — at least one sentence of opinion explaining a decision.
+5. **Natural English register** — contractions, plain words; avoid marketing vocabulary ("leverage", "seamless", "game-changing").
+
+End with an invitation, not a CTA ("give it a try if you haven't") rather than ("upgrade now").
+
+**Pre-publish checks:** no identifying details (employer, location); no disparaging competitors; user feeling before feature list; no shutdown signals unless true; title = version + core theme, under 10 words; 5-8 entries, one sentence each.

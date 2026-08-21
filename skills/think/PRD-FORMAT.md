@@ -152,7 +152,7 @@ Draft → Grilled → Sliced → In Progress → Done
 
 - **Created by**: `/think` (or `/story` for minimal PRD)
 - **Prototyped by**: `/have-a-try` (<YYYY-MM-DD>) — if a prototype validated/invalidated a design assumption — <one-line question + verdict>
-- **Grilled by**: `/grill` (if run) — decision quality validated
+- **Grilled by**: `/grill` (completed <YYYY-MM-DD>) — <summary: terms sharpened, assumptions resolved, ADRs created>
 - **Sliced into**:
   - #<issue-1> — [PRD-NNNN] <slice title> (AFK) — Done
   - #<issue-2> — [PRD-NNNN] <slice title> (HITL, blocked by #<issue-1>) — In Progress
@@ -191,4 +191,4 @@ Draft → Grilled → Sliced → In Progress → Done
 | Technical Notes | 技术笔记 |
 | Traceability | 全链路追踪（各 skill 阶段自动填充）|
 | Issue | 对应的 Issue 编号 |
-| Child Issues | 子 Issues 列表（由 /story 自动填写，格式：`#<number> — <title> (type)`）|
+| Sliced into | 子 Issues 列表，Traceability 的一环（由 /story 自动填写，格式：`#<number> — <title> (type)`；PRD 无独立 "Child Issues" 字段）|

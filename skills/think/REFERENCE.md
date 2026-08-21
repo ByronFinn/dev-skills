@@ -44,7 +44,7 @@ I'll help you think through this. Would you like me to create a PRD file at `doc
 
 **If Yes:** first run the [PRD Conflict Check](#prd-conflict-check-before-assigning-nnnn) (below) to catch topic collisions against existing `PRD-NNNN-*.md` (resume vs create-new). Only after the check passes, scan `docs/prd/` for existing `PRD-NNNN-*.md` files, assign the next NNNN (max + 1, starting from 0000), and create the PRD at `docs/prd/PRD-NNNN-<title>.md`.
 
-**If No:** skip PRD creation. Still follow the brainstorming process (Steps 3-9), but keep notes in your working context and produce a design summary at the end.
+**If No:** skip PRD creation. Still follow the brainstorming process (Steps 3-10 — Step 10a parent-issue creation is skipped; new domain terms go to the approved design summary instead of a PRD), but keep notes in your working context and produce a design summary at the end.
 
 **PRD Location:** `docs/prd/PRD-NNNN-<title>.md`
 
@@ -131,11 +131,15 @@ Examples:
 - User asks "best practice", "how do others do this", "recommended"
 - User cannot reasonably enumerate options
 
-**Research Steps:**
+**Gate — query `docs/research/INDEX.md` first.** The full hit (verified/stale/implementation-detail) / miss decision table lives in [SKILL.md Step 5](SKILL.md) — it is authoritative. On a verified hit, reuse the TL;DR and skip the research steps below entirely; on a stale hit, check the record's Boundary Conditions first. The steps below run **only on a miss** (or a stale record whose conclusion no longer applies):
+
+**Research Steps (only on an INDEX miss):**
 1. Identify 2-4 comparable tools/patterns
 2. Summarize common conventions and why they exist
 3. Map conventions to our codebase constraints
 4. Write to PRD's `Research References` section
+
+If the resulting conclusion is reusable beyond this PRD, suggest `/research` to persist it as an immutable record before committing to the approach.
 
 Then present **2-3 viable approaches** in the PRD. Fill the `## Research References` and `## Feasible Approaches` sections per [PRD-FORMAT.md](PRD-FORMAT.md) — that file is the single source for the exact field shape.
 

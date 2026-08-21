@@ -4,7 +4,7 @@ Shared bootstrap sequence for all skills. Each skill references this protocol in
 
 ## Purpose
 
-Every skill needs to locate domain docs, identify multi-repo scope, and check for upstream artifacts before starting work. This protocol standardizes that bootstrap. It ensures skills can run **standalone** (graceful degradation when prerequisites are missing) and **composable** (correctly reads prior skill outputs when chained).
+Every skill needs to locate domain docs, identify multi-repo scope, and check for upstream artifacts before starting work. This protocol standardizes that bootstrap — it operationalizes [anti-patterns.md #1](anti-patterns.md) (act before reading) as a shared sequence. It ensures skills can run **standalone** (graceful degradation when prerequisites are missing) and **composable** (correctly reads prior skill outputs when chained).
 
 ## Protocol
 
@@ -34,7 +34,7 @@ Read domain docs at the paths discovered in Step 1 (or defaults if config missin
 
 | Document | Default path | Purpose |
 |----------|-------------|---------|
-| CONTEXT.md | `CONTEXT.md` at repo root | Domain glossary — terminology, concepts, relationships |
+| CONTEXT.md | `CONTEXT.md` at repo root; if a root `CONTEXT-MAP.md` exists (multi-context repo), the per-context `CONTEXT.md` files it points to | Domain glossary — terminology, concepts, relationships |
 | PRDs | `docs/prd/PRD-NNNN-<title>.md` | Product requirements — what to build, acceptance criteria |
 | ADRs | `docs/adr/*.md` | Architecture Decision Records — past technical decisions |
 | Research INDEX | `docs/research/INDEX.md` | Searchable index of persisted technical research records (stack × topic × major). Query before re-searching; see `/research` skill |

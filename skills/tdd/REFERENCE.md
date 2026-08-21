@@ -177,6 +177,15 @@ Cover these categories for each acceptance criterion:
 - Avoid redundant scenarios — two scenarios that prove the same thing
 - Include only scenarios that provide meaningful signal — omit trivially true cases
 
+### Pre-Gate Self-Check (Test Sub-Agent)
+
+Before presenting the table, verify against your own re-read of the criterion and codebase:
+- [ ] Every behavior clause of the acceptance criterion maps to at least one row
+- [ ] All four categories considered (happy path / error / boundary / edge) — omitted categories are justified, not forgotten
+- [ ] Expected outputs state observable behavior, not implementation steps
+- [ ] No scenario duplicates another's signal
+- [ ] Boundary values use concrete limits found in code/config (max lengths, timeouts), not invented numbers
+
 ### Example
 
 Acceptance criterion: "User can create an account with valid email and password"
@@ -402,6 +411,10 @@ Implementation code. Test turns GREEN. Proceed to the next acceptance criterion 
 
 After **all** acceptance criterion cycles are GREEN, perform a unified refactor. This is the only phase where structural improvements happen — during cycles, the focus is strictly on making each test pass with minimal code.
 
+### Phase-Specific Context
+
+This chapter runs as the Develop Sub-Agent's final phase: apply the [Sub-Agent Common](#sub-agent-common-applies-to-chapters-2-3-4) independence + shared re-read (PRD, Story/Issue, CONTEXT.md, ADRs, existing codebase) plus **all approved tests from the completed cycles** — the human may have edited tests at any gate. Do not refactor from memory of what was implemented; re-read the current code from disk.
+
 ### When to Refactor
 
 Refactoring happens **only after**:
@@ -420,9 +433,9 @@ Look for these improvement opportunities:
 3. **Apply SOLID principles where natural** — do not force SOLID patterns where they add complexity without clarity.
 4. **Consider what new code reveals about existing code** — the feature you just built may expose patterns or abstractions that already-existing code could benefit from.
 
-### Deep Modules Principle
+### Deep Modules Principle (definition — single source)
 
-See the [Deep Module definitions in Chapter 1](#identifying-deep-module-opportunities). When refactoring, look for opportunities to create deep modules — hide complexity behind simple interfaces. This is the main structural improvement to seek.
+A **deep module** hides complexity behind a small interface: rich internal logic, minimal public surface. A **shallow module** exposes its internals through a large interface. When refactoring, look for opportunities to create deep modules — hide complexity behind simple interfaces. This is the main structural improvement to seek. (Chapter 1's planning notes reference this definition; they inform but do not drive premature design during cycles.)
 
 ### Refactor Rules and Step Sequence
 
@@ -467,27 +480,14 @@ Without refactoring, code quality degrades with each cycle. The incremental natu
 **4. Testing everything.**
 Not all behaviors need tests. Focus on high-value areas: critical paths, complex logic, important edge cases. Trivial getters, simple data pass-through, and one-line delegations rarely justify dedicated tests.
 
-**5. Develop Sub-Agent modifies tests.**
-The Develop Sub-Agent must NEVER modify test code. If the test has a design problem, stop and report to the human. The human decides whether to send the test back to the Test Sub-Agent. This separation preserves the independence of perspectives.
+> Restatements removed: "Develop Sub-Agent modifies tests", "sub-agent uses cached context", "batch all scenarios across criteria", "skipping the Scenario Review Gate in Full mode", "treating 'looks fine' as approval" — all live in [SKILL.md → Gotchas](SKILL.md), Gate Modes live in [SKILL.md → Gate Modes](SKILL.md#gate-modes) and ADR 0003. Not repeated here, per the rule above.
 
-**8. Sub-agent uses cached context / shares internal state.**
-Stale or shared context produces incorrect implementations and defeats the independence that catches misinterpretations — the PRD may have been updated, the issue may have new comments, CONTEXT.md may have new entries. This is [anti-patterns.md #35](../rules/anti-patterns.md); the re-read procedure is in [Sub-Agent Common](#sub-agent-common-applies-to-chapters-2-3-4).
+### General Testing Anti-Patterns (with examples)
 
-**9. Batch all scenarios across criteria.**
-One acceptance criterion per cycle, enforced by the gate structure. Batching scenarios across criteria is horizontal slicing — the anti-pattern that motivated the sub-agent design. Each cycle completes one criterion end-to-end before starting the next.
-
-**10. Skipping the Scenario Review Gate in Full mode.**
-In **Full mode** (the default), the two-stage gate is mandatory — scenario design is the highest-leverage decision in TDD, and skipping the Scenario Review Gate to write test code faster produces poorly designed tests that test the wrong things. In **Fast mode**, the Scenario Review Gate is skipped *by design* (scenario coverage folds into the single Test Code Review Gate); this is not a violation, but it requires an explicit user request. In **Batch mode**, one gate covers a homogeneous group. See ADR 0003 (Gate Modes).
-
-**11. Treating "looks fine" as approval.**
-Human review gates use explicit checklists. A vague "looks fine" or "ok" is not a proper review — prompt the human to confirm each checklist item. Approval means checklist confirmation, not casual acknowledgment.
-
-### General Testing Anti-Patterns
-
-**12. Horizontal slicing.**
+**5. Horizontal slicing.**
 Writing all tests then all implementation. This produces tests based on imagined behavior rather than actual behavior. Tests end up verifying data shapes and function signatures rather than user-visible outcomes. The Acceptance Criterion Cycle structure enforces vertical slicing — one criterion at a time, end to end.
 
-**13. Test naming that describes implementation.**
+**6. Test naming that describes implementation.**
 ```javascript
 // Bad — describes implementation detail
 test("userService calls bcrypt.compare", () => { ... });
@@ -496,7 +496,7 @@ test("userService calls bcrypt.compare", () => { ... });
 test("login fails with wrong password", () => { ... });
 ```
 
-**14. Assertions on mock call counts.**
+**7. Assertions on mock call counts.**
 ```javascript
 // Bad — coupled to implementation
 expect(emailService.send).toHaveBeenCalledTimes(1);
@@ -506,6 +506,7 @@ expect(result.emailSent).toBe(true);
 ```
 
 If the implementation changes to send two emails (one welcome, one verification) instead of one, the mock count test breaks even though the behavior of "send an email" is still correct.
+
 ---
 
 ## Chapter 7: Session Recovery

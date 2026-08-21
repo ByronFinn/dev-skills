@@ -20,7 +20,7 @@ description: "Root cause analysis and systematic fix. Quick root cause location,
 
 **Stage 0 (Context Setup)**: Apply the [Skill Entry Protocol](../rules/entry-protocol.md) — it locates and reads `CONTEXT.md`, ADRs, and PRDs for you. Domain vocabulary helps form accurate hypotheses.
 
-**Stage 1 (Quick Locate)**: Root cause analysis — form 1-2 hypotheses, validate, output one-sentence root cause
+**Stage 1 (Quick Locate)**: Root cause analysis — form 1-2 hypotheses, validate, output one-sentence root cause. If quick validation fails (hypotheses refuted or none explains all symptoms), escalate to Stage 2.
 
 **Stage 2 (Systematic Fix)**: 6-phase loop
 - Phase 1: Build feedback loop — construct deterministic repro (the critical skill)
@@ -71,7 +71,9 @@ Status:        resolved | resolved with caveats | blocked
 
 Next: Run `/review` for non-trivial fixes. For simple fixes with clear regression tests, review is optional.
 
-## Output (Handoff — after 3 failed hypotheses)
+## Output (Handoff — after 3 falsified hypotheses in Stage 2)
+
+Emitted from Stage 2 Phase 4 when 3 hypotheses have been falsified without identifying the cause (see REFERENCE.md §Phase 4).
 
 ```
 Symptom: [original error]

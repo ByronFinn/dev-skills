@@ -26,23 +26,25 @@ Break plan into independently actionable issues using vertical slices (tracer bu
 
 ## Process Summary
 
-**Step 0**: Determine input source — locate existing PRD, or capture feature description from user
+**Step 0**: Read project configuration — apply the [Skill Entry Protocol](../rules/entry-protocol.md); read `docs/agents/issue-tracker.md` and `triage-labels.md` for tracker convention and label mapping (see Prerequisites for fallback when missing)
 
-**Step 1**: Extract requirements — from PRD or from user description + codebase exploration
+**Step 1**: Determine input source — locate existing PRD, or capture feature description from user
 
-**Step 2**: Ensure PRD exists — if not, create a minimal PRD capturing the requirements
+**Step 2**: Extract requirements — from PRD or from user description + codebase exploration
 
-**Step 3**: Explore codebase (optional) — understand current state, use domain glossary, respect ADRs
+**Step 3**: Ensure PRD exists — if not, create a minimal PRD capturing the requirements (run the PRD Conflict Check first; see think/REFERENCE.md)
 
-**Step 4**: Draft vertical slices — each is a thin vertical slice through all layers (schema, API, UI, tests)
+**Step 4**: Explore codebase (optional) — understand current state, use domain glossary, respect ADRs
 
-**Step 5**: Present to user — show title, type (HITL/AFK), blocked-by, user stories
+**Step 5**: Draft vertical slices — each is a thin vertical slice through all layers (schema, API, UI, tests)
 
-**Step 6**: Publish issues in dependency order (blockers first). Issue title format: `[PRD-NNNN] <slice-description> — <core-behavior>`. Issue body includes a `Meta` section (PRD reference, Type, Siblings).
+**Step 6**: Present to user — show title, type (HITL/AFK), blocked-by, user stories
 
-**Step 7**: Update PRD with child issues; set `Status` to `Sliced` in the PRD metadata line. Update the `## Traceability` `Sliced into` field with the child issues list (number, title, type, status).
+**Step 7**: Publish issues in dependency order (blockers first). Issue title format: `[PRD-NNNN] <slice-description> — <core-behavior>`. Issue body includes a `Meta` section (PRD reference, Type, Siblings).
 
-**Step 8**: Sync Issue (if parent exists). Update the parent Issue body, append child issues list.
+**Step 8**: Update PRD with child issues; set `Status` to `Sliced` in the PRD metadata line. Update the `## Traceability` `Sliced into` field with the child issues list (number, title, type, status).
+
+**Step 9**: Sync Issue (if parent exists). Update the parent Issue body, append child issues list.
 
 **Slice Types:**
 - **HITL**: Human-in-the-loop — requires human judgment (architecture, design, UX). Agent pauses at decision points for input.
@@ -57,9 +59,9 @@ See [REFERENCE.md](REFERENCE.md) for issue template, input handling, and example
 | Horizontal slicing (all schema, then all API) | Use vertical slices through all layers |
 | Slices too thick | Prefer many thin slices over few thick ones |
 | Dependencies wrong | Publish in dependency order (blockers first) |
-| PRD/parent issue not updated | Step 7/8: Update PRD and sync Issue |
+| PRD/parent issue not updated | Step 8/9: Update PRD and sync Issue |
 | Input too vague for slicing | Suggest `/think` — do not run a full brainstorming session yourself |
-| Same topic got two PRDs (e.g. PRD-0001 + PRD-0002) | Step 3 (Ensure PRD Exists): run PRD Conflict Check (see think/REFERENCE.md) before creating |
+| Same topic got two PRDs (e.g. PRD-0001 + PRD-0002) | Step 3 (Ensure PRD Exists): run PRD Conflict Check (see think/REFERENCE.md §PRD Conflict Check) before creating |
 
 ## Vertical Slice Rules
 

@@ -41,21 +41,19 @@ Voice and format constraints from durable context are `decision`, `preference`, 
 
 ## Hard Rules
 
-Apply the hard rules in [REFERENCE.md §Hard Rules](REFERENCE.md). Headline: meaning first, no silent restructuring, artifact-grounded claims, **no em-dash (U+2014) or en-dash (U+2013)** in output, stop after output.
+Five hard rules — meaning first, no silent restructuring, artifact-grounded claims, **no em-dash (U+2014) or en-dash (U+2013)** in output, stop after output. Full statements: [REFERENCE.md §Hard Rules](REFERENCE.md). Hard rules yield only to an explicit user instruction in the current turn; otherwise they override house style and catalog patterns.
 
 ## Modes
 
-See [REFERENCE.md](REFERENCE.md) for detailed mode procedures (Long-form Article, Bilingual Review, Release Notes, Document Review).
-
 | Mode | Trigger | Reference File(s) |
 |------|---------|-------------------|
-| **Chinese prose** | Chinese text, general editing | `write-zh-prose.md`, `write-zh.md` |
+| **Chinese prose** | Chinese text, general editing | `write-zh-prose.md` (always); `write-zh.md` only for deep rewrite / long-form |
 | **English prose** | English text, general editing | `write-en.md` |
 | **Bilingual review** | Mixed CN/EN, translation review | `write-zh-bilingual.md` |
 | **Product localization** | "本地化文案", multi-locale review | `write-product-localization.md` |
-| **Release notes** | "release", "changelog", "version" | `write-zh-release-notes.md` |
+| **Release notes** | "release", "changelog", "version" | Chinese → `write-zh-release-notes.md`; English → `write-en.md` §Release Notes & Social Posts |
 | **Long-form article** | Multi-section Markdown, >300 lines | see REFERENCE.md |
-| **Tweet / social post** | "推特", "tweet", "social post" | `write-zh-release-notes.md` |
+| **Tweet / social post** | "推特", "tweet", "social post" | Chinese → `write-zh-release-notes.md`; English → `write-en.md` §Release Notes & Social Posts |
 | **Public reply** | "回复 issue", "reply to PR" | see REFERENCE.md |
 | **Document review** | "审稿", "check this document" | see REFERENCE.md |
 | **Paragraph coherence** | "连贯性", "coherence" | see REFERENCE.md |

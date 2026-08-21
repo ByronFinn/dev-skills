@@ -22,7 +22,7 @@ description: "Sub-agent orchestrated test-driven development. For each acceptanc
 
 **Two-stage human review (recommended default).** Each acceptance criterion passes through two synchronous gates — Scenario Review Gate (scenario design quality) and Test Code Review Gate (code quality and fidelity). Both gates are blocking; execution halts until the human responds. See [Gate Modes](#gate-modes) — Fast and Batch are offered per-cycle, not hidden behind a user request.
 
-**Runtime Note:** "Sub-agent" is a logical concept — each phase re-reads all shared context from disk independently (anti-patterns #34, #35). If your runtime supports true parallel sub-agent dispatch, use it. If not, execute phases sequentially — the independence guarantee comes from re-reading shared context from disk, not from concurrent execution timing.
+**Runtime Note:** "Sub-agent" is a logical concept — see [Sub-Agent Runtime Semantics](../rules/sub-agent-runtime.md). Independence comes from re-reading shared context from disk, not from execution timing; parallel dispatch when the runtime supports it, sequential otherwise.
 
 **Vertical slicing.** One acceptance criterion = one independent cycle (design → review → test code → review → implement). The cycle structure enforces vertical slicing naturally — there is no way to batch all tests then implement.
 
@@ -61,7 +61,7 @@ The two-stage Human Review Gate (Scenario Review + Test Code Review) is the reco
 
 ## Process Summary
 
-**Step 1: Plan** — Apply the [Skill Entry Protocol](../rules/entry-protocol.md). Read input (Issue, PRD, or description). If the input is an Issue, read the PRD path from the Issue body's `Meta → PRD` field and load the corresponding PRD file. If the Issue has no PRD reference, scan `docs/prd/` for a matching PRD-NNNN, or ask the user to confirm.Extract acceptance criteria. **PRD quality check:** if PRD Traceability shows `Created by: /story (minimal PRD)`, note that requirements may not be decision-complete — confirm acceptance criteria with user before proceeding. Confirm interface changes with user. Prioritize behaviors. Identify which Issues/criteria to work on.
+**Step 1: Plan** — Apply the [Skill Entry Protocol](../rules/entry-protocol.md). Read input (Issue, PRD, or description). If the input is an Issue, read the PRD path from the Issue body's `Meta → PRD` field and load the corresponding PRD file. If the Issue has no PRD reference, scan `docs/prd/` for a matching PRD-NNNN, or ask the user to confirm. Extract acceptance criteria. **PRD quality check:** if PRD Traceability shows `Created by: /story (minimal PRD)`, note that requirements may not be decision-complete — confirm acceptance criteria with user before proceeding. Confirm interface changes with user. Prioritize behaviors. Identify which Issues/criteria to work on.
 
 **Step 2: Acceptance Criterion Cycle** — For EACH acceptance criterion, run the 5-step loop:
 1. **Test Sub-Agent (scenario design)** — design test scenarios as structured table
@@ -84,7 +84,7 @@ Test Sub-Agent produces a structured scenario table; the human reviews scenario 
 
 Test Sub-Agent writes test code faithful to the approved scenarios (RED by design); the human reviews code quality (public interface use, behavior-not-implementation, fidelity to scenarios). Gate is **blocking**. See [REFERENCE.md Chapter 3](REFERENCE.md) for the review checklist and human response options.
 
-> **Gate Modes:** In Fast mode these two gates collapse into one Test Code Review Gate (scenarios written inline, checklist folds in scenario coverage). In Batch mode, one gate per 2-3 homogeneous grouped criteria. Full mode (two gates) is the default. See [Gate Modes](#gate-modes) above and [REFERENCE.md Chapter 1](REFERENCE.md).
+> **Gate Modes:** the number and shape of these gates per criterion is set by the active Gate Mode (Full / Fast / Batch) — see [Gate Modes](#gate-modes) above.
 
 ## Per-Cycle Checklist
 

@@ -20,23 +20,23 @@ Same for `docs/prd/`, `docs/adr/`, and `docs/research/` — create them only whe
 
 ## File structure
 
-Single-context repo (most repos):
+Single-context repo (most repos). This repo's actual files as of 2026-07-05:
 
 ```
 /
 ├── CONTEXT.md
 ├── docs/
 │   ├── prd/
-│   │   ├── PRD-0001-user-subscription.md
-│   │   └── PRD-0002-payment-integration.md
+│   │   ├── PRD-0000-multi-agent-skill-refactor.md
+│   │   └── PRD-0001-research-skill.md
 │   ├── adr/
-│   │   ├── 0001-event-sourced-orders.md
-│   │   └── 0002-postgres-for-write-model.md
-│   └── research/
-│       ├── INDEX.md
-│       ├── react-concurrent-rendering-18.md
-│       └── postgres-index-strategy-15.md
-└── src/
+│   │   ├── 0001-sub-agent-orchestration-pattern.md
+│   │   ├── 0002-two-stage-human-review-gate.md
+│   │   ├── 0003-gate-modes-full-fast-batch.md
+│   │   └── 0004-research-record-immutability.md
+│   ├── audits/                          ← dated audit snapshots (not a skill contract)
+│   └── (no docs/research/ yet — created lazily on first /research run)
+└── skills/
 ```
 
 **File naming conventions** (producer skills define these; consumer skills read them):

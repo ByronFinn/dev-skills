@@ -16,7 +16,8 @@ skills/
 ├── RESOLVER.md                  # Skill routing table and disambiguation rules
 ├── rules/
 │   ├── anti-patterns.md         # cross-skill behavioral constraints (always apply; see file for current count)
-│   └── entry-protocol.md        # Shared skill bootstrap sequence (all skills reference)
+│   ├── entry-protocol.md        # Shared skill bootstrap sequence (all skills reference)
+│   └── sub-agent-runtime.md     # Sub-agent = re-read-from-disk discipline, not a scheduler (tdd/review reference)
 ├── setup-project/               # Project initialization skill → AGENTS.md + docs/agents/
 │   ├── SKILL.md
 │   └── REFERENCE.md
@@ -74,7 +75,7 @@ Every skill follows the same structure:
 
 | File | Purpose |
 |---|---|
-| `SKILL.md` | Entry point. Contains YAML front matter (`name`, `description` only — per [agentskills.io spec](https://agentskills.io/specification); trigger keywords go inside `description`). Skills that should never be auto-invoked by the model may additionally include `disable-model-invocation: true` — this signals the skill must only be triggered by explicit slash-command (`/skillname`). Contains outcome contract, process summary, gotchas table, and output template. For sub-agent orchestrated skills (`tdd`, `review`), this is the orchestrator — it defines sub-agent sequence, human review gates, and merge rules, but does not perform implementation work itself. |
+| `SKILL.md` | Entry point. Contains YAML front matter (`name`, `description` only — per [agentskills.io spec](https://agentskills.io/specification); trigger keywords go inside `description`). Skills that should never be auto-invoked by the model may additionally include `disable-model-invocation: true` — this signals the skill must only be triggered by explicit slash-command (`/skillname`). Opens with the outcome contract before any procedure (anti-pattern #30), then process summary, gotchas table, and output template. For sub-agent orchestrated skills (`tdd`, `review`), this is the orchestrator — it defines sub-agent sequence, human review gates, and merge rules, but does not perform implementation work itself. |
 | `REFERENCE.md` | Detailed process steps, checklists, examples, and templates. Loaded on demand. For sub-agent orchestrated skills, each sub-agent gets its own chapter with: context re-read checklist, responsibilities, checklist, output template, and independence constraint. |
 | `*-FORMAT.md` | Document format templates (PRD, CONTEXT, ADR, STORY, RESEARCH, INDEX) used by the skill. Written bilingually (English headings, Chinese field descriptions). |
 | `references/` | Language-specific or mode-specific reference files loaded on demand by the skill (used by `write` for pattern catalogs in different languages). |

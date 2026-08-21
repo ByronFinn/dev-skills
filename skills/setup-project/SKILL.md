@@ -55,7 +55,7 @@ This is not a consumer skill — it is the **foundation** that consumer skills d
 
 **Step 5: Confirm** — show the complete draft of all files to be written (AGENTS.md block + each `docs/agents/` file). If updating, show only files that changed.
 
-**Step 6: Write** — edit AGENTS.md, create or update `docs/agents/*.md` files. When writing `domain.md`, scan `docs/prd/`, `docs/adr/`, `docs/research/` first and use actual filenames in the file tree, not template placeholders (see REFERENCE.md domain.md template note). Update in-place, never append duplicates.
+**Step 6: Write** — write the `docs/agents/*.md` config files first, the AGENTS.md block last (an abort mid-way then leaves at most an unchanged AGENTS.md, never a block pointing at missing files). When writing `domain.md`, scan `docs/prd/`, `docs/adr/`, `docs/research/` first and use actual filenames in the file tree, not template placeholders (see REFERENCE.md domain.md template note). Update in-place, never append duplicates.
 
 **Step 7: Done** — list skills now configured, suggest next step
 
@@ -69,7 +69,7 @@ See [REFERENCE.md](REFERENCE.md) for seed templates and detailed steps.
 | Missed monorepo/multi-repo structure | Step 2: Check for workspace files, subprojects, sibling repos |
 | Monorepo: only configured root, missed packages | Step 6: Create per-package `docs/agents/` dirs in monorepo |
 | Multi-repo: no coordination between repos | Step 6: Create `repo-map.md` linking repos to skill domains |
-| Asked all decisions at once | Step 4: Present detected defaults, ask for overrides |
+| Asked all decisions at once | Step 3-4: present detected defaults first, then ask for overrides one section at a time |
 | Created AGENTS.md when CLAUDE.md (or neither) exists | Step 6: Edit the file that exists; don't silently default to AGENTS.md |
 | Duplicated existing `## Agent skills` block | Step 6: Update in-place, don't append |
 | Paraphrased or dropped the Working principles prompt | Step 6: Copy it verbatim — fixed text, not a per-repo template |
@@ -103,7 +103,7 @@ Updated files:
 - docs/agents/language.md — created
 - docs/agents/repo-map.md — created (multi-repo only)
 
-Skills now configured: think, research, have-a-try, grill, story, tdd, review, debug, improve-architecture, write
+Skills now configured: think, research, have-a-try, grill, story, implement, tdd, review, debug, improve-architecture, write
 
 Next: Start using skills. Run /think to brainstorm a feature, /research for technical investigation, or /debug to investigate a bug.
 ```

@@ -114,9 +114,9 @@ Output structured report using the template in SKILL.md Output section.
 
 ## Design Debt Signals — Extended Examples
 
-### Code Duplication
+Worked examples for each §3.2 row. **Thresholds live only in the §3.2 table** — this section adds examples and improvements, never restates the numbers (cite the §3.2 row instead: "per §3.2 Code Duplication").
 
-**Signal:** Same logic appears in multiple places (≥6 line block, ≥2 occurrences, ≥70% similarity).
+### Code Duplication
 
 **Example:**
 ```javascript
@@ -135,9 +135,7 @@ function validateEmail(email) {
 
 ### Long Functions/Classes
 
-**Signal:** Function body > 50 lines; class > 15 methods.
-
-**Example:**
+**Example (per §3.2 Long Functions/Classes):**
 ```javascript
 function processOrder(order) {
   // 50 lines of validation
@@ -152,9 +150,7 @@ function processOrder(order) {
 
 ### Tight Coupling
 
-**Signal:** Module imports >3 internal paths from another module.
-
-**Example:**
+**Example (per §3.2 Tight Coupling):**
 ```javascript
 // OrderService directly depends on implementation details of PaymentProcessor, Inventory, EmailService
 class OrderService {
@@ -170,9 +166,7 @@ class OrderService {
 
 ### Global State
 
-**Signal**: Mutable variable accessible from outside its defining module.
-
-**Example:**
+**Example (per §3.2 Global State):**
 ```javascript
 // Global state
 let currentUser = null;
@@ -190,9 +184,7 @@ function getUser() {
 
 ### Leaked Abstractions
 
-**Signal:** Caller must know implementation detail to use function correctly.
-
-**Example:**
+**Example (per §3.2 Leaked Abstractions):**
 ```javascript
 // Leaks file system implementation
 function loadData() {
@@ -205,9 +197,7 @@ function loadData() {
 
 ### Missing Abstractions
 
-**Signal:** ≥3 direct uses of low-level API without shared adapter.
-
-**Example:**
+**Example (per §3.2 Missing Abstractions):**
 ```javascript
 // Direct HTTP calls scattered everywhere
 fetch('/api/users').then(/* ... */);

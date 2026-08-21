@@ -81,8 +81,8 @@ If TDD-suitable → proceed to 3b. If not → proceed to 3c.
 
 Follow the full `/tdd` process for this issue/seam:
 
-1. Read `skills/tdd/SKILL.md` and `skills/tdd/REFERENCE.md` for the detailed process
-2. Execute all of `/tdd`'s steps: Plan → Acceptance Criterion Cycles (per criterion: Test Sub-Agent scenarios → Scenario Review Gate → Test Sub-Agent test code → Code Review Gate → Develop Sub-Agent implementation) → Refactor → Output
+1. Read the `/tdd` skill's SKILL.md and REFERENCE.md (sibling directory `../tdd/` in the installed skills tree) for the detailed process
+2. Execute all of `/tdd`'s steps: Plan → Acceptance Criterion Cycles (per criterion: Test Sub-Agent scenarios → Scenario Review Gate → Test Sub-Agent test code → Test Code Review Gate → Develop Sub-Agent implementation) → Refactor → Output
 3. Let `/tdd` handle its own test writing, implementation, and refactoring
 4. **Do not** run `/tdd`'s "Next: Run /review" step — the implement workflow handles review at Step 5
 5. When `/tdd` outputs its completion summary, resume implement workflow

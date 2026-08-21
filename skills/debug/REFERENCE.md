@@ -16,7 +16,7 @@ Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain do
 
 **Goal:** Quickly locate root cause, output one-sentence root cause statement.
 
-**Steps:**
+**Actions:**
 1. Understand symptom: User-described error/anomaly/failure
 2. Quick hypothesis: Form 1-2 hypotheses based on experience
 3. Quick validation: Validate hypothesis via logs, breakpoints, or tests
@@ -29,7 +29,7 @@ Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain do
 
 **Quality gate:** Before acting on hypothesis, list all observable symptoms (not just first user-reported). Hypothesis must explain each symptom; if only covers some, it's symptom-level guess, not root cause.
 
-**Escalation condition:** If 3 hypotheses fail, escalate to Stage 2 full 6-phase loop.
+**Escalation condition:** If quick validation fails — both hypotheses refuted, or no hypothesis explains all symptoms — escalate to Stage 2 full 6-phase loop. Do not keep guessing in Stage 1.
 
 ## Stage 2: 6-Phase Loop (Systematic Fix)
 
@@ -130,6 +130,8 @@ Tool preference:
 1. **Debugger / REPL inspection** if environment supports. One breakpoint > ten logs.
 2. **Targeted logging** at boundaries distinguishing hypotheses.
 3. Never "log everything and grep."
+
+**Hypothesis-exhaustion exit.** If **3 falsified hypotheses** pass through Phase 3→4 without identifying the cause, stop looping: emit the Handoff output (see SKILL.md §Output (Handoff)) — tested hypotheses with results, evidence, excluded causes, unknowns, suggested next direction — and set Status to `blocked`. The handoff is designed for a fresh session with clean context; don't keep grinding in this one.
 
 **Persist probes to a session log, not just stdout.** Streaming to stdout forces a full loop re-run every time you want to inspect evidence, and throws away ordering. Instead, write each probe to `DEBUG/<session>-<n>.log` (one line per probe) so you can `grep`/`tail` the file after the loop finishes, across runs, without re-running. Each probe line carries **monotonic sequence + timestamp + async/fiber context** — for race conditions the *order* of the lines is itself root-cause evidence. This is a pure convention (zero runtime, no debug server); the log is a disposable artifact, not project output. Every feature of a Cursor-style centralized debug log (aggregation, ordering, replay) is captured by the file; the server is not.
 
