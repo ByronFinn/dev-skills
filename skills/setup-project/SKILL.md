@@ -9,6 +9,7 @@ description: "Scaffold or update per-repo configuration for engineering skills: 
 
 Scaffold the per-repo configuration that the engineering skills assume:
 
+- **Working principles** — a fixed first-principles reasoning prompt written verbatim into the `## Agent skills` rules block, so every agent session in the repo reasons from evidence
 - **Project structure** — single repo, monorepo (multiple packages in one repo), or multi-repo (multiple related repos)
 - **Issue tracker** — where issues live (GitHub, GitLab, local markdown, or other)
 - **Triage labels** — the strings used for the five canonical triage roles
@@ -35,7 +36,7 @@ This is not a consumer skill — it is the **foundation** that consumer skills d
 
 ## Outcome Contract
 
-- **Outcome**: `docs/agents/` directory with issue-tracker, triage-labels, domain docs, documentation language, and (for multi-repo) repo-map; `## Agent skills` block in AGENTS.md. On re-run: conformance sweep results — naming, language, and format audit of existing doc files.
+- **Outcome**: `docs/agents/` directory with issue-tracker, triage-labels, domain docs, documentation language, and (for multi-repo) repo-map; `## Agent skills` block in AGENTS.md, opening with the fixed Working principles (first-principles) prompt. On re-run: conformance sweep results — naming, language, and format audit of existing doc files.
 - **Done when**: User confirms configuration, all files written, AGENTS.md updated
 - **Evidence**: `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `docs/agents/domain.md`, `docs/agents/language.md`; `docs/agents/repo-map.md` (multi-repo only)
 - **Output**: Summary of configuration, next step to use engineering skills
@@ -71,6 +72,7 @@ See [REFERENCE.md](REFERENCE.md) for seed templates and detailed steps.
 | Asked all decisions at once | Step 4: Present detected defaults, ask for overrides |
 | Created AGENTS.md when CLAUDE.md (or neither) exists | Step 6: Edit the file that exists; don't silently default to AGENTS.md |
 | Duplicated existing `## Agent skills` block | Step 6: Update in-place, don't append |
+| Paraphrased or dropped the Working principles prompt | Step 6: Copy it verbatim — fixed text, not a per-repo template |
 | Wrote files without user confirmation | Step 5: Show full draft before writing |
 | Re-run: overwrote unchanged sections / missed drift | Step 1-2: Read existing config, compare structure against `repo-map.md`, only update what changed |
 | Re-run: language change undetected / per-package out of sync | Step 4D / Step 6: Compare existing config against current state on re-run |
@@ -94,7 +96,7 @@ Configuration:
 - Documentation language: <English / Chinese / Other>
 
 Updated files:
-- AGENTS.md — added ## Agent skills block
+- AGENTS.md — added ## Agent skills block (opens with the Working principles prompt)
 - docs/agents/issue-tracker.md — created
 - docs/agents/triage-labels.md — created
 - docs/agents/domain.md — created

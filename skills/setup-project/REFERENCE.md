@@ -13,6 +13,7 @@ When `docs/agents/` already exists, run this drift detection loop **before** any
 | **doc content** | Scan `docs/prd/`, `docs/adr/`, `docs/research/` for naming/language/format drift | Config changed (language, naming, FORMAT) | Trigger **Conformance Sweep** after overrides |
 | `repo-map.md` (if exists) | Has the project structure changed? (Workspace files added/removed? User mentions sibling repos?) | Package count changed, repos added/removed, project type (single↔mono↔multi) changed | Present diff, confirm, rewrite `repo-map.md`. If project type changed → trigger **Migration** path below |
 | (no `repo-map.md` yet) | Detect new multi-repo or monorepo signals: workspace files, user mentions sibling repos, subproject dirs | New structure signals found | Ask if project structure changed, create `repo-map.md` if needed |
+| AGENTS.md/CLAUDE.md `## Agent skills` block | Does the block open with the `### Working principles` section (first-principles prompt, verbatim)? | Block was written before the working-principles rule existed — section missing | Present the missing section, confirm, rewrite the block in-place (never append a duplicate) |
 
 **If no drift detected in any section**, tell the user: "All config is current — no changes needed." and stop.
 
@@ -242,8 +243,14 @@ If an `## Agent skills` block already exists in the chosen file, update its cont
 
 **The `## Agent skills` block** (single-repo / monorepo baseline; multi-repo adds the Repo map section):
 
+The block opens with a fixed **Working principles** section — the first-principles reasoning prompt below, copied **verbatim** into every repo. It is not customised per project and has no `docs/agents/` config file: it lives in AGENTS.md/CLAUDE.md itself so every agent session reads it at startup, before any skill runs. All other sections are one-line summaries pointing at `docs/agents/` config files.
+
 ```markdown
 ## Agent skills
+
+### Working principles
+
+Apply first-principles reasoning to engineering work. Establish WHAT before determining HOW. Verify material facts before relying on them: inspect the actual code and relevant files, run the relevant commands or tests, and do not infer behavior beyond the available evidence. When verification is impossible, state the gap explicitly as an assumption; treat unstated goals and constraints the same way. Analogy is not evidence. Decompose a problem only until further decomposition can no longer change the next action. Trace every material conclusion to a fact, constraint, goal, or explicit assumption. Prefer the simplest solution that satisfies all real constraints and can be verified. Treat existing code and conventions as evidence about the system, not as unquestionable authority: understand why an existing solution works before extending, replacing, or reusing it; follow established conventions by default, and deviate only with a stated reason.
 
 ### Issue tracker
 

@@ -147,6 +147,10 @@ When skills are used in target projects, they create and maintain these files:
 
 ## Agent skills
 
+### Working principles
+
+Apply first-principles reasoning to engineering work. Establish WHAT before determining HOW. Verify material facts before relying on them: inspect the actual code and relevant files, run the relevant commands or tests, and do not infer behavior beyond the available evidence. When verification is impossible, state the gap explicitly as an assumption; treat unstated goals and constraints the same way. Analogy is not evidence. Decompose a problem only until further decomposition can no longer change the next action. Trace every material conclusion to a fact, constraint, goal, or explicit assumption. Prefer the simplest solution that satisfies all real constraints and can be verified. Treat existing code and conventions as evidence about the system, not as unquestionable authority: understand why an existing solution works before extending, replacing, or reusing it; follow established conventions by default, and deviate only with a stated reason.
+
 ### Issue tracker
 
 本仓库使用 **GitHub Issues** 跟踪任务。详见 `docs/agents/issue-tracker.md`。
