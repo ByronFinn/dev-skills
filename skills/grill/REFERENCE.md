@@ -78,9 +78,25 @@ For each item, lead with your recommended answer, then ask. A few patterns:
 
 ## Question Pacing
 
-Default to **one question at a time** — grill is a dependency tree, and a question's answer often reshapes the next. This is the anti-pattern #3 dependency-chain exception, not serial interrogation.
+Work the dependency tree in **rounds**. The **frontier** is every question whose prerequisite decisions are already settled — the questions you can ask *now* without guessing at answers you haven't heard. Ask the whole frontier in one round; hold back anything whose prerequisite is still open (it belongs to a later round, and its framing may change entirely).
 
-You may batch 2-3 questions in one message **only** when they are genuinely independent — no answer changes how you frame the others. When in doubt, stay one-at-a-time.
+Default to **one question at a time** within a round only when items form a dependency chain — one answer reshapes how you frame the next (the anti-pattern #3 exception, not serial interrogation). Genuinely independent items go together in one round; when in doubt, split the round smaller.
+
+Format a round like so — numbered questions, each with your recommended answer, separated by a rule:
+
+```
+❓ **Q1 — <question title>**: <body; multiple choices if applicable>
+
+➡️ <your recommended answer>
+
+---
+
+❓ **Q2 — <question title>**: <body>
+
+➡️ <your recommended answer>
+```
+
+Each round's answers reshape the tree: settled decisions push the frontier outward and unblock the questions that depended on them. Recompute the frontier after every round.
 
 ## Exhaustiveness Gate
 
@@ -137,33 +153,54 @@ I've reviewed the PRD and found 6 items to resolve:
 5. Technical: Stripe vs custom payment — no decision recorded
 6. Code: existing User model has no payment fields — migration unclear
 
-Starting with #1. Your PRD uses "subscription" to mean both the act and
-the entity. I recommend defining it as: **Subscription** — a Customer's
-active paid access agreement with a lifecycle
-(created → active → past_due → cancelled). Match your intent, or narrower?
+#2 and #6 are code questions — I check those myself, no round needed.
+[grep: payment, stripe, gateway] → found src/payment/ with custom
+gateway, no Stripe; payment is async (assumption #2 disproved — PRD
+updated to match). #6: User model has no payment fields → migration
+cost is the hinge for #5, so #5 stays out of Round 1.
 
-User: That works, but add "trial" as a possible state.
+Round 1 — the frontier (#1, #3, #4 are independent of each other):
 
-Agent: Updated CONTEXT.md — Subscription definition includes trial state.
-Moving to #2...
+❓ **Q1 — "Subscription"**: your PRD uses it for both the act and the
+entity. I recommend: **Subscription** — a Customer's active paid access
+agreement with a lifecycle (created → active → past_due → cancelled).
 
-#2 is a code question — let me check rather than ask.
-[grep: payment, stripe, gateway] → found src/payment/ with custom gateway,
-no Stripe. Updating PRD to match existing architecture.
+➡️ Adopt this definition.
 
-#3. Cancellation policy — recommend End-of-period (simpler, less refund
-logic). Alternatives: immediate+prorate, immediate+no-refund. Which?
+---
 
-User: End-of-period.
+❓ **Q3 — Cancellation policy**: recommend End-of-period (simpler, less
+refund logic). Alternatives: immediate+prorate, immediate+no-refund.
 
-Agent: Recorded. Checking ADR conditions: hard to reverse ✓ (affects
-billing/UX/expectations), surprising without context ✓, real trade-off ✓
-(simplicity over prorate fairness). All three met — creating ADR.
+➡️ End-of-period.
+
+---
+
+❓ **Q4 — "Upgrade/downgrade" excluded**: genuinely not needed, or
+deferred? If deferred, I'll note the extension point in the PRD.
+
+➡️ Deferred.
+
+User: Q1 — good, but add "trial" as a possible state. Q3 — end-of-period.
+Q4 — deferred.
+
+Agent: CONTEXT.md updated (Subscription now includes trial state); PRD
+scope note added. Q3 meets all 3 ADR conditions — hard to reverse ✓
+(billing/UX/expectations), surprising without context ✓, real trade-off ✓
+(simplicity over prorate fairness) — creating the ADR now, inline.
 [creates docs/adr/0003-cancellation-eop.md]
 
-[continues through #4-6...]
+Round 2 — frontier recomputed; #6's code answer unblocked #5:
 
-All 6 resolved. Exhaustiveness check: ✓ Open Questions, ✓ Assumptions,
+❓ **Q5 — Stripe vs custom gateway**: the codebase already runs a custom
+gateway in src/payment/. Recommend keeping it; add a Stripe adapter
+only if webhook events are needed.
+
+➡️ Keep the custom gateway.
+
+User: Keep custom.
+
+Agent: All 6 resolved. Exhaustiveness check: ✓ Open Questions, ✓ Assumptions,
 ✓ Terms, ✓ Scope, ✓ Code.
 
 Updated files:
@@ -174,4 +211,4 @@ Updated files:
 Next: /story to break PRD into Issues.
 ```
 
-Note the shape: extract all items up front, give a recommendation before each ask, fall back to the code when a question is code-answerable, and create the ADR inline the moment its decision lands — not in a batch at the end.
+Note the shape: extract all items up front; answer code questions yourself before any round; batch the frontier into one numbered round with recommendations; hold questions whose prerequisites are still open for the round that unlocks them; and update CONTEXT.md / create the ADR inline the moment each decision lands — not in a batch at the end.

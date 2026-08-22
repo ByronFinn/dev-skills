@@ -22,8 +22,10 @@ Priority when multiple skills could match:
 | New project, configure skills, issue tracker setup, initialize workflow | `setup-project` | Scaffold `docs/agents/` configuration and AGENTS.md before skills can run. |
 | Rough idea, unclear requirements, feasibility, design approach, “how should we build this?” | `think` | Convert ambiguity into a decision-complete PRD. |
 | Technical investigation needing durable capture — “what’s the best practice for X in version Y”, stack/version-specific research, authoritative-source lookup to reuse later | `research` | Persist an immutable, versioned research record into `docs/research/` + INDEX, so the next task queries INDEX instead of re-searching. |
-| Design doubt easier to resolve by *running* code than reasoning on paper — state machine edges, data-model expressiveness, “does this logic feel right?” (→ LOGIC) | `have-a-try` | Build a throwaway terminal prototype that answers one logic/state question. Sits between `/think` and `/grill`. |
-| Design doubt about what a page should *look like* — “try a few layouts”, “see a few options” (→ UI) | `have-a-try` | Build several radically different UI variants on one route, switchable via `?variant=`. |
+| A divergence to settle by running code — conflicting options or a contested claim; “which is faster”, “which option survives concern C” (→ BENCH/SPIKE) | `have-a-try` | Minimal comparative demo: shared-harness measurement or concern×option matrix — selects or eliminates. |
+| “Does this logic / state model hold up?” — state machine edges, data-model expressiveness (→ LOGIC) | `have-a-try` | Interactive probe (TUI, or shareable HTML for non-developers) with guided scenarios — validates or kills the design. |
+| “What should this page look like?” — “try a few layouts”, “see a few options” (→ UI) | `have-a-try` | Several radically different UI variants on one route, switchable via `?variant=` — user picks. |
+| Any other divergence running code can settle (→ CUSTOM) | `have-a-try` | Synthesized minimal experiment per the four-question rules in its REFERENCE. |
 | Existing PRD/plan/terminology/domain model/ADR questions, “challenge this plan”, “is this design sound?” | `grill` | Stress-test plan against domain language and decision records. |
 | Completed PRD or clear feature description needing tickets, issue breakdown, implementation tasks, vertical slices | `story` | Convert plan into executable Issues. Accepts PRD or direct description. |
 | Issues or PRD ready for implementation, "implement this", orchestrate /tdd at seams / 实现 / 编码实现 / 开发 / 开始写代码 | `implement` | Orchestrate /tdd at pre-agreed seams, implement non-TDD items directly, typecheck + test per item, dispatch /review, commit per seam. |
@@ -35,55 +37,21 @@ Priority when multiple skills could match:
 
 ## Route by Workflow Phase
 
-Trigger-word index only — the work-object routing rationale lives in the table above; the runtime source of truth is each skill's `description` field.
+Phase view of the same routing. Trigger words live in each skill's `description` (the runtime source of truth) and in the work-object table above — restating them here is how the lists drift apart. This section adds only the phase ordering.
 
-### Project Setup (First time)
-
-| Trigger | Skill |
-|---------|-------|
-| setup / 初始化 / 配置技能 / issue tracker setup / new project | `setup-project` |
-
-### New Feature Development (Pre-build)
-
-| Trigger | Skill |
-|---------|-------|
-| brainstorm / 构思 / 方案 / 出方案 / 深入分析 / 怎么设计 | `think` |
-| research / 调研 / 最佳实践 / best practice / 技术选型 / tech evaluation / 选哪个库 / 官方文档 / how does X work in version Y / 权威信源 | `research` |
-| prototype / 原型 / 试一下 / spike / 验证设计 / 看看效果 / 跑起来看看 / 状态机对不对 / 数据模型能表达吗 | `have-a-try` |
-| 挑战方案 / grill / 细化方案 / 深挖计划 / 术语审查 | `grill` |
-| 分解 / story / 拆分 / Issues / 任务 / 子任务 | `story` |
-| implement / 实现 / 编码实现 / 开发实现 / 开始写代码 / 自动实现 | `implement` |
-| TDD / 测试优先 / 实现已确认行为 / red-green-refactor | `tdd` |
-
-### Completion & Finish (Post-build)
-
-| Trigger | Skill |
-|---------|-------|
-| 代码审查 / review / check / 把关 / 发布前 / 完成 / 验收 | `review` |
-
-### Bug Fix (Diagnostic)
-
-| Trigger | Skill |
-|---------|-------|
-| 调试 / debug / 排查 / 报错 / 崩溃 / 不工作 / 回归 / 以前是好的 / 测试失败 | `debug` |
-
-### Architecture Improvement (Maintenance)
-
-| Trigger | Skill |
-|---------|-------|
-| 架构 / improve-architecture / 重构候选 / 清理 / 债务 / 架构审查 | `improve-architecture` |
-
-### Writing & Editing (Cross-phase)
-
-| Trigger | Skill |
-|---------|-------|
-| 润色 / 改稿 / 去AI味 / rewrite / polish / proofread / 帮我写 | `write` |
-| 审稿 / review document / check this document / 本地化文案 | `write` |
-| release notes / changelog / 发版 / tweet / 推文 / 社交发文 | `write` |
+| Phase | Skills (typical order) |
+|---|---|
+| Project setup (first time) | `setup-project` |
+| New feature (pre-build) | `think` → `research` / `have-a-try` (evidence gathering) → `grill` |
+| Build | `implement` → `tdd` (driven at seams) · `story` output feeds both |
+| Completion (post-build) | `review` |
+| Bug fix (diagnostic) | `debug` → `review` (optional) |
+| Architecture health (maintenance) | `improve-architecture` |
+| Writing & editing (cross-phase) | `write` |
 
 ## Common Sequences
 
-Skills don't auto-chain by default. Each skill stops and waits for user's next step.
+Skills don't auto-chain by default: each skill stops and waits for the user to trigger the next step. One exception — an **orchestrator skill may internally drive a model-invoked sub-skill as part of its own documented process** (`/implement` calls the Skill tool with "tdd" per seam; tdd's gates still apply). Cross-skill handoffs at completion (e.g. implement suggesting `/review`) always stop for the user.
 
 **Project setup (first time):**
 ```
@@ -114,11 +82,18 @@ Skills don't auto-chain by default. Each skill stops and waits for user's next s
 ```
 The `/tdd → /review` path remains available for single-issue manual TDD.
 
-**New feature with a design doubt worth prototyping:**
+**New feature with a divergence worth settling by experiment:**
 ```
-/think → /have-a-try (when a design question is cheaper to run than reason about) → /grill → /story → /implement → /review
+/think → /have-a-try (settles divergences reasoning can't) → /grill → /story → /implement → /review
 ```
-`/have-a-try` is an optional branch, not a required step. Use it only when the question is concrete enough to resolve by running code (state machine edges, data-model cases, what a page should look like). It writes disposable code; the validated verdict flows into the PRD/ADR, then the prototype shell is deleted or absorbed.
+`/have-a-try` is an optional branch, not a required step — and it has **four entry points**. Evidence flows back to where the divergence was born:
+
+- **After `/think`**: the converged PRD still holds A-vs-B options → minimal demo settles it; verdict → PRD `Prototyped by` + Open Question closed → `/grill`.
+- **During `/grill`**: a challenged decision that reasoning and reading can't settle → park the item, `/have-a-try`, verdict → ADR → resume the checklist.
+- **After `/research`**: docs narrowed the candidates → `/have-a-try` BENCH/SPIKE settles the final call by measurement.
+- **During `/story`/`/implement`**: a local design doubt → mini try → verdict on the issue/commit → continue the seam.
+
+It writes disposable code; the verdict (selection or elimination) plus evidence flows into the PRD/ADR/issue, then the demo shell is deleted, absorbed, or archived to a throwaway branch when the verdict is contested.
 
 **Bug fix workflow:**
 ```
@@ -154,9 +129,9 @@ Direct single-issue TDD without the `/implement` orchestration layer.
 
 **"验证一下 / try it" conflict (`have-a-try` vs `think` vs `tdd`):**
 - Vague idea, multiple paths, not sure *what* to build → `/think` (pure conversation, no code, produces a PRD).
-- Concrete design question that's cheaper to resolve by *running* code than reasoning on paper (state machine edge, data-model case, what a page looks like) → `/have-a-try` (disposable prototype; LOGIC terminal app or UI variants).
+- A divergence — conflicting options or a contested claim — that's cheaper to settle by *running* code than by reasoning (state machine edge, what a page looks like, which option is faster, whether an option survives a concern) → `/have-a-try` (minimal demo on the contested point; LOGIC probe / UI variants / BENCH / SPIKE / synthesized — selects or eliminates).
 - Accepted behavior with known requirements, want a proper test-first implementation → `/tdd` (red-green-refactor with human review gates — the opposite of "skip the polish").
-- Rule of thumb: `/think` doesn't write code; `/have-a-try` writes disposable code; `/tdd` writes production code with tests. If the user says "试一下" but the design isn't clear yet, suggest `/think` first.
+- Rule of thumb: `/think` doesn't write code; `/have-a-try` writes disposable code; `/tdd` writes production code with tests. If the user says "试一下" but the divergence can't even be named yet, suggest `/think` first.
 
 **“审查” conflict (`grill` vs `review`):**
 - PRD, plan, approach, terminology, domain model, ADR, “方案是否合理” → `/grill`.
@@ -168,10 +143,10 @@ Direct single-issue TDD without the `/implement` orchestration layer.
 - Global architecture health, design debt scan, periodic code health check → `/improve-architecture`.
 
 **“调研 / research” conflict (`research` vs `think` vs `have-a-try`):**
-- Vague idea, multiple paths, not sure *what* to build → `/think` (converge to a PRD; it queries INDEX at Step 5 but doesn't itself persist research).
+- Vague idea, multiple paths, not sure *what* to build → `/think` (converge to a PRD; it queries INDEX at Step 5 but doesn't itself persist research). Product/market/competitor analysis ("调研一下竞品都有什么功能") also lands here — it feeds the *what-to-build* decision, not the technical knowledge base.
 - Concrete technical question against a specific stack+version, want to capture the best practice durably for reuse → `/research` (authoritative-source investigation → immutable record + INDEX).
-- Design doubt cheaper to resolve by *running* code than reasoning (state machine edge, what a page looks like) → `/have-a-try` (disposable prototype).
-- Rule of thumb: `/think` decides *what* to build (no durable technical record); `/research` decides *how* a specific tech behaves (durable, sourced record); `/have-a-try` validates a design guess (disposable code). `/think` Step 5 internally consumes `/research` output via INDEX — you don't have to run `/research` manually first.
+- A divergence to settle by *running* code on your machine / your load (which option is faster, whether an option survives a concern, state machine edge, what a page looks like) → `/have-a-try` (disposable demo; selects or eliminates).
+- Rule of thumb: `/think` decides *what* to build (no durable technical record); `/research` decides *how* a specific tech behaves per documentation (durable, sourced record); `/have-a-try` decides between options by measurement/observation (disposable code; verdict + evidence fixed into PRD/ADR). Typical chain: `/research` narrows candidates by docs → `/have-a-try` BENCH/SPIKE settles the final call. `/think` Step 5 internally consumes `/research` output via INDEX — you don't have to run `/research` manually first.
 
 **"拆分任务" conflict (`story` vs `think`):**
 - User has a clear, specific plan in mind and wants it broken into issues → `/story`
@@ -198,7 +173,7 @@ Format files and update targets per skill. (Role and routing: see "Route by Work
 | `setup-project` | — | `docs/agents/*.md` + AGENTS.md block |
 | `think` | PRD-FORMAT.md | PRD + parent issue (required, Step 10a) |
 | `research` | RESEARCH-FORMAT.md<br>INDEX-FORMAT.md | `docs/research/<stack>-<topic>-<major>.md` + INDEX.md row (lazy-created) |
-| `have-a-try` | — | Validated verdict (PRD `Prototyped by` / ADR / commit / NOTES.md); prototype deleted or core absorbed |
+| `have-a-try` | — | Verdict (selected or eliminated) + evidence (PRD `Prototyped by` / ADR / commit / NOTES.md; concern×option matrix for SPIKE, numbers + environment for BENCH); demo deleted, core absorbed, or archived to throwaway branch |
 | `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | PRD + CONTEXT.md + ADRs + parent issue synced (if created by /think) |
 | `story` | STORY-FORMAT.md | PRD (created or updated) + child issues + issues if confirmed |
 | `implement` | — | Code + commits + PRD and issue status updates |
@@ -219,7 +194,7 @@ Each skill may depend on files or configuration produced by earlier skills. Miss
 | `setup-project` | — | Git repo | — | — | — (this is the foundation) |
 | `think` | — | — | `CONTEXT.md`, `docs/adr/`, existing PRDs, `docs/research/INDEX.md` | PRD-FORMAT.md | Creates PRD if user opts in |
 | `research` | `domain.md` | A concrete stack×topic×major question | `CONTEXT.md`, `docs/adr/`, `docs/research/INDEX.md` (for dedup) | RESEARCH-FORMAT.md, INDEX-FORMAT.md | Creates `docs/research/` + INDEX lazily on first record |
-| `have-a-try` | `domain.md` | A concrete design question | `CONTEXT.md`, `docs/adr/`, PRD | — | — |
+| `have-a-try` | `domain.md` | A divergence — conflicting options or a contested claim, settleable by running code | `CONTEXT.md`, `docs/adr/`, PRD | — | — |
 | `grill` | `domain.md` | PRD (`docs/prd/PRD-NNNN-<title>.md`) | `CONTEXT.md`, `docs/adr/` | CONTEXT-FORMAT.md, ADR-FORMAT.md | Creates `CONTEXT.md` and ADRs lazily |
 | `story` | `domain.md`, `repo-map.md`, `issue-tracker.md`, `triage-labels.md` | — | `CONTEXT.md`, PRD | STORY-FORMAT.md (Issue body), minimal PRD | Creates minimal PRD if none exists |
 | `implement` | `domain.md`, `repo-map.md`, `issue-tracker.md` | Issues from `/story` or PRD with Acceptance Criteria | `CONTEXT.md`, ADRs, `docs/research/INDEX.md`, `triage-labels.md` | Issues from `/story`; expects `/tdd` output | PRD Status update (→ `In Progress`), issue status update (→ `Done`), commits |

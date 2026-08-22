@@ -151,7 +151,7 @@ Draft → Grilled → Sliced → In Progress → Done
 ## Traceability
 
 - **Created by**: `/think` (or `/story` for minimal PRD)
-- **Prototyped by**: `/have-a-try` (<YYYY-MM-DD>) — if a prototype validated/invalidated a design assumption — <one-line question + verdict>
+- **Prototyped by**: `/have-a-try` (<YYYY-MM-DD>) — if a demo adjudicated a design option — <divergence> → <selected X / eliminated Y, because <evidence>>
 - **Grilled by**: `/grill` (completed <YYYY-MM-DD>) — <summary: terms sharpened, assumptions resolved, ADRs created>
 - **Sliced into**:
   - #<issue-1> — [PRD-NNNN] <slice title> (AFK) — Done

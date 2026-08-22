@@ -256,6 +256,10 @@ Review implementation quality for the changes in the diff. Focus exclusively on 
 
 Do NOT review test quality or release impact — those belong to other sub-agents.
 
+### Project Standards First
+
+If the repo documents its own coding standards (`docs/agents/coding-standards.md`, a CONTRIBUTING/style guide, or linter configs in the diff's scope), read them and treat them as **higher priority than the generic checklists below**: report violations of the project's stated standards even when generic rules would pass, and don't flag as issues what the project explicitly allows. The generic checklists are the floor, not the ceiling.
+
 ### Security Checklist
 
 Run these on every review:

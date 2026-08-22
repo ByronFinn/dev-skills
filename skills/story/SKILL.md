@@ -61,6 +61,7 @@ See [REFERENCE.md](REFERENCE.md) for issue template, input handling, and example
 | Dependencies wrong | Publish in dependency order (blockers first) |
 | PRD/parent issue not updated | Step 8/9: Update PRD and sync Issue |
 | Input too vague for slicing | Suggest `/think` — do not run a full brainstorming session yourself |
+| Forced a wide refactor (rename shared column, retype shared symbol) into tracer bullets | Vertical Slice Rules: slice it expand → migrate batches → contract; a slice that can't land green alone isn't a slice |
 | Same topic got two PRDs (e.g. PRD-0001 + PRD-0002) | Step 3 (Ensure PRD Exists): run PRD Conflict Check (see think/REFERENCE.md §PRD Conflict Check) before creating |
 
 ## Vertical Slice Rules
@@ -69,6 +70,8 @@ See [REFERENCE.md](REFERENCE.md) for issue template, input handling, and example
 - Completed slice is demonstrable or verifiable on its own
 - Prefer many thin slices over few thick ones
 - Avoid file paths or code snippets — they become stale
+
+**Wide refactors are the exception.** A wide refactor is one mechanical change (rename a shared column, retype a shared symbol) whose blast radius spans the whole codebase — no vertical slice can land green on its own. Don't force it into tracer bullets; slice it as **expand → migrate → contract**: (1) one ticket adds the new form beside the old so nothing breaks; (2) migration tickets move call sites in batches sized by blast radius (per package/directory), each batch keeping the suite green because the old form still exists, each blocked by the expand; (3) one contract ticket deletes the old form, blocked by every migrate batch. See [REFERENCE.md](REFERENCE.md) for the sequence diagram.
 
 ## Output
 

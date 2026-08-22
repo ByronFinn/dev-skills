@@ -53,7 +53,7 @@ If a question can be answered by exploring the codebase or a quick research pass
 
 **Step 7 — Q&A loop (converge).** One question at a time. After each answer, immediately update the PRD: move resolved items from `Open Questions` to `Requirements`, sharpen `Acceptance Criteria`, clarify `Out of Scope`.
 
-**Step 8 — Propose approaches + record decision.** When requirements are clear, present 2-3 approaches (if not already done via research), ask preference, and record the result in the PRD's `Decision (ADR-lite)` section.
+**Step 8 — Propose approaches + record decision.** When requirements are clear, present 2-3 approaches (if not already done via research), ask preference, and record the result in the PRD's `Decision (ADR-lite)` section. If the options can't be separated by reasoning or trade-offs alone — and running code could separate them — suggest `/have-a-try`: a minimal demo adjudicates (selects or eliminates), and the verdict fills the decision plus the PRD's `Prototyped by` field.
 
 **Step 9 — Submit plan for approval.** Present the complete requirements (Goal, Requirements, Acceptance Criteria, Definition of Done, Out of Scope, Technical Approach, small-PR implementation plan). After user approval, proceed to Step 10 (Create Parent Issue & Finalize PRD) — do not wrap up yet.
 

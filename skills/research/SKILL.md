@@ -1,6 +1,6 @@
 ---
 name: research
-description: "Investigate a technical topic against authoritative sources (official docs, source, specs) and persist a versioned, immutable best-practice record into a searchable knowledge base. Use before committing to a stack/version-specific approach — so the next task can query INDEX.md instead of re-searching. Trigger words: research, 调研, 最佳实践, best practice, 技术选型, tech evaluation, 选哪个库, 官方文档, how does X work in version Y, 权威信源."
+description: "Investigate a technical stack/version question against authoritative sources (official docs, source, specs) and persist a versioned, immutable best-practice record into a searchable knowledge base. Use before committing to a stack/version-specific approach — so the next task can query INDEX.md instead of re-searching. Not for product/market/competitor analysis or open-ended brainstorming (that is /think territory). Trigger words: research, 调研, 最佳实践, best practice, 技术选型, tech evaluation, 选哪个库, 官方文档, how does X work in version Y, 权威信源."
 ---
 
 # Research: Authoritative Technical Investigation, Persisted
@@ -25,6 +25,8 @@ A research record is a **durable note capturing best practice for one stack × t
 5. **Lazy creation** — `docs/research/` and `INDEX.md` are created on first research output, never scaffolded empty. Mirrors `docs/prd/` and `docs/adr/` lazy-creation convention.
 
 ## Process Summary
+
+**Execution mode.** Prefer dispatching Steps 3-4 (version detection, source gathering) as a **background sub-agent** when the runtime supports it, so the main session keeps working; run Steps 5-7 (write record, update INDEX, stale sweep) when it reports back. For quick lookups the user is actively waiting on, run inline. Either way the record and INDEX are written by the main session, not the background agent.
 
 **Step 0 — Bootstrap.** Apply the [Skill Entry Protocol](../rules/entry-protocol.md) — it locates domain docs and reads `CONTEXT.md`, ADRs, and `docs/research/INDEX.md`.
 

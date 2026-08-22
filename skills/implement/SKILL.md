@@ -32,7 +32,7 @@ Sequences the full implementation pipeline for a set of pre-agreed vertical slic
 **Step 3 — Implement each seam.** For each work item in dependency order:
 
 1. **Assess TDD suitability** — does this item have clear acceptance criteria testable at a public interface boundary? (See [REFERENCE.md §TDD Suitability](REFERENCE.md))
-2. **If suitable** — follow the `/tdd` process for this issue. Put implement workflow aside, execute `/tdd`'s full cycle (Steps 1-4) for this item, then resume.
+2. **If suitable** — call the Skill tool with "tdd" for this item. Put the implement workflow aside, execute tdd's full cycle (Steps 1-4) for this item, then resume here.
 3. **If not suitable** — implement directly, writing tests alongside code.
 4. **Typecheck** — run the project's typechecker. If it fails, fix before proceeding.
 5. **Test** — run the test suite for this item / changed files. All must pass.

@@ -222,3 +222,21 @@ In this example:
 - Issue 3 is blocked by both Issue 1 and Issue 2 (needs model + payment flow)
 
 Publish in order: A → B → C, so A's issue number is available when referencing from B and C.
+
+## Wide Refactors: the Expand → Migrate → Contract Sequence
+
+When the change is one mechanical edit with codebase-wide blast radius (rename a shared column, retype a shared symbol), a vertical slice cannot land green alone — every touched call site breaks in the same edit. Sequence it instead:
+
+```mermaid
+graph TD
+    E["#1 Expand: add new form beside old (suite green)"] --> M1["#2 Migrate batch A (per package/dir, suite green)"]
+    E --> M2["#3 Migrate batch B (suite green)"]
+    M1 --> C["#4 Contract: delete old form"]
+    M2 --> C
+```
+
+- **Expand** (1 ticket): add the new column/symbol/form beside the old one, nothing migrates. Suite stays green because both forms exist.
+- **Migrate** (N tickets, each blocked by Expand): move call sites over in batches sized by blast radius — per package or per directory. Each batch lands green because the old form still serves the unmigrated majority.
+- **Contract** (1 ticket, blocked by every Migrate): delete the old form once no caller remains. Suite green proves completeness.
+
+If even a batch can't stay green alone, keep the sequence but let the batch tickets share an integration branch; green is promised only at the batch boundary.

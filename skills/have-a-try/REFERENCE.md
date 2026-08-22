@@ -1,37 +1,48 @@
 # Have-a-Try Reference
 
-Detailed processes for the two prototype branches. Pick the branch in [SKILL.md](SKILL.md) first — building the wrong one wastes the whole prototype.
+Detailed processes for the four tactics, plus the CUSTOM synthesis rules. Pick the tactic in [SKILL.md](SKILL.md) first — building the wrong one wastes the whole demo.
 
 ---
 
-# Chapter: LOGIC Mode
+# Chapter: LOGIC Mode — Interactive Probe
 
-A tiny interactive terminal app that lets the user drive a state model by hand. Use this when the question is about **business logic, state transitions, or data shape** — the kind of thing that looks reasonable on paper but only feels wrong once you push it through real cases.
+Use when the core conflict is **"does this logic / state model / data shape actually hold up"** — the kind of thing that looks reasonable on paper but only feels wrong once you push it through real cases. A tiny interactive app lets the adjudicator drive the model by hand.
+
+By default a terminal app in the host project's language. When the person adjudicating doesn't live in a terminal (PM, designer, domain expert), build the [shareable HTML variant](#the-shareable-html-variant) instead.
 
 ## When This Is the Right Shape
 
 - "I'm not sure if this state machine handles the edge case where X then Y."
 - "Does this data model actually let me represent the case where..."
 - "I want to feel out what the API should look like before writing it."
-- Anything where the user wants to **press buttons and watch state change**.
+- Anything where someone wants to **press buttons and watch state change**.
 
-If the question is "what should this look like" — wrong branch. Use [UI mode](#chapter-ui-mode).
+If the conflict is "what should this look like" — wrong tactic. Use [UI mode](#chapter-ui-mode--side-by-side-variants). If it's "which is faster" — use [BENCH mode](#chapter-bench-mode--comparative-measurement).
 
 ## Process
 
-### 1. State the question
+### 1. State the divergence
 
-Before writing code, write down what state model and what question you're prototyping. One paragraph, in the prototype's README or a comment at the top of the file. A logic prototype that answers the wrong question is pure waste — make the question explicit so it can be checked later, whether the user is watching now or returning to it AFK.
+Before writing code, write down what state model and what conflicting positions you're prototyping ("this machine handles X→Y" vs "it can't"). One paragraph, in the demo's README or a comment at the top of the file; in the HTML variant, a visible intro — not just a comment. A probe answering the wrong divergence is pure waste — make it explicit so it can be checked later, whether the user is watching now or returning to it AFK.
 
-### 2. Pick the language
+### 2. Check who will drive it
+
+The adjudicator decides the shell:
+
+- **A developer (the default)** → terminal app in the host project's language. Continue with steps 3–9.
+- **A non-developer judging the design** (PM, designer, domain expert) → a keyboard TUI is the wrong vehicle. Build the [shareable HTML variant](#the-shareable-html-variant): one self-contained file they double-click — no terminal, no install. State the trade-off in the intro: the pure module inside it is JavaScript, so in a non-JS codebase the **verdict is portable, the module isn't**.
+
+Either way, **labels speak the domain, not the code**: buttons and state fields use the business's vocabulary — the Skill Entry Protocol's `CONTEXT.md` read supplies the glossary when one exists — not reducer/action identifiers. The person judging shouldn't have to translate.
+
+### 3. Pick the language
 
 Use whatever the host project uses. If the project has no obvious runtime (e.g. a docs repo), ask.
 
-Match the project's existing conventions for tooling — don't add a new package manager or runtime just for the prototype.
+Match the project's existing conventions for tooling — don't add a new package manager or runtime just for the demo. (The HTML variant is the one exception: its runtime is the browser, by design.)
 
-### 3. Isolate the logic in a portable module
+### 4. Isolate the logic in a portable module
 
-Put the actual logic — the bit that's answering the question — behind a small, pure interface that could be lifted out and dropped into the real codebase later. The TUI around it is throwaway; the logic module shouldn't be.
+Put the actual logic — the bit that's answering the question — behind a small, pure interface that could be lifted out and dropped into the real codebase later. The shell around it is throwaway; the logic module shouldn't be.
 
 The right shape depends on the question:
 
@@ -40,17 +51,17 @@ The right shape depends on the question:
 - **A small set of pure functions** over a plain data type. Good when there's no implicit current state — just transformations.
 - **A class or module with a clear method surface** when the logic genuinely owns ongoing internal state.
 
-Pick whichever shape best fits the question being asked, *not* whichever is easiest to wire to a TUI. Keep it pure: no I/O, no terminal code, no `console.log` for control flow. The TUI imports it and calls into it; nothing flows the other direction.
+Pick whichever shape best fits the question being asked, *not* whichever is easiest to wire to a shell. Keep it pure: no I/O, no terminal code, no `console.log` for control flow. The shell imports it and calls into it; nothing flows the other direction. In the HTML variant the module is a single `<script>` block — same rule: no DOM, no `document`, no handlers reaching inside.
 
-> **This is the core insight of LOGIC mode.** It's what makes the prototype useful past its own lifetime. When the question's been answered, the validated reducer / machine / function set can be lifted into the real module — the TUI shell gets deleted.
+> **This is the core insight of LOGIC mode.** It's what makes the prototype useful past its own lifetime. When the question's been answered, the validated reducer / machine / function set can be lifted into the real module — the shell gets deleted.
 
-### 4. Build the smallest TUI that exposes the state
+### 5. Build the smallest TUI that exposes the state
 
 Build it as a **lightweight TUI** — on every tick, clear the screen (`console.clear()` / `print("\033[2J\033[H")` / equivalent) and re-render the whole frame. The user should always see one stable view, not an ever-growing scrollback.
 
 Each frame has two parts, in this order:
 
-1. **Current state**, pretty-printed and diff-friendly (one field per line, or formatted JSON). Use **bold** for field names or section headers and **dim** for less important context (timestamps, IDs, derived values). Native ANSI escape codes are fine — `\x1b[1m` bold, `\x1b[2m` dim, `\x1b[0m` reset. No need to pull in a styling library unless one is already in the project.
+1. **Current state**, pretty-printed and diff-friendly (one field per line, or formatted JSON). Use **bold** for field names or section headers and **dim** for less important context (timestamps, IDs, derived values). Native ANSI escape codes are fine — `\x1b[1m` bold, `\x1b[2m` dim, `\x1b[0m` reset. No need to pull in a styling library unless one is already in the project. Under the state, one **change line** for what the last action moved — `→ order.status: pending → shipped`, or a `▸` marker on changed fields — so after a full re-render the eye lands on the delta, not the whole panel.
 2. **Keyboard shortcuts**, listed at the bottom: `[a] add user  [d] delete user  [t] tick clock  [q] quit`. Bold the key, dim the description, or vice-versa — whatever reads cleanly.
 
 Behaviour:
@@ -62,35 +73,59 @@ Behaviour:
 
 The whole frame should fit on one screen.
 
-### 5. Make it runnable in one command
+### 6. Script the awkward cases as guided scenarios
+
+Free play alone hopes the user stumbles into the interesting cases. Don't hope — script them:
+
+- Each scenario has a short **domain-language name**, a one-line **"what to watch for"**, and an ordered list of actions.
+- Entering a scenario **resets to a known initial state**, so it runs the same way every time; each keypress advances one step, re-rendering the full frame (change line included) after each.
+- Minimum set: the happy path; the trickiest edge case behind the divergence; and **one sequence that should be rejected** — "wait, that shouldn't be possible" is the whole point.
+- In the TUI, scenarios hang off the shortcut bar (`[s] scenarios` → `[1] refund after shipping   [2] double-charge guard`); `[f]` returns to free play. In the HTML variant, one tab per scenario with the ordered buttons visible.
+
+### 7. Make it runnable in one command
 
 Add a script to the project's existing task runner (`package.json` scripts, `Makefile`, `justfile`, `pyproject.toml`). The user should run `pnpm run <prototype-name>` or equivalent — never need to remember a path.
 
-If the host project has no task runner, just put the command at the top of the prototype's README.
+If the host project has no task runner, just put the command at the top of the demo's README. For the HTML variant, the file itself is the run command — say "double-click to open" in the intro.
 
-### 6. Hand it over
+### 8. Hand it over
 
-Give the user the run command. They'll drive it themselves; the interesting moments are when they say "wait, that shouldn't be possible" or "huh, I assumed X would be different" — those are the bugs in the _idea_, which is the whole point. If they want new actions added, add them. Prototypes evolve.
+Give the user the run command (or the file). They'll drive it themselves; the interesting moments are when they say "wait, that shouldn't be possible" or "huh, I assumed X would be different" — those are the bugs in the _idea_, which is the whole point. If they want new actions added, add them. Prototypes evolve.
 
-### 7. Capture the answer
+### 9. Capture the answer
 
-When the prototype has done its job, the answer to the question is the only thing worth keeping. If the user is around, ask what it taught them. If not, leave a `NOTES.md` next to the prototype so the answer can be filled in (or filled in by you, if you've watched the session) before the prototype gets deleted.
+When the probe has done its job, the answer to the divergence is the only thing worth keeping. The verdict may **select** ("the model holds — absorb it") or **eliminate** ("it breaks on X — this design assumption is dead"); both are full successes. If the user is around, ask what it taught them. If not, leave a `NOTES.md` next to the demo so the answer can be filled in before the demo gets deleted.
 
 ## Anti-Patterns (LOGIC Mode)
 
 - **Don't add tests.** A prototype that needs tests is no longer a prototype.
 - **Don't wire it to the real database.** Use an in-memory store unless the question is specifically about persistence.
-- **Don't generalise.** No "what if we wanted to support X later." The prototype answers one question.
-- **Don't blur the logic and the TUI together.** If the reducer / state machine references `console.log`, prompts, or terminal escape codes, it's no longer portable. Keep the TUI as a thin shell over a pure module.
-- **Don't ship the TUI shell into production.** The shell is optimised for being driven by hand from a terminal. The logic module behind it is the bit worth keeping.
+- **Don't generalise.** No "what if we wanted to support X later." The prototype answers one divergence.
+- **Don't blur the logic and the shell together.** If the reducer / state machine references `console.log`, prompts, terminal escape codes, DOM, or `document`, it's no longer portable. Keep the shell as a thin layer over a pure module.
+- **Don't ship the shell into production.** The shell (TUI or HTML page) is optimised for being driven by hand. The logic module behind it is the bit worth keeping.
+
+## The shareable HTML variant
+
+One file, plain HTML/CSS/JS: no framework, no bundler, no server — everything inline so it opens by double-click and survives being emailed around. Anyone should be able to run it by opening it.
+
+Write it for a non-developer: every label in **domain language**, plain-word explanations of what's happening. Layout, top to bottom:
+
+1. **Title and one-line intro** — the divergence being explored (from step 1), visible, not hidden in a comment.
+2. **Current state** — the full relevant state as a readable panel of labelled fields (not a raw JSON dump), re-rendered after every click, with the last change called out.
+3. **Free-play buttons** — one per action, always available, so anyone can poke at the model in any order.
+4. **Guided scenarios** — one per tab, per step 6: short description, then the ordered buttons for that scenario.
+
+Keep it beautiful but restrained: clean typography, generous spacing, one accent colour. No animations, no gimmicks — nothing that competes with the state and the buttons.
+
+In a non-JS codebase, note the trade-off in the intro: the **verdict is portable, the module isn't** — plan to re-express the validated design in the host language when absorbing.
 
 ---
 
-# Chapter: UI Mode
+# Chapter: UI Mode — Side-by-Side Variants
 
 Generate **several radically different UI variations** on a single route, switchable from a floating bottom bar. The user flips between variants in the browser, picks one (or steals bits from each), then throws the rest away.
 
-If the question is about logic/state rather than what something looks like — wrong branch. Use [LOGIC mode](#chapter-logic-mode).
+If the conflict is about logic/state rather than what something looks like — wrong tactic. Use [LOGIC mode](#chapter-logic-mode--interactive-probe).
 
 ## When This Is the Right Shape
 
@@ -121,7 +156,7 @@ In both sub-shapes the floating bottom bar is identical.
 
 ## Process
 
-### 1. State the question and pick N
+### 1. State the divergence and pick N
 
 Default to **3 variants**. More than 5 stops being radically different and starts being noise — cap there.
 
@@ -183,14 +218,14 @@ Put the switcher in a single shared component so both sub-shapes can reuse it. L
 
 Surface the URL (and the `?variant=` keys). The user will flip through whenever they get to it. The interesting feedback is usually **"I want the header from B with the sidebar from C"** — that's the actual design they want.
 
-### 6. Capture the Answer and Clean Up
+### 6. Capture the Verdict and Clean Up
 
-Once a variant has won, write down which one and why (commit message, ADR, issue, or a `NOTES.md` next to the prototype if running AFK and the user hasn't responded yet). Then:
+Once a variant has won, write down which one and why (commit message, ADR, issue, or a `NOTES.md` next to the prototype if running AFK and the user hasn't responded yet) — and note what the losing variants got wrong, since elimination evidence is half the value. Then:
 
 - **Sub-shape A** — delete the losing variants and the switcher; fold the winner into the existing page.
 - **Sub-shape B** — promote the winning variant to a real route, delete the throwaway route and the switcher.
 
-Don't leave variant components or the switcher lying around. They rot fast and confuse the next reader.
+If the verdict is contested or the losing variants have archive value: commit the full set (variants + switcher) to a throwaway branch off main and leave a pointer at the verdict record — then remove them from main. Don't leave variant components or the switcher lying around on main; they rot fast and confuse the next reader.
 
 ## Anti-Patterns (UI Mode)
 
@@ -198,3 +233,106 @@ Don't leave variant components or the switcher lying around. They rot fast and c
 - **Sharing too much code between variants.** A shared `<Header>` is fine; a shared `<Layout>` defeats the point. Each variant should be free to throw out the layout.
 - **Wiring variants to real mutations.** Read-only prototypes are fine. If a variant needs to mutate, point it at a stub — the question is "what should this look like", not "does the backend work".
 - **Promoting the prototype directly to production.** The variant code was written under prototype constraints (no tests, minimal error handling). Rewrite it properly when you fold it in. (Hand off to `/tdd` for the real, test-first implementation.)
+
+---
+
+# Chapter: BENCH Mode — Comparative Measurement
+
+Use when the core conflict is **"which of these candidates is faster / leaner / scales better"** — A vs B, library vs library, optimized vs unoptimized. The adjudicator is numbers, and numbers are only evidence when the comparison is fair and the environment is recorded.
+
+Comparative only. Open-ended tuning with no candidates to compare ("just make it faster") is `/debug` territory; if documentation settles the choice without your machine and your load, it's `/research` territory.
+
+## When This Is the Right Shape
+
+- "Is A or B faster for our workload?"
+- "Does the optimization actually help?" (before vs after)
+- "Which of these libraries fits our constraints better?" — typically after `/research` narrowed the field by docs; BENCH settles the final call by measurement.
+
+## Process
+
+### 1. State the divergence and the candidates
+
+Write down the decision, the candidates, the metric(s) — latency? throughput? peak memory? allocation count? — and the acceptable outcomes, **including elimination** ("if B loses on every metric, we drop it").
+
+### 2. Build one shared harness
+
+All candidates do the same work through the same interface: **one harness, candidates plugged in** — shared fixtures, shared data generation, shared timing code. A harness that treats candidates differently measures the harness, not the candidates.
+
+### 3. Make the load honest
+
+Shape the workload like the real one — data size, cardinality, contention — or label the result **synthetic** in the report. Warm up before measuring (JIT, caches, connection pools). Run **N rounds** and **alternate execution order** (A,B,B,A or shuffled) so machine drift, thermal throttling, and cache warmth can't fake a winner.
+
+### 4. Record the environment
+
+Machine, OS, runtime + library versions, data size, number of rounds. Numbers without environment are not reproducible — they aren't evidence.
+
+### 5. Adjudicate
+
+Report per-candidate metrics with **median and p95** (means hide tails). The verdict:
+
+- **Selected** — the winner, plus one line on *why* it wins (allocation? algorithmic complexity? caching?). A win with no explanation teaches nothing.
+- **Eliminated** — one or more candidates dropped, with the numbers that dropped them.
+- **Tie** — the gap is within run-to-run noise. Say so; a tie that saves you a migration is a real result.
+- **All failed** — nothing meets the bar. Also a valid verdict; route back to `/think` for new candidates.
+
+Capture the numbers + environment + verdict where the divergence was born (ADR / PRD / issue), then dispose of the harness per Rule 6.
+
+## Anti-Patterns (BENCH Mode)
+
+- **Reporting only means.** Tails and variance are the story — report median and p95.
+- **An unfair harness** — different fixtures or different work per candidate.
+- **A verdict without environment** (machine, versions, data size, rounds).
+- **Synthetic numbers presented as production behaviour.** Label them, or shape the load realistically.
+- **Comparing at one data size only.** The interesting crossovers happen at scale.
+
+---
+
+# Chapter: SPIKE Mode — Concern Verification
+
+Use when the core conflict is **"does option X survive concern C"** — feasibility, concurrency, memory, compatibility, API expressiveness. The adjudicator is a checklist: each concern verified against a targeted demo, producing a **concern×option matrix**.
+
+## When This Is the Right Shape
+
+- "Can this library handle our concurrency pattern?"
+- "Will approach X work under constraint Y?" (browser, embedded, offline, size budget...)
+- "Which of these three approaches satisfies all our concerns?"
+
+If you can't list the concerns, the divergence isn't ready — the shape is wrong. `/think` first.
+
+## Process
+
+### 1. List the concerns first
+
+Take them from the PRD's Open Questions, ADR pending options, or the user. A concern is a **single checkable statement** ("survives 1k concurrent writes", "installs under the size budget"), not a vibe ("check it works").
+
+### 2. One minimal targeted demo per option
+
+Each demo exercises **only the concerns** — the smallest code that could fail. No walking skeleton, no full feature, no polish. Different options may need different demos; keep them **symmetric in scope**, or the comparison fakes a verdict.
+
+### 3. Verify each concern against each option
+
+Run them. Record per cell: **✓ works / ✗ blocked / △ works with caveat** — a △ must name the caveat in the same cell. The caveat is the finding.
+
+### 4. Adjudicate
+
+The matrix is the evidence. The verdict: **selected** (which option + why), **eliminated** (which options died, on which concern), or **all failed** (→ `/think` for new options). Record matrix + verdict where the divergence was born (ADR / PRD / issue), then dispose of the demos per Rule 6. The production implementation of the survivor goes through `/tdd`, not the spike.
+
+## Anti-Patterns (SPIKE Mode)
+
+- **The spike becomes a real implementation.** Tests, abstractions, polish — inverted priorities. The knowledge is the product, not the code.
+- **Concern list missing or vague.** "Check it works" is not a concern; list checkable statements first.
+- **Reporting △ as ✓.** The caveat is exactly what the decision needs to know.
+- **Asymmetric demos** — a 20-line probe for option A, a mini-framework for option B.
+
+---
+
+# Chapter: CUSTOM — Synthesizing an Experiment
+
+The four tactics are walked paths, not a closed enum. When the divergence matches none of them, synthesize an experiment:
+
+1. **What is the divergence?** Decision + conflicting positions. Can't name it → `/think`.
+2. **What evidence would settle it?** If documentation settles it → `/research`. Otherwise name the evidence type — a number, a checklist, a feel, a choice.
+3. **What is the smallest disposable rig that produces that evidence?** Borrow from the tactics: scenario resets (LOGIC), `?variant=` switching (UI), a shared harness (BENCH), a ✓/✗ matrix (SPIKE).
+4. **Who adjudicates?** A human's feel or choice, numbers, or a checklist — the answer shapes the presentation (interactive demo vs report).
+
+Then run the pipeline: minimal, one command, surface the evidence, adjudicate both ways (select or eliminate), fix the evidence where the divergence was born, dispose of the rig.

@@ -17,7 +17,8 @@ skills/
 ├── rules/
 │   ├── anti-patterns.md         # cross-skill behavioral constraints (always apply; see file for current count)
 │   ├── entry-protocol.md        # Shared skill bootstrap sequence (all skills reference)
-│   └── sub-agent-runtime.md     # Sub-agent = re-read-from-disk discipline, not a scheduler (tdd/review reference)
+│   ├── sub-agent-runtime.md     # Sub-agent = re-read-from-disk discipline, not a scheduler (tdd/review reference)
+│   └── writing-skills.md        # Authoring discipline for SKILL.md/description/REFERENCE (apply when changing skills)
 ├── setup-project/               # Project initialization skill → AGENTS.md + docs/agents/
 │   ├── SKILL.md
 │   └── REFERENCE.md
@@ -25,7 +26,7 @@ skills/
 │   ├── SKILL.md
 │   ├── REFERENCE.md
 │   └── PRD-FORMAT.md
-├── have-a-try/                  # Throwaway prototype to answer one design question (LOGIC terminal app or UI variants)
+├── have-a-try/                  # Settle a divergence with a minimal demo (LOGIC probe / UI variants / BENCH / SPIKE / custom) — selects or eliminates
 │   ├── SKILL.md
 │   └── REFERENCE.md
 ├── research/                    # Technical investigation skill → immutable, versioned research records + INDEX
@@ -90,7 +91,7 @@ New feature:          think → grill → story → implement → review → (re
                       (implement: per-seam /tdd|direct → typecheck → test → commit)
                       (think Step 5 queries research INDEX; on miss may branch to research → think)
 Technical research:   research → (immutable record + INDEX) → think (queries INDEX) or grill (ADR cites research)
-Design doubt:         think → have-a-try → grill → story → implement → review  (optional branch: prototype when running code beats reasoning)
+Design doubt:         think → have-a-try → grill → story → implement → review  (optional: minimal demo settles divergences — selects or eliminates; also enterable mid-grill, post-research, mid-build)
 Direct breakdown:     story → implement → review → (release)
 Bug/regression:       debug → review (optional)
 Architecture health:  improve-architecture → grill/story/implement (if approved)
@@ -99,7 +100,7 @@ Writing & editing:    write → (polished prose, release notes, or review report
 
 For sub-agent internals (`/tdd` cycle, `/review` three-perspective dispatch) and all routing disambiguations (Bug vs TDD, Grill vs Review, Story vs Think, Think vs Have-a-try vs TDD, Think vs Research), see RESOLVER.md.
 
-Skills do **not** auto-chain. Each skill stops and waits for the user to trigger the next step. Sub-agents within a skill do not share state. Each sub-agent re-reads shared context independently.
+Skills do **not** auto-chain: each skill stops and waits for the user to trigger the next step. One exception — an orchestrator skill may internally drive a model-invoked sub-skill as part of its own documented process (`implement` calls the Skill tool with "tdd" per seam). Cross-skill handoffs at completion still stop for the user. Sub-agents within a skill do not share state. Each sub-agent re-reads shared context independently.
 
 ## Skill Routing (RESOLVER.md)
 
@@ -142,7 +143,7 @@ When skills are used in target projects, they create and maintain these files:
 | `CONTEXT.md` | `grill` | Domain glossary (no implementation details) |
 | `docs/adr/<NNNN>-<title>.md` | `grill` | Architecture Decision Records |
 | `docs/research/<stack>-<topic>-<major>.md` + `docs/research/INDEX.md` | `research` | Immutable, versioned technical research records + searchable index (authoritative sources only) |
-| `NOTES.md` + PRD `Prototyped by` field | `have-a-try` | Prototype verdict — design assumption validated or invalidated; prototype shell deleted or core absorbed |
+| `NOTES.md` + PRD `Prototyped by` field | `have-a-try` | Verdict — option selected or eliminated, with evidence and rationale; demo shell deleted, core absorbed, or archived |
 | Issues | `story` | Vertical-slice implementation tickets |
 | Code + commits + PRD/issue status updates | `implement` | Implemented work items via /tdd or direct implementation, with typechecking, testing, and per-seam commits |
 
@@ -175,5 +176,8 @@ Apply first-principles reasoning to engineering work. Establish WHAT before dete
 - When a skill uses sub-agent orchestration, structure `REFERENCE.md` as one chapter per sub-agent. Each chapter must include: context re-read checklist, responsibilities, checklist, output template, and independence constraint.
 - Update `RESOLVER.md` when adding or changing skill routing.
 - Run `anti-patterns.md` rules against your own output.
+- Apply `rules/writing-skills.md` when creating or editing any skill file or `description` — it holds the shared authoring discipline (description writing, information hierarchy, wording, pruning).
 - Reference `rules/entry-protocol.md` for shared bootstrap — don't duplicate context-read instructions in each skill.
+- When changing a skill's `description`, run a trigger-eval round (`docs/evals/trigger-eval.md`).
+- Record rejected proposals (and their revisit conditions) under `.out-of-scope/` so they aren't re-litigated from scratch.
 - Documentation is bilingual (English primary, Chinese supplementary in format files).
