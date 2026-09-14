@@ -1,0 +1,2220 @@
+{
+ "iteration": 2,
+ "date": "2026-09-14",
+ "levels": [
+  "s",
+  "t",
+  "w"
+ ],
+ "summary": {
+  "S_hard_pass": 190,
+  "S_hard_total": 190,
+  "S_soft_pass": 24,
+  "S_soft_total": 24,
+  "W_pass": 32,
+  "W_total": 32,
+  "T_train": 33.3,
+  "T_holdout": 62.5,
+  "per_skill": {
+   "debug": {
+    "hard_pass": 16,
+    "hard_total": 16
+   },
+   "grill": {
+    "hard_pass": 21,
+    "hard_total": 21
+   },
+   "have-a-try": {
+    "hard_pass": 17,
+    "hard_total": 17
+   },
+   "implement": {
+    "hard_pass": 15,
+    "hard_total": 15
+   },
+   "improve-architecture": {
+    "hard_pass": 16,
+    "hard_total": 16
+   },
+   "research": {
+    "hard_pass": 16,
+    "hard_total": 16
+   },
+   "review": {
+    "hard_pass": 17,
+    "hard_total": 17
+   },
+   "rules": {
+    "hard_pass": 9,
+    "hard_total": 9
+   },
+   "setup-project": {
+    "hard_pass": 17,
+    "hard_total": 17
+   },
+   "story": {
+    "hard_pass": 16,
+    "hard_total": 16
+   },
+   "tdd": {
+    "hard_pass": 17,
+    "hard_total": 17
+   },
+   "think": {
+    "hard_pass": 22,
+    "hard_total": 22
+   },
+   "write": {
+    "hard_pass": 16,
+    "hard_total": 16
+   },
+   "-": {
+    "hard_pass": 1,
+    "hard_total": 1
+   },
+   "## Issue": {
+    "hard_pass": 2,
+    "hard_total": 2
+   },
+   "Grilled by": {
+    "hard_pass": 2,
+    "hard_total": 2
+   },
+   "Prototyped by": {
+    "hard_pass": 2,
+    "hard_total": 2
+   }
+  }
+ },
+ "results": [
+  {
+   "level": "S",
+   "check": "FM1",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1] debug: non-spec frontmatter fields [] (allowed: ['description', 'disable-model-invocation', 'name'])"
+  },
+  {
+   "level": "S",
+   "check": "FM1b",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1b] debug: missing required name/description"
+  },
+  {
+   "level": "S",
+   "check": "FM2",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM2] debug: name='debug' must equal dir, be lowercase-hyphen, <=64 chars"
+  },
+  {
+   "level": "S",
+   "check": "FM3",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3] debug: description length 296 outside 1..1024 (spec hard limit)"
+  },
+  {
+   "level": "S",
+   "check": "FM3b",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3b] debug: description only 296 chars — too thin to carry triggering (aim 100+)"
+  },
+  {
+   "level": "S",
+   "check": "FM3c",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3c] debug: description lacks intent-first phrasing ('Use when/after/before/to…')"
+  },
+  {
+   "level": "S",
+   "check": "FM4",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM4] debug: description has no Chinese trigger words (RESOLVER route matching needs both languages)"
+  },
+  {
+   "level": "S",
+   "check": "FM5",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM5] debug: disable-model-invocation=False but repo policy expects False (USER_INVOKED=['implement', 'rules'])"
+  },
+  {
+   "level": "S",
+   "check": "ST1",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST1] debug: no '## Outcome Contract' section (anti-pattern #30)"
+  },
+  {
+   "level": "S",
+   "check": "ST2",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST2] debug: outcome contract must precede the first procedure section"
+  },
+  {
+   "level": "S",
+   "check": "ST3",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST3] debug: no '## Gotchas' table"
+  },
+  {
+   "level": "S",
+   "check": "ST4",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST4] debug: no '## Output' section with the output template"
+  },
+  {
+   "level": "S",
+   "check": "ST5",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST5] debug: SKILL.md is 95 lines (spec: keep under 500)"
+  },
+  {
+   "level": "S",
+   "check": "ST6",
+   "skill": "debug",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[ST6] debug: SKILL.md is 95 lines (repo guidance: ~140; push detail to REFERENCE)"
+  },
+  {
+   "level": "S",
+   "check": "ST7",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST7] debug: REFERENCE.md exists but SKILL.md never points to it"
+  },
+  {
+   "level": "S",
+   "check": "FM1",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1] grill: non-spec frontmatter fields [] (allowed: ['description', 'disable-model-invocation', 'name'])"
+  },
+  {
+   "level": "S",
+   "check": "FM1b",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1b] grill: missing required name/description"
+  },
+  {
+   "level": "S",
+   "check": "FM2",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM2] grill: name='grill' must equal dir, be lowercase-hyphen, <=64 chars"
+  },
+  {
+   "level": "S",
+   "check": "FM3",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3] grill: description length 489 outside 1..1024 (spec hard limit)"
+  },
+  {
+   "level": "S",
+   "check": "FM3b",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3b] grill: description only 489 chars — too thin to carry triggering (aim 100+)"
+  },
+  {
+   "level": "S",
+   "check": "FM3c",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3c] grill: description lacks intent-first phrasing ('Use when/after/before/to…')"
+  },
+  {
+   "level": "S",
+   "check": "FM4",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM4] grill: description has no Chinese trigger words (RESOLVER route matching needs both languages)"
+  },
+  {
+   "level": "S",
+   "check": "FM5",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM5] grill: disable-model-invocation=False but repo policy expects False (USER_INVOKED=['implement', 'rules'])"
+  },
+  {
+   "level": "S",
+   "check": "ST1",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST1] grill: no '## Outcome Contract' section (anti-pattern #30)"
+  },
+  {
+   "level": "S",
+   "check": "ST2",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST2] grill: outcome contract must precede the first procedure section"
+  },
+  {
+   "level": "S",
+   "check": "ST3",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST3] grill: no '## Gotchas' table"
+  },
+  {
+   "level": "S",
+   "check": "ST4",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST4] grill: no '## Output' section with the output template"
+  },
+  {
+   "level": "S",
+   "check": "ST5",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST5] grill: SKILL.md is 84 lines (spec: keep under 500)"
+  },
+  {
+   "level": "S",
+   "check": "ST6",
+   "skill": "grill",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[ST6] grill: SKILL.md is 84 lines (repo guidance: ~140; push detail to REFERENCE)"
+  },
+  {
+   "level": "S",
+   "check": "ST7",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST7] grill: REFERENCE.md exists but SKILL.md never points to it"
+  },
+  {
+   "level": "S",
+   "check": "IV1",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[IV1] grill: no explicit one-question-per-message rule"
+  },
+  {
+   "level": "S",
+   "check": "IV2",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[IV2] grill: no rule that the NEXT question is derived from the user's previous answer (adaptive, never pre-computed)"
+  },
+  {
+   "level": "S",
+   "check": "IV3",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[IV3] grill: no exhaustive-tree termination rule (stop when the tree is done, not when a list ends)"
+  },
+  {
+   "level": "S",
+   "check": "IV4",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[IV4] grill: batch-question language remains: "
+  },
+  {
+   "level": "S",
+   "check": "IV5",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[IV5] grill: no 'recommended answer with each question' rule"
+  },
+  {
+   "level": "S",
+   "check": "FM1",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1] have-a-try: non-spec frontmatter fields [] (allowed: ['description', 'disable-model-invocation', 'name'])"
+  },
+  {
+   "level": "S",
+   "check": "FM1b",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1b] have-a-try: missing required name/description"
+  },
+  {
+   "level": "S",
+   "check": "FM2",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM2] have-a-try: name='have-a-try' must equal dir, be lowercase-hyphen, <=64 chars"
+  },
+  {
+   "level": "S",
+   "check": "FM3",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3] have-a-try: description length 722 outside 1..1024 (spec hard limit)"
+  },
+  {
+   "level": "S",
+   "check": "FM3b",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3b] have-a-try: description only 722 chars — too thin to carry triggering (aim 100+)"
+  },
+  {
+   "level": "S",
+   "check": "FM3c",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3c] have-a-try: description lacks intent-first phrasing ('Use when/after/before/to…')"
+  },
+  {
+   "level": "S",
+   "check": "FM4",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM4] have-a-try: description has no Chinese trigger words (RESOLVER route matching needs both languages)"
+  },
+  {
+   "level": "S",
+   "check": "FM5",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM5] have-a-try: disable-model-invocation=False but repo policy expects False (USER_INVOKED=['implement', 'rules'])"
+  },
+  {
+   "level": "S",
+   "check": "ST1",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST1] have-a-try: no '## Outcome Contract' section (anti-pattern #30)"
+  },
+  {
+   "level": "S",
+   "check": "ST2",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST2] have-a-try: outcome contract must precede the first procedure section"
+  },
+  {
+   "level": "S",
+   "check": "ST3",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST3] have-a-try: no '## Gotchas' table"
+  },
+  {
+   "level": "S",
+   "check": "ST4",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST4] have-a-try: no '## Output' section with the output template"
+  },
+  {
+   "level": "S",
+   "check": "ST5",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST5] have-a-try: SKILL.md is 137 lines (spec: keep under 500)"
+  },
+  {
+   "level": "S",
+   "check": "ST6",
+   "skill": "have-a-try",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[ST6] have-a-try: SKILL.md is 137 lines (repo guidance: ~140; push detail to REFERENCE)"
+  },
+  {
+   "level": "S",
+   "check": "ST7",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST7] have-a-try: REFERENCE.md exists but SKILL.md never points to it"
+  },
+  {
+   "level": "S",
+   "check": "RF1",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[RF1] have-a-try: REFERENCE.md is 339 lines with only 4 TOC anchors — files >300 lines need a table of contents"
+  },
+  {
+   "level": "S",
+   "check": "FM1",
+   "skill": "implement",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1] implement: non-spec frontmatter fields [] (allowed: ['description', 'disable-model-invocation', 'name'])"
+  },
+  {
+   "level": "S",
+   "check": "FM1b",
+   "skill": "implement",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1b] implement: missing required name/description"
+  },
+  {
+   "level": "S",
+   "check": "FM2",
+   "skill": "implement",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM2] implement: name='implement' must equal dir, be lowercase-hyphen, <=64 chars"
+  },
+  {
+   "level": "S",
+   "check": "FM3",
+   "skill": "implement",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3] implement: description length 357 outside 1..1024 (spec hard limit)"
+  },
+  {
+   "level": "S",
+   "check": "FM3b",
+   "skill": "implement",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3b] implement: description only 357 chars — too thin to carry triggering (aim 100+)"
+  },
+  {
+   "level": "S",
+   "check": "FM3c",
+   "skill": "implement",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3c] implement: description lacks intent-first phrasing ('Use when/after/before/to…')"
+  },
+  {
+   "level": "S",
+   "check": "FM4",
+   "skill": "implement",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[FM4] implement: description has no Chinese trigger words (RESOLVER route matching needs both languages)"
+  },
+  {
+   "level": "S",
+   "check": "FM5",
+   "skill": "implement",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM5] implement: disable-model-invocation=True but repo policy expects True (USER_INVOKED=['implement', 'rules'])"
+  },
+  {
+   "level": "S",
+   "check": "ST1",
+   "skill": "implement",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST1] implement: no '## Outcome Contract' section (anti-pattern #30)"
+  },
+  {
+   "level": "S",
+   "check": "ST2",
+   "skill": "implement",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST2] implement: outcome contract must precede the first procedure section"
+  },
+  {
+   "level": "S",
+   "check": "ST3",
+   "skill": "implement",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST3] implement: no '## Gotchas' table"
+  },
+  {
+   "level": "S",
+   "check": "ST4",
+   "skill": "implement",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST4] implement: no '## Output' section with the output template"
+  },
+  {
+   "level": "S",
+   "check": "ST5",
+   "skill": "implement",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST5] implement: SKILL.md is 79 lines (spec: keep under 500)"
+  },
+  {
+   "level": "S",
+   "check": "ST6",
+   "skill": "implement",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[ST6] implement: SKILL.md is 79 lines (repo guidance: ~140; push detail to REFERENCE)"
+  },
+  {
+   "level": "S",
+   "check": "ST7",
+   "skill": "implement",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST7] implement: REFERENCE.md exists but SKILL.md never points to it"
+  },
+  {
+   "level": "S",
+   "check": "FM1",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1] improve-architecture: non-spec frontmatter fields [] (allowed: ['description', 'disable-model-invocation', 'name'])"
+  },
+  {
+   "level": "S",
+   "check": "FM1b",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1b] improve-architecture: missing required name/description"
+  },
+  {
+   "level": "S",
+   "check": "FM2",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM2] improve-architecture: name='improve-architecture' must equal dir, be lowercase-hyphen, <=64 chars"
+  },
+  {
+   "level": "S",
+   "check": "FM3",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3] improve-architecture: description length 300 outside 1..1024 (spec hard limit)"
+  },
+  {
+   "level": "S",
+   "check": "FM3b",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3b] improve-architecture: description only 300 chars — too thin to carry triggering (aim 100+)"
+  },
+  {
+   "level": "S",
+   "check": "FM3c",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3c] improve-architecture: description lacks intent-first phrasing ('Use when/after/before/to…')"
+  },
+  {
+   "level": "S",
+   "check": "FM4",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM4] improve-architecture: description has no Chinese trigger words (RESOLVER route matching needs both languages)"
+  },
+  {
+   "level": "S",
+   "check": "FM5",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM5] improve-architecture: disable-model-invocation=False but repo policy expects False (USER_INVOKED=['implement', 'rules'])"
+  },
+  {
+   "level": "S",
+   "check": "ST1",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST1] improve-architecture: no '## Outcome Contract' section (anti-pattern #30)"
+  },
+  {
+   "level": "S",
+   "check": "ST2",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST2] improve-architecture: outcome contract must precede the first procedure section"
+  },
+  {
+   "level": "S",
+   "check": "ST3",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST3] improve-architecture: no '## Gotchas' table"
+  },
+  {
+   "level": "S",
+   "check": "ST4",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST4] improve-architecture: no '## Output' section with the output template"
+  },
+  {
+   "level": "S",
+   "check": "ST5",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST5] improve-architecture: SKILL.md is 79 lines (spec: keep under 500)"
+  },
+  {
+   "level": "S",
+   "check": "ST6",
+   "skill": "improve-architecture",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[ST6] improve-architecture: SKILL.md is 79 lines (repo guidance: ~140; push detail to REFERENCE)"
+  },
+  {
+   "level": "S",
+   "check": "ST7",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST7] improve-architecture: REFERENCE.md exists but SKILL.md never points to it"
+  },
+  {
+   "level": "S",
+   "check": "FM1",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1] research: non-spec frontmatter fields [] (allowed: ['description', 'disable-model-invocation', 'name'])"
+  },
+  {
+   "level": "S",
+   "check": "FM1b",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1b] research: missing required name/description"
+  },
+  {
+   "level": "S",
+   "check": "FM2",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM2] research: name='research' must equal dir, be lowercase-hyphen, <=64 chars"
+  },
+  {
+   "level": "S",
+   "check": "FM3",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3] research: description length 539 outside 1..1024 (spec hard limit)"
+  },
+  {
+   "level": "S",
+   "check": "FM3b",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3b] research: description only 539 chars — too thin to carry triggering (aim 100+)"
+  },
+  {
+   "level": "S",
+   "check": "FM3c",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3c] research: description lacks intent-first phrasing ('Use when/after/before/to…')"
+  },
+  {
+   "level": "S",
+   "check": "FM4",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM4] research: description has no Chinese trigger words (RESOLVER route matching needs both languages)"
+  },
+  {
+   "level": "S",
+   "check": "FM5",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM5] research: disable-model-invocation=False but repo policy expects False (USER_INVOKED=['implement', 'rules'])"
+  },
+  {
+   "level": "S",
+   "check": "ST1",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST1] research: no '## Outcome Contract' section (anti-pattern #30)"
+  },
+  {
+   "level": "S",
+   "check": "ST2",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST2] research: outcome contract must precede the first procedure section"
+  },
+  {
+   "level": "S",
+   "check": "ST3",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST3] research: no '## Gotchas' table"
+  },
+  {
+   "level": "S",
+   "check": "ST4",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST4] research: no '## Output' section with the output template"
+  },
+  {
+   "level": "S",
+   "check": "ST5",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST5] research: SKILL.md is 90 lines (spec: keep under 500)"
+  },
+  {
+   "level": "S",
+   "check": "ST6",
+   "skill": "research",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[ST6] research: SKILL.md is 90 lines (repo guidance: ~140; push detail to REFERENCE)"
+  },
+  {
+   "level": "S",
+   "check": "ST7",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST7] research: REFERENCE.md exists but SKILL.md never points to it"
+  },
+  {
+   "level": "S",
+   "check": "FM1",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1] review: non-spec frontmatter fields [] (allowed: ['description', 'disable-model-invocation', 'name'])"
+  },
+  {
+   "level": "S",
+   "check": "FM1b",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1b] review: missing required name/description"
+  },
+  {
+   "level": "S",
+   "check": "FM2",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM2] review: name='review' must equal dir, be lowercase-hyphen, <=64 chars"
+  },
+  {
+   "level": "S",
+   "check": "FM3",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3] review: description length 383 outside 1..1024 (spec hard limit)"
+  },
+  {
+   "level": "S",
+   "check": "FM3b",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3b] review: description only 383 chars — too thin to carry triggering (aim 100+)"
+  },
+  {
+   "level": "S",
+   "check": "FM3c",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3c] review: description lacks intent-first phrasing ('Use when/after/before/to…')"
+  },
+  {
+   "level": "S",
+   "check": "FM4",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM4] review: description has no Chinese trigger words (RESOLVER route matching needs both languages)"
+  },
+  {
+   "level": "S",
+   "check": "FM5",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM5] review: disable-model-invocation=False but repo policy expects False (USER_INVOKED=['implement', 'rules'])"
+  },
+  {
+   "level": "S",
+   "check": "ST1",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST1] review: no '## Outcome Contract' section (anti-pattern #30)"
+  },
+  {
+   "level": "S",
+   "check": "ST2",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST2] review: outcome contract must precede the first procedure section"
+  },
+  {
+   "level": "S",
+   "check": "ST3",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST3] review: no '## Gotchas' table"
+  },
+  {
+   "level": "S",
+   "check": "ST4",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST4] review: no '## Output' section with the output template"
+  },
+  {
+   "level": "S",
+   "check": "ST5",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST5] review: SKILL.md is 111 lines (spec: keep under 500)"
+  },
+  {
+   "level": "S",
+   "check": "ST6",
+   "skill": "review",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[ST6] review: SKILL.md is 111 lines (repo guidance: ~140; push detail to REFERENCE)"
+  },
+  {
+   "level": "S",
+   "check": "ST7",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST7] review: REFERENCE.md exists but SKILL.md never points to it"
+  },
+  {
+   "level": "S",
+   "check": "RF1",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[RF1] review: REFERENCE.md is 664 lines with only 10 TOC anchors — files >300 lines need a table of contents"
+  },
+  {
+   "level": "S",
+   "check": "RF2",
+   "skill": "review",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[RF2] review: expected >=2 'Chapter N: … Sub-Agent …' headings, found 3: ['Chapter 2: Test Review Sub-Agent', 'Chapter 3: Code Review Sub-Agent', 'Chapter 4: Impact Review Sub-Agent']"
+  },
+  {
+   "level": "S",
+   "check": "RF2b",
+   "skill": "review",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[RF2b] review: chapter 'Chapter 2: Test Review Sub-Agent' missing: "
+  },
+  {
+   "level": "S",
+   "check": "RF2b",
+   "skill": "review",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[RF2b] review: chapter 'Chapter 3: Code Review Sub-Agent' missing: "
+  },
+  {
+   "level": "S",
+   "check": "RF2b",
+   "skill": "review",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[RF2b] review: chapter 'Chapter 4: Impact Review Sub-Agent' missing: "
+  },
+  {
+   "level": "S",
+   "check": "FM1",
+   "skill": "rules",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1] rules: non-spec frontmatter fields [] (allowed: ['description', 'disable-model-invocation', 'name'])"
+  },
+  {
+   "level": "S",
+   "check": "FM1b",
+   "skill": "rules",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1b] rules: missing required name/description"
+  },
+  {
+   "level": "S",
+   "check": "FM2",
+   "skill": "rules",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM2] rules: name='rules' must equal dir, be lowercase-hyphen, <=64 chars"
+  },
+  {
+   "level": "S",
+   "check": "FM3",
+   "skill": "rules",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3] rules: description length 345 outside 1..1024 (spec hard limit)"
+  },
+  {
+   "level": "S",
+   "check": "FM3b",
+   "skill": "rules",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3b] rules: description only 345 chars — too thin to carry triggering (aim 100+)"
+  },
+  {
+   "level": "S",
+   "check": "FM3c",
+   "skill": "rules",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3c] rules: description lacks intent-first phrasing ('Use when/after/before/to…')"
+  },
+  {
+   "level": "S",
+   "check": "FM4",
+   "skill": "rules",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[FM4] rules: description has no Chinese trigger words (RESOLVER route matching needs both languages)"
+  },
+  {
+   "level": "S",
+   "check": "FM5",
+   "skill": "rules",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM5] rules: disable-model-invocation=True but repo policy expects True (USER_INVOKED=['implement', 'rules'])"
+  },
+  {
+   "level": "S",
+   "check": "ST5",
+   "skill": "rules",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST5] rules: SKILL.md is 37 lines (spec: keep under 500)"
+  },
+  {
+   "level": "S",
+   "check": "ST6",
+   "skill": "rules",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[ST6] rules: SKILL.md is 37 lines (repo guidance: ~140; push detail to REFERENCE)"
+  },
+  {
+   "level": "S",
+   "check": "FM1",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1] setup-project: non-spec frontmatter fields [] (allowed: ['description', 'disable-model-invocation', 'name'])"
+  },
+  {
+   "level": "S",
+   "check": "FM1b",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1b] setup-project: missing required name/description"
+  },
+  {
+   "level": "S",
+   "check": "FM2",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM2] setup-project: name='setup-project' must equal dir, be lowercase-hyphen, <=64 chars"
+  },
+  {
+   "level": "S",
+   "check": "FM3",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3] setup-project: description length 492 outside 1..1024 (spec hard limit)"
+  },
+  {
+   "level": "S",
+   "check": "FM3b",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3b] setup-project: description only 492 chars — too thin to carry triggering (aim 100+)"
+  },
+  {
+   "level": "S",
+   "check": "FM3c",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3c] setup-project: description lacks intent-first phrasing ('Use when/after/before/to…')"
+  },
+  {
+   "level": "S",
+   "check": "FM4",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM4] setup-project: description has no Chinese trigger words (RESOLVER route matching needs both languages)"
+  },
+  {
+   "level": "S",
+   "check": "FM5",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM5] setup-project: disable-model-invocation=False but repo policy expects False (USER_INVOKED=['implement', 'rules'])"
+  },
+  {
+   "level": "S",
+   "check": "ST1",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST1] setup-project: no '## Outcome Contract' section (anti-pattern #30)"
+  },
+  {
+   "level": "S",
+   "check": "ST2",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST2] setup-project: outcome contract must precede the first procedure section"
+  },
+  {
+   "level": "S",
+   "check": "ST3",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST3] setup-project: no '## Gotchas' table"
+  },
+  {
+   "level": "S",
+   "check": "ST4",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST4] setup-project: no '## Output' section with the output template"
+  },
+  {
+   "level": "S",
+   "check": "ST5",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST5] setup-project: SKILL.md is 132 lines (spec: keep under 500)"
+  },
+  {
+   "level": "S",
+   "check": "ST6",
+   "skill": "setup-project",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[ST6] setup-project: SKILL.md is 132 lines (repo guidance: ~140; push detail to REFERENCE)"
+  },
+  {
+   "level": "S",
+   "check": "ST7",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST7] setup-project: REFERENCE.md exists but SKILL.md never points to it"
+  },
+  {
+   "level": "S",
+   "check": "RF1",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[RF1] setup-project: REFERENCE.md is 336 lines with only 14 TOC anchors — files >300 lines need a table of contents"
+  },
+  {
+   "level": "S",
+   "check": "FM1",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1] story: non-spec frontmatter fields [] (allowed: ['description', 'disable-model-invocation', 'name'])"
+  },
+  {
+   "level": "S",
+   "check": "FM1b",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1b] story: missing required name/description"
+  },
+  {
+   "level": "S",
+   "check": "FM2",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM2] story: name='story' must equal dir, be lowercase-hyphen, <=64 chars"
+  },
+  {
+   "level": "S",
+   "check": "FM3",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3] story: description length 305 outside 1..1024 (spec hard limit)"
+  },
+  {
+   "level": "S",
+   "check": "FM3b",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3b] story: description only 305 chars — too thin to carry triggering (aim 100+)"
+  },
+  {
+   "level": "S",
+   "check": "FM3c",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3c] story: description lacks intent-first phrasing ('Use when/after/before/to…')"
+  },
+  {
+   "level": "S",
+   "check": "FM4",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM4] story: description has no Chinese trigger words (RESOLVER route matching needs both languages)"
+  },
+  {
+   "level": "S",
+   "check": "FM5",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM5] story: disable-model-invocation=False but repo policy expects False (USER_INVOKED=['implement', 'rules'])"
+  },
+  {
+   "level": "S",
+   "check": "ST1",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST1] story: no '## Outcome Contract' section (anti-pattern #30)"
+  },
+  {
+   "level": "S",
+   "check": "ST2",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST2] story: outcome contract must precede the first procedure section"
+  },
+  {
+   "level": "S",
+   "check": "ST3",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST3] story: no '## Gotchas' table"
+  },
+  {
+   "level": "S",
+   "check": "ST4",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST4] story: no '## Output' section with the output template"
+  },
+  {
+   "level": "S",
+   "check": "ST5",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST5] story: SKILL.md is 103 lines (spec: keep under 500)"
+  },
+  {
+   "level": "S",
+   "check": "ST6",
+   "skill": "story",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[ST6] story: SKILL.md is 103 lines (repo guidance: ~140; push detail to REFERENCE)"
+  },
+  {
+   "level": "S",
+   "check": "ST7",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST7] story: REFERENCE.md exists but SKILL.md never points to it"
+  },
+  {
+   "level": "S",
+   "check": "FM1",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1] tdd: non-spec frontmatter fields [] (allowed: ['description', 'disable-model-invocation', 'name'])"
+  },
+  {
+   "level": "S",
+   "check": "FM1b",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1b] tdd: missing required name/description"
+  },
+  {
+   "level": "S",
+   "check": "FM2",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM2] tdd: name='tdd' must equal dir, be lowercase-hyphen, <=64 chars"
+  },
+  {
+   "level": "S",
+   "check": "FM3",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3] tdd: description length 430 outside 1..1024 (spec hard limit)"
+  },
+  {
+   "level": "S",
+   "check": "FM3b",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3b] tdd: description only 430 chars — too thin to carry triggering (aim 100+)"
+  },
+  {
+   "level": "S",
+   "check": "FM3c",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3c] tdd: description lacks intent-first phrasing ('Use when/after/before/to…')"
+  },
+  {
+   "level": "S",
+   "check": "FM4",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM4] tdd: description has no Chinese trigger words (RESOLVER route matching needs both languages)"
+  },
+  {
+   "level": "S",
+   "check": "FM5",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM5] tdd: disable-model-invocation=False but repo policy expects False (USER_INVOKED=['implement', 'rules'])"
+  },
+  {
+   "level": "S",
+   "check": "ST1",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST1] tdd: no '## Outcome Contract' section (anti-pattern #30)"
+  },
+  {
+   "level": "S",
+   "check": "ST2",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST2] tdd: outcome contract must precede the first procedure section"
+  },
+  {
+   "level": "S",
+   "check": "ST3",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST3] tdd: no '## Gotchas' table"
+  },
+  {
+   "level": "S",
+   "check": "ST4",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST4] tdd: no '## Output' section with the output template"
+  },
+  {
+   "level": "S",
+   "check": "ST5",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST5] tdd: SKILL.md is 137 lines (spec: keep under 500)"
+  },
+  {
+   "level": "S",
+   "check": "ST6",
+   "skill": "tdd",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[ST6] tdd: SKILL.md is 137 lines (repo guidance: ~140; push detail to REFERENCE)"
+  },
+  {
+   "level": "S",
+   "check": "ST7",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST7] tdd: REFERENCE.md exists but SKILL.md never points to it"
+  },
+  {
+   "level": "S",
+   "check": "RF1",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[RF1] tdd: REFERENCE.md is 564 lines with only 8 TOC anchors — files >300 lines need a table of contents"
+  },
+  {
+   "level": "S",
+   "check": "RF2",
+   "skill": "tdd",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[RF2] tdd: expected >=2 'Chapter N: … Sub-Agent …' headings, found 4: ['Chapter 2: Test Sub-Agent — Scenario Design Phase', 'Chapter 3: Test Sub-Agent — Test Code Phase', 'Chapter 4: Develop Sub-Agent — Implementation Phase', 'Chapter 5: Refactor Phase (Develop Sub-Agent)']"
+  },
+  {
+   "level": "S",
+   "check": "RF2b",
+   "skill": "tdd",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[RF2b] tdd: chapter 'Chapter 2: Test Sub-Agent — Scenario Design Phase' missing: "
+  },
+  {
+   "level": "S",
+   "check": "RF2b",
+   "skill": "tdd",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[RF2b] tdd: chapter 'Chapter 3: Test Sub-Agent — Test Code Phase' missing: "
+  },
+  {
+   "level": "S",
+   "check": "RF2b",
+   "skill": "tdd",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[RF2b] tdd: chapter 'Chapter 4: Develop Sub-Agent — Implementation Phase' missing: "
+  },
+  {
+   "level": "S",
+   "check": "RF2b",
+   "skill": "tdd",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[RF2b] tdd: chapter 'Chapter 5: Refactor Phase (Develop Sub-Agent)' missing: "
+  },
+  {
+   "level": "S",
+   "check": "FM1",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1] think: non-spec frontmatter fields [] (allowed: ['description', 'disable-model-invocation', 'name'])"
+  },
+  {
+   "level": "S",
+   "check": "FM1b",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1b] think: missing required name/description"
+  },
+  {
+   "level": "S",
+   "check": "FM2",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM2] think: name='think' must equal dir, be lowercase-hyphen, <=64 chars"
+  },
+  {
+   "level": "S",
+   "check": "FM3",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3] think: description length 363 outside 1..1024 (spec hard limit)"
+  },
+  {
+   "level": "S",
+   "check": "FM3b",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3b] think: description only 363 chars — too thin to carry triggering (aim 100+)"
+  },
+  {
+   "level": "S",
+   "check": "FM3c",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3c] think: description lacks intent-first phrasing ('Use when/after/before/to…')"
+  },
+  {
+   "level": "S",
+   "check": "FM4",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM4] think: description has no Chinese trigger words (RESOLVER route matching needs both languages)"
+  },
+  {
+   "level": "S",
+   "check": "FM5",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM5] think: disable-model-invocation=False but repo policy expects False (USER_INVOKED=['implement', 'rules'])"
+  },
+  {
+   "level": "S",
+   "check": "ST1",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST1] think: no '## Outcome Contract' section (anti-pattern #30)"
+  },
+  {
+   "level": "S",
+   "check": "ST2",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST2] think: outcome contract must precede the first procedure section"
+  },
+  {
+   "level": "S",
+   "check": "ST3",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST3] think: no '## Gotchas' table"
+  },
+  {
+   "level": "S",
+   "check": "ST4",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST4] think: no '## Output' section with the output template"
+  },
+  {
+   "level": "S",
+   "check": "ST5",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST5] think: SKILL.md is 101 lines (spec: keep under 500)"
+  },
+  {
+   "level": "S",
+   "check": "ST6",
+   "skill": "think",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[ST6] think: SKILL.md is 101 lines (repo guidance: ~140; push detail to REFERENCE)"
+  },
+  {
+   "level": "S",
+   "check": "ST7",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST7] think: REFERENCE.md exists but SKILL.md never points to it"
+  },
+  {
+   "level": "S",
+   "check": "RF1",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[RF1] think: REFERENCE.md is 476 lines with only 24 TOC anchors — files >300 lines need a table of contents"
+  },
+  {
+   "level": "S",
+   "check": "IV1",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[IV1] think: no explicit one-question-per-message rule"
+  },
+  {
+   "level": "S",
+   "check": "IV2",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[IV2] think: no rule that the NEXT question is derived from the user's previous answer (adaptive, never pre-computed)"
+  },
+  {
+   "level": "S",
+   "check": "IV3",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[IV3] think: no exhaustive-tree termination rule (stop when the tree is done, not when a list ends)"
+  },
+  {
+   "level": "S",
+   "check": "IV4",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[IV4] think: batch-question language remains: "
+  },
+  {
+   "level": "S",
+   "check": "IV5",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[IV5] think: no 'recommended answer with each question' rule"
+  },
+  {
+   "level": "S",
+   "check": "FM1",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1] write: non-spec frontmatter fields [] (allowed: ['description', 'disable-model-invocation', 'name'])"
+  },
+  {
+   "level": "S",
+   "check": "FM1b",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM1b] write: missing required name/description"
+  },
+  {
+   "level": "S",
+   "check": "FM2",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM2] write: name='write' must equal dir, be lowercase-hyphen, <=64 chars"
+  },
+  {
+   "level": "S",
+   "check": "FM3",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3] write: description length 492 outside 1..1024 (spec hard limit)"
+  },
+  {
+   "level": "S",
+   "check": "FM3b",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3b] write: description only 492 chars — too thin to carry triggering (aim 100+)"
+  },
+  {
+   "level": "S",
+   "check": "FM3c",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM3c] write: description lacks intent-first phrasing ('Use when/after/before/to…')"
+  },
+  {
+   "level": "S",
+   "check": "FM4",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM4] write: description has no Chinese trigger words (RESOLVER route matching needs both languages)"
+  },
+  {
+   "level": "S",
+   "check": "FM5",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[FM5] write: disable-model-invocation=False but repo policy expects False (USER_INVOKED=['implement', 'rules'])"
+  },
+  {
+   "level": "S",
+   "check": "ST1",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST1] write: no '## Outcome Contract' section (anti-pattern #30)"
+  },
+  {
+   "level": "S",
+   "check": "ST2",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST2] write: outcome contract must precede the first procedure section"
+  },
+  {
+   "level": "S",
+   "check": "ST3",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST3] write: no '## Gotchas' table"
+  },
+  {
+   "level": "S",
+   "check": "ST4",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST4] write: no '## Output' section with the output template"
+  },
+  {
+   "level": "S",
+   "check": "ST5",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST5] write: SKILL.md is 78 lines (spec: keep under 500)"
+  },
+  {
+   "level": "S",
+   "check": "ST6",
+   "skill": "write",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[ST6] write: SKILL.md is 78 lines (repo guidance: ~140; push detail to REFERENCE)"
+  },
+  {
+   "level": "S",
+   "check": "ST7",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[ST7] write: REFERENCE.md exists but SKILL.md never points to it"
+  },
+  {
+   "level": "W",
+   "check": "W1",
+   "skill": "-",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W1] check-docs.py:   PASS  every rules/ file is listed in the manifest\ntdd: the Refactor phase reads the Phase field instead of a copied list\n  PASS  refactor scope points at the catalog's Phase field\n  PASS  no hand-copied principle list in tdd\n\nAll documentation checks passed."
+  },
+  {
+   "level": "W",
+   "check": "W2",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W2] debug: Skill Entry Protocol not referenced from SKILL.md/REFERENCE.md"
+  },
+  {
+   "level": "W",
+   "check": "W2",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W2] grill: Skill Entry Protocol not referenced from SKILL.md/REFERENCE.md"
+  },
+  {
+   "level": "W",
+   "check": "W2",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W2] have-a-try: Skill Entry Protocol not referenced from SKILL.md/REFERENCE.md"
+  },
+  {
+   "level": "W",
+   "check": "W2",
+   "skill": "implement",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W2] implement: Skill Entry Protocol not referenced from SKILL.md/REFERENCE.md"
+  },
+  {
+   "level": "W",
+   "check": "W2",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W2] improve-architecture: Skill Entry Protocol not referenced from SKILL.md/REFERENCE.md"
+  },
+  {
+   "level": "W",
+   "check": "W2",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W2] research: Skill Entry Protocol not referenced from SKILL.md/REFERENCE.md"
+  },
+  {
+   "level": "W",
+   "check": "W2",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W2] review: Skill Entry Protocol not referenced from SKILL.md/REFERENCE.md"
+  },
+  {
+   "level": "W",
+   "check": "W2",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W2] setup-project: Skill Entry Protocol not referenced from SKILL.md/REFERENCE.md"
+  },
+  {
+   "level": "W",
+   "check": "W2",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W2] story: Skill Entry Protocol not referenced from SKILL.md/REFERENCE.md"
+  },
+  {
+   "level": "W",
+   "check": "W2",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W2] tdd: Skill Entry Protocol not referenced from SKILL.md/REFERENCE.md"
+  },
+  {
+   "level": "W",
+   "check": "W2",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W2] think: Skill Entry Protocol not referenced from SKILL.md/REFERENCE.md"
+  },
+  {
+   "level": "W",
+   "check": "W2",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W2] write: Skill Entry Protocol not referenced from SKILL.md/REFERENCE.md"
+  },
+  {
+   "level": "W",
+   "check": "W4",
+   "skill": "think",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W4] think: skill not mentioned in RESOLVER.md"
+  },
+  {
+   "level": "W",
+   "check": "W4",
+   "skill": "grill",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W4] grill: skill not mentioned in RESOLVER.md"
+  },
+  {
+   "level": "W",
+   "check": "W4",
+   "skill": "story",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W4] story: skill not mentioned in RESOLVER.md"
+  },
+  {
+   "level": "W",
+   "check": "W4",
+   "skill": "implement",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W4] implement: skill not mentioned in RESOLVER.md"
+  },
+  {
+   "level": "W",
+   "check": "W4",
+   "skill": "tdd",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W4] tdd: skill not mentioned in RESOLVER.md"
+  },
+  {
+   "level": "W",
+   "check": "W4",
+   "skill": "review",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W4] review: skill not mentioned in RESOLVER.md"
+  },
+  {
+   "level": "W",
+   "check": "W4",
+   "skill": "debug",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W4] debug: skill not mentioned in RESOLVER.md"
+  },
+  {
+   "level": "W",
+   "check": "W4",
+   "skill": "research",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W4] research: skill not mentioned in RESOLVER.md"
+  },
+  {
+   "level": "W",
+   "check": "W4",
+   "skill": "have-a-try",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W4] have-a-try: skill not mentioned in RESOLVER.md"
+  },
+  {
+   "level": "W",
+   "check": "W4",
+   "skill": "improve-architecture",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W4] improve-architecture: skill not mentioned in RESOLVER.md"
+  },
+  {
+   "level": "W",
+   "check": "W4",
+   "skill": "write",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W4] write: skill not mentioned in RESOLVER.md"
+  },
+  {
+   "level": "W",
+   "check": "W4",
+   "skill": "setup-project",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W4] setup-project: skill not mentioned in RESOLVER.md"
+  },
+  {
+   "level": "W",
+   "check": "W4",
+   "skill": "rules",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W4] rules: skill not mentioned in RESOLVER.md"
+  },
+  {
+   "level": "W",
+   "check": "W5",
+   "skill": "## Issue",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W5] ## Issue: producer {'think'} never writes this field"
+  },
+  {
+   "level": "W",
+   "check": "W5b",
+   "skill": "## Issue",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W5b] ## Issue: no consumer in {'implement', 'grill', 'entry-protocol.md', 'story'} reads this field"
+  },
+  {
+   "level": "W",
+   "check": "W5",
+   "skill": "Grilled by",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W5] Grilled by: producer {'grill'} never writes this field"
+  },
+  {
+   "level": "W",
+   "check": "W5b",
+   "skill": "Grilled by",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W5b] Grilled by: no consumer in {'implement', 'review', 'entry-protocol.md', 'story'} reads this field"
+  },
+  {
+   "level": "W",
+   "check": "W5",
+   "skill": "Prototyped by",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W5] Prototyped by: producer {'have-a-try'} never writes this field"
+  },
+  {
+   "level": "W",
+   "check": "W5b",
+   "skill": "Prototyped by",
+   "severity": "hard",
+   "pass": true,
+   "feedback": "[W5b] Prototyped by: no consumer in {'implement', 'grill', 'think', 'story'} reads this field"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:P1",
+   "skill": "-",
+   "severity": "soft",
+   "pass": false,
+   "feedback": "[T:P1] train: expected think, proxy predicted have-a-try (raw overlap 3, idf-score 1.66) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:P2",
+   "skill": "-",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[T:P2] train: expected grill, proxy predicted grill (raw overlap 6, idf-score 4.31) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:P3",
+   "skill": "-",
+   "severity": "soft",
+   "pass": false,
+   "feedback": "[T:P3] train: expected story, proxy predicted NONE (raw overlap 0, idf-score 0.00) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:P4",
+   "skill": "-",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[T:P4] train: expected debug, proxy predicted debug (raw overlap 5, idf-score 4.51) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:P5",
+   "skill": "-",
+   "severity": "soft",
+   "pass": false,
+   "feedback": "[T:P5] train: expected review, proxy predicted NONE (raw overlap 1, idf-score 0.90) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:P6",
+   "skill": "-",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[T:P6] train: expected write, proxy predicted write (raw overlap 4, idf-score 2.91) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:N1",
+   "skill": "-",
+   "severity": "soft",
+   "pass": false,
+   "feedback": "[T:N1] train: expected debug, proxy predicted have-a-try (raw overlap 2, idf-score 1.17) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:N2",
+   "skill": "-",
+   "severity": "soft",
+   "pass": false,
+   "feedback": "[T:N2] train: expected NONE, proxy predicted have-a-try (raw overlap 3, idf-score 1.66) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:N3",
+   "skill": "-",
+   "severity": "soft",
+   "pass": false,
+   "feedback": "[T:N3] train: expected NONE, proxy predicted have-a-try (raw overlap 5, idf-score 3.03) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:N4",
+   "skill": "-",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[T:N4] train: expected write, proxy predicted write (raw overlap 6, idf-score 2.82) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:N5",
+   "skill": "-",
+   "severity": "soft",
+   "pass": false,
+   "feedback": "[T:N5] train: expected NONE, proxy predicted think (raw overlap 5, idf-score 2.34) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:N6",
+   "skill": "-",
+   "severity": "soft",
+   "pass": false,
+   "feedback": "[T:N6] train: expected think, proxy predicted NONE (raw overlap 1, idf-score 0.79) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:H1",
+   "skill": "-",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[T:H1] holdout: expected think, proxy predicted think (raw overlap 3, idf-score 1.59) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:H2",
+   "skill": "-",
+   "severity": "soft",
+   "pass": false,
+   "feedback": "[T:H2] holdout: expected grill, proxy predicted have-a-try (raw overlap 5, idf-score 2.72) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:H3",
+   "skill": "-",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[T:H3] holdout: expected write, proxy predicted write (raw overlap 6, idf-score 3.05) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:H4",
+   "skill": "-",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[T:H4] holdout: expected research, proxy predicted research (raw overlap 4, idf-score 2.93) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:H5",
+   "skill": "-",
+   "severity": "soft",
+   "pass": false,
+   "feedback": "[T:H5] holdout: expected NONE, proxy predicted tdd (raw overlap 4, idf-score 1.49) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:H6",
+   "skill": "-",
+   "severity": "soft",
+   "pass": false,
+   "feedback": "[T:H6] holdout: expected story, proxy predicted NONE (raw overlap 1, idf-score 0.90) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:H7",
+   "skill": "-",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[T:H7] holdout: expected improve-architecture, proxy predicted improve-architecture (raw overlap 2, idf-score 1.91) — proxy is drift-detection only; confirm with T-Live"
+  },
+  {
+   "level": "T-proxy",
+   "check": "T:H8",
+   "skill": "-",
+   "severity": "soft",
+   "pass": true,
+   "feedback": "[T:H8] holdout: expected have-a-try, proxy predicted have-a-try (raw overlap 5, idf-score 2.57) — proxy is drift-detection only; confirm with T-Live"
+  }
+ ],
+ "notes": "INTENT_RE covers 'Use as'"
+}

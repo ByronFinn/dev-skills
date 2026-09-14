@@ -1,5 +1,25 @@
 # Think: Detailed Reference
 
+
+
+
+## Contents
+
+- [Step 0: Quick Assessment](#step-0-quick-assessment)
+- [Step 1: Auto-Context Collection](#step-1-auto-context-collection)
+- [Step 2: Offer to Create a PRD](#step-2-offer-to-create-a-prd)
+- [Step 3: Classify Complexity](#step-3-classify-complexity)
+- [Step 4: Question Gates (Only Ask High-Value Questions)](#step-4-question-gates-only-ask-high-value-questions)
+- [Step 5: Research-First Mode (Mandatory for Technical Choices)](#step-5-research-first-mode-mandatory-for-technical-choices)
+- [Step 6: Expansion Scan (DIVERGE)](#step-6-expansion-scan-diverge)
+- [Step 7: Q&A Loop (CONVERGE)](#step-7-qa-loop-converge)
+- [Step 8: Propose Approaches + Record Decision](#step-8-propose-approaches-record-decision)
+- [Step 9: Submit Plan for Approval](#step-9-submit-plan-for-approval)
+- [Step 10: Create Parent Issue & Finalize PRD](#step-10-create-parent-issue-finalize-prd)
+- [Complexity Classification Detail](#complexity-classification-detail)
+
+---
+
 ## Step 0: Quick Assessment
 
 Before doing anything, assess complexity from the user's request:
@@ -48,7 +68,7 @@ I'll help you think through this. Would you like me to create a PRD file at `doc
 
 **PRD Location:** `docs/prd/PRD-NNNN-<title>.md`
 
-If creating, use the template and field rules in [PRD-FORMAT.md](PRD-FORMAT.md). Do not retype the template here — PRD-FORMAT.md is the single source.
+If creating, use the template and field rules in [PRD-FORMAT.md](PRD-FORMAT.md) — that file is the single source for the template and every field rule.
 
 ### PRD Conflict Check (before assigning NNNN)
 
@@ -91,7 +111,7 @@ Determine depth of brainstorming for Simple/Moderate/Complex tasks:
 | Complexity | Criteria | Behavior |
 |---|---|---|
 | **Simple** | Clear goal, 1-2 files, clear scope | Ask 1 confirmation question, then finalize a lightweight PRD or recommend `/tdd` if user wants test-first implementation |
-| **Moderate** | Multiple files, some ambiguity | Light brainstorming (2-3 high-value questions) |
+| **Moderate** | Multiple files, some ambiguity | Light brainstorming — resolve only MVP-critical blocking/preference nodes, however many (or few) that turns out to be |
 | **Complex** | Unclear goal, architecture choices, multiple approaches | Full brainstorming |
 
 ## Step 4: Question Gates (Only Ask High-Value Questions)
@@ -105,7 +125,7 @@ If answer obtainable via:
 - Docs/specs/conventions
 - Quick market/OSS research
 
-→ **Don't ask.** Fetch it, summarize, update PRD.
+→ **Don't ask.** Fetch it, summarize, update PRD. Only when the evidence genuinely doesn't exist in the repo (e.g. no content files to sample) may you ask — as its own single question with your best inference as the recommended answer.
 
 **Gate B — Is this a meta/lazy question?**
 
@@ -151,7 +171,7 @@ Then ask **one** preference question:
 Once you can summarize the goal, proactively expand your thinking before converging. **Scale to complexity** (from Step 3):
 
 - **Simple** — skip this step entirely. Simple tasks have a clear goal and 1-2 files; forcing future-evolution/related-scenario divergence on them is over-ceremony. Go straight to Step 7.
-- **Moderate** — do only category 3 (Failure & edge cases). One round.
+- **Moderate** — do only category 3 (Failure & edge cases), raised as a single question.
 - **Complex** — do all three categories below, 1-2 points each.
 
 **Expansion Categories (1-2 points each):**
@@ -194,7 +214,9 @@ Then update PRD:
 ## Step 7: Q&A Loop (CONVERGE)
 
 **Rules:**
-- One question at a time
+- Exactly one **decision** per message, with a recommended answer — never a batch, never a pre-computed question list, and never piggyback riders: no "顺便确认 / please also mention X" attached to the main ask. A rider is a second decision wearing the same message — split it into the next question (anti-patterns #3, #4)
+- The next question is derived from the user's last answer: it may open new branches, close others, or reshape the remaining choices. If you knew what question N+1 would be before hearing answer N, you are working a list, not a tree
+- Terminate on tree exhaustion: every blocking/preference node for the MVP resolved — not when a question list runs out
 - Use multiple choice for preference questions
 - After each user answer:
   - Immediately update PRD
@@ -424,7 +446,7 @@ Plan approved. Next: Run /grill to challenge and refine this approach.
 
 **Behavior:**
 - Light brainstorming
-- 2-3 high-value questions only
+- resolve only MVP-critical blocking/preference nodes — the tree decides the count, not a quota
 
 **Example:** "Add user preferences page"
 

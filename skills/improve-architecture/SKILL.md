@@ -28,7 +28,7 @@ Read available domain context before starting. If any are missing, proceed witho
 
 **Step 2**: Analyze current development direction — extract planned features, check compatibility with existing architecture
 
-**Step 3**: Scan codebase using prioritized strategy — PRD-linked modules first, high-change-frequency modules next, cross-cutting concerns last. For each module, apply the objective detection heuristics in [REFERENCE.md §Design Debt Signals](REFERENCE.md) (code duplication, long functions, tight coupling, global state, leaked/missing abstractions, shallow modules, god objects — each with a concrete grep/line-count threshold). Run the ADR compliance check (REFERENCE §3.3) against each ADR in `docs/adr/`.
+**Step 3**: Scan codebase using prioritized strategy — PRD-linked modules first, high-change-frequency modules next, cross-cutting concerns last. For each module, apply the objective detection heuristics in [REFERENCE.md §Design Debt Signals](REFERENCE.md) (code duplication, long functions, tight coupling, mutable shared state, leaked/missing abstractions, shallow modules, god objects, dead code, speculative generality, message chains, deep inheritance, stub implementations, magic values, swallowed errors, repeated type dispatch — each tagged with the principle it detects, defined in [../rules/engineering-principles.md](../rules/engineering-principles.md), and carrying a concrete grep/line-count threshold). Run the ADR compliance check (REFERENCE §3.3) against each ADR in `docs/adr/`.
 
 **Step 4**: Analyze findings — categorize as blocking/high priority/medium priority with PRD links. Each finding must have specific location, evidence, and impact.
 

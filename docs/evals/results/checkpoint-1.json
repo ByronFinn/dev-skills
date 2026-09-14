@@ -1,0 +1,33 @@
+{
+  "checkpoint": 1,
+  "date": "2026-09-14",
+  "trigger_live": {
+    "train": {"pass": 12, "total": 12, "detail": "P1 think, P2 grill, P3 story, P4 debug, P5 review, P6 write, N1 debug, N2 NONE, N3 NONE, N4 write, N5 NONE, N6 think — all correct"},
+    "holdout": {"pass": 8, "total": 8, "detail": "H1 think, H2 grill, H3 write, H4 research, H5 NONE, H6 story, H7 improve-architecture, H8 have-a-try — all correct"},
+    "harness_note": "P1/P2 and holdout used full catalog snapshot; P3–P6/N1–N6 used abbreviated descriptions (trigger words intact). Re-run the abbreviated ten with the full catalog at the final checkpoint."
+  },
+  "behavior": {
+    "G1-grill-export": {
+      "split": "train", "turns": 6,
+      "one_question_per_message": "6/6", "recommended_answer": "5/5 (final turn N/A)",
+      "adaptive": "5/5 (from turn 2 on)", "asks_code_answerable": "0 violations",
+      "completion_correct": true,
+      "qualitative_findings": [
+        "ADR-eligibility re-litigation: turns 3-4 judged sync/async decision 'reversible — no ADR', final turn created ADR 0001 for the same decision claiming hard-to-reverse. FIX APPLIED: grill SKILL.md The Work #3 + gotcha row ('decide eligibility once, inline; never re-adjudicate at completion')."
+      ]
+    },
+    "T1-think-search": {
+      "split": "train", "turns": 5,
+      "one_question_per_message": "3/5", "recommended_answer": "3/4 applicable",
+      "adaptive": "4/4 applicable", "asks_code_answerable": "1 violation (turn 2)",
+      "completion_correct": true,
+      "qualitative_findings": [
+        "Turn 2: piggyback rider — main question (approach choice) plus 附注 '若实际以英文为主…请在回答时一并说明' = second question in same message; also code-answerable (content language inspectable). FIX APPLIED: think SKILL Principle 3 + Step 7 rules + Step 9 (approval asks approval only) + Gate A content-files clause + gotcha row + anti-pattern #3 piggyback wording.",
+        "Turn 4: tracker sub-decision bundled into approval submission ('请一并说明：用不用 tracker'), tracker branches without recommendation. Same fix class as turn 2 — approval submission now must have all setup decisions settled beforehand."
+      ]
+    }
+  },
+  "loop_actions": [
+    "iteration 3 applies: think one-decision-per-message + no-rider rules; approval-submission purity; Gate A content-files clause; grill ADR-eligibility-once rule; anti-pattern #3 piggyback extension"
+  ]
+}

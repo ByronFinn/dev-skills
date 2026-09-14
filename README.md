@@ -28,7 +28,7 @@
 
 ---
 
-**Engineering Skills** is a collection of **Markdown-based instruction sets** for AI coding agents (e.g., Claude Code via [skills.sh](https://skills.sh)).  
+**Engineering Skills** is a **standard skill specification–compliant skill set** for AI coding agents (e.g., Claude Code via [skills.sh](https://skills.sh)).  
 There is no application code, no build step, no runtime — **the skill documents themselves are the product**.
 
 ## 🤔 Why This Exists
@@ -82,7 +82,9 @@ That's it. Each skill is triggered by a **slash command** and stops when done �
 
 ## 🧰 Skills Overview
 
-> **12 skills** covering the full engineering lifecycle: planning → research → validation → breakdown → implementation → review → debugging → maintenance → writing.
+> **12 task skills** covering the full engineering lifecycle: planning → research → validation → breakdown → implementation → review → debugging → maintenance → writing.
+>
+> They ship with one extra unit: `rules/` — the shared cross-skill bundle (anti-patterns, entry protocol, sub-agent runtime, authoring discipline, engineering principles). It is **not a task skill** and is `disable-model-invocation`; it exists so the installer carries the shared rules along and the skills' cross-references keep resolving after installation.
 
 | Skill | Command | Input → Output | Description |
 |---|---|---|---|
@@ -354,9 +356,17 @@ dev-skills/
 ├── CONTEXT.md                     # Domain model (dogfooding example)
 ├── LICENSE                        # MIT
 │
+├── scripts/
+│   ├── check-docs.py              # Documentation integrity checks (links, catalog, anti-pattern invariants)
+│   ├── eval_skills.py             # Skills evaluation harness (static, workflow, trigger-proxy levels)
+│   └── evals/                     # Eval datasets (trigger queries, behavior scenarios)
+│
 ├── docs/
 │   ├── prd/                       # PRDs for this project
 │   ├── adr/                       # Architecture Decision Records
+│   ├── audits/                    # Dated audit records (why past judgments were made)
+│   ├── evals/                     # Eval protocols, round logs, iteration results
+│   ├── research/                  # Persisted research records + INDEX
 │   └── agents/                    # Skill configuration
 │       ├── domain.md
 │       ├── issue-tracker.md
@@ -366,11 +376,16 @@ dev-skills/
 │
 ├── skills/                        # ← All skills live here
 │   ├── RESOLVER.md                # Routing table & disambiguation
-│   ├── rules/
+│   ├── rules/                     # Shared bundle — carries a SKILL.md so the installer ships it as a unit
+│   │   ├── SKILL.md               # Bundle manifest (user-invoked only; not a task skill)
 │   │   ├── anti-patterns.md       # Cross-skill behavioral constraints
-│   │   └── entry-protocol.md      # Shared bootstrap sequence
+│   │   ├── entry-protocol.md      # Shared bootstrap sequence
+│   │   ├── sub-agent-runtime.md   # Sub-agent = re-read-from-disk discipline
+│   │   ├── writing-skills.md      # Authoring discipline for skill files
+│   │   └── engineering-principles.md # Single source for SOLID/DRY/KISS/YAGNI/… (link, don't restate)
 │   │
 │   ├── setup-project/             # Initialization skill
+│   │   └── templates/             # docs/agents/ config templates
 │   ├── think/                     # Brainstorming skill
 │   ├── research/                  # Technical investigation skill
 │   ├── have-a-try/                # Prototyping skill
@@ -414,7 +429,10 @@ When adding or modifying skills:
 3. **Update routing** — Update [`skills/RESOLVER.md`](skills/RESOLVER.md) when adding or changing skills
 4. **Respect shared rules** — Run [`anti-patterns.md`](skills/rules/anti-patterns.md) rules against your own output
 5. **Use the Entry Protocol** — Reference [`rules/entry-protocol.md`](skills/rules/entry-protocol.md) instead of duplicating context-read instructions. See [anti-pattern #36](skills/rules/anti-patterns.md#L42)
-6. **Update CHANGELOG** — Log your changes in [`CHANGELOG.md`](CHANGELOG.md)
+6. **Reference engineering principles** — principle definitions live only in [`rules/engineering-principles.md`](skills/rules/engineering-principles.md); skills link, never restate (anti-pattern #38). Skill-specific operational content (review checklists, scan thresholds, refactor steps) stays in the skill
+7. **Run the documentation checks** — `python3 scripts/check-docs.py` verifies link resolution, the principle catalog's structure and ownership coverage, and the anti-pattern citation/archive invariants
+8. **Run the skills evaluation** — `python3 scripts/eval_skills.py --level all --iteration N` is the regression gate (static compliance + workflow coherence + trigger proxy); see [`docs/evals/skills-eval.md`](docs/evals/skills-eval.md) for the full GEPA-style framework, datasets, and checkpoint protocols
+9. **Update CHANGELOG** — Log your changes in [`CHANGELOG.md`](CHANGELOG.md)
 
 This project **dogfoods** its own skills — all documentation (PRDs, ADRs, CONTEXT.md) is written in Simplified Chinese per the project's [language configuration](docs/agents/language.md).
 

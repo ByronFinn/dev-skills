@@ -61,7 +61,7 @@ The sub-agent responsible for test design and test code. For each acceptance cri
 
 ### Develop Sub-Agent
 
-The sub-agent responsible for implementation. For each acceptance criterion, after Test Code Review Gate approval, it independently re-reads shared context plus the approved test, and writes minimal code to make the test GREEN. After all acceptance criterion cycles complete, Develop Sub-Agent performs a unified Refactor phase (extract duplication, deepen modules, apply SOLID).
+The sub-agent responsible for implementation. For each acceptance criterion, after Test Code Review Gate approval, it independently re-reads shared context plus the approved test, and writes minimal code to make the test GREEN. After all acceptance criterion cycles complete, Develop Sub-Agent performs a unified Refactor phase (extract duplication, deepen modules, apply the `refactor-safe` engineering principles — see `skills/rules/engineering-principles.md`).
 
 **Related terms**: Test Sub-Agent, Human Review Gate, Acceptance Criterion Cycle
 

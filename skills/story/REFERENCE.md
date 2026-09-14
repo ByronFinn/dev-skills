@@ -4,7 +4,7 @@
 
 The Issue body format (title, Meta, Parent, What to build, Acceptance Criteria, Blocked by, field rules) is defined once in [STORY-FORMAT.md](STORY-FORMAT.md) — that file is the single source, used by both `/think` (parent issues) and `/story` (child issues). Do not retype it here.
 
-**Do not close or modify any parent issue.**
+**Do not close any parent issue** — appending the child-issues list to its body (Step 9) is the designed sync and the only allowed modification.
 
 ## Process Detail
 
@@ -56,7 +56,7 @@ If multiple signals are present (no CONTEXT.md + no ADRs + unresolved PRD), sugg
    - What exists already (models, APIs, services related to the feature)
    - Project conventions (patterns, naming, testing style)
    - Check `CONTEXT.md` for domain glossary, `docs/adr/` for relevant decisions
-3. Ask focused clarification questions — only for genuinely ambiguous points. Do NOT run a full brainstorming session (that's `/think`'s job). Maximum 2-3 questions.
+3. Ask focused clarification questions — only for genuinely ambiguous points, one decision per message with a recommended answer (anti-patterns #3, #4). Do NOT run a full brainstorming session (that's `/think`'s job).
 4. Compile findings into a requirements list.
 
 **When input is an existing PRD:**
@@ -85,8 +85,7 @@ If no collision (or user chose new), create a minimal PRD. Include **only** sect
 | `Acceptance Criteria` | Derived from requirements |
 | `Out of Scope` | If the user mentioned boundaries |
 | `Technical Notes` | Findings from codebase exploration |
-| `Child Issues` | Left empty — filled in Step 8 |
-| `Traceability` | Add `- **Created by**: `/story` (minimal PRD, no `/think` session)` |
+| `Traceability` | Add `- **Created by**: `/story` (minimal PRD, no `/think` session)` — child issues later land in its `Sliced into` list (Step 8) |
 
 Sections like Research References, Feasible Approaches, Decision (ADR-lite), and Implementation Plan are `/think`'s output — do not include them.
 
@@ -118,13 +117,7 @@ Present proposed breakdown as numbered list. For each slice, show:
 - **Blocked by**: Other slices that must complete first (if any)
 - **User stories covered**: Which user stories this solves (if source material has them)
 
-Ask user:
-- Does granularity feel right? (too coarse / too fine)
-- Are dependencies correct?
-- Should any slices be merged or split further?
-- Are slices correctly marked HITL and AFK?
-
-Iterate until user approves breakdown.
+Before presenting, self-check the draft against the four quality questions — granularity (too coarse / too fine), dependencies, merge/split candidates, HITL/AFK markings — and fix what you find. Then ask exactly one question: **"Approve this breakdown, or adjust which part?"** (with your recommendation: approve). If the user names an adjustment, revise and ask again — one decision per message (anti-patterns #3, #4).
 
 ### Step 7: Publish Issues
 

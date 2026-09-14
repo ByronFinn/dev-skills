@@ -133,9 +133,9 @@ skills/
 
 ## ADRs
 
-* [0001 - Sub-Agent Orchestration Pattern](docs/adr/0001-sub-agent-orchestration-pattern.md)
-* [0002 - Two-Stage Human Review Gate](docs/adr/0002-two-stage-human-review-gate.md) — Superseded by 0003 (Full mode 保留其决策)
-* [0003 - Gate Modes (Full / Fast / Batch)](docs/adr/0003-gate-modes-full-fast-batch.md)
+* [0001 - Sub-Agent Orchestration Pattern](../adr/0001-sub-agent-orchestration-pattern.md)
+* [0002 - Two-Stage Human Review Gate](../adr/0002-two-stage-human-review-gate.md) — Superseded by 0003 (Full mode 保留其决策)
+* [0003 - Gate Modes (Full / Fast / Batch)](../adr/0003-gate-modes-full-fast-batch.md)
 
 ## Traceability
 

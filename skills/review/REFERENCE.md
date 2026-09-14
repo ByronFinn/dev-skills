@@ -1,5 +1,24 @@
 # Review: Detailed Reference
 
+
+
+
+
+
+## Contents
+
+- [Chapter 1: Context Collection (Orchestrator)](#chapter-1-context-collection-orchestrator)
+- [Sub-Agent Common (applies to Chapters 2, 3, 4)](#sub-agent-common-applies-to-chapters-2-3-4)
+- [Chapter 2: Test Review Sub-Agent](#chapter-2-test-review-sub-agent)
+- [Chapter 3: Code Review Sub-Agent](#chapter-3-code-review-sub-agent)
+- [Chapter 4: Impact Review Sub-Agent](#chapter-4-impact-review-sub-agent)
+- [Chapter 5: Report Merge and Presentation (Orchestrator)](#chapter-5-report-merge-and-presentation-orchestrator)
+- [Chapter 6: Authorization and Follow-Through (Orchestrator)](#chapter-6-authorization-and-follow-through-orchestrator)
+- [Chapter 7: Session Recovery](#chapter-7-session-recovery)
+- [Chapter 8: Integration Review](#chapter-8-integration-review)
+
+---
+
 This reference contains detailed instructions for the orchestrator phases and each sub-agent. Each chapter is self-contained — an agent reading only that chapter should know exactly what to do.
 
 ---
@@ -171,13 +190,15 @@ Every sub-agent report uses this structure:
 
 - **blocker**: critical defects specific to the perspective (see each chapter for examples)
 - **major**: significant gaps requiring attention before merge
-- **minor**: improvements, non-critical
+- **minor**: improvements, non-critical — and the default for every engineering-principle finding ([rules/engineering-principles.md](../rules/engineering-principles.md) §How to Apply)
 
 Each chapter notes what counts as a blocker for its perspective.
 
 ---
 
 ## Chapter 2: Test Review Sub-Agent
+
+Apply the [Sub-Agent Common](#sub-agent-common-applies-to-chapters-2-3-4) independence discipline and shared re-read checklist before anything else in this chapter.
 
 ### Responsibilities
 
@@ -244,6 +265,8 @@ Use the [shared Output Scaffold](#output-scaffold-shared-shape) with status fiel
 
 ## Chapter 3: Code Review Sub-Agent
 
+Apply the [Sub-Agent Common](#sub-agent-common-applies-to-chapters-2-3-4) independence discipline and shared re-read checklist before anything else in this chapter.
+
 ### Responsibilities
 
 Review implementation quality for the changes in the diff. Focus exclusively on code quality concerns:
@@ -253,6 +276,7 @@ Review implementation quality for the changes in the diff. Focus exclusively on 
 - **Code conventions**: project style, naming, formatting
 - **Error handling**: are errors handled properly?
 - **Readability**: is the code clear and maintainable?
+- **Engineering principles**: the diff-local principles assigned to this perspective in [rules/engineering-principles.md](../rules/engineering-principles.md) §Consumer & Ownership Map
 
 Do NOT review test quality or release impact — those belong to other sub-agents.
 
@@ -306,11 +330,25 @@ If any security check fails, the verdict must be **Request Changes** with severi
 - [ ] Imports are organized per project convention
 - [ ] No dead code or commented-out code
 
+#### Engineering Principles
+
+Apply [rules/engineering-principles.md](../rules/engineering-principles.md) to the changed code. Definitions, caveats, and severity rules live there — link, do not restate.
+
+This perspective owns the principles **local to the diff** (SRP, LSP, ISP, DRY, KISS, YAGNI, LoD, Composition over Inheritance, Explicit over Implicit, Fail Fast, Immutability & Pure Functions). DIP, OCP, and cross-module abstractions or coupling belong to Impact Review (Chapter 4).
+
+Three gates apply to every principle finding:
+
+- [ ] **Named consequence** — the finding states the specific future change it makes harder, the bug class it hides, or the duplicated knowledge that has already diverged. No consequence, no finding ([anti-patterns.md #25](../rules/anti-patterns.md))
+- [ ] **Severity** — `minor` by default; `major` only for a named, specific consequence; a principle tag never creates a `blocker`
+- [ ] **Scope** — changed lines plus the code this change makes wrong ([anti-patterns.md #21](../rules/anti-patterns.md)); untouched modules are `/improve-architecture` territory
+
+Record principles the change **followed well** in the report's `Positives` section — conformance is evidence too.
+
 ### Output Template
 
 Use the [shared Output Scaffold](#output-scaffold-shared-shape) with status fields **Security status**: `<clean | issues found>`, **Performance status**: `<clean | issues found>`, **Overall quality assessment**: `<assessment>`.
 
-**Code Review blockers** (specific to this perspective): security vulnerabilities, data loss risk, breaking bugs. If any security checklist item fails, verdict must be **Request Changes** with severity **blocker**.
+**Code Review blockers** (specific to this perspective): security vulnerabilities, data loss risk, breaking bugs. If any security checklist item fails, verdict must be **Request Changes** with severity **blocker**. An engineering-principle finding never *creates* a blocker on its own; when the same defect also fails the Security Checklist, report it as the security blocker it is.
 
 ### Extra Context Re-Read
 
@@ -319,6 +357,8 @@ Use the [shared Output Scaffold](#output-scaffold-shared-shape) with status fiel
 ---
 
 ## Chapter 4: Impact Review Sub-Agent
+
+Apply the [Sub-Agent Common](#sub-agent-common-applies-to-chapters-2-3-4) independence discipline and shared re-read checklist before anything else in this chapter.
 
 ### Responsibilities
 
@@ -372,6 +412,8 @@ For **global** architecture concerns — overall system design health, cross-cut
 - [ ] Does this change violate any existing ADR?
 - [ ] Does this change follow established patterns in the codebase?
 - [ ] Does this change make future extensions harder?
+
+**Principle ownership (cross-module scope)**: this perspective owns DIP, OCP, and any abstraction, seam, or coupling introduced **across modules** — see [rules/engineering-principles.md](../rules/engineering-principles.md) §Consumer & Ownership Map. An instance *local to the diff* belongs to Code Review; per Chapter 5, two perspectives observing one concern at different scopes is complementary, not a contradiction.
 
 #### Tech Debt
 
@@ -441,6 +483,7 @@ What counts as a contradiction:
 What does NOT count as a contradiction:
 - Different sub-agents finding different issues (that is expected — different perspectives)
 - One sub-agent mentioning something another didn't notice (supplementary, not contradictory)
+- Two perspectives observing one concern at different scopes (diff-local vs cross-module) — complementary, not contradictory
 
 ### Contradiction Format
 
@@ -594,7 +637,7 @@ When the recommendation is **Request Changes**, guide the user based on severity
 
 ## Chapter 7: Session Recovery
 
-If the session is interrupted during the review process, apply the general recovery procedure (re-read latest user message, re-read shared context from disk, verify on-disk artifacts, state recovery summary, confirm before continuing) from [anti-patterns.md #36](../rules/anti-patterns.md). What follows is the review-specific recovery logic #36 does not cover.
+If the session is interrupted during the review process, apply the general recovery procedure from [anti-patterns.md #36](../rules/anti-patterns.md). What follows is the review-specific recovery logic #36 does not cover.
 
 ### Recovery by Phase
 

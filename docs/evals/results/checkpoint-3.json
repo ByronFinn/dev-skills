@@ -1,0 +1,20 @@
+{
+  "checkpoint": 3,
+  "date": "2026-09-14",
+  "purpose": "holdout generalization — behavior scenarios never seen by the fixes (G2 grill, T2 think)",
+  "behavior": {
+    "G2-grill-notification": {
+      "split": "holdout", "turns": 6, "judged": [1, 6],
+      "turn_1": {"exactly_one_question": true, "recommended_answer_present": true, "asks_code_answerable": false, "note": "9 items extracted; queue/retry code contradiction self-resolved; single Q1 with recommendation"},
+      "turn_6_final": {"exactly_one_question": true, "asks_code_answerable": false, "completion_correct": true, "note": "HONEST GATE: with 2 nodes unresolved, refuses to mark Grilled ('门禁：未通过——差的就是上面 2 项'), parks remaining nodes with recommended defaults, keeps Status un-Grilled, explicitly refuses to re-litigate ADR records at wrap-up ('不在收尾时翻案'), defers /story. ADR eligibility decided inline at every decision (4× '无 ADR — 条件不满足' recorded with the failed condition)."},
+      "qualitative": "Unjudged turns 2-5 all single-question with recommendations, each next question derived from the previous answer (latency SLO from instant choice; dead-letter branch from retry choice; terminology prioritized as prerequisite for trigger-scope and push-scope)."
+    },
+    "T2-think-ratelimit": {
+      "split": "holdout", "turns": 6, "judged": [1, 6],
+      "turn_1": {"exactly_one_question": true, "recommended_answer_present": true, "asks_code_answerable": false},
+      "turn_6_final": {"exactly_one_question": true, "asks_code_answerable": false, "completion_correct": true, "note": "Full design summary (goal/approach/AC×5/out-of-scope/5 key decisions/domain-terms draft/unknowns with owner); no-PRD + no-tracker path handled ('此消息即设计存档'); stops without auto-chaining ('仅在明确要求后开始')."},
+      "qualitative": "No-PRD conversational path maintained one-decision-per-message throughout; research-first used real official docs (express-rate-limit v8); honestly declared the threshold NOT derivable from the repo ('仓库里没有访问日志，我推不出来，只能你定') instead of guessing or asking a code-answerable question."
+    },
+    "verdict": "HOLDOUT PASS — the interview contract generalizes to unseen scenarios; the iteration-3 and iteration-8 fixes (ADR-once, no-riders, honest gate) all held without ever having seen these scenarios."
+  }
+}

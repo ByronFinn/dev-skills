@@ -82,3 +82,11 @@ print('UNCITED:', sorted(n for n in defined if n not in cites))
 print('DANGLING:', sorted(n for n in cites if n not in defined))
 PY
 ```
+
+---
+
+## Superseded notes
+
+> Appended, not rewritten — this file is a dated record of the judgments made on 2026-07-03.
+
+**2026-09-14 — #25 renamed and returned from Archive.** C 类 listed `#25 Scorecard without contract` as archive material. On 2026-07-05 it was indeed archived (see `2026-07-05-workflow-design-audit.md`), and on 2026-09-14 it returned to the main table as **`#25 Judgment without contract`** — the engineering-principles catalog gives it two citing consumers (`review` Ch3, `improve-architecture` §4), which is the return condition the Archive rule states. Number unchanged; the archived name above is historical.

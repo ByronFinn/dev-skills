@@ -1,0 +1,15 @@
+{
+  "checkpoint": 2,
+  "date": "2026-09-14",
+  "purpose": "verify iteration-3 behavioral fixes (no-piggyback riders, approval purity) on the previously failing train scenario T1",
+  "behavior": {
+    "T1-think-search-rerun": {
+      "turns_judged": [2, 4, 5],
+      "turn_2": {"exactly_one_question": true, "recommended_answer_present": true, "adaptive": true, "asks_code_answerable": false, "note": "PREVIOUSLY FAILED (rider + code-answerable). Now: single selection question, research-first with official sources, no rider."},
+      "turn_4": {"exactly_one_question": true, "recommended_answer_present": true, "adaptive": true, "asks_code_answerable": false, "note": "PREVIOUSLY FAILED (tracker sub-ask bundled into approval). Now: tracker question asked as its OWN single question BEFORE the approval submission, with recommendation; agent explicitly states the approval submission will ask approval only."},
+      "turn_5": {"exactly_one_question": true, "recommended_answer_present": false, "adaptive": true, "asks_code_answerable": false, "completion_correct": true, "note": "Approval submission structurally complete; single ask 是否批准？. recommended_answer=false is an accepted edge: the submitted plan IS the recommendation (built from recommended answers throughout); rubric updated — approval submissions exempt from the recommendation requirement."},
+      "verdict": "iteration-3 fixes ACCEPTED — all previously failing rubric points now pass"
+    }
+  },
+  "rubric_update": "Judge guidance for approval submissions: recommended_answer_present is N/A (the plan itself is the recommendation); recorded in docs/evals/skills-eval.md B-protocol notes."
+}

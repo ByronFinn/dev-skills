@@ -1,6 +1,6 @@
 ---
 name: implement
-description: "Implement a piece of work based on a PRD or set of issues. Orchestrates /tdd at pre-agreed seams, runs typechecking and tests regularly, dispatches /review at the end, and commits the completed work to the current branch."
+description: "Use for implementing a piece of work based on a PRD or set of issues — orchestrates /tdd at pre-agreed seams, runs typechecking and tests regularly, dispatches /review at the end, and commits the completed work to the current branch. Explicit /implement invocation only. Trigger words: 实现, 编码实现, 开发这个需求, 开始写代码, implement these issues, orchestrate the build."
 disable-model-invocation: true
 ---
 
@@ -42,7 +42,7 @@ Update the issue's status in the PRD's `Sliced into` list to `— Done`.
 
 **Step 4 — Full test suite.** After all items are implemented, run the full test suite. If anything fails, return to the affected item and fix.
 
-**Step 5 — Dispatch /review.** Present the completed changes and instruct: "Next: Run `/review` to review all changes before merge."
+**Step 5 — Recommend /review.** Present the completed changes and instruct: "Next: Run `/review` to review all changes before merge."
 
 **Step 6 — Output.** Produce summary of implemented items, commits made, test results.
 

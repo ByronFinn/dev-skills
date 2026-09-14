@@ -41,9 +41,9 @@ Draft → Grilled → Sliced → In Progress → Done
 |------|---------|--------|
 | **Draft** | PRD 文件创建，`Open Questions` 尚未全部解决 | `/think` |
 | **Grilled** | 所有 Open Questions 已解决，Assumptions 已验证，Exhaustiveness Gate 通过 | `/grill` |
-| **Sliced** | PRD 已拆分为 Issues，`Child Issues` 已填充 | `/story` |
+| **Sliced** | PRD 已拆分为 Issues，Traceability 的 `Sliced into` 列表已填充 | `/story` |
 | **In Progress** | 至少一个 Child Issue 开始实现 | `/tdd` 首次执行 |
-| **Done** | 所有 Child Issues 关闭，所有 Acceptance Criteria 满足，代码已合并 | `/review` 或人工 |
+| **Done** | 所有 Child Issues（`Sliced into` 列表）关闭，所有 Acceptance Criteria 满足，代码已合并 | `/review` 或人工 |
 | **Deprecated** | PRD 被放弃或替代（从任意前置状态可达） | 人工标记 |
 
 **状态与代码的关系**: `Done` 判定**以代码为唯一事实源**——不依赖 Issue 关闭状态或口头确认，而是验证：
@@ -153,6 +153,7 @@ Draft → Grilled → Sliced → In Progress → Done
 - **Created by**: `/think` (or `/story` for minimal PRD)
 - **Prototyped by**: `/have-a-try` (<YYYY-MM-DD>) — if a demo adjudicated a design option — <divergence> → <selected X / eliminated Y, because <evidence>>
 - **Grilled by**: `/grill` (completed <YYYY-MM-DD>) — <summary: terms sharpened, assumptions resolved, ADRs created>
+- **Sliced by**: `/story` (completed <YYYY-MM-DD>) — child issues listed under `Sliced into` below
 - **Sliced into**:
   - #<issue-1> — [PRD-NNNN] <slice title> (AFK) — Done
   - #<issue-2> — [PRD-NNNN] <slice title> (HITL, blocked by #<issue-1>) — In Progress

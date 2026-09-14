@@ -1,0 +1,117 @@
+{
+  "comment": "Behavior-simulation scenarios for Level B (interviewing skills). One TRAIN + one HOLDOUT scenario per skill; holdout is reported, never used to guide edits. 'expected_focus' is loose (adjacent-tree focus accepted by the judge); 'user_reply' is appended when the actor's question matches the focus, else 'fallback_reply' is used — a batch questioner thereby strands questions and the judge flags it. 'code_answerable' items must NEVER be asked of the user.",
+  "scenarios": [
+    {
+      "id": "G1-grill-export",
+      "skill": "grill",
+      "split": "train",
+      "setup": {
+        "user_message": "/grill",
+        "mock_repo": {
+          "docs/prd/PRD-0002-doc-export.md": "# 文档导出功能\n\n## Goal\n用户可以把文档站的任意页面导出为文件。\n\n## Requirements\n- 支持导出 export\n- 导出异步进行，完成后通知用户\n\n## Open Questions\n- 支持哪些格式？\n\n## Assumptions\n- 单个文档都小于 10MB\n\n## Out of Scope\n- 批量导出（未说明原因）\n\n## Decision (ADR-lite)\n- 导出走服务端渲染管线",
+          "CONTEXT.md": "# Domain Glossary\n\n| Term | Definition |\n|---|---|\n| 文档 | Markdown 源文件，渲染为页面 |\n",
+          "src/export/api.ts": "export async function handleExport(req, res) {\n  // sync render + immediate response; no queue, no job status endpoint\n  const file = await renderSync(req.body.docId);\n  res.download(file);\n}"
+        }
+      },
+      "ground_truth_items": [
+        "term: '导出/export' undefined vs 下载 — needs canonical definition",
+        "open: format list decision",
+        "scope: batch export excluded without reason — confirm defer vs drop",
+        "code: PRD claims async export but src/export/api.ts is sync — agent must resolve by reading code, never ask",
+        "policy: what happens when a doc exceeds the 10MB assumption"
+      ],
+      "code_answerable_items": ["async vs sync contradiction in src/export/api.ts"],
+      "turns": [
+        {"n": 1, "expected_focus": "export terminology / canonical definition", "user_reply": "导出=服务端生成文件，下载=浏览器保存动作，就按你建议的定义来，写进 CONTEXT.md。", "fallback_reply": "（用户只回答了问题列表里的第一个，其余没有回答）"},
+        {"n": 2, "expected_focus": "format list decision", "user_reply": "PDF 和 Markdown 两种就够了，其他格式以后再说。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 3, "expected_focus": "batch export scope (defer vs drop)", "user_reply": "批量导出是延后，不是砍掉，麻烦在 PRD 里记一下扩展点。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 4, "expected_focus": "oversized-document policy (10MB assumption)", "user_reply": "超过 10MB 直接拒绝并提示用户拆分文档。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 5, "expected_focus": "completion summary — no further question; code contradiction self-resolved; PRD status Grilled", "user_reply": "看起来都清楚了，收尾吧。", "fallback_reply": "（用户催促收尾）"}
+      ]
+    },
+    {
+      "id": "G2-grill-notification",
+      "skill": "grill",
+      "split": "holdout",
+      "setup": {
+        "user_message": "/grill",
+        "mock_repo": {
+          "docs/prd/PRD-0005-notification.md": "# 通知功能\n\n## Goal\n用户在事件发生时收到通知。\n\n## Requirements\n- 通知支持即时发送\n- 发送失败自动重试\n\n## Open Questions\n- 即时通知还是每日摘要？\n\n## Assumptions\n- 用户每天至少查看一次站点\n\n## Out of Scope\n- 移动端推送\n\n## Decision (ADR-lite)\n- 通知经由消息队列投递",
+          "CONTEXT.md": "# Domain Glossary\n\n| Term | Definition |\n|---|---|\n| 事件 | 系统内可观察的状态变化 |\n",
+          "src/notify/sender.ts": "export function sendNotification(evt) {\n  mailer.send(evt.to, evt.body); // fire-and-forget, no retry, no queue\n}"
+        }
+      },
+      "ground_truth_items": [
+        "term: '通知/notification' channel ambiguity (in-app vs email)",
+        "open: instant vs digest",
+        "code: PRD claims queue + retry but sender.ts is fire-and-forget — self-resolve",
+        "assumption: users check daily — validate or convert",
+        "scope: mobile push excluded — confirm reason"
+      ],
+      "code_answerable_items": ["queue/retry contradiction in src/notify/sender.ts"],
+      "turns": [
+        {"n": 1, "expected_focus": "notification channel terminology", "user_reply": "通知指站内信，邮件是另一个东西，按这个定义更新术语表。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 2, "expected_focus": "instant vs digest decision", "user_reply": "先做即时通知，摘要以后再考虑。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 3, "expected_focus": "daily-check assumption", "user_reply": "这个假设不成立，不少用户一周才来一次，改成要求吧：未读通知要有角标。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 4, "expected_focus": "mobile push scope confirmation", "user_reply": "移动端推送真的不做，不是延后。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 5, "expected_focus": "completion summary — no further question; retry contradiction self-resolved", "user_reply": "好，收尾。", "fallback_reply": "（用户催促收尾）"}
+      ]
+    },
+    {
+      "id": "T1-think-search",
+      "skill": "think",
+      "split": "train",
+      "setup": {
+        "user_message": "帮我想想给文档站加搜索功能怎么做",
+        "mock_repo": {
+          "README.md": "# docs-site\n静态文档站，约 200 篇 Markdown，用脚本构建为 HTML。",
+          "build.py": "# renders ./content/**/*.md to ./public/**/*.html",
+          "package.json": "{\"name\": \"docs-site\", \"devDependencies\": {\"markdown-it\": \"^14.0.0\"}}"
+        }
+      },
+      "ground_truth_items": [
+        "auto-context before asking (repo facts: ~200 md files, static site, no index infra)",
+        "PRD offer question (Step 2) — asked once",
+        "approach preference with 2-3 options + recommendation (client-side vs server-side vs external service)",
+        "failure/edge scan (Moderate: failure & edge category)",
+        "approval submission then finalization"
+      ],
+      "code_answerable_items": ["how many docs exist", "whether the site is static", "what build tooling exists"],
+      "turns": [
+        {"n": 1, "expected_focus": "PRD creation offer (informed by auto-collected context)", "user_reply": "好，创建 PRD。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 2, "expected_focus": "search approach preference with options + recommendation", "user_reply": "数据量小，用客户端索引就够了。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 3, "expected_focus": "failure/edge behavior (e.g. 中文分词、无结果、性能)", "user_reply": "先用简单子串匹配，无结果时给出最接近的标题列表，可以接受。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 4, "expected_focus": "requirements/acceptance confirmation", "user_reply": "可以，验收标准就按这几条。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 5, "expected_focus": "plan approval submission (full summary, asks approval)", "user_reply": "确认，按这个方案定稿。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 6, "expected_focus": "finalization — approved summary output, next step /grill", "user_reply": "好的。", "fallback_reply": "（用户无更多输入）"}
+      ]
+    },
+    {
+      "id": "T2-think-ratelimit",
+      "skill": "think",
+      "split": "holdout",
+      "setup": {
+        "user_message": "我们的公开 API 最近被爬虫打爆了，想加个限流，帮我设计一下",
+        "mock_repo": {
+          "README.md": "# api-gateway\nNode.js API 网关，前置 nginx，无 Redis 依赖。",
+          "server.js": "// express app, 30 routes, no rate limiting middleware"
+        }
+      },
+      "ground_truth_items": [
+        "auto-context before asking (express, nginx front, no redis)",
+        "PRD offer question",
+        "approach preference with options (nginx limit_req vs app middleware vs redis-backed) + recommendation",
+        "failure/edge scan (429 semantics, trusted-proxy headers, keying strategy)",
+        "approval submission then finalization"
+      ],
+      "code_answerable_items": ["what framework the gateway uses", "whether redis is already a dependency", "that no rate-limit middleware exists yet"],
+      "turns": [
+        {"n": 1, "expected_focus": "PRD creation offer (informed by auto-collected context)", "user_reply": "先不用建 PRD，口头过一遍就行。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 2, "expected_focus": "limiting approach preference with options + recommendation", "user_reply": "就在应用层做中间件，按 IP 限。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 3, "expected_focus": "failure/edge behavior (proxy headers / keying / 429 body)", "user_reply": "信任 nginx 的 X-Forwarded-For，超限返回 429 加 Retry-After。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 4, "expected_focus": "requirements/acceptance confirmation", "user_reply": "阈值先全站统一 100 req/min，够了。", "fallback_reply": "（用户只回答了第一个问题）"},
+        {"n": 5, "expected_focus": "plan approval submission", "user_reply": "确认定稿。", "fallback_reply": "（用户只回答了第一个问题）"}
+      ]
+    }
+  ]
+}

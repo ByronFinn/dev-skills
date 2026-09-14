@@ -1,5 +1,26 @@
 # Setup Project: Detailed Reference
 
+
+
+
+## Contents
+
+- [Re-run Checklist](#re-run-checklist)
+- [Re-run Behavior](#re-run-behavior)
+- [Migration (Structural Changes)](#migration-structural-changes)
+- [Conformance Sweep (Re-run Only)](#conformance-sweep-re-run-only)
+- [Traceability](#traceability)
+- [Step 1: Explore](#step-1-explore)
+- [Step 2: Detect Project Structure](#step-2-detect-project-structure)
+- [Step 3: Present Findings](#step-3-present-findings)
+- [Step 4: Ask for Overrides](#step-4-ask-for-overrides)
+- [Step 5: Confirm](#step-5-confirm)
+- [Step 6: Write](#step-6-write)
+- [Step 7: Done](#step-7-done)
+- [Seed Templates](#seed-templates)
+
+---
+
 ## Re-run Checklist
 
 When `docs/agents/` already exists, run this drift detection loop **before** any user interaction. Each config file is checked against the current repo state:
@@ -57,7 +78,7 @@ Check each file's name against the convention defined in the relevant FORMAT spe
 | `docs/adr/` | `<NNNN>-<title>.md` (no `ADR-` prefix) | `0001-event-sourced-orders.md` |
 | `docs/research/` | `<stack>-<topic>-<major>.md` | `react-concurrent-rendering-18.md` |
 
-For each mismatch: report `<file> does not match convention — expected <pattern>`. Ask before renaming. Batch multiple files into one question.
+For each mismatch: report `<file> does not match convention — expected <pattern>`. Renaming is a destructive op: list every violating file individually, then request one explicit authorization covering exactly that listed set (anti-pattern #16 — this is same-shape op authorization, not interview questioning; it does not relax the one-decision-per-message rule for actual decisions).
 
 ### Language Audit
 
@@ -93,7 +114,7 @@ Informational only — report, don't auto-fix.
 
 | Category | Action |
 |----------|--------|
-| **Naming** | Ask per file before renaming. Batch into one question. |
+| **Naming** | List each misnamed file; one explicit authorization for the listed renames only (destructive-op rule #16). |
 | **Language** | Flag only; suggest `/write`. Never auto-translate. |
 | **Format** | Report deviations only. Never auto-add empty sections. |
 | **Metadata** | Report inconsistencies only. Never auto-fix. |
@@ -152,7 +173,7 @@ Ask the user to confirm the detection. If unsure, ask: "Is this a single project
 
 ### Multi-repo: Collect Repo Information
 
-If multi-repo, ask the user for each related repo:
+If multi-repo, collect the repos one at a time — one repo per message, each field derived from prior answers where possible (git remotes often already name the repos and URLs; read those first, don't ask). Per repo:
 - **Repo name/slug** — e.g., `backend`, `frontend`, `shared`
 - **Remote URL** — so skills can reference it
 - **Domain role** — what the repo does (API server, web app, shared library, infrastructure)

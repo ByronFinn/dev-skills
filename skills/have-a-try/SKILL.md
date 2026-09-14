@@ -1,6 +1,6 @@
 ---
 name: have-a-try
-description: "Settle a decision with conflicting options: build the minimal demo that exercises the contested point, verify the core conflict, then adjudicate — selecting the best option or eliminating wrong ones — and fix the evidence with rationale. Tactics: interactive logic probe, UI variants, benchmark comparison, concern-checking spike, or a synthesized experiment. Use whenever a divergence between options is cheaper to resolve by running code than by reasoning. Not for plain one-off measurements or lookups with no decision at stake (just run those directly). Trigger words: prototype, 原型, 试一下, spike, 验证一下, 看看效果, 跑起来看看, 有没有更简单的方式, 这个状态机对不对, 这个数据模型能表达吗, 有分歧, 帮我抉择, 选哪个, A还是B, 方案对比, 性能对比, benchmark, 基准测试, 哪个快, 可行性验证, 排除方案, 依次试试."
+description: "Settle a decision with conflicting options: build the minimal demo that exercises the contested point, verify the core conflict, then adjudicate — selecting the best option or eliminating wrong ones — and fix the evidence with rationale. Tactics: interactive logic probe, UI variants, benchmark comparison, concern-checking spike, or a synthesized experiment. Use when a divergence between options is cheaper to resolve by running code than by reasoning. Not for plain one-off measurements or lookups with no decision at stake (just run those directly). Trigger words: prototype, 原型, 试一下, spike, 验证一下, 看看效果, 跑起来看看, 有没有更简单的方式, 这个状态机对不对, 这个数据模型能表达吗, 有分歧, 帮我抉择, 选哪个, A还是B, 方案对比, 性能对比, benchmark, 基准测试, 哪个快, 可行性验证, 排除方案, 依次试试."
 ---
 
 # Have-a-Try: Settle a Divergence with a Minimal Demo

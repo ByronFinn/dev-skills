@@ -1,0 +1,18 @@
+{
+  "checkpoint": "trigger-final",
+  "date": "2026-09-14",
+  "purpose": "close the catalog-consistency gap from checkpoint 1 — re-run the ten probes that used abbreviated descriptions, now with the full verbatim catalog",
+  "results": {
+    "P3": {"expected": "story", "got": "story", "pass": true},
+    "P4": {"expected": "debug", "got": "debug", "pass": true},
+    "P5": {"expected": "review", "got": "review", "pass": true},
+    "P6": {"expected": "write", "got": "write", "pass": true},
+    "N1": {"expected": "debug", "got": "debug", "pass": true},
+    "N2": {"expected": "NONE", "got": "NONE", "pass": true},
+    "N3": {"expected": "NONE", "got": "NONE", "pass": true},
+    "N4": {"expected": "write", "got": "write", "pass": true},
+    "N5": {"expected": "NONE", "got": "NONE", "pass": true},
+    "N6": {"expected": "think", "got": "think", "pass": true}
+  },
+  "summary": "T-Live final: 10/10 with full catalog. Campaign totals: train 12/12, holdout 8/8 — 20/20 (100%). No description changes are indicated; routing layer ships as-is."
+}

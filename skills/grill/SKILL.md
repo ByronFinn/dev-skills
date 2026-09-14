@@ -11,7 +11,7 @@ Interview me relentlessly about every aspect of this plan until we reach shared 
 
 Finding facts is your job, never the user's: if the codebase or a sub-agent can answer it, look it up instead of asking. Only decisions reach the user.
 
-Ask decisions in **rounds** — the **frontier** (every question whose prerequisite decisions are settled) goes out together as one numbered round with recommended answers; wait for the answers, then recompute. A question whose prerequisite is still open belongs to a **later round**: hold it back. Within a round, only dependency chains go one at a time — one answer reshapes the framing of the next (anti-pattern #3 and #4). Round format template: [REFERENCE.md §Question Pacing](REFERENCE.md).
+Ask **exactly one question per message, always** — never a batch, never a pre-computed list, no piggyback riders (anti-patterns #3, #4). The next question is derived from the user's last answer; keep asking until the decision tree is **exhausted** — every branch walked to a settled decision. Tree-walk mechanics and the message template: [REFERENCE.md §Question Pacing](REFERENCE.md).
 
 ## Outcome Contract
 
@@ -27,10 +27,10 @@ Apply the [Skill Entry Protocol](../rules/entry-protocol.md) — it locates the 
 ## The Work
 
 1. **Extract everything unresolved.** Read the PRD with hostile eyes: Open Questions, unvalidated Assumptions, vague terms, unexplained scope boundaries, shaky technical approach, edge cases, conflicts with `CONTEXT.md`. Skip none.
-2. **Work the checklist in rounds.** Send the frontier — every item whose prerequisites are settled — as one numbered round with recommended answers; keep dependency chains one-at-a-time within a round (see [REFERENCE.md §Question Pacing](REFERENCE.md)).
+2. **Work the checklist one question at a time.** Pick the highest-value unresolved item, ask it as a single question with your recommended answer, and wait. After the answer lands, update the tree — resolved items close, new findings may open children — and pick the next question from what the answer just made askable (see [REFERENCE.md §Question Pacing](REFERENCE.md)).
 3. **Resolve as you go, not in a batch at the end.** Update files inline:
    - **Terminology resolved** → update `CONTEXT.md` now (glossary only, no implementation details).
-   - **Significant decision** → offer an ADR when the three conditions in [ADR-FORMAT.md §创建条件](ADR-FORMAT.md) are all met (hard to reverse, surprising without context, result of a real trade-off — full definitions live there, single source). Otherwise skip.
+   - **Significant decision** → offer an ADR when the three conditions in [ADR-FORMAT.md §创建条件](ADR-FORMAT.md) are all met (hard to reverse, surprising without context, result of a real trade-off — full definitions live there, single source). Otherwise skip. **Decide eligibility once, the moment the decision lands**: either create the ADR inline, or record "no ADR — <which condition failed>" in the PRD. Never re-adjudicate a decision's ADR eligibility at completion — a flip between "declined inline" and "created at wrap-up" means the inline judgment was never made.
    - **Code can answer it** → grep/read the code instead of asking the user.
    - **Only running a demo can answer it** (options that reasoning and reading can't separate — which is faster, does the model hold up, what should it look like) → park the item, suggest `/have-a-try`; fold the verdict back as an ADR / PRD update and resume the checklist.
 4. **Run the exhaustiveness gate** before declaring complete: Open Questions, Assumptions, terms, scope, code cross-check — all resolved.
@@ -53,9 +53,10 @@ For the challenge types (terminology conflict, fuzzy language, scope boundary, e
 | Skipped an unresolved assumption | Extract every open item first, then resolve each |
 | Updated CONTEXT.md in a batch at the end | Update inline, the moment each term resolves |
 | Created an ADR for a trivial decision | Only when all 3 conditions met |
+| ADR flipped at completion (declined inline, created at wrap-up — or vice versa) | Decide ADR eligibility once, inline, when the decision lands; record the failed condition when declining |
 | CONTEXT.md gained implementation details | It is a glossary, nothing more |
 | Asked the user something the code could answer | Explore the codebase instead |
-| Asked independent questions one at a time across many messages | One round per frontier — batch settled-prerequisite questions into a single numbered round (anti-pattern #3; see Question Pacing) |
+| Batched questions into one message, or worked a pre-computed list | One question per message, always — the next question is derived from the last answer (anti-patterns #3, #4; see Question Pacing) |
 | Forced a decision that reasoning couldn't settle | Park the item and suggest `/have-a-try` — a minimal demo settles it (selects or eliminates); fold the verdict back as an ADR |
 | PRD not updated after interview | Update `docs/prd/PRD-NNNN-<title>.md` and set `Status` to `Grilled` before declaring complete |
 | Declared complete without the exhaustiveness gate | Run the 5-point gate first |

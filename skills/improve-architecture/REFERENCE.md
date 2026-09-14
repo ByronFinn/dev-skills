@@ -6,6 +6,7 @@ Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate and read 
 - `CONTEXT.md` — domain terms and concepts
 - `docs/adr/*.md` — historical architecture decisions
 - `docs/prd/*.md` — current and planned features
+- `docs/audits/*.md` — read the most recent record before proposing structural changes; it holds the judgments already made on these modules and the reasons behind them
 
 ## Step 2: Analyze Current Development Direction
 
@@ -38,22 +39,32 @@ Scan in this order — not random full-repo reads:
 
 ### 3.2 Design Debt Signals
 
-For each signal, a concrete heuristic is provided to make detection objective:
+For each signal, a concrete heuristic is provided to make detection objective. This table is the **only home of the thresholds** — principle definitions, counter-indications, and severity rules live in [../rules/engineering-principles.md](../rules/engineering-principles.md). The `Principle` column tags each signal with the principle it detects; `—` marks a signal that is a scanner heuristic without a catalog entry.
 
-| Signal | Detection Heuristic | Threshold |
-|--------|-------------------|-----------|
-| **Code duplication** | Same 6+ line block appears in ≥2 files | 2+ occurrences with ≥70% line similarity |
-| **Long functions/classes** | Function body exceeds N lines; class has N+ methods | Function > 50 lines; class > 15 methods |
-| **Tight coupling** | Module A imports >N modules from module B's internals | >3 direct imports from internal paths of another module |
-| **Global state** | Mutable variable accessible from outside its defining module | Any `export let` / module-level mutable state / singleton pattern |
-| **Leaked abstractions** | Caller must know implementation detail to use function correctly | Function requiring caller to pass internal config/state |
-| **Missing abstractions** | Raw low-level calls repeated without wrapper | ≥3 direct uses of low-level API (fetch, fs, SQL) without shared adapter |
-| **Shallow modules** | Interface surface ≈ implementation complexity | Public method count ≥ 50% of total lines of code |
-| **God objects** | Single class/file handles >3 unrelated responsibilities | Class name contains "Manager", "Handler", "Service" + >500 lines |
+| Principle | Signal | Detection Heuristic | Threshold |
+|-----------|--------|-------------------|-----------|
+| **DRY** | **Code duplication** | Same 6+ line block appears in ≥2 files | 2+ occurrences with ≥70% line similarity |
+| **SRP** | **Long functions/classes** | Function body exceeds N lines; class has N+ methods | Function > 50 lines; class > 15 methods |
+| **DIP** | **Tight coupling** | Module A imports >N modules from module B's internals | >3 direct imports from internal paths of another module |
+| **Immutability & Pure Functions** | **Mutable shared state** | Mutable state reachable from outside its defining module | Any `export let` / module-level mutable state / singleton / mutable default parameter / in-place mutation of a parameter |
+| **Explicit over Implicit** | **Leaked abstractions** | Caller must know implementation detail to use function correctly | Function requiring caller to pass internal config/state |
+| — (deep module) | **Missing abstractions** | Raw low-level calls repeated without wrapper | ≥3 direct uses of low-level API (fetch, fs, SQL) without shared adapter |
+| — (deep module) | **Shallow modules** | Interface surface ≈ implementation complexity | Public method count ≥ 50% of total lines of code |
+| **SRP / ISP** | **God objects** | Single class/file handles >3 unrelated responsibilities | Class name contains "Manager", "Handler", "Service" + >500 lines |
+| **YAGNI** | **Dead / unreachable code** | Exported or top-level symbol with no references | 0 non-test references, excluding entrypoints, public API surface, and framework-registered symbols |
+| **YAGNI** | **Speculative generality** | Parameters, options, flags, or abstractions with no real user | ≥2 parameters never passed a non-default value; config option never set; abstraction with exactly 1 implementation and no test double; feature flag never toggled |
+| **LoD** | **Message chains / feature envy** | Depth of chained calls; count of foreign-object members accessed | Chain depth ≥3 across ownership boundaries; method touching ≥3 members of another object |
+| **Composition over Inheritance** | **Deep or convenience inheritance** | Inheritance chain depth; override ratio | Depth ≥3 levels; subclass overrides >50% of inherited behavior; subclass exists to reuse a single method |
+| **ISP / LSP** | **Stub implementations / contract violations** | Empty or throwing implementation of an interface method | ≥1 method that is empty or throws not-implemented in any implementer |
+| **Explicit over Implicit** | **Magic values & hidden side effects** | Unnamed literals repeated in logic; side effects in accessors or constructors | Same literal in ≥3 sites; getter or constructor that mutates state or performs IO |
+| **Fail Fast** | **Deferred validation / swallowed errors** | Validation far from the boundary; errors caught and dropped | Catch/except that neither rethrows, logs, nor handles; boundary accepting input without validation |
+| **OCP** | **Repeated type dispatch** | Same type switch extended repeatedly | Same `switch`/if-else on a type modified to add a variant in ≥3 separate commits |
+
+The two `— (deep module)` rows are described in [tdd/REFERENCE.md](../tdd/REFERENCE.md) §Deep Modules Principle (the definition's single source).
 
 **These thresholds are guidelines, not hard cutoffs.** Use judgment — a 55-line function doing one clear thing is fine; a 40-line function juggling three responsibilities is not. The heuristic identifies *candidates*; human judgment confirms.
 
-When a signal fires, the improvement direction follows from its category: duplication → extract shared utility; long functions/classes → split into focused units; tight coupling → depend on abstractions / inject dependencies; global state → pass state explicitly; leaked/missing abstractions → hide behind an interface or add a shared adapter; shallow modules → deepen (hide complexity behind a smaller interface).
+When a signal fires, the improvement direction follows from its category: duplication → extract shared utility; long functions/classes → split into focused units; tight coupling → depend on abstractions / inject dependencies; mutable shared state → pass state explicitly, return copies; leaked/missing abstractions → hide behind an interface or add a shared adapter; shallow modules → deepen (hide complexity behind a smaller interface); dead code → delete; speculative generality → delete until a real caller exists; message chains → tell, don't ask; deep inheritance → compose and delegate; stub implementations → split the interface or fix the contract; magic values and hidden side effects → named constant, explicit parameter, side effect moved to the caller; swallowed errors → validate at the boundary and fail fast; repeated type dispatch → extension point, but only once a second real implementation exists (otherwise it is speculative generality).
 
 ### 3.3 ADR Compliance Check
 
@@ -91,9 +102,9 @@ Categorize findings into:
 
 Each finding must include:
 - [ ] **Location**: specific file and module (not "the auth module" — use file paths)
-- [ ] **Signal detected**: which debt signal or ADR violation was found
+- [ ] **Signal detected**: which debt signal or ADR violation was found (name the `Principle` tag from §3.2 when one applies)
+- [ ] **Impact**: why this matters — performance, maintainability, onboarding cost, or blocked PRD. A principle-tagged finding must name the concrete consequence, not just the violated principle (anti-patterns.md #25)
 - [ ] **Evidence**: paste the relevant code snippet or metric (e.g., line count, import count)
-- [ ] **Impact**: why this matters — performance, maintainability, onboarding cost, or blocked PRD
 - [ ] **PRD link** (if applicable): which planned feature is affected
 
 ## Step 5: Propose Improvements
@@ -164,11 +175,11 @@ class OrderService {
 
 **Improvement:** Depend on abstractions, inject dependencies.
 
-### Global State
+### Mutable Shared State
 
-**Example (per §3.2 Global State):**
+**Example (per §3.2 Mutable shared state):**
 ```javascript
-// Global state
+// Module-level mutable state
 let currentUser = null;
 
 function setUser(user) {

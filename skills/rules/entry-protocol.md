@@ -38,6 +38,7 @@ Read domain docs at the paths discovered in Step 1 (or defaults if config missin
 | PRDs | `docs/prd/PRD-NNNN-<title>.md` | Product requirements — what to build, acceptance criteria |
 | ADRs | `docs/adr/*.md` | Architecture Decision Records — past technical decisions |
 | Research INDEX | `docs/research/INDEX.md` | Searchable index of persisted technical research records (stack × topic × major). Query before re-searching; see `/research` skill |
+| Audit records | `docs/audits/*.md` | Dated architecture and anti-pattern audit records. Read the most recent before proposing structural changes — it records which judgments were already made and why |
 
 **If any document is missing, proceed without it.** Missing context reduces precision but does not block execution. State what's missing so the user knows the limitation.
 

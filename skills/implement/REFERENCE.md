@@ -101,6 +101,8 @@ When an item is not TDD-suitable:
 3. **Implement** — write the minimal code to satisfy the tests
 4. **Run tests** — ensure all tests pass (both new and existing)
 
+**Apply engineering principles design-time** — unlike the `/tdd` path, direct implementation has no Refactor phase behind it to catch structural problems later. Consult [../rules/engineering-principles.md](../rules/engineering-principles.md) while writing; its Consumer & Ownership Map lists this path against every principle, in design-time terms. Read each entry's *When NOT to apply* before restructuring anything — the counter-indications are what keep this from becoming speculative abstraction.
+
 ### 3d. Typechecking
 
 After each item is implemented (via `/tdd` or direct):
@@ -181,7 +183,7 @@ After all items are implemented and committed:
    - Return to Step 3 for that item
    - Fix and re-commit (amend the previous commit for that item, or create a fixup commit)
 
-## Step 5: Dispatch /review
+## Step 5: Recommend /review
 
 Present the completed state to the user:
 
@@ -211,7 +213,7 @@ If the user interrupts `/tdd` (e.g., "stop", "skip this one", "this is taking to
 1. Check which acceptance criteria within `/tdd` completed (GREEN)
 2. For GREEN criteria: record them, proceed to typechecking (3d)
 3. For incomplete criteria: assess whether to implement directly (3c) or skip
-4. Ask the user: "Item <X> was not completed by /tdd. Implement directly, skip, or resume /tdd?"
+4. Ask one question with a recommendation: "Item <X> was not completed by /tdd. Resume /tdd, or implement directly (3c)? (Recommended: implement directly — the cycle was already interrupted)" — skip only if the user says so
 
 ### Test Suite Regression
 

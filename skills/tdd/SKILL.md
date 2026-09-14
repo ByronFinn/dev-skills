@@ -18,11 +18,11 @@ description: "Sub-agent orchestrated test-driven development. For each acceptanc
 
 **Behavior testing through public interfaces.** Tests verify what the system does, not how. Code can change completely; tests should not.
 
-**Sub-agent independence.** Test Sub-Agent and Develop Sub-Agent share no state and each re-reads shared context from disk before acting — see [anti-patterns.md #35](../rules/anti-patterns.md). The re-read checklist is in [REFERENCE.md Sub-Agent Common](REFERENCE.md).
+**Sub-agent independence.** Sub-agents are independent (anti-patterns [#34, #35](../rules/anti-patterns.md)); the shared re-read checklist lives in [REFERENCE.md Sub-Agent Common](REFERENCE.md).
 
 **Two-stage human review (recommended default).** Each acceptance criterion passes through two synchronous gates — Scenario Review Gate (scenario design quality) and Test Code Review Gate (code quality and fidelity). Both gates are blocking; execution halts until the human responds. See [Gate Modes](#gate-modes) — Fast and Batch are offered per-cycle, not hidden behind a user request.
 
-**Runtime Note:** "Sub-agent" is a logical concept — see [Sub-Agent Runtime Semantics](../rules/sub-agent-runtime.md). Independence comes from re-reading shared context from disk, not from execution timing; parallel dispatch when the runtime supports it, sequential otherwise.
+**Runtime Note:** "Sub-agent" is a logical concept — see [Sub-Agent Runtime Semantics](../rules/sub-agent-runtime.md). Independence comes from re-reading shared context from disk, not from execution timing.
 
 **Vertical slicing.** One acceptance criterion = one independent cycle (design → review → test code → review → implement). The cycle structure enforces vertical slicing naturally — there is no way to batch all tests then implement.
 
@@ -70,7 +70,7 @@ The two-stage Human Review Gate (Scenario Review + Test Code Review) is the reco
 4. **Test Code Review Gate** — human reviews test code
 5. **Develop Sub-Agent (implementation)** — write code to make test GREEN
 
-**Step 3: Refactor** — After all cycles GREEN, Develop Sub-Agent performs unified refactor: extract duplication, deepen modules, apply SOLID. Run full test suite after each refactor step.
+**Step 3: Refactor** — After all cycles GREEN, Develop Sub-Agent performs unified refactor: extract duplication, deepen modules, apply the `refactor-safe` engineering principles ([rules/engineering-principles.md](../rules/engineering-principles.md)). Run full test suite after each refactor step.
 
 **Step 4: Output** — Produce result summary. If a PRD file exists, fill the `Implemented by` field in its `## Traceability` section with the Issue reference. Update the corresponding Issue's status in the PRD's `Sliced into` list to `— In Progress`.
 
@@ -86,9 +86,6 @@ Test Sub-Agent writes test code faithful to the approved scenarios (RED by desig
 
 > **Gate Modes:** the number and shape of these gates per criterion is set by the active Gate Mode (Full / Fast / Batch) — see [Gate Modes](#gate-modes) above.
 
-## Per-Cycle Checklist
-
-Each cycle: Test Sub-Agent re-reads context from disk → scenarios cover criterion completely → Scenario Gate passed → test code faithful to approved scenarios, uses public interface only → Code Gate passed → Develop Sub-Agent re-reads context → minimal implementation → test GREEN → no speculative features.
 
 ## Gotchas
 

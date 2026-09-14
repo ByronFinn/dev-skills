@@ -23,7 +23,7 @@ Dispatches three independent review sub-agents in parallel — Test Review, Code
 
 ## Runtime Note
 
-"Sub-agent" is a logical concept — see [Sub-Agent Runtime Semantics](../rules/sub-agent-runtime.md). Independence comes from re-reading shared context from disk, not from execution timing; parallel dispatch when the runtime supports it, sequential otherwise.
+"Sub-agent" is a logical concept — see [Sub-Agent Runtime Semantics](../rules/sub-agent-runtime.md). Independence comes from re-reading shared context from disk, not from execution timing.
 
 ## Process Summary
 
@@ -35,7 +35,7 @@ Dispatches three independent review sub-agents in parallel — Test Review, Code
 
 **Step 4 — Present merged report**: Show the full merged report to the user with per-perspective sections, verification status, contradiction block, and unified recommendation.
 
-**Step 5 — Authorization gate**: Ask the user what to do next. Options: approve and merge, fix issues then re-review, proceed to release. Local doc updates are allowed when necessary; remote actions require current-turn explicit authorization.
+**Step 5 — Authorization gate**: Present the report and ask **one** question — approve the recommendation, or request changes. Merge/release and other actions are not part of the approval: they are requested (and authorized) separately per Chapter 6. Local doc updates are allowed when necessary; remote actions require current-turn explicit authorization.
 
 **Step 6 — Execute authorized actions**: Perform only actions the user explicitly requested in the current turn — local file updates, issue sync, release follow-through. If the review passes and the Issue belongs to a PRD's `Sliced into` list, update the Issue's status there to `— Done`. If all entries in `Sliced into` are `— Done`, update the PRD Status to `Done`. See [Authorization Boundaries](#authorization-boundaries).
 
@@ -48,12 +48,12 @@ Each sub-agent is an independent review perspective. They run in parallel, each 
 | Sub-Agent | Focus Area |
 |---|---|
 | **Test Review** | Test quality, boundary coverage, test design reasonableness, naming, isolation, mock usage |
-| **Code Review** | Implementation quality, security, performance, code conventions, error handling, readability |
-| **Impact Review** | Change scope, regression risk, compatibility, architecture health (local to this change), tech debt introduced, release strategy (feature flags, canary, rollback plan). Suggests `/improve-architecture` for global architecture concerns |
+| **Code Review** | Implementation quality, security, performance, code conventions, error handling, readability, engineering principles local to the diff ([rules/engineering-principles.md](../rules/engineering-principles.md)) |
+| **Impact Review** | Change scope, regression risk, compatibility, architecture health (local to this change), principles with cross-module consequence (DIP, OCP, new coupling), tech debt introduced, release strategy (feature flags, canary, rollback plan). Suggests `/improve-architecture` for global architecture concerns |
 
 ### Sub-Agent Independence
 
-Every sub-agent shares no state and re-reads all shared context from disk — see [anti-patterns.md #34, #35](../rules/anti-patterns.md). The re-read checklist is in [REFERENCE.md Sub-Agent Common](REFERENCE.md), plus each chapter's role-specific addition.
+Sub-agents are independent (anti-patterns [#34, #35](../rules/anti-patterns.md)); the shared re-read checklist is in [REFERENCE.md Sub-Agent Common](REFERENCE.md), plus each chapter's role-specific addition.
 
 ## Report Merge Rules
 
@@ -68,7 +68,6 @@ Default review is local inspection only. Local doc/PRD/CONTEXT/ADR updates are a
 - **Security first**: Block immediately on any security issue. Code Review Sub-Agent runs the full Security Checklist in REFERENCE.md before approving any diff. Security-sensitive changes must include rollback path, audit trail, and regression test (anti-pattern #18).
 - **Test coverage**: New code must have tests. Test Review Sub-Agent verifies this independently.
 - **Evidence first**: Every conclusion needs evidence. Run actual commands — never say "should work" (anti-pattern #6).
-- **Don't assume**: Derive from code/config, don't guess.
 - **Verify the artifact, not just the source**: "tests pass, code looks right" is not done. Report each layer's status separately — source tests, build/package, CI, runtime — a missing layer is an explicit gap, not passing evidence (anti-pattern #17).
 
 ## Integration Review
@@ -89,6 +88,7 @@ When all vertical slices of a PRD are complete, perform extra checks beyond sing
 | PRD not updated after review | Step 6: update local files when authorized |
 | Issues closed without authorization | Authorization Boundaries: close/status/label requires current-turn authorization |
 | Sub-agent skipped re-reading shared context | Independence rule: never cache file reads from previous skill or sub-agent (anti-pattern #34, #35) |
+| Principle violation reported as a blocker, or with no stated consequence | Ch3 Engineering Principles gates: name the concrete consequence or drop the finding; severity defaults to `minor`, and a principle tag never creates a blocker |
 
 ## Output
 

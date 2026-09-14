@@ -18,7 +18,7 @@
 
 ---
 
-**Engineering Skills**（发布名为 `ByronFinn/dev-skills`）是一套**基于 Markdown 的指令集**，专供 AI 编码代理（如通过 [skills.sh](https://skills.sh) 集成的 Claude Code）加载使用。  
+**Engineering Skills**（发布名为 `ByronFinn/dev-skills`）是一套**遵循标准 skill 规范的 AI 代理技能集**，通过 [skills.sh](https://skills.sh) 集成到 AI 编码代理（如 Claude Code）中加载使用。  
 不含应用代码、无需构建步骤、没有运行时——**技能文档本身就是产品**。
 
 ## 🤔 为什么存在
@@ -72,7 +72,9 @@ npx skills@latest add ByronFinn/dev-skills
 
 ## 🧰 技能总览
 
-> **12 项技能**覆盖完整的工程生命周期：规划 → 调研 → 验证 → 分解 → 实现 → 评审 → 调试 → 维护 → 写作。
+> **12 项任务技能**覆盖完整的工程生命周期：规划 → 调研 → 验证 → 分解 → 实现 → 评审 → 调试 → 维护 → 写作。
+>
+> 它们会附带一个额外单元：`rules/`——跨技能共享规则包（反模式、入口协议、子代理运行时语义、编写规范、工程原则）。它**不是任务技能**，且为 `disable-model-invocation`；存在的目的是让安装器把共享规则一并带上，使各技能的交叉引用在安装后仍可解析。
 
 | 技能 | 命令 | 输入 → 输出 | 描述 |
 |---|---|---|---|
@@ -342,9 +344,17 @@ dev-skills/
 ├── CONTEXT.md                     # 领域模型（自举示例）
 ├── LICENSE                        # MIT
 │
+├── scripts/
+│   ├── check-docs.py              # 文档完整性检查（链接、catalog、反模式不变量）
+│   ├── eval_skills.py             # 技能评测装置（静态合规、工作流一致性、触发代理三级）
+│   └── evals/                     # 评测数据集（触发查询集、行为模拟场景）
+│
 ├── docs/
 │   ├── prd/                       # 本项目的 PRD
 │   ├── adr/                       # 架构决策记录
+│   ├── audits/                    # 带日期的审计记录（过去判断及其理由）
+│   ├── evals/                     # 评测协议、轮次记录、迭代结果
+│   ├── research/                  # 沉淀的研究记录 + INDEX
 │   └── agents/                    # 技能配置
 │       ├── domain.md              # 领域文档路径
 │       ├── issue-tracker.md       # 议题追踪器配置
@@ -354,11 +364,16 @@ dev-skills/
 │
 ├── skills/                        # ← 全部技能在此
 │   ├── RESOLVER.md                # 路由表与消歧
-│   ├── rules/
+│   ├── rules/                     # 共享规则包——带 SKILL.md，安装器才会把它作为一个单元一起安装
+│   │   ├── SKILL.md               # 包清单（仅显式调用，非任务技能）
 │   │   ├── anti-patterns.md       # 跨技能行为约束
-│   │   └── entry-protocol.md      # 共享启动序列
+│   │   ├── entry-protocol.md      # 共享启动序列
+│   │   ├── sub-agent-runtime.md   # 子代理 = 从磁盘重读的纪律，而非调度器
+│   │   ├── writing-skills.md      # 技能文件编写规范
+│   │   └── engineering-principles.md # 工程原则唯一定义源（SOLID/DRY/KISS/YAGNI 等，只链接不复述）
 │   │
 │   ├── setup-project/             # 初始化技能
+│   │   └── templates/             # docs/agents/ 配置模板
 │   ├── think/                     # 构思技能
 │   ├── research/                  # 技术调研技能
 │   ├── have-a-try/                # 原型验证技能
@@ -402,7 +417,10 @@ dev-skills/
 3. **更新路由**——添加或修改技能时更新 [`skills/RESOLVER.md`](skills/RESOLVER.md)
 4. **遵守共享规则**——用 [`anti-patterns.md`](skills/rules/anti-patterns.md) 的规则检视自己的输出
 5. **使用入口协议**——引用 [`rules/entry-protocol.md`](skills/rules/entry-protocol.md) 而非重复上下文读取指令。参见 [anti-pattern #36](skills/rules/anti-patterns.md#L42)
-6. **更新 CHANGELOG**——在 [`CHANGELOG.md`](CHANGELOG.md) 中记录变更
+6. **引用工程原则**——原则定义只存在于 [`rules/engineering-principles.md`](skills/rules/engineering-principles.md)，技能只链接不复述（anti-pattern #38）；各技能的检查清单、扫描阈值、重构步骤等操作性内容仍留在技能内
+7. **运行文档检查**——`python3 scripts/check-docs.py` 校验链接可解析、原则目录的结构与所有权覆盖、反模式的引用/归档不变量
+8. **运行技能评测**——`python3 scripts/eval_skills.py --level all --iteration N` 是回归门（静态合规 + 工作流一致性 + 触发代理）；完整 GEPA 式框架、数据集与检查点协议见 [`docs/evals/skills-eval.md`](docs/evals/skills-eval.md)
+9. **更新 CHANGELOG**——在 [`CHANGELOG.md`](CHANGELOG.md) 中记录变更
 
 本项目**自举使用**自身技能——所有文档（PRD、ADR、CONTEXT.md）按照项目[语言配置](docs/agents/language.md)使用简体中文书写。
 

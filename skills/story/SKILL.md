@@ -22,7 +22,7 @@ Break plan into independently actionable issues using vertical slices (tracer bu
 - Apply the [Skill Entry Protocol](../rules/entry-protocol.md) to locate domain docs and issue tracker config
 - `docs/agents/issue-tracker.md` — read for issue creation convention
 - `docs/agents/triage-labels.md` — read for label mapping
-- If tracker files are not found, ask the user which issue tracker they use (GitHub / GitLab / Local / Other), then create the files with matching convention. Or suggest running `/setup-project` for full interactive setup.
+- Missing tracker config → the Entry Protocol's fallback applies; `/story` then either creates the missing config files for the tracker the user names, or suggests `/setup-project` for full interactive setup
 
 ## Process Summary
 
@@ -38,7 +38,7 @@ Break plan into independently actionable issues using vertical slices (tracer bu
 
 **Step 5**: Draft vertical slices — each is a thin vertical slice through all layers (schema, API, UI, tests)
 
-**Step 6**: Present to user — show title, type (HITL/AFK), blocked-by, user stories
+**Step 6**: Present to user — show title, type (HITL/AFK), blocked-by, user stories; self-check granularity/dependencies first, then ask one approval question
 
 **Step 7**: Publish issues in dependency order (blockers first). Issue title format: `[PRD-NNNN] <slice-description> — <core-behavior>`. Issue body includes a `Meta` section (PRD reference, Type, Siblings).
 
@@ -50,7 +50,7 @@ Break plan into independently actionable issues using vertical slices (tracer bu
 - **HITL**: Human-in-the-loop — requires human judgment (architecture, design, UX). Agent pauses at decision points for input.
 - **AFK**: Away-from-keyboard — implementable end-to-end without human interaction.
 
-See [REFERENCE.md](REFERENCE.md) for issue template, input handling, and example.
+See [STORY-FORMAT.md](STORY-FORMAT.md) for the issue title/body template (single source) and [REFERENCE.md](REFERENCE.md) for input handling, slicing detail, and examples.
 
 ## Gotchas
 

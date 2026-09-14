@@ -1,0 +1,52 @@
+iteration,S_hard_pass,S_hard_total,S_soft_pass,S_soft_total,W_pass,W_total,T_train,T_holdout,notes
+0,176,190,23,24,32,32,41.7,25.0,baseline
+1,189,190,24,24,32,32,33.3,62.5,grill/think one-by-one rework; anti-patterns #3/#4 inverted; descriptions intent-first; TOCs added; T-proxy IDF
+2,190,190,24,24,32,32,33.3,62.5,INTENT_RE covers 'Use as'
+3,190,190,24,24,32,32,33.3,62.5,"B-checkpoint1 fixes: no-piggyback riders, approval purity, ADR-eligibility-once; fence-aware TOC regen"
+4,202,203,61,62,32,32,33.3,62.5,"check-set extension: ST8 FORMAT-ref, ST9 orphan files, ST10 entry-protocol placement, ST11 rigid-caps"
+5,203,203,62,62,32,32,33.3,62.5,grill CONTEXT-FORMAT.md pointer added (ST8 fix)
+6,213,216,74,75,34,34,33.3,62.5,"check-set ext 2: ST12 TODO markers, ST13 gotchas shape, W6 README coverage, W7 trigger collisions"
+7,216,216,74,74,34,34,33.3,62.5,ST12 scoped to SKILL.md prose outside code spans; ST13 gated to task skills
+8,216,216,74,74,34,34,33.3,62.5,"story batch: Step6 one-approval question, STORY-FORMAT pointer, parent-issue wording, Child Issues row dropped, Sliced by field added to PRD-FORMAT, clarification one-per-message, entry-protocol dedup"
+9,216,216,74,74,34,34,33.3,62.5,batch2: think Step7 trim + Moderate tree-scope + waiver gotcha + retype no-op; grill #38 trim + 10a label; research #27 trim
+10,216,216,74,74,34,34,33.3,62.5,"batch3: tdd Batch=1 combined gate (ADR-0003), per-cycle mode offer, Sub-Agent Common scope 2-5, recovery parenthetical dedup, Per-Cycle Checklist removed; review Ch2-4 Common pointers, Ch5 scope-complementarity clause, Step5 single approval ask, Don't-assume no-op removed"
+11,216,216,74,74,34,34,33.3,62.5,batch4: implement Step5 Recommend + one-question-with-recommendation on tdd interruption; setup-project destructive-op boundary + per-repo one-at-a-time; improve-arch dup line; writing-skills harness location + frontier term; RESOLVER Step10/audits/Arch-reviewed-by/think-config; entry-protocol audit wording
+12,216,216,74,74,34,34,33.3,62.5,B-checkpoint2: T1 rerun verifies iteration-3 fixes (t2/t4 previously failing now all-pass)
+13,216,216,74,74,36,36,33.3,62.5,"check-set ext 3: W8 cross-skill step refs, W9 research INDEX consistency; B-protocol rubric note"
+14,216,216,74,74,36,36,33.3,62.5,trigger-eval.md rewired to JSON dataset + splits + 2026-09-14 round log
+15,216,216,74,74,36,36,33.3,62.5,README + AGENTS contributing wired to eval harness
+16,216,216,74,74,36,36,33.3,62.5,CHANGELOG campaign entry
+17,216,216,74,74,36,36,33.3,62.5,coherence re-read of reworked grill/think
+18,216,216,74,74,36,36,33.3,62.5,trigger-final: 10/10 full-catalog re-run; T-Live campaign total 20/20
+19,216,216,74,74,36,36,33.3,62.5,README trees + README_ZH contributing synced with eval harness and docs/research
+20,216,216,74,74,36,36,33.3,62.5,"harness cleanup (math import, unused vars removed); determinism run 1"
+21,216,216,74,74,36,36,33.3,62.5,determinism run 2 — confirm identical S/W/T results with no file changes between runs
+22,216,216,74,74,36,36,33.3,62.5,final campaign report written (docs/evals/results/final-report.md)
+23,216,216,74,74,36,36,33.3,62.5,"hold-steady confirmation run (post-convergence, feedback empty — GEPA stopping condition; owner-mandated minimum iterations)"
+24,216,216,74,74,36,36,33.3,62.5,"hold-steady confirmation run (post-convergence, feedback empty — GEPA stopping condition; owner-mandated minimum iterations)"
+25,216,216,74,74,36,36,33.3,62.5,"hold-steady confirmation run (post-convergence, feedback empty — GEPA stopping condition; owner-mandated minimum iterations)"
+26,216,216,74,74,36,36,33.3,62.5,"hold-steady confirmation run (post-convergence, feedback empty — GEPA stopping condition; owner-mandated minimum iterations)"
+27,216,216,74,74,36,36,33.3,62.5,"hold-steady confirmation run (post-convergence, feedback empty — GEPA stopping condition; owner-mandated minimum iterations)"
+28,216,216,74,74,36,36,33.3,62.5,"hold-steady confirmation run (post-convergence, feedback empty — GEPA stopping condition; owner-mandated minimum iterations)"
+29,216,216,74,74,36,36,33.3,62.5,"hold-steady confirmation run (post-convergence, feedback empty — GEPA stopping condition; owner-mandated minimum iterations)"
+30,216,216,74,74,36,36,33.3,62.5,"hold-steady confirmation run (post-convergence, feedback empty — GEPA stopping condition; owner-mandated minimum iterations)"
+31,216,216,74,74,36,36,33.3,62.5,mid-loop drift sweep: retired pacing vocabulary absent repo-wide; IV4 invariants confirmed by hand
+32,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+33,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+34,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+35,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+36,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+37,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+38,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+39,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+40,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+41,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+42,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+43,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+44,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+45,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+46,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+47,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+48,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+49,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
+50,216,216,74,74,36,36,33.3,62.5,FINAL GATE: full suite at ship state

@@ -10,7 +10,7 @@ Shared rule for all sub-agent orchestrated skills (`tdd`, `review`). Stated once
 - **If the host runtime supports true parallel sub-agent dispatch**, dispatch phases in parallel — it strengthens the guarantee.
 - **If not** (single-context execution), execute phases sequentially — the independence guarantee holds as far as the re-read discipline is followed faithfully.
 
-Full decision record: [ADR-0001 Implementation Note](../../docs/adr/0001-sub-agent-orchestration-pattern.md).
+Full decision record: `docs/adr/0001-sub-agent-orchestration-pattern.md` §Implementation Note — *repository-only; not part of this bundle, so it is deliberately not linked* (a link here would dangle in installed copies).
 
 ## Reference
 

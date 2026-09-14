@@ -18,7 +18,7 @@ The `description` carries the entire triggering burden (spec: progressive disclo
 - **Imperative, intent-first**: "Use when the user wants…", describe the user's goal, not the skill's internals.
 - **Front-load the leading word**; one trigger per branch — synonyms renaming one case are one branch written twice, collapse them.
 - **Pushy beats terse**: list contexts where it applies even if the user doesn't name the domain; but stay under ~1024 chars.
-- **Test with near-misses**: 8–10 should-trigger + 8–10 near-miss queries (share keywords but need a different skill, or need none). A negative example that shares no vocabulary tests nothing. The probe harness and query sets live in `docs/evals/` — run a probe round when changing any description.
+- **Test with near-misses**: 8–10 should-trigger + 8–10 near-miss queries (share keywords but need a different skill, or need none). A negative example that shares no vocabulary tests nothing. The eval harness and datasets live in `scripts/` (`eval_skills.py`, `evals/trigger-queries.json`, `evals/behavior-scenarios.json`); the protocols live in `docs/evals/` (`skills-eval.md`, `trigger-eval.md`) — run a round when changing any description.
 
 Trigger words may be Chinese or English; route matching needs both (see RESOLVER.md).
 
@@ -32,6 +32,8 @@ Three tiers, ranked by how immediately the agent needs the material:
 
 The disclosure test: **inline what every branch needs; push behind a pointer what only some branches reach.** Push too little and SKILL.md bloats past ~140 lines; push too much and you hide material the agent actually needs. Keep each meaning in **one source of truth** — cross-skill rules live once in `rules/` and are linked, never restated (anti-pattern #38). Co-locate a concept's definition, rules, and caveats under one heading.
 
+**Distribution constraint before relying on a cross-skill pointer:** the installer ships exactly one thing — a directory containing a `SKILL.md` — so material outside such a directory reaches the repository but never installed copies. `skills/rules/` carries its own `SKILL.md` for precisely that reason: it makes the shared bundle shippable so `../rules/*.md` links resolve after install, in a layout isomorphic to the repository's. Anything else you add outside a skill directory will not ship. Packaging analysis and measured evidence: `docs/audits/2026-09-14-shared-rules-not-installed.md`.
+
 ## Structure contract
 
 Every SKILL.md opens with its **Outcome Contract** before any procedure (anti-pattern #30), then process, Gotchas table, output template. Every step and every outcome ends on a **completion criterion** with two properties:
@@ -41,7 +43,7 @@ Every SKILL.md opens with its **Outcome Contract** before any procedure (anti-pa
 
 ## Wording
 
-- **Leading words**: prefer a compact pretrained word (_seam_, _frontier_, _tracer bullet_) over a spelled-out phrase; it anchors a region of behaviour in one token. A made-up word recruits no priors — define it or find the existing one.
+- **Leading words**: prefer a compact pretrained word (_seam_, _vertical slice_, _tracer bullet_) over a spelled-out phrase; it anchors a region of behaviour in one token. A made-up word recruits no priors — define it or find the existing one.
 - **Positive phrasing**: state the target behaviour; a prohibition drags the forbidden behaviour into context ("don't think of an elephant"). Prohibitions earn their place only as hard guardrails that cannot be phrased positively.
 - **No-ops**: an instruction the model already obeys by default pays load to say nothing. Test: does it change behaviour versus the default? When a sentence fails, delete the whole sentence.
 - **The environment is a source of truth**: package.json, config files, directory layout, `--help`. A document restating it is a cache — earns its load only when the lookup is expensive. Cache the unwritten convention and the reason behind a choice, not what one command would reveal.

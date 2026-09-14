@@ -170,8 +170,9 @@ Format files and update targets per skill. (Role and routing: see "Route by Work
 
 | Skill | Format Files | Updates |
 |-------|-------------|---------|
+| `rules` **(bundle, not routable)** | — | Carries `anti-patterns.md`, `entry-protocol.md`, `sub-agent-runtime.md`, `writing-skills.md`, `engineering-principles.md` into installed copies. `disable-model-invocation` — never route task work here; the other skills link into it (`../rules/<file>.md`) |
 | `setup-project` | — | `docs/agents/*.md` + AGENTS.md block |
-| `think` | PRD-FORMAT.md | PRD + parent issue (required, Step 10a) |
+| `think` | PRD-FORMAT.md | PRD + parent issue (required, Step 10) |
 | `research` | RESEARCH-FORMAT.md<br>INDEX-FORMAT.md | `docs/research/<stack>-<topic>-<major>.md` + INDEX.md row (lazy-created) |
 | `have-a-try` | — | Verdict (selected or eliminated) + evidence (PRD `Prototyped by` / ADR / commit / NOTES.md; concern×option matrix for SPIKE, numbers + environment for BENCH); demo deleted, core absorbed, or archived to throwaway branch |
 | `grill` | CONTEXT-FORMAT.md<br>ADR-FORMAT.md | PRD + CONTEXT.md + ADRs + parent issue synced (if created by /think) |
@@ -180,7 +181,7 @@ Format files and update targets per skill. (Role and routing: see "Route by Work
 | `tdd` | — | Code + tests (via Acceptance Criterion Cycles) |
 | `review` | — | Merged report + local docs + remote updates only when explicitly authorized |
 | `debug` | — | Root cause report + code fix |
-| `improve-architecture` | — | Architecture report |
+| `improve-architecture` | — | Architecture report + PRD `Arch reviewed by` field (when findings link to a PRD) |
 | `write` | — | Edited prose only (no change list) |
 
 > **Format Files column**: "—" means the skill's output format is embedded in REFERENCE.md rather than in a separate *-FORMAT.md file. Skills with named format files (PRD-FORMAT.md, STORY-FORMAT.md, etc.) use them as bilingual templates shared with the user.
@@ -192,7 +193,7 @@ Each skill may depend on files or configuration produced by earlier skills. Miss
 | Skill | Config (always read first) | Required | Optional (enhances output if present) | Format Contract | Auto-created by |
 |-------|---------------------------|----------|---------------------------------------|----------------|-----------------|
 | `setup-project` | — | Git repo | — | — | — (this is the foundation) |
-| `think` | — | — | `CONTEXT.md`, `docs/adr/`, existing PRDs, `docs/research/INDEX.md` | PRD-FORMAT.md | Creates PRD if user opts in |
+| `think` | `domain.md` | — | `CONTEXT.md`, `docs/adr/`, existing PRDs, `docs/research/INDEX.md` | PRD-FORMAT.md | Creates PRD if user opts in |
 | `research` | `domain.md` | A concrete stack×topic×major question | `CONTEXT.md`, `docs/adr/`, `docs/research/INDEX.md` (for dedup) | RESEARCH-FORMAT.md, INDEX-FORMAT.md | Creates `docs/research/` + INDEX lazily on first record |
 | `have-a-try` | `domain.md` | A divergence — conflicting options or a contested claim, settleable by running code | `CONTEXT.md`, `docs/adr/`, PRD | — | — |
 | `grill` | `domain.md` | PRD (`docs/prd/PRD-NNNN-<title>.md`) | `CONTEXT.md`, `docs/adr/` | CONTEXT-FORMAT.md, ADR-FORMAT.md | Creates `CONTEXT.md` and ADRs lazily |
@@ -201,7 +202,7 @@ Each skill may depend on files or configuration produced by earlier skills. Miss
 | `tdd` | `domain.md`, `repo-map.md` | — | `issue-tracker.md`, PRD, `CONTEXT.md`, ADRs | Issue body = STORY-FORMAT.md | — |
 | `review` | `domain.md`, `repo-map.md` | Code changes (staged or unstaged) | PRD, `CONTEXT.md`, ADRs, CI configs | Issue body = STORY-FORMAT.md | Updates local docs when verified |
 | `debug` | `domain.md`, `repo-map.md` | Reproducible error or symptom | `CONTEXT.md`, ADRs | — | — |
-| `improve-architecture` | `domain.md`, `repo-map.md` | — | `CONTEXT.md`, `docs/adr/`, `docs/prd/*.md` | — | — |
+| `improve-architecture` | `domain.md`, `repo-map.md` | — | `CONTEXT.md`, `docs/adr/`, `docs/prd/*.md`, `docs/audits/*.md` | — | — |
 | `write` | `domain.md` | Text to edit | Project style references, existing releases, `CONTEXT.md` | — | — |
 
 **Config column**: Files under `docs/agents/`. `domain.md` tells consumer skills where domain docs live. `repo-map.md` tells them about multi-repo structure. `language.md` tells them what language to write human-facing output in (PRDs, ADRs, CONTEXT, Issues). All are optional — skills fall back to default paths (and, for language, the user's input language) if missing.
@@ -224,6 +225,8 @@ Users may switch skills at any time. Rules:
 Cross-skill behavioral constraints live in `rules/anti-patterns.md`. Skills should reference this file directly when applying global rules; it is a shared reference, not a standalone workflow skill.
 
 The shared bootstrap sequence lives in `rules/entry-protocol.md`. All skills reference this protocol instead of duplicating context-read instructions. It ensures skills work standalone (graceful degradation) and composable (reads prior skill outputs via Traceability chain).
+
+The shared engineering-principle catalog lives in `rules/engineering-principles.md` — the single definition of SOLID (SRP/OCP/LSP/ISP/DIP), DRY, KISS, YAGNI, LoD, composition over inheritance, explicit over implicit, fail fast, and immutability/purity, plus the gates that keep principle findings from becoming nitpicks (named consequence required; severity defaults to `minor`, and a principle tag never creates a blocker; scope stops at the diff) and the consumer/ownership map. Consuming skills: `review` (Code Review owns the diff-local principles, Impact Review owns DIP/OCP and cross-module coupling), `improve-architecture` (§3.2 owns the scan thresholds), `tdd` (Refactor phase, `refactor-safe` entries only), `implement` (direct implementation). Skills link to it and never restate definitions (#38).
 
 Key anti-patterns for sub-agent skills:
 - **#30 Procedural front-loading** (anti-pattern #30) — every SKILL.md opens with its outcome contract before any procedure; workflow detail stays in REFERENCE.md

@@ -1,0 +1,25 @@
+{
+  "comment": "Trigger-routing query set for Level T. Split 60/40: guide description edits with TRAIN failures only; HOLDOUT is the headline accuracy. Never copy a failing query's keywords into a description (agentskills.io overfitting rule). Ported from docs/evals/trigger-eval.md 2026-08-22 round (P1-P6, N1-N6) + 8 new holdout queries.",
+  "queries": [
+    {"id": "P1", "split": "train", "kind": "should-trigger", "query": "帮我构思一下这个新功能该怎么做，需求还不太清楚，有好几种可能的做法", "expected": "think"},
+    {"id": "P2", "split": "train", "kind": "should-trigger", "query": "这个方案行不行？帮我把计划里的坑都找出来，一个一个过", "expected": "grill"},
+    {"id": "P3", "split": "train", "kind": "should-trigger", "query": "计划定好了，把它拆成一批可执行的任务票，标好依赖关系", "expected": "story"},
+    {"id": "P4", "split": "train", "kind": "should-trigger", "query": "这个接口以前是好的，升级依赖之后就 404 了，帮我排查一下", "expected": "debug"},
+    {"id": "P5", "split": "train", "kind": "should-trigger", "query": "这几个功能的改动都做完了，合并之前帮我把把关", "expected": "review"},
+    {"id": "P6", "split": "train", "kind": "should-trigger", "query": "这段发布文案帮我润色一下，读起来太像AI写的了", "expected": "write"},
+    {"id": "N1", "split": "train", "kind": "near-miss", "query": "研究一下这个 bug 为什么只在生产环境出现，本地从来没复现过", "expected": "debug", "note": "研究 is not 技术调研"},
+    {"id": "N2", "split": "train", "kind": "near-miss", "query": "帮我把 parseConfig 这个函数重构一下，嵌套太深了改平一点就行，别的别动", "expected": "NONE", "note": "single-function edit, not improve-architecture"},
+    {"id": "N3", "split": "train", "kind": "near-miss", "query": "帮我测一下这个函数的性能，看看一次调用耗时多少毫秒", "expected": "NONE", "note": "plain measurement, no decision at stake"},
+    {"id": "N4", "split": "train", "kind": "near-miss", "query": "review this PRD draft for clarity and wording before I share it with the team — it's a bit rambling", "expected": "write", "note": "prose wording, not plan validation"},
+    {"id": "N5", "split": "train", "kind": "near-miss", "query": "think about how to name this boolean variable — should it be isEnabled or hasAccess?", "expected": "NONE", "note": "not think's design session"},
+    {"id": "N6", "split": "train", "kind": "near-miss", "query": "调研一下竞品都有哪些功能，然后我们再决定新版本要做什么", "expected": "think", "note": "product decision, not technical-stack research"},
+    {"id": "H1", "split": "holdout", "kind": "should-trigger", "query": "I've got a rough idea for a plugin system but no clear requirements — can you help me flesh out the design before any code gets written?", "expected": "think"},
+    {"id": "H2", "split": "holdout", "kind": "should-trigger", "query": "帮我看下这份技术方案有没有漏掉的边界情况和没验证的假设，逐条拷问到清楚为止", "expected": "grill"},
+    {"id": "H3", "split": "holdout", "kind": "should-trigger", "query": "Write the release notes for v2.3 based on this changelog — keep it tight and human", "expected": "write"},
+    {"id": "H4", "split": "holdout", "kind": "near-miss", "query": "这个库升到 v5 之后 API 全变了，去官方文档查清楚推荐的迁移写法，记下来以后直接查", "expected": "research", "note": "not debug — nothing is broken to diagnose; wants durable authoritative record"},
+    {"id": "H5", "split": "holdout", "kind": "near-miss", "query": "run the existing test suite and tell me which tests fail", "expected": "NONE", "note": "just running tests; no unknown root cause, no new behavior to build"},
+    {"id": "H6", "split": "holdout", "kind": "should-trigger", "query": "把这批需求整理成一组 issue，按依赖顺序排好，每张票都要能独立验收", "expected": "story"},
+    {"id": "H7", "split": "holdout", "kind": "near-miss", "query": "auth 模块越积越乱，帮我整体审视一下架构健康度，列一份设计债务清单", "expected": "improve-architecture", "note": "global health scan, not a single bug or a ticket split"},
+    {"id": "H8", "split": "holdout", "kind": "should-trigger", "query": "A and B two caching libraries — build a minimal benchmark on our workload and tell me which one we should pick", "expected": "have-a-try"}
+  ]
+}

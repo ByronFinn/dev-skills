@@ -1,5 +1,23 @@
 # TDD: Sub-Agent Instruction Reference
 
+
+
+
+
+
+## Contents
+
+- [Chapter 1: Planning Phase (Orchestrator)](#chapter-1-planning-phase-orchestrator)
+- [Sub-Agent Common (applies to Chapters 2–5)](#sub-agent-common-applies-to-chapters-25)
+- [Chapter 2: Test Sub-Agent — Scenario Design Phase](#chapter-2-test-sub-agent-scenario-design-phase)
+- [Chapter 3: Test Sub-Agent — Test Code Phase](#chapter-3-test-sub-agent-test-code-phase)
+- [Chapter 4: Develop Sub-Agent — Implementation Phase](#chapter-4-develop-sub-agent-implementation-phase)
+- [Chapter 5: Refactor Phase (Develop Sub-Agent)](#chapter-5-refactor-phase-develop-sub-agent)
+- [Chapter 6: TDD-Specific Mistakes](#chapter-6-tdd-specific-mistakes)
+- [Chapter 7: Session Recovery](#chapter-7-session-recovery)
+
+---
+
 Detailed instructions for each phase of the sub-agent orchestrated TDD process. Each chapter is self-contained — an agent reading only that chapter should know exactly what to do.
 
 ---
@@ -108,14 +126,14 @@ Each cycle completes one criterion end-to-end. The Develop Sub-Agent only sees o
 
 ### Gate Mode Selection
 
-The authoritative Gate Modes table (Full / Fast / Batch) and their switching rules live in [SKILL.md → Gate Modes](SKILL.md#gate-modes). Before starting cycles, confirm the mode with the user (default is Full). Recap of how each mode reshapes the chapters below:
+The authoritative Gate Modes table (Full / Fast / Batch) and their switching rules live in [SKILL.md → Gate Modes](SKILL.md#gate-modes) — the mode is offered at the start of **each cycle**, with a recommendation from the criterion's shape (SKILL.md is authoritative on timing). Recap of how each mode reshapes the chapters below:
 
 - **Fast mode**: Chapters 2 and 3 merge — Test Sub-Agent designs scenarios and writes code in one phase; the single Test Code Review Gate folds in scenario coverage.
-- **Batch mode**: group homogeneous criteria; one Scenario Review Gate and one Test Code Review Gate cover the whole group; Develop Sub-Agent implements each criterion in the group sequentially.
+- **Batch mode**: group homogeneous criteria; a **single combined review gate** covers the whole group (scenario design and test code reviewed together — one gate, per ADR-0003); Develop Sub-Agent implements each criterion in the group sequentially.
 
 ---
 
-## Sub-Agent Common (applies to Chapters 2, 3, 4)
+## Sub-Agent Common (applies to Chapters 2–5)
 
 ### Independence
 
@@ -143,7 +161,7 @@ For one acceptance criterion, design test scenarios as a structured table. This 
 
 ### Phase-Specific Context
 
-Apply the [Sub-Agent Common](#sub-agent-common-applies-to-chapters-2-3-4) independence + shared re-read before designing scenarios. This is the first phase — no approved artifact exists yet for this cycle.
+Apply the [Sub-Agent Common](#sub-agent-common-applies-to-chapters-25) independence + shared re-read before designing scenarios. This is the first phase — no approved artifact exists yet for this cycle.
 
 ### Responsibilities
 
@@ -230,7 +248,7 @@ Write test code from the approved scenario table. Tests must be RED — they des
 
 ### Phase-Specific Context
 
-Apply the [Sub-Agent Common](#sub-agent-common-applies-to-chapters-2-3-4) independence + shared re-read. Additionally re-read from disk:
+Apply the [Sub-Agent Common](#sub-agent-common-applies-to-chapters-25) independence + shared re-read. Additionally re-read from disk:
 
 - [ ] Approved scenario table — the human may have edited it during the Scenario Review Gate (human edits are authoritative)
 
@@ -321,9 +339,9 @@ Write minimal code to make the approved test turn GREEN. The Develop Sub-Agent i
 
 ### Phase-Specific Context
 
-Apply the [Sub-Agent Common](#sub-agent-common-applies-to-chapters-2-3-4) independence + shared re-read. Additionally re-read from disk:
+Apply the [Sub-Agent Common](#sub-agent-common-applies-to-chapters-25) independence + shared re-read. Additionally re-read from disk:
 
-- [ ] Approved test code — the human may have edited it during the Test Code Review Gate; always read the latest version
+- [ ] Approved test code — the human may have edited it during the Test Code Review Gate (read from disk, not memory)
 
 ### Responsibilities
 
@@ -411,9 +429,13 @@ Implementation code. Test turns GREEN. Proceed to the next acceptance criterion 
 
 After **all** acceptance criterion cycles are GREEN, perform a unified refactor. This is the only phase where structural improvements happen — during cycles, the focus is strictly on making each test pass with minimal code.
 
+### Responsibilities
+
+The Develop Sub-Agent owns this phase end to end: choose refactor candidates one at a time, make each structural change, keep the full suite GREEN after every step, and stop at behavior's boundary — any functional change is reported as a future acceptance criterion, not done here.
+
 ### Phase-Specific Context
 
-This chapter runs as the Develop Sub-Agent's final phase: apply the [Sub-Agent Common](#sub-agent-common-applies-to-chapters-2-3-4) independence + shared re-read (PRD, Story/Issue, CONTEXT.md, ADRs, existing codebase) plus **all approved tests from the completed cycles** — the human may have edited tests at any gate. Do not refactor from memory of what was implemented; re-read the current code from disk.
+This chapter runs as the Develop Sub-Agent's final phase: apply the [Sub-Agent Common](#sub-agent-common-applies-to-chapters-25) independence + shared re-read (PRD, Story/Issue, CONTEXT.md, ADRs, existing codebase) plus **all approved tests from the completed cycles** — the human may have edited tests at any gate. Do not refactor from memory of what was implemented; re-read the current code from disk.
 
 ### When to Refactor
 
@@ -430,7 +452,7 @@ Look for these improvement opportunities:
 
 1. **Extract duplication** — repeated logic across implementations. Wait until repetition is proven and stable (anti-patterns.md #8) before extracting.
 2. **Deepen modules** — move complexity behind simple interfaces. A function with a small public surface but rich internal logic is a deep module. A function that exposes all its internals through a large interface is shallow.
-3. **Apply SOLID principles where natural** — do not force SOLID patterns where they add complexity without clarity.
+3. **Apply engineering principles where refactor-safe** — [rules/engineering-principles.md](../rules/engineering-principles.md) records each principle's phase; apply every entry whose Phase is `refactor-safe`. Do not force a pattern that adds complexity without clarity. Two sit outside this phase: Fail Fast (adding validation changes behavior) and YAGNI where the deletion would touch public API (a scope change — report it to `/improve-architecture`).
 4. **Consider what new code reveals about existing code** — the feature you just built may expose patterns or abstractions that already-existing code could benefit from.
 
 ### Deep Modules Principle (definition — single source)
@@ -442,7 +464,7 @@ A **deep module** hides complexity behind a small interface: rich internal logic
 Refactoring changes **structure, not behavior**. No new features; if you find yourself adding functionality, stop and note it as a future acceptance criterion. Run the full test suite after **each** step; tests must stay GREEN (a refactor that breaks a test is wrong, or the test was implementation-coupled — see Chapter 3).
 
 Per step:
-1. Identify one refactor candidate (duplication, shallow module, SOLID violation)
+1. Identify one refactor candidate (duplication, shallow module, an engineering-principle violation in a `refactor-safe` entry)
 2. Make the structural change
 3. Run full test suite
 4. GREEN → commit the step, find next candidate. RED → revert, the refactor is not safe.
@@ -451,7 +473,8 @@ Per step:
 
 - [ ] All duplication extracted (or noted as not-yet-stable)
 - [ ] Deep module opportunities addressed
-- [ ] SOLID principles applied where natural
+- [ ] Engineering principles applied for every `refactor-safe` entry ([rules/engineering-principles.md](../rules/engineering-principles.md)) — including the Immutability call-site check
+- [ ] No behavior changed by a refactor step (no added validation, no public API removal, no changed return identity)
 - [ ] Full test suite GREEN after each step
 - [ ] No new behavior introduced
 - [ ] Existing tests unchanged (refactor does not touch tests)
@@ -511,7 +534,7 @@ If the implementation changes to send two emails (one welcome, one verification)
 
 ## Chapter 7: Session Recovery
 
-If the session is interrupted, apply the general recovery procedure (re-read latest user message, re-read shared context from disk, verify on-disk artifacts, state recovery summary, confirm before continuing) from [anti-patterns.md #36](../rules/anti-patterns.md). What follows is the TDD-specific recovery logic #36 does not cover.
+If the session is interrupted, apply the general recovery procedure from [anti-patterns.md #36](../rules/anti-patterns.md). What follows is the TDD-specific recovery logic #36 does not cover.
 
 ### Recovery by Phase
 

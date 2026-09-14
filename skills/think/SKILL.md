@@ -22,7 +22,7 @@ If a question can be answered by exploring the codebase or a quick research pass
 
 1. **Task-first** — capture the idea immediately
 2. **Action-before-asking** — derive from codebase/docs before asking. Apply the [Skill Entry Protocol](../rules/entry-protocol.md)
-3. **One question at a time** — each with a recommended answer; update the PRD after each
+3. **One question at a time** — exactly one **decision** per message, each question carrying a recommended answer, with no piggyback riders ("顺便确认…", "please also mention…") — a second needed decision becomes the *next* single question, after the derivability check. Derive the next question from the user's last answer (an answer resolves, opens, or closes branches — never work a pre-computed list; anti-patterns #3, #4). Update the PRD after each answer
 4. **Prefer concrete options** — present 2-3 viable approaches with trade-offs; never silently assume a single path (anti-pattern #28)
 5. **Research-first** — query INDEX before proposing; study authoritative sources
 6. **Diverge → Converge** — expand on edges, then converge to MVP
@@ -51,11 +51,11 @@ If a question can be answered by exploring the codebase or a quick research pass
 
 **Step 6 — Expansion scan (diverge).** Proactively raise 1-2 points each on future evolution, related scenarios, and failure/edge cases before converging. **Scale to complexity** (Step 3): Simple tasks skip this step; Moderate does failure/edge only; Complex does all three. Let the user pick what enters the MVP vs `Out of Scope`.
 
-**Step 7 — Q&A loop (converge).** One question at a time. After each answer, immediately update the PRD: move resolved items from `Open Questions` to `Requirements`, sharpen `Acceptance Criteria`, clarify `Out of Scope`.
+**Step 7 — Q&A loop (converge).** Exactly one question per message, with a recommended answer (anti-patterns #3, #4; adaptive-selection mechanics in [REFERENCE.md §Step 7](REFERENCE.md)). After each answer, immediately update the PRD: move resolved items from `Open Questions` to `Requirements`, sharpen `Acceptance Criteria`, clarify `Out of Scope`. Continue until the MVP's decision tree is exhausted — every blocking/preference node resolved — not until a question list runs out.
 
 **Step 8 — Propose approaches + record decision.** When requirements are clear, present 2-3 approaches (if not already done via research), ask preference, and record the result in the PRD's `Decision (ADR-lite)` section. If the options can't be separated by reasoning or trade-offs alone — and running code could separate them — suggest `/have-a-try`: a minimal demo adjudicates (selects or eliminates), and the verdict fills the decision plus the PRD's `Prototyped by` field.
 
-**Step 9 — Submit plan for approval.** Present the complete requirements (Goal, Requirements, Acceptance Criteria, Definition of Done, Out of Scope, Technical Approach, small-PR implementation plan). After user approval, proceed to Step 10 (Create Parent Issue & Finalize PRD) — do not wrap up yet.
+**Step 9 — Submit plan for approval.** Present the complete requirements (Goal, Requirements, Acceptance Criteria, Definition of Done, Out of Scope, Technical Approach, small-PR implementation plan). The approval submission asks exactly one thing — approval. Any setup decision still open (tracker or no tracker, PRD language, etc.) must have been settled as its own single question **before** this submission, so the user approves a complete plan with no riders attached. After user approval, proceed to Step 10 (Create Parent Issue & Finalize PRD) — do not wrap up yet.
 
 **Step 10 — Create Parent Issue & Finalize PRD.** After plan approval:
 1. **Create the parent Issue** in the issue tracker (required — `/grill` and `/story` downstream rely on the PRD's `## Issue` field)
@@ -76,10 +76,11 @@ See [REFERENCE.md](REFERENCE.md) for complexity classification detail, question-
 | Cited a blog/tutorial as the basis for a technical choice | Step 5: research against authoritative sources (official docs/source/spec) only |
 | Asked meta questions like "should I search?" | Step 4: never ask, take action |
 | Drifted without updating PRD | Update PRD after every answer |
+| Attached a rider sub-ask to a question ("顺便确认/请一并说明") | One decision per message — a second decision becomes the next single question (Step 7 rules) |
 | Stayed on initial request without considering edges | Step 6: expansion scan before converging |
 | Domain terms introduced but not recorded for grill | Step 10: record new terms in PRD `## Domain Terms` section |
 | Same topic got two PRDs (e.g. PRD-0001 + PRD-0002) | Step 2: run PRD Conflict Check (REFERENCE.md) before assigning NNNN |
-| Parent Issue not created after plan approval | Step 10: parent issue creation is required; always create it before finalizing — `/grill` and `/story` rely on it |
+| Parent Issue not created after plan approval | Step 10: parent issue creation is required before finalizing — unless the no-PRD or no-tracker waiver in REFERENCE 10a applies — `/grill` and `/story` rely on it |
 
 ## Output
 
