@@ -24,7 +24,7 @@ skills/
 ├── setup-project/               # Project initialization skill → AGENTS.md + docs/agents/
 │   ├── SKILL.md
 │   ├── REFERENCE.md
-│   └── templates/               # Config templates written into docs/agents/ (domain, issue-tracker, triage-labels, language, repo-map)
+│   └── templates/               # Seed templates — engineering-principles → AGENTS.md/CLAUDE.md section; domain, issue-tracker, triage-labels, language, repo-map → docs/agents/
 ├── think/                       # Brainstorming skill → PRD
 │   ├── SKILL.md
 │   ├── REFERENCE.md

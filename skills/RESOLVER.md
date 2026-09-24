@@ -171,7 +171,7 @@ Format files and update targets per skill. (Role and routing: see "Route by Work
 | Skill | Format Files | Updates |
 |-------|-------------|---------|
 | `rules` **(bundle, not routable)** | — | Carries `anti-patterns.md`, `entry-protocol.md`, `sub-agent-runtime.md`, `writing-skills.md`, `engineering-principles.md` into installed copies. `disable-model-invocation` — never route task work here; the other skills link into it (`../rules/<file>.md`) |
-| `setup-project` | — | `docs/agents/*.md` + AGENTS.md block |
+| `setup-project` | — | `docs/agents/*.md` + AGENTS.md/CLAUDE.md sections (`## Agent skills`, `## Engineering principles`) |
 | `think` | PRD-FORMAT.md | PRD + parent issue (required, Step 10) |
 | `research` | RESEARCH-FORMAT.md<br>INDEX-FORMAT.md | `docs/research/<stack>-<topic>-<major>.md` + INDEX.md row (lazy-created) |
 | `have-a-try` | — | Verdict (selected or eliminated) + evidence (PRD `Prototyped by` / ADR / commit / NOTES.md; concern×option matrix for SPIKE, numbers + environment for BENCH); demo deleted, core absorbed, or archived to throwaway branch |

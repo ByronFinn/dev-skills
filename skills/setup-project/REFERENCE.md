@@ -35,6 +35,7 @@ When `docs/agents/` already exists, run this drift detection loop **before** any
 | `repo-map.md` (if exists) | Has the project structure changed? (Workspace files added/removed? User mentions sibling repos?) | Package count changed, repos added/removed, project type (single↔mono↔multi) changed | Present diff, confirm, rewrite `repo-map.md`. If project type changed → trigger **Migration** path below |
 | (no `repo-map.md` yet) | Detect new multi-repo or monorepo signals: workspace files, user mentions sibling repos, subproject dirs | New structure signals found | Ask if project structure changed, create `repo-map.md` if needed |
 | AGENTS.md/CLAUDE.md `## Agent skills` block | Does the block open with the `### Working principles` section (first-principles prompt, verbatim)? | Block was written before the working-principles rule existed — section missing | Present the missing section, confirm, rewrite the block in-place (never append a duplicate) |
+| AGENTS.md/CLAUDE.md `## Engineering principles` section | Re-run the Step 1 stack detection and script scan — does the section still match (scope blocks, line bound, dependency paths, quick-reference commands)? | Stack dimension added/removed (frontend introduced, DB added), verification scripts renamed/added, section missing entirely (pre-principles run) | Present diff, confirm, rewrite the section in-place (never append a duplicate) |
 
 **If no drift detected in any section**, tell the user: "All config is current — no changes needed." and stop.
 
@@ -158,6 +159,14 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `subprojects/` or `packages/` or `apps/` or `libs/` directory patterns
 - `docs/adr/` inside subdirectories — sign of per-package architecture tracking
 
+**Stack detection (feeds the engineering-principles tailoring, Section E):**
+
+- Frontend: framework deps in `package.json` (react/vue/svelte/next/…), `src/components|app|pages` directories
+- Backend: server entrypoints, `api/`/`server/` directories, backend framework deps
+- Database: ORM config (drizzle/prisma/knex/typeorm/…), `migrations/` directories, schema files
+- Multi-tenant signals: auth middleware, tenant/org IDs in schemas, "multi-tenant" in the README
+- Verification commands: package.json `scripts`, Makefile, justfile, CI workflows — candidates for the change quick reference
+
 ## Step 2: Detect Project Structure
 
 Based on your exploration, classify the project:
@@ -190,6 +199,7 @@ Summarise what's present and what's missing. Show the detected defaults:
 - **Triage labels**: defaults (needs-triage, needs-info, ready-for-agent, ready-for-human, wontfix)
 - **Domain docs**: single-context (one CONTEXT.md + docs/adr/ at root) or multi-context (CONTEXT-MAP.md exists)
 - **Documentation language**: undetected by default — present as "please choose" (see Section D). If existing PRDs/ADRs/CONTEXT.md are consistently in one language, offer that as the recommended default.
+- **Engineering principles**: detected stack scope (fullstack / backend-only / frontend-only; multi-tenant yes/no) and candidate quick-reference commands, from the Step 1 stack detection (see Section E)
 
 ## Step 4: Ask for Overrides
 
@@ -246,9 +256,23 @@ This is a **single language for the whole project** — it applies uniformly to 
 
 **Common pitfall:** the user typing the command is not necessarily the audience. A Chinese-speaking developer may still want English docs for an international team. Ask which language the *team* reads, not which language the conversation is in.
 
+### Section E — Engineering Principles
+
+> The `## Engineering principles` section in AGENTS.md/CLAUDE.md tells every agent session and contributor how this repo expects engineering work done — design-first planning, module quality, boundaries, security, concurrency, UX, reuse, maintainability, reversibility — and which commands verify each kind of change before committing. It is generated from [templates/engineering-principles.md](templates/engineering-principles.md), tailored to this repo.
+
+Present the detected tailoring as a draft; the user confirms or edits:
+
+- **Scope** — which conditional blocks apply (<Multi-tenant>, <Backend>, <Frontend>), from Step 1 stack detection
+- **File-size bound** — principle 2's line limit (suggest 500 when the repo shows no other convention)
+- **Dependency-check locations** — principle 7's where-to-check-first paths (from workspace detection)
+- **Change quick reference** — baseline and per-change-type commands, filled from package.json scripts / Makefile / CI config. Never invent commands; a row with no real command is dropped, not guessed.
+- **Language** — the section is rendered in the Section D language (headings and prose translated; commands, paths, and identifiers stay as-is)
+
+If the file already carries a hand-written `## Engineering principles` (or equivalent) section, ask: adopt as-is (setup stops managing it), merge, or replace. Never overwrite it silently.
+
 ## Step 5: Confirm
 
-Show the user a draft of all files to be written. Let them edit before writing.
+Show the user a draft of all files to be written. Let them edit before writing. The draft includes the tailored `## Engineering principles` section — confirm its scope, placeholder fills, and quick-reference commands before writing.
 
 ## Step 6: Write
 
@@ -297,6 +321,8 @@ Apply first-principles reasoning to engineering work. Establish WHAT before dete
 
 Then write the docs files using the seed templates in [templates/](templates/).
 
+**The `## Engineering principles` section** — written into the same file, immediately after the `## Agent skills` block, from [templates/engineering-principles.md](templates/engineering-principles.md). Apply the Section E tailoring: drop inapplicable conditional blocks, fill placeholders from detected evidence, render in the Section D language. If the section already exists, update it in-place — never append a duplicate. If the user chose "adopt as-is" in Section E, skip writing it.
+
 ### Monorepo: Per-Package Config
 
 For each detected package with its own domain scope, create `docs/agents/` inside that package as well, but with a simpler config:
@@ -321,10 +347,11 @@ Tell the user the setup is complete and which engineering skills will now read f
 
 ## Seed Templates
 
-Each `docs/agents/` file is generated from a seed template, customised based on the user's choices in Step 3-4. The templates live as separate files so they can be maintained independently and read on demand:
+Each generated file is seeded from a template, customised based on the user's choices in Step 3-4. The templates live as separate files so they can be maintained independently and read on demand:
 
 | Output file | Seed template | When used |
 |---|---|---|
+| AGENTS.md/CLAUDE.md `## Engineering principles` | [templates/engineering-principles.md](templates/engineering-principles.md) | Always (tailor per Section E; skip if the user keeps their own section) |
 | `docs/agents/issue-tracker.md` | [templates/issue-tracker-github.md](templates/issue-tracker-github.md) | Remote points to github.com |
 | | [templates/issue-tracker-gitlab.md](templates/issue-tracker-gitlab.md) | Remote points to gitlab.com or self-hosted GitLab |
 | | [templates/issue-tracker-local.md](templates/issue-tracker-local.md) | No remote (local markdown in `.scratch/`) |

@@ -50,3 +50,4 @@ iteration,S_hard_pass,S_hard_total,S_soft_pass,S_soft_total,W_pass,W_total,T_tra
 48,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
 49,216,216,74,74,36,36,33.3,62.5,hold-steady confirmation (post-convergence)
 50,216,216,74,74,36,36,33.3,62.5,FINAL GATE: full suite at ship state
+51,216,216,74,74,36,36,33.3,62.5,
