@@ -6,6 +6,8 @@
   <em>Reusable agent skills for software engineering workflows — from idea to release.</em>
 </p>
 
+<p align="center">Maintained by <a href="https://baifan.site">ByF (BaiFan · 白帆)</a> · writing at <a href="https://blog.baifan.site">blog.baifan.site</a></p>
+
 <p align="center">
   <a href="https://skills.sh/ByronFinn/dev-skills"><img src="https://skills.sh/b/ByronFinn/dev-skills" alt="skills.sh"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>

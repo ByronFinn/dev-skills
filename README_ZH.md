@@ -6,6 +6,8 @@
   <em>软件工程工作流中可复用的 AI 代理技能——从构思到发布。</em>
 </p>
 
+<p align="center">由 <a href="https://baifan.site">ByF（BaiFan · 白帆）</a> 维护 · 写作于 <a href="https://blog.baifan.site">blog.baifan.site</a></p>
+
 <p align="center">
   <a href="https://skills.sh/ByronFinn/dev-skills"><img src="https://skills.sh/b/ByronFinn/dev-skills" alt="skills.sh"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
